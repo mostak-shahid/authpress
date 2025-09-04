@@ -1,239 +1,263 @@
 <?php
-/*
-Plugin Name: AuthPress
-Description: Customize WordPress login page with logo, background, alignment, and custom login URL.
-Version: 1.0
-Author: Your Name
-*/
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
+/**
+ * The plugin bootstrap file
+ *
+ * This file is read by WordPress to generate the plugin information in the plugin
+ * admin area. This file also includes all of the dependencies used by the plugin,
+ * registers the activation and deactivation functions, and defines a function
+ * that starts the plugin.
+ *
+ * @link              https://www.mdmostakshahid.com/
+ * @since             1.0.0
+ * @package           Authpress
+ *
+ * @wordpress-plugin
+ * Plugin Name:       AuthPress
+ * Plugin URI:        https://www.mdmostakshahid.com/authpress/
+ * Description:       Authpress boilerplate for WordPress
+ * Version:           1.0.0
+ * Author:            Md. Mostak Shahid
+ * Author URI:        https://www.mdmostakshahid.com/
+ * License:           GPL-2.0+
+ * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
+ * Text Domain:       authpress
+ * Domain Path:       /languages
+ */
 
-class Custom_Login_Page_Plugin
-{
-
-    public function __construct()
-    {
-        add_action('admin_menu', [$this, 'add_admin_menu']);
-        add_action('admin_init', [$this, 'register_settings']);
-        add_action('login_footer', [$this, 'custom_login_styles'], 999);
-        add_filter('login_headerurl', [$this, 'custom_logo_url']);
-
-        // add_action('init', [$this, 'redirect_default_login']);
-        // add_action( 'wp', [$this, 'redirect_default_login'] );
-        // add_action( 'template_redirect', [$this, 'redirect_default_login'] );
-
-        add_shortcode('custom_login_form', [$this, 'custom_login_form_shortcode']);
-    }
-
-    public function add_admin_menu()
-    {
-        add_menu_page(
-            'Custom Login Page',
-            'Login Page Options',
-            'manage_options',
-            'custom-login-page',
-            [$this, 'settings_page'],
-            'dashicons-admin-customizer'
-        );
-    }
-
-    public function register_settings()
-    {
-        register_setting('custom_login_settings', 'clp_logo');
-        register_setting('custom_login_settings', 'clp_logo_url');
-        register_setting('custom_login_settings', 'clp_bg_color');
-        register_setting('custom_login_settings', 'clp_bg_image');
-        register_setting('custom_login_settings', 'clp_form_alignment');
-        register_setting('custom_login_settings', 'clp_custom_login_slug');
-        register_setting('custom_login_settings', 'clp_custom_glass_effect');
-    }
-
-    public function settings_page()
-    {
-?>
-        <div class="wrap">
-            <h1>Custom Login Page Settings</h1>
-            <form method="post" action="options.php" enctype="multipart/form-data">
-                <?php settings_fields('custom_login_settings'); ?>
-                <?php do_settings_sections('custom_login_settings'); ?>
-
-                <table class="form-table">
-                    <tr valign="top">
-                        <th scope="row">Logo URL</th>
-                        <td><input type="text" name="clp_logo" value="<?php echo esc_attr(get_option('clp_logo')); ?>" placeholder="Upload or paste image URL" /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Logo Link URL</th>
-                        <td><input type="text" name="clp_logo_url" value="<?php echo esc_attr(get_option('clp_logo_url', home_url())); ?>" /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Background Color</th>
-                        <td><input type="color" name="clp_bg_color" value="<?php echo esc_attr(get_option('clp_bg_color', '#ffffff')); ?>" /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Background Image</th>
-                        <td><input type="text" name="clp_bg_image" value="<?php echo esc_attr(get_option('clp_bg_image')); ?>" placeholder="Upload or paste image URL" /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Form Alignment</th>
-                        <td>
-                            <select name="clp_form_alignment">
-                                <option value="center" <?php selected(get_option('clp_form_alignment'), 'center'); ?>>Center</option>
-                                <option value="left" <?php selected(get_option('clp_form_alignment'), 'left'); ?>>Left</option>
-                                <option value="right" <?php selected(get_option('clp_form_alignment'), 'right'); ?>>Right</option>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Glass Effect</th>
-                        <td><input type="checkbox" name="clp_custom_glass_effect" value="1" <?php checked(get_option('clp_custom_glass_effect'), 1); ?> /></td>
-                    </tr>
-                    <tr valign="top">
-                        <th scope="row">Custom Login Page Slug</th>
-                        <td><input type="text" name="clp_custom_login_slug" value="<?php echo esc_attr(get_option('clp_custom_login_slug', 'my-login')); ?>" /></td>
-                    </tr>
-                </table>
-
-                <?php submit_button(); ?>
-            </form>
-        </div>
-    <?php
-    }
-
-    public function custom_login_styles()
-    {
-        $logo = esc_url(get_option('clp_logo'));
-        $bg_color = esc_attr(get_option('clp_bg_color', '#ffffff'));
-        $bg_image = esc_url(get_option('clp_bg_image'));
-        $alignment = esc_attr(get_option('clp_form_alignment', 'center'));
-        $glass_effect = esc_attr(get_option('clp_custom_glass_effect', 0));
-
-        $align_css = '';
-        if ($alignment === 'left') {
-            $align_css = 'margin-left: 0; margin-right: auto;';
-        } elseif ($alignment === 'right') {
-            $align_css = 'margin-left: auto; margin-right: 0;';
-        } else {
-            $align_css = 'margin: 0 auto;';
-        }
-
-    ?>
-        <style type="text/css" id="login-page-css">
-            body.login {
-                padding: 40px;
-                background-color: <?php echo $bg_color; ?>;
-                <?php if ($bg_image) : ?>background-image: url('<?php echo $bg_image; ?>');
-                background-size: cover;
-                <?php endif; ?>
-            }
-
-            .login h1 a {
-                <?php if ($logo) : ?>background-image: url('<?php echo $logo; ?>');
-                background-size: contain;
-                width: 100%;
-                height: 80px;
-                <?php endif; ?>
-            }
-
-            #login {
-                <?php echo $align_css; ?>
-            }
-
-            <?php if ($glass_effect) : ?>.login form {
-                background: rgba(255, 255, 255, .3);
-                -webkit-backdrop-filter: blur(10px);
-                backdrop-filter: blur(10px);
-            }
-
-            <?php endif ?>
-        </style>
-<?php
-    }
-
-    public function custom_logo_url()
-    {
-        return esc_url(get_option('clp_logo_url', home_url()));
-    }
-
-    public function redirect_default_login()
-    {
-        $custom_slug = get_option('clp_custom_login_slug', 'my-login');
-        echo $custom_slug;
-        if (isset($_SERVER['REQUEST_URI']) && strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false && !is_user_logged_in()) {
-            // wp_redirect(home_url('/' . $custom_slug . '/'));
-            // exit;
-            global $wp_query;
-            $wp_query->set_404();
-            status_header(404);
-            get_template_part(404);
-            exit();
-        }
-    }
-
-    public function custom_login_form_shortcode()
-    {
-        if (is_user_logged_in()) {
-            return '<p>You are already logged in.</p>';
-        }
-
-        ob_start();
-        wp_login_form([
-            'redirect' => home_url()
-        ]);
-        return ob_get_clean();
-    }
+// If this file is called directly, abort.
+if (!defined('ABSPATH')) {
+	die;
 }
 
-new Custom_Login_Page_Plugin();
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define('AUTHPRESS_VERSION', '1.0.0');
+define('AUTHPRESS_NAME', 'AuthPress');
 
-// // Register a custom rewrite rule for the custom login page
-// add_action('init', function () {
-//     $custom_slug = get_option('clp_custom_login_slug', 'my-login');
-//     add_rewrite_rule("^{$custom_slug}/?", 'index.php?custom_login=1', 'top');
-// });
+define('AUTHPRESS_PATH', plugin_dir_path(__FILE__));
+define('AUTHPRESS_URL', plugin_dir_url(__FILE__));
 
-// // Handle custom login page display
-// add_action('template_redirect', function () {
-//     if (get_query_var('custom_login')) {
-//         status_header(200);
-//         echo do_shortcode('[custom_login_form]');
-//         exit;
-//     }
-// });
 
-// // Add custom query var
-// add_filter('query_vars', function ($vars) {
-//     $vars[] = 'custom_login';
-//     return $vars;
-// });
 
-// Change login URL to /signin
-function change_login_url()
+/**
+ * The code that runs during plugin activation.
+ * This action is documented in includes/class-authpress-activator.php
+ */
+function authpress_activate()
 {
-    return site_url('/signin');
+	require_once AUTHPRESS_PATH . 'includes/class-authpress-activator.php';
+	Authpress_Activator::activate();
 }
-add_filter('login_url', 'change_login_url', 10, 3);
 
-// Redirect /signin to wp-login.php
-function custom_login_page()
+/**
+ * The code that runs during plugin deactivation.
+ * This action is documented in includes/class-authpress-deactivator.php
+ */
+function authpress_deactivate()
 {
-    if (strpos($_SERVER['REQUEST_URI'], '/signin') !== false) {
-        require_once ABSPATH . '/wp-login.php';
-        exit();
+	require_once AUTHPRESS_PATH . 'includes/class-authpress-deactivator.php';
+	Authpress_Deactivator::deactivate();
+}
+
+register_activation_hook(__FILE__, 'authpress_activate');
+register_deactivation_hook(__FILE__, 'authpress_deactivate');
+
+if (file_exists(AUTHPRESS_PATH . '/vendor/autoload.php')) {
+	require_once AUTHPRESS_PATH . '/vendor/autoload.php';
+}
+/**
+ * The core plugin class that is used to define internationalization,
+ * admin-specific hooks, and public-facing site hooks.
+ */
+require AUTHPRESS_PATH . 'includes/class-authpress.php';
+require AUTHPRESS_PATH . 'API/Rest_API.php';
+
+/**
+ * Begins execution of the plugin.
+ *
+ * Since everything within the plugin is registered via hooks,
+ * then kicking off the plugin from this point in the file does
+ * not affect the page life cycle.
+ *
+ * @since    1.0.0
+ */
+function authpress_run()
+{
+
+	$plugin = new Authpress();
+	$plugin->run();
+}
+authpress_run();
+
+function authpress_get_tabs()
+{
+	$authpress_tabs = [];
+	/*$authpress_tabs = [
+		'integration' => [
+			'slug' => 'integration',
+			'name' => 'Restrictions',
+			'description' => 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+			'url' => 'authpress',
+			'sub' => [
+				'security-for-woocommerce' => [
+					'slug' => 'security-for-woocommerce',
+					'name' => 'Settings',
+					'description' => 'Below you will find all the settings you need to restrict specific countires and IP addressses that you wish to restrict for your WooCommerce site. The restrictons will be applied to your WooCommerce pages.',
+					'url' => 'authpress'
+				],
+				'customize' => [
+					'slug' => 'customize',
+					'name' => 'Customize',
+					'description' => 'Below you will find all the settings you need to customize restriction pages including the images that the visitor will see if they are restricted from accessing the website. The customization will be applied to your WooCommerce pages.',
+					'url' => 'authpress-integration-customize'
+				],
+			],
+		],
+	];*/
+	// Apply filter to allow modification of $variable by other plugins
+	$authpress_tabs = apply_filters('authpress_tabs_modify', $authpress_tabs);
+
+	return $authpress_tabs;
+}
+
+function authpress_get_default_options()
+{
+	$authpress_default_options = [
+		'base_input' => [
+			'text_input' => '',
+			'email_input' => '',
+			'color_input' => '',
+			'date_input' => '',
+			'datetime_local_input' => '',
+			'textarea_input' => '',
+			'switch_input' => '1',
+			'radio_input' => 'radio-2',
+			'datalist_input' => '',
+			'select_input' => '',
+		],
+		'array_input' => [
+			'checkbox_input' => [],
+			'multi_select_input' => [],
+			'background' => [
+				'image' => [
+					'url' => '',
+					'id' => 0
+				],
+				'color' => '#ff00ff',
+				'position' => 'center',
+				'size' => 'cover',
+				'repeat' => 'repeat',
+				'origin' => 'padding-box',
+				'clip' => 'border-box',
+				'attachment' => 'scroll'
+			],
+		],		
+		'components' => [
+			'basic' => [
+				'ip' => '',
+				'text_field' => 'this is a text field',
+				'textarea_field' => 'this is a textarea field',
+				'select_field' => 'select-1',
+				'radio_field' => 'radio-1',
+				'radio_field_2' => 'radio-2',
+				'checkbox_field' => ['checkbox-1', 'checkbox-3'],
+				'checkbox_field_2' => ['checkbox-2', 'checkbox-3'],
+				'checkbox_field_3' => ['checkbox-1', 'checkbox-3'],
+				'multiselect_field' => ['select-2', 'select-3'],
+				'multiselect_field_2' => ['select-3', 'select-4'],
+				'switch' => 0,
+			],
+			'advanced' => [
+				'media_uploader' => [
+					'url' => '',
+					'id' => 0
+				],
+				'countries_list' => [
+					['value' => "Albania", 'code' => "AL"],
+					['value' => "Algeria", 'code' => "DZ"],
+				],
+				'ips' => ["111.111.111.111", "222.222.222.222"],
+				'emails' => ["asd@asd.asd", "abc@abc.abc"],
+				'repeatablesorter_group' => [
+					[
+						"enabler" => true,
+						"title" => "123 Main St",
+						"note" => "Leave at door",
+						"enable" => true,
+						"gender" => "male",
+						"country" => "us",
+						"languages" => ["en", "fr"],
+						"hobbies" => ["reading", "sports"],
+					]
+				],
+				'repeatablesorter' => [
+					'https://www.facebook.com/',
+					'https://web.whatsapp.com/',
+					'https://www.youtube.com/',
+					'https://web.skype.com/'
+				]
+			]
+		],
+		// 'editor-input' => '<p>Lorem</p>',
+
+		'more' => [
+			'enable_scripts' => 0,
+			'css' => '/* CSS Code Here */',
+			'js' => '// JavaScript Code Here',
+			'header_content' => '<!-- Content inside HEAD tag -->',
+			'footer_content' => '<!-- Content inside BODY tag -->',
+		],
+
+	];
+	$authpress_default_options = apply_filters('authpress_default_options_modify', $authpress_default_options);
+
+	return $authpress_default_options;
+}
+
+// update_option('authpress_options', authpress_get_default_options());
+
+function authpress_get_option()
+{
+	$authpress_options_database = get_option('authpress_options', []);
+	$authpress_options = array_replace_recursive(authpress_get_default_options(), $authpress_options_database);
+	return $authpress_options;
+}
+function authpress_is_plugin_page()
+{
+	if (function_exists('get_current_screen')) {
+		$current_screen = get_current_screen();
+		$tabs = authpress_get_tabs();
+		$pages = [];
+		if (isset($tabs) && sizeof($tabs)) {
+			foreach ($tabs as $tab) {
+				$pages[] = 'admin_page_' . $tab['url'];
+				if (isset($tab['sub']) && sizeof($tab['sub'])) {
+					foreach ($tab['sub'] as $subtab) {
+						$pages[] = 'admin_page_' . $subtab['url'];
+					}
+				}
+			}
+		}
+
+		if (
+			$current_screen->id == 'toplevel_page_authpress'
+			|| $current_screen->id == 'authpress_page_authpress-react'
+			|| in_array($current_screen->id, $pages)
+		) {
+			return true;
+		}
+	}
+	return false;
+}
+add_action( 'before_woocommerce_init', function() {
+    if (
+        class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class )
+    ) {
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+        \Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
     }
-}
-add_action('init', 'custom_login_page');
-
-// Block direct access to wp-login.php
-function block_wp_login()
-{
-    if (strpos($_SERVER['REQUEST_URI'], 'wp-login.php') !== false && !defined('DOING_AJAX')) {
-        global $wp_query;
-        $wp_query->set_404();
-        status_header(404);
-        nocache_headers();
-        include(get_404_template());
-        exit();
-    }
-}
-add_action('init', 'block_wp_login');
+} );
