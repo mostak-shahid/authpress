@@ -16,7 +16,7 @@ export default function Dashboard() {
         const fetchPlugins = async () => {
         try {
             // const response = await axios.get('https://raw.githubusercontent.com/mostak-shahid/update/refs/heads/master/plugin-details.json');
-            const response = await axios.get('https://api.wordpress.org/plugins/info/1.2/?action=query_plugins&request[author]=mostakshahid&request[per_page]=24');
+            const response = await axios.get(`/wp-json/authpress/v1/plugins`);
             // 
             setPlugins(response.data.plugins);
         } catch (error) {

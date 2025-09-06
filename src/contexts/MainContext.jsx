@@ -5,6 +5,52 @@ import { createContext, useContext, useState } from "react";
 // import menuData from "../data/pages.json"; // Load menu JSON
 const MainContext = createContext();
 const settingsMenu = {
+    "customizer": { 
+        "title": __( "Customizer", "authpress" ), 
+        "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
+        "url":"/settings/customizer",
+
+        "sub": {
+            "redesign" : {
+                "title": __( "Redesign", "authpress" ),                
+                "url":"/settings/customizer/redesign",
+                "sub": {
+                    "templates" : {
+                        "title": __( "Default Templates", "authpress" ),                
+                        "url":"/settings/customizer/redesign/templates",
+                    },
+                    "background" : {
+                        "title": __( "Background", "authpress" ),
+                        "url":"/settings/customizer/redesign/background",
+                    },
+                    "logo" : {
+                        "title": __( "Logo", "authpress" ),
+                        "url":"/settings/customizer/redesign/logo",
+                    },
+                    "form" : {
+                        "title": __( "Form", "authpress" ),
+                        "url":"/settings/customizer/redesign/form",
+                    },
+                    "fields" : {
+                        "title": __( "Fields", "authpress" ),
+                        "url":"/settings/customizer/redesign/fields",
+                    },
+                    "button" : {
+                        "title": __( "Button", "authpress" ),
+                        "url":"/settings/customizer/redesign/button",
+                    },
+                    "other" : {
+                        "title": __( "Other", "authpress" ),
+                        "url":"/settings/customizer/redesign/other",
+                    },
+                }
+            },
+            "redirect" : {
+                "title": __( "Redirect", "authpress" ),
+                "url":"/settings/customizer/redirect",
+            }
+        }
+    },
     "base_input": { 
         "title": __( "Base Input", "authpress" ), 
         "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
