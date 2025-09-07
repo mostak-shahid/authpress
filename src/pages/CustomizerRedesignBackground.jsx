@@ -97,7 +97,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                         !settingLoading &&                               
                         <div className="col-lg-5">
                             <Gradient
-                                // name="customizer.background.gradient"
+                                name="customizer.background.gradient"
                                 defaultValues={{
                                     type: "linear",
                                     angle: 90,
@@ -106,7 +106,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                         { color: "#fa9372", position: 100 },
                                     ],
                                 }}
-                                // handleChange={handleChange}
+                                handleChange={handleChange}
                             />                         
                         </div>
                     }

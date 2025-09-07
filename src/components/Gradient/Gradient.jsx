@@ -1,56 +1,49 @@
 import React, { useState, useEffect } from "react";
 
 const Gradient = ({ options = {}, defaultValues = {}, name, handleChange }) => {
-  // Default state
-  const [type, setType] = useState(defaultValues.type || "linear");
-  const [angle, setAngle] = useState(defaultValues.angle || 90);
-  const [stops, setStops] = useState(
-    defaultValues.stops || [
+  // Initialize state with defaultValues
+  const [values, setValues] = useState({
+    type: "linear",
+    angle: 90,
+    stops: [
       { color: "#ef709b", position: 0 },
       { color: "#fa9372", position: 100 },
-    ]
-  );
+    ],
+    ...defaultValues,
+  });
 
   // Build gradient string
-  const gradient = `${type}-gradient(${type === "linear" ? angle + "deg, " : ""}${stops
-    .map((s) => `${s.color} ${s.position}%`)
-    .join(", ")})`;
+  const gradient = `${values.type}-gradient(${
+    values.type === "linear" ? values.angle + "deg, " : ""
+  }${values.stops.map((s) => `${s.color} ${s.position}%`).join(", ")})`;
 
-  // Notify parent
+  // Send updates to parent whenever values change
   useEffect(() => {
-    handleChange?.({
-      name,
-      value: gradient,
-      type,
-      angle,
-      stops,
-    });
-  }, [gradient]);
+    handleChange?.(name, { ...values, css: gradient });
+  }, [values]);
 
-  // Add new stop
-  const addStop = () => {
-    setStops([...stops, { color: "#ffffff", position: 50 }]);
+  // Generic updater
+  const updateValue = (option, value) => {
+    const updated = { ...values, [option]: value };
+    setValues(updated);
   };
 
-  // Update stop color
-  const updateStopColor = (index, value) => {
-    const updated = [...stops];
-    updated[index].color = value;
-    setStops(updated);
+  // Stop helpers
+  const addStop = () =>
+    updateValue("stops", [...values.stops, { color: "#ffffff", position: 50 }]);
+
+  const updateStop = (index, key, val) => {
+    const updatedStops = [...values.stops];
+    updatedStops[index] = { ...updatedStops[index], [key]: val };
+    updateValue("stops", updatedStops);
   };
 
-  // Update stop position
-  const updateStopPosition = (index, value) => {
-    let pos = Math.min(100, Math.max(0, parseInt(value) || 0));
-    const updated = [...stops];
-    updated[index].position = pos;
-    setStops(updated);
-  };
-
-  // Remove stop
   const removeStop = (index) => {
-    if (stops.length > 2) {
-      setStops(stops.filter((_, i) => i !== index));
+    if (values.stops.length > 2) {
+      updateValue(
+        "stops",
+        values.stops.filter((_, i) => i !== index)
+      );
     }
   };
 
@@ -72,8 +65,8 @@ const Gradient = ({ options = {}, defaultValues = {}, name, handleChange }) => {
         <label className="form-label me-2">Type:</label>
         <select
           className="form-select d-inline w-auto"
-          value={type}
-          onChange={(e) => setType(e.target.value)}
+          value={values.type}
+          onChange={(e) => updateValue("type", e.target.value)}
         >
           <option value="linear">Linear</option>
           <option value="radial">Radial</option>
@@ -81,16 +74,18 @@ const Gradient = ({ options = {}, defaultValues = {}, name, handleChange }) => {
       </div>
 
       {/* Angle (linear only) */}
-      {type === "linear" && (
+      {values.type === "linear" && (
         <div className="mb-2">
           <label className="form-label me-2">Angle:</label>
           <input
             type="number"
             className="form-control d-inline w-auto"
-            value={angle}
+            value={values.angle}
             min="0"
             max="360"
-            onChange={(e) => setAngle(parseInt(e.target.value) || 0)}
+            onChange={(e) =>
+              updateValue("angle", parseInt(e.target.value) || 0)
+            }
           />
         </div>
       )}
@@ -98,21 +93,21 @@ const Gradient = ({ options = {}, defaultValues = {}, name, handleChange }) => {
       {/* Stops */}
       <div className="mb-2">
         <label className="form-label d-block">Stops:</label>
-        {stops.map((stop, i) => (
+        {values.stops.map((stop, i) => (
           <div key={i} className="d-flex align-items-center mb-2">
             {/* Color Picker */}
             <input
               type="color"
               value={stop.color}
               className="form-control form-control-color me-2"
-              onChange={(e) => updateStopColor(i, e.target.value)}
+              onChange={(e) => updateStop(i, "color", e.target.value)}
             />
             {/* Color Hex */}
             <input
               type="text"
               value={stop.color}
               className="form-control me-2"
-              onChange={(e) => updateStopColor(i, e.target.value)}
+              onChange={(e) => updateStop(i, "color", e.target.value)}
             />
             {/* Position */}
             <input
@@ -122,11 +117,13 @@ const Gradient = ({ options = {}, defaultValues = {}, name, handleChange }) => {
               max="100"
               className="form-control me-2"
               style={{ width: "80px" }}
-              onChange={(e) => updateStopPosition(i, e.target.value)}
+              onChange={(e) =>
+                updateStop(i, "position", Math.min(100, Math.max(0, e.target.value)))
+              }
             />
             <span className="me-2">%</span>
-            {/* Remove button */}
-            {stops.length > 2 && (
+            {/* Remove */}
+            {values.stops.length > 2 && (
               <button
                 type="button"
                 className="btn btn-sm btn-danger"
