@@ -2,7 +2,6 @@ import { __ } from "@wordpress/i18n";
 import { useState } from 'react';
 import { Button, Nav, Navbar, NavDropdown, Offcanvas } from 'react-bootstrap';
 import { Link, NavLink } from "react-router-dom";
-import logo from '../../assets/images/logo.svg';
 import Details from '../../data/details.json';
 export default function Header() {
     const [show, setShow] = useState(false);
@@ -25,7 +24,7 @@ export default function Header() {
                 <div className="container-fluid">
                     <Navbar.Brand href="#/" className="p-0">
                         <div className="d-flex align-items-center gap-2">
-                            <img src={logo} alt="" />
+                            <img src={`${authpress_ajax_obj.image_url}logo.svg`} alt="" width="40" height="40" />
                         </div>
                     </Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />

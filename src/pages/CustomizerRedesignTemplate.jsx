@@ -14,7 +14,7 @@ const CustomizerRedesignTemplate = ({handleChange}) => {
             {/* {console.log(settingData)} */}
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
-                    <div className="col-lg-7">
+                    <div className="col-lg-12">
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
@@ -28,13 +28,20 @@ const CustomizerRedesignTemplate = ({handleChange}) => {
                     </div>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-5">
-                            <input 
-                                className="form-control"
-                                type="text"
-                                value={settingData?.base_input?.text_input}
-                                onChange={(e) => handleChange('base_input.text_input', e.target.value)}
-                            />                          
+                        <div className="col-lg-12 mt-4">
+                            <Radio
+                                defaultValue={settingData?.customizer?.redesign?.templates}
+                                // defaultValue='radio-1'
+                                options={[
+                                    { value: 'default-login', label: `<img class="img-fluid" src="${authpress_ajax_obj.image_url}default-login.png" alt=""  />` },
+                                    { value: 'default-login-left', label: `<img class="img-fluid" src="${authpress_ajax_obj.image_url}default-login-left.png" alt=""  />` },
+                                    { value: 'default-login-right', label: `<img class="img-fluid" src="${authpress_ajax_obj.image_url}default-login-right.png" alt=""  />` },
+                                ]}
+                                name="customizer.redesign.templates"
+                                handleChange= {handleChange}
+                                type="inline" // block
+                                hasMedia="1"
+                            />                           
                         </div>
                     }
                 </div>

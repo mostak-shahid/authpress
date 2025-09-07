@@ -127,6 +127,11 @@ function authpress_get_tabs()
 function authpress_get_default_options()
 {
 	$authpress_default_options = [
+		'customizer' => [
+			'redesign' => [
+				'templates' => 'default-login'
+			]
+		],
 		'base_input' => [
 			'text_input' => '',
 			'email_input' => '',
