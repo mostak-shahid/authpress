@@ -130,7 +130,32 @@ function authpress_get_default_options()
 		'customizer' => [
 			'redesign' => [
 				'templates' => 'default-login'
-			]
+			],
+			'background'=> [
+				'type' => 'image', // gradient, image, video
+				'background' => [
+					"image" => "",
+					"color" => "#f0f0f1",
+					"position" => "center",
+					"size" => "auto",
+					"repeat" => "repeat",
+					"origin" => "padding-box",
+					"clip" => "border-box",
+					"attachment" => "scroll",
+				],
+				'gradient' => [
+					'type' => "linear",
+					'angle' => 90,
+					'stops'=> [
+						[ 'color' => "#ef709b", 'position' => 0 ],
+						[ 'color' => "#fa9372", 'position' => 100 ],
+					],
+				],
+				'video' => [
+					'url' => '',
+					'id' => 0
+				],
+			],
 		],
 		'base_input' => [
 			'text_input' => '',

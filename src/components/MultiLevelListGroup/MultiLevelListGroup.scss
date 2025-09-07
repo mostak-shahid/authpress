@@ -97,6 +97,9 @@
       }
       .child-list-group {
         li {
+          > a {
+            border-radius: 5px;
+          }
           &:hover > a {          
             color: #ac6ef7;
           }

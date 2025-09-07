@@ -41,11 +41,6 @@ const ArrayInput = ({handleChange}) => {
                                     "clip",
                                     "attachment",
                                 ]}
-                                // defaultValues={{
-                                //     color: "#ff00ff",
-                                //     size: "cover",
-                                //     repeat: "no-repeat",
-                                // }}
                                 defaultValues={settingData?.array_input?.background}
                                 name="array_input.background"
                                 handleChange={handleChange}
