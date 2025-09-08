@@ -33,7 +33,7 @@ const Font = ({options, defaultValues = {}, name, handleChange}) => {
                                     type="color"
                                     value={values[option] || "#ffffff"}
                                     onChange={(e) => updateValue(option, e.target.value)}
-                                    className="form-control form-control-color"
+                                    className="form-control"
                                 />
                             ) : option === "font-size" ? 
                             (

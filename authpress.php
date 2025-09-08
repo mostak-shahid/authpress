@@ -151,10 +151,21 @@ function authpress_get_default_options()
 						[ 'color' => "#fa9372", 'position' => 100 ],
 					],
 				],
-				'video' => [
-					'url' => '',
-					'id' => 0
+				'video' => '',
+				'overlay' => [
+					'color' => '',
+					'opacity' => ''
 				],
+			],
+			'logo' => [
+				'image' => [
+					'id' => '',
+					'url' => '',
+				],
+				'width' => '64',
+				'height' => '64',
+				'space' => '24',
+				'url' => 'https://wordpress.org/'
 			],
 		],
 		'base_input' => [

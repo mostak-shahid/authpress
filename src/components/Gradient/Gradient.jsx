@@ -99,7 +99,7 @@ const Gradient = ({ options = {}, defaultValues = {}, name, handleChange }) => {
             <input
               type="color"
               value={stop.color}
-              className="form-control form-control-color me-2"
+              className="form-control me-2"
               onChange={(e) => updateStop(i, "color", e.target.value)}
             />
             {/* Color Hex */}

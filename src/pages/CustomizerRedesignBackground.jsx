@@ -112,6 +112,80 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     }
                 </div>
             </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Background Video", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <div class="input-group">
+                                <span class="input-group-text"><span class="dashicons dashicons-format-video"></span></span>
+                                <input 
+                                    className="form-control"
+                                    type="url"
+                                    value={settingData?.customizer?.background?.video}
+                                    onChange={(e) => handleChange('customizer.background.video', e.target.value)}
+                                />
+                            </div>                            
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Background Overlay", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <div class="mb-2">
+                                <label htmlFor="customizer-background-overlay-color">{__('Color', 'authpress')}</label>
+                                <input 
+                                    id="customizer-background-overlay-color"
+                                    className="form-control"
+                                    type="color"
+                                    value={settingData?.customizer?.background?.overlay?.color}
+                                    onChange={(e) => handleChange('customizer.background.overlay.color', e.target.value)}
+                                /> 
+                            </div>  
+                            <div class="mb-2">
+                                <label htmlFor="customizer-background-overlay-opacity">{__('Opacity', 'authpress')}</label>
+                                <input 
+                                    id="customizer-background-overlay-opacity"
+                                    className="form-control"
+                                    type="number"
+                                    value={settingData?.customizer?.background?.overlay?.opacity}
+                                    onChange={(e) => handleChange('customizer.background.overlay.opacity', e.target.value)}
+                                    min="0"
+                                    max="100"
+                                    step="1"
+                                /> 
+                            </div>                           
+                        </div>
+                    }
+                </div>
+            </div>
         </>
     )
 }

@@ -25,7 +25,7 @@ const Border = ({options, defaultValues = {}, name, handleChange}) => {
                                     type="color"
                                     value={values[option] || "#000000"}
                                     onChange={(e) => updateValue(option, e.target.value)}
-                                    className="form-control form-control-color"
+                                    className="form-control"
                                 />
                             ) : option === "width" || option === "radius" ? 
                             (
