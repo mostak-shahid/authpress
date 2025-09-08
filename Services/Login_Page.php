@@ -1,3 +1,5 @@
+<?php
+
 
 if (!defined('ABSPATH')) exit; // Exit if accessed directly
 
@@ -115,7 +117,8 @@ class Login_Page
             body.login {
                 padding: 40px;
                 background-color: <?php echo $bg_color; ?>;
-                <?php if ($bg_image) : ?>background-image: url('<?php echo $bg_image; ?>');
+                <?php if ($bg_image) : ?>
+                background-image: url('<?php echo $bg_image; ?>');
                 background-size: cover;
                 <?php endif; ?>
             }
@@ -132,7 +135,8 @@ class Login_Page
                 <?php echo $align_css; ?>
             }
 
-            <?php if ($glass_effect) : ?>.login form {
+            <?php if ($glass_effect) : ?>
+            .login form {
                 background: rgba(255, 255, 255, .3);
                 -webkit-backdrop-filter: blur(10px);
                 backdrop-filter: blur(10px);

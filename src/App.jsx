@@ -11,6 +11,7 @@ import ComponentsBasic from "./pages/ComponentsBasic";
 import CustomizerRedesignTemplate from "./pages/CustomizerRedesignTemplate";
 import CustomizerRedesignBackground from "./pages/CustomizerRedesignBackground";
 import CustomizerRedesignLogo from "./pages/CustomizerRedesignLogo";
+import CustomizerRedesignForm from "./pages/CustomizerRedesignForm";
 import ComponentsAdvanced from "./pages/ComponentsAdvanced";
 import BaseInput from "./pages/BaseInput";
 import ArrayInput from "./pages/ArrayInput";
@@ -40,6 +41,7 @@ function App() {
         <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
         <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
         <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
+        <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
         <Route path="/settings/components/basic" element={<ComponentsBasic />} />
         <Route path="/settings/components/advanced" element={<ComponentsAdvanced />} />
         <Route path="/settings/base_input" element={<BaseInput />} />

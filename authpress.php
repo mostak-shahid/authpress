@@ -167,6 +167,19 @@ function authpress_get_default_options()
 				'space' => '24',
 				'url' => 'https://wordpress.org/'
 			],
+			'form' => [
+				'width' => '360',
+				'alignment' => 'center', // left, center, right
+				'glass_effect' => 0,
+				'background_color' => '#ffffff',
+				'background_opacity' => '100',
+				'shadow' => '0',
+				'space' => '24',
+				'border_type' => 'none', // none, solid, double, dotted, dashed, groove
+				'border_color' => '#000000',
+				'border_width' => '0',
+				'border_radius' => '8',
+			],
 		],
 		'base_input' => [
 			'text_input' => '',
