@@ -129,56 +129,105 @@ function authpress_get_default_options()
 	$authpress_default_options = [
 		'customizer' => [
 			'redesign' => [
-				'templates' => 'default-login'
-			],
-			'background'=> [
-				'type' => 'image', // gradient, image, video
-				'background' => [
-					"image" => "",
-					"color" => "#f0f0f1",
-					"position" => "center",
-					"size" => "auto",
-					"repeat" => "repeat",
-					"origin" => "padding-box",
-					"clip" => "border-box",
-					"attachment" => "scroll",
-				],
-				'gradient' => [
-					'type' => "linear",
-					'angle' => 90,
-					'stops'=> [
-						[ 'color' => "#ef709b", 'position' => 0 ],
-						[ 'color' => "#fa9372", 'position' => 100 ],
+				'templates' => 'default-login',
+				'background'=> [
+					'type' => 'image', // gradient, image, video
+					'background' => [
+						"image" => "",
+						"color" => "#f0f0f1",
+						"position" => "center",
+						"size" => "auto",
+						"repeat" => "repeat",
+						"origin" => "padding-box",
+						"clip" => "border-box",
+						"attachment" => "scroll",
+					],
+					'gradient' => [
+						'type' => "linear",
+						'angle' => 90,
+						'stops'=> [
+							[ 'color' => "#ef709b", 'position' => 0 ],
+							[ 'color' => "#fa9372", 'position' => 100 ],
+						],
+					],
+					'video' => '',
+					'overlay' => [
+						'color' => '',
+						'opacity' => ''
 					],
 				],
-				'video' => '',
-				'overlay' => [
-					'color' => '',
-					'opacity' => ''
+				'logo' => [
+					'image' => [
+						'id' => '',
+						'url' => '',
+					],
+					'width' => '64',
+					'height' => '64',
+					'space' => '24',
+					'url' => 'https://wordpress.org/'
 				],
-			],
-			'logo' => [
-				'image' => [
-					'id' => '',
-					'url' => '',
+				'form' => [
+					'wrapper' => [
+						'width' => '320',
+						'padding' => [
+							'top' => '5',
+							'right' => '0',
+							'bottom' => '0',
+							'left' => '0',
+							'unit' => '%',
+						],
+						'position' => 'center',
+						'background' => [
+							"image" => "",
+							"color" => "",
+							"position" => "center",
+							"size" => "auto",
+							"repeat" => "repeat",
+							"attachment" => "scroll",
+						],
+						'border' => [
+							'color' => '',
+							'width' => '0',
+							'style' => 'none',
+							'radius' => '0',
+						],
+						//box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+						"glass_effect" => false,
+					],
+					'unit' => [
+						'margin' => [
+							'top' => '24',
+							'right' => '0',
+							'bottom' => '24',
+							'left' => '0',
+							'unit' => 'px',
+						],
+						'padding' => [
+							'top' => '26',
+							'right' => '24',
+							'bottom' => '26',
+							'left' => '24',
+							'unit' => 'px',
+						],
+						'background' => [
+							"image" => "",
+							"color" => "#fff",
+							"position" => "center",
+							"size" => "auto",
+							"repeat" => "repeat",
+							"attachment" => "scroll",
+						],
+						'border' => [
+							'color' => '#c3c4c7',
+							'width' => '1',
+							'style' => 'solid',
+							'radius' => '0',
+						],
+						//box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
+						"glass_effect" => false,
+
+					],
 				],
-				'width' => '64',
-				'height' => '64',
-				'space' => '24',
-				'url' => 'https://wordpress.org/'
-			],
-			'form' => [
-				'width' => '360',
-				'alignment' => 'center', // left, center, right
-				'glass_effect' => 0,
-				'background_color' => '#ffffff',
-				'background_opacity' => '100',
-				'shadow' => '0',
-				'space' => '24',
-				'border_type' => 'none', // none, solid, double, dotted, dashed, groove
-				'border_color' => '#000000',
-				'border_width' => '0',
-				'border_radius' => '8',
 			],
 		],
 		'base_input' => [

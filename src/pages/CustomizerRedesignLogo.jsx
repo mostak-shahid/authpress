@@ -11,7 +11,7 @@ const CustomizerRedesignLogo = ({handleChange}) => {
     } = useMain();
     return (
         <>
-            {/* {console.log(settingData?.customizer?.logo)} */}
+            {/* {console.log(settingData?.customizer?.redesign?.logo)} */}
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
@@ -30,8 +30,8 @@ const CustomizerRedesignLogo = ({handleChange}) => {
                         !settingLoading &&                               
                         <div className="col-lg-5">
                             <MediaUploader 
-                                data={settingData?.customizer?.logo?.image} 
-                                name='customizer.logo.image' 
+                                data={settingData?.customizer?.redesign?.logo?.image} 
+                                name='customizer.redesign.logo.image' 
                                 handleChange={handleChange}
                                 options = {{
                                     frame:{
@@ -73,9 +73,9 @@ const CustomizerRedesignLogo = ({handleChange}) => {
                                         id="customizer-logo-width"
                                         className="form-control"
                                         type="number"
-                                        value={settingData?.customizer?.logo?.width}
+                                        value={settingData?.customizer?.redesign?.logo?.width}
                                         min="0"
-                                        onChange={(e) => handleChange('customizer.logo.width', e.target.value)}
+                                        onChange={(e) => handleChange('customizer.redesign.logo.width', e.target.value)}
                                     /> 
                                     <span class="input-group-text">px</span>
                                 </div> 
@@ -87,9 +87,9 @@ const CustomizerRedesignLogo = ({handleChange}) => {
                                         id="customizer-logo-height"
                                         className="form-control"
                                         type="number"
-                                        value={settingData?.customizer?.logo?.height}
+                                        value={settingData?.customizer?.redesign?.logo?.height}
                                         min="0"
-                                        onChange={(e) => handleChange('customizer.logo.height', e.target.value)}
+                                        onChange={(e) => handleChange('customizer.redesign.logo.height', e.target.value)}
                                     /> 
                                     <span class="input-group-text">px</span>
                                 </div> 
@@ -119,8 +119,8 @@ const CustomizerRedesignLogo = ({handleChange}) => {
                                 <input 
                                     className="form-control"
                                     type="number"
-                                    value={settingData?.customizer?.logo?.space}
-                                    onChange={(e) => handleChange('customizer.logo.space', e.target.value)}
+                                    value={settingData?.customizer?.redesign?.logo?.space}
+                                    onChange={(e) => handleChange('customizer.redesign.logo.space', e.target.value)}
                                 />  
                                 <span class="input-group-text">px</span>
                             </div>                                                     
@@ -150,8 +150,8 @@ const CustomizerRedesignLogo = ({handleChange}) => {
                                 <input 
                                     className="form-control"
                                     type="url"
-                                    value={settingData?.customizer?.logo?.url}
-                                    onChange={(e) => handleChange('customizer.logo.url', e.target.value)}
+                                    value={settingData?.customizer?.redesign?.logo?.url}
+                                    onChange={(e) => handleChange('customizer.redesign.logo.url', e.target.value)}
                                 />  
                             </div>                          
                         </div>

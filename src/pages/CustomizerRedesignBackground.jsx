@@ -32,8 +32,8 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                         <div className="col-lg-5">                            
                             <select 
                                 className="form-select"
-                                value={settingData?.customizer?.background?.type} 
-                                onChange={(e) => handleChange('customizer.background.type', e.target.value)}
+                                value={settingData?.customizer?.redesign?.background?.type} 
+                                onChange={(e) => handleChange('customizer.redesign.background.type', e.target.value)}
                             >
                                 <option value="image">{__('Image', 'authpress')}</option>
                                 <option value="gradient">{__('Gradient', 'authpress')}</option>
@@ -71,8 +71,8 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                     "clip",
                                     "attachment",
                                 ]}
-                                defaultValues={settingData?.customizer?.background?.background}
-                                name="customizer.background.background"
+                                defaultValues={settingData?.customizer?.redesign?.background?.background}
+                                name="customizer.redesign.background.background"
                                 handleChange={handleChange}
                             />                          
                         </div>
@@ -97,7 +97,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                         !settingLoading &&                               
                         <div className="col-lg-5">
                             <Gradient
-                                name="customizer.background.gradient"
+                                name="customizer.redesign.background.gradient"
                                 defaultValues={{
                                     type: "linear",
                                     angle: 90,
@@ -134,8 +134,8 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                 <input 
                                     className="form-control"
                                     type="url"
-                                    value={settingData?.customizer?.background?.video}
-                                    onChange={(e) => handleChange('customizer.background.video', e.target.value)}
+                                    value={settingData?.customizer?.redesign?.background?.video}
+                                    onChange={(e) => handleChange('customizer.redesign.background.video', e.target.value)}
                                 />
                             </div>                            
                         </div>
@@ -165,8 +165,8 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                     id="customizer-background-overlay-color"
                                     className="form-control"
                                     type="color"
-                                    value={settingData?.customizer?.background?.overlay?.color}
-                                    onChange={(e) => handleChange('customizer.background.overlay.color', e.target.value)}
+                                    value={settingData?.customizer?.redesign?.background?.overlay?.color}
+                                    onChange={(e) => handleChange('customizer.redesign.background.overlay.color', e.target.value)}
                                 /> 
                             </div>  
                             <div class="mb-2">
@@ -175,8 +175,8 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                     id="customizer-background-overlay-opacity"
                                     className="form-control"
                                     type="number"
-                                    value={settingData?.customizer?.background?.overlay?.opacity}
-                                    onChange={(e) => handleChange('customizer.background.overlay.opacity', e.target.value)}
+                                    value={settingData?.customizer?.redesign?.background?.overlay?.opacity}
+                                    onChange={(e) => handleChange('customizer.redesign.background.overlay.opacity', e.target.value)}
                                     min="0"
                                     max="100"
                                     step="1"
