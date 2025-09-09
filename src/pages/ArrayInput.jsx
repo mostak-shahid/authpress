@@ -4,6 +4,8 @@ import Checkbox from '../components/Checkbox/Checkbox';
 import Background from '../components/Background/Background';
 import MultiSelect from '../components/MultiSelect/MultiSelect';
 import NativeMultiSelect from '../components/NativeMultiSelect/NativeMultiSelect';
+import Measurement from '../components/Measurement/Measurement';
+import BoxShadow from '../components/BoxShadow/BoxShadow';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 const ArrayInput = ({handleChange}) => {
@@ -13,6 +15,73 @@ const ArrayInput = ({handleChange}) => {
     } = useMain();
     return (
         <>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Box Shadow", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <BoxShadow
+                                name="array_input.cardShadow"
+                                defaultValues={{
+                                    offsetX: 0,
+                                    offsetY: 8,
+                                    blur: 20,
+                                    spread: 0,
+                                    color: "rgba(0,0,0,0.25)",
+                                    inset: false,
+                                }}
+                                handleChange={handleChange}
+                            />                          
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Measurement", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Measurement
+                                options={[
+                                    "top",
+                                    "right",
+                                    "bottom",
+                                    "left",
+                                    "unit",
+                                ]}
+                                defaultValues={[]}
+                                allowNegative={true}
+                                name="array_input.padding"
+                                handleChange={handleChange}
+                            />                          
+                        </div>
+                    }
+                </div>
+            </div>
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
