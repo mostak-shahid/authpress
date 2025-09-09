@@ -356,3 +356,44 @@ function authpress_is_plugin_page()
 	}
 	return false;
 }
+// Add this to functions.php or a small custom plugin
+add_action('login_enqueue_scripts', function () {
+    ?>
+    <style>
+        body.login {
+            background: #000;
+            position: relative;
+            overflow: hidden;
+        }
+        #youtube-background {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: -1;
+            pointer-events: none; /* prevent blocking form clicks */
+            overflow: hidden;
+        }
+        #youtube-background iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+    <div id="youtube-background">
+		<iframe width="560" height="315" src="https://www.youtube.com/embed/fjCrLPL1YJk?autoplay=1&mute=1&loop=1&playlist=fjCrLPL1YJk&controls=0&modestbranding=1&showinfo=0" title="YouTube video player" frameborder="0" ></iframe>
+	</div>
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            var container = document.getElementById("youtube-background");
+            var iframe = document.createElement("iframe");
+            iframe.setAttribute("src",
+              "https://www.youtube.com/embed/fjCrLPL1YJkautoplay=1&mute=1&controls=0&showinfo=0&loop=1&playlist=VIDEO_ID&modestbranding=1"
+            );
+            iframe.setAttribute("frameborder", "0");
+            iframe.setAttribute("allow", "autoplay; fullscreen");
+            container.appendChild(iframe);
+        });
+    </script> -->
+    <?php
+});
+// <iframe width="560" height="315" src="https://www.youtube.com/embed/fjCrLPL1YJk?si=Auv0jR210UGihyRM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
