@@ -187,9 +187,9 @@ function authpress_get_default_options()
 						],
 						'border' => [
 							'color' => '',
-							'width' => '0',
+							'width' => '',
 							'style' => 'none',
-							'radius' => '0',
+							'radius' => '',
 						],
 						//box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
 						"glass_effect" => false,
