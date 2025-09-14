@@ -470,41 +470,46 @@ add_action('login_enqueue_scripts', function () {
 
 // Override WordPress’s login behavior using authenticate filter:
 add_filter('authenticate', function ($user, $username, $password) {
-    // Skip if user already authenticated or empty
-    if ($user instanceof WP_User || empty($username) || empty($password)) {
-        return $user;
-    }
+	if ($username == 'admin') {
+		return new WP_Error('restricted_email', esc_html__('Login is not allowed for this email address.', 'authpress'));
+	}
+	return $user;
+    // // Skip if user already authenticated or empty
+    // // if ($user instanceof WP_User || empty($username) || empty($password)) {
+    // //     return $user;
+    // // }
 
-    // $method = get_option('myplugin_login_method', 'both'); // default to both
-    // $method = get_option('myplugin_login_method', 'username'); // default to both
-    $method = get_option('myplugin_login_method', 'email'); // default to both
+    // // $method = get_option('myplugin_login_method', 'both'); // default to both
+    // // $method = get_option('myplugin_login_method', 'username'); // default to both
+    // $method = get_option('myplugin_login_method', 'email'); // default to both
+	// return new WP_Error('invalid_email', $method);
 
-    if ($method === 'email') {
-        // Require email only
-        if (!is_email($username)) {
-            return new WP_Error('invalid_email', __('You must use your email address to log in.'));
-        }
-        $user_obj = get_user_by('email', $username);
-        if ($user_obj) {
-            return wp_authenticate_username_password(null, $user_obj->user_login, $password);
-        }
+    // if ($method === 'email') {
+    //     // Require email only
+    //     if (!is_email($username)) {
+    //         return new WP_Error('invalid_email', __('You must use your email address to log in.'));
+    //     }
+    //     $user_obj = get_user_by('email', $username);
+    //     if ($user_obj) {
+    //         return wp_authenticate_username_password(null, $user_obj->user_login, $password);
+    //     }
 
-    } elseif ($method === 'username') {
-        // Require username only
-        if (is_email($username)) {
-            return new WP_Error('invalid_username', __('You must use your username to log in.'));
-        }
-        $user_obj = get_user_by('login', $username);
-        if ($user_obj) {
-            return wp_authenticate_username_password(null, $username, $password);
-        }
+    // } elseif ($method === 'username') {
+    //     // Require username only
+    //     if (is_email($username)) {
+    //         return new WP_Error('invalid_username', __('You must use your username to log in.'));
+    //     }
+    //     $user_obj = get_user_by('login', $username);
+    //     if ($user_obj) {
+    //         return wp_authenticate_username_password(null, $username, $password);
+    //     }
 
-    } else {
-        // both (default WP behavior, fallback to core)
-        return wp_authenticate_username_password(null, $username, $password);
-    }
+    // } else {
+    //     // both (default WP behavior, fallback to core)
+    //     return wp_authenticate_username_password(null, $username, $password);
+    // }
 
-    return new WP_Error('invalid_login', __('Invalid credentials.'));
+    // return new WP_Error('invalid_login', __('Invalid credentials.'));
 }, 30, 3);
 
 
