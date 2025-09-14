@@ -397,3 +397,72 @@ add_action('login_enqueue_scripts', function () {
     <?php
 });
 // <iframe width="560" height="315" src="https://www.youtube.com/embed/fjCrLPL1YJk?si=Auv0jR210UGihyRM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+/**
+ * Step 1: Register Rewrite Rules
+ */
+
+// Register custom login/register/lost password slugs
+add_action('init', function () {
+    add_rewrite_rule('^my-login/?$', 'index.php?custom_auth_page=login', 'top');
+    add_rewrite_rule('^my-register/?$', 'index.php?custom_auth_page=register', 'top');
+    add_rewrite_rule('^my-lost-password/?$', 'index.php?custom_auth_page=lostpassword', 'top');
+});
+
+// Register custom query var
+add_filter('query_vars', function ($vars) {
+    $vars[] = 'custom_auth_page';
+    return $vars;
+});
+
+/**
+ * Step 2: Catch and Render the Page
+ */
+
+// Now intercept when someone visits /my-login/, /my-register/, or /my-lost-password/:
+add_action('template_redirect', function () {
+    $auth_page = get_query_var('custom_auth_page');
+
+    if ($auth_page) {
+        status_header(200);
+        nocache_headers();
+
+        get_header();
+
+        echo '<div class="custom-auth-page">';
+        if ($auth_page === 'login') {
+            wp_login_form(); // native login form
+        } elseif ($auth_page === 'register') {
+            // basic WP register form
+            echo '<h2>Register</h2>';
+            wp_register('', '');
+        } elseif ($auth_page === 'lostpassword') {
+            echo '<h2>Lost Password</h2>';
+            echo '<p><a href="' . esc_url(wp_lostpassword_url()) . '">Click here to reset your password</a></p>';
+        }
+        echo '</div>';
+
+        get_footer();
+        exit;
+    }
+});
+
+/**
+ * Step 3: Override Default WordPress URLs
+ */
+
+// So functions like wp_login_url(), wp_registration_url(), and wp_lostpassword_url() return your custom slugs:
+add_filter('login_url', function ($url, $redirect, $force_reauth) {
+    return home_url('/' . get_option('myplugin_login_slug', 'my-login') . '/');
+}, 10, 3);
+
+add_filter('register_url', function ($url) {
+    return home_url('/' . get_option('myplugin_register_slug', 'my-register') . '/');
+});
+
+add_filter('lostpassword_url', function ($url, $redirect) {
+    return home_url('/' . get_option('myplugin_lost_slug', 'my-lost-password') . '/');
+}, 10, 2);
+
+
+
