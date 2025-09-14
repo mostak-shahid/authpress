@@ -403,66 +403,131 @@ add_action('login_enqueue_scripts', function () {
  */
 
 // Register custom login/register/lost password slugs
-add_action('init', function () {
-    add_rewrite_rule('^my-login/?$', 'index.php?custom_auth_page=login', 'top');
-    add_rewrite_rule('^my-register/?$', 'index.php?custom_auth_page=register', 'top');
-    add_rewrite_rule('^my-lost-password/?$', 'index.php?custom_auth_page=lostpassword', 'top');
-});
+// add_action('init', function () {
+//     add_rewrite_rule('^my-login/?$', 'index.php?custom_auth_page=login', 'top');
+//     add_rewrite_rule('^my-register/?$', 'index.php?custom_auth_page=register', 'top');
+//     add_rewrite_rule('^my-lost-password/?$', 'index.php?custom_auth_page=lostpassword', 'top');
+// });
 
-// Register custom query var
-add_filter('query_vars', function ($vars) {
-    $vars[] = 'custom_auth_page';
-    return $vars;
-});
+// // Register custom query var
+// add_filter('query_vars', function ($vars) {
+//     $vars[] = 'custom_auth_page';
+//     return $vars;
+// });
 
 /**
  * Step 2: Catch and Render the Page
  */
 
 // Now intercept when someone visits /my-login/, /my-register/, or /my-lost-password/:
-add_action('template_redirect', function () {
-    $auth_page = get_query_var('custom_auth_page');
+// add_action('template_redirect', function () {
+//     $auth_page = get_query_var('custom_auth_page');
 
-    if ($auth_page) {
-        status_header(200);
-        nocache_headers();
+//     if ($auth_page) {
+//         status_header(200);
+//         nocache_headers();
 
-        get_header();
+//         get_header();
 
-        echo '<div class="custom-auth-page">';
-        if ($auth_page === 'login') {
-            wp_login_form(); // native login form
-        } elseif ($auth_page === 'register') {
-            // basic WP register form
-            echo '<h2>Register</h2>';
-            wp_register('', '');
-        } elseif ($auth_page === 'lostpassword') {
-            echo '<h2>Lost Password</h2>';
-            echo '<p><a href="' . esc_url(wp_lostpassword_url()) . '">Click here to reset your password</a></p>';
-        }
-        echo '</div>';
+//         echo '<div class="custom-auth-page">';
+//         if ($auth_page === 'login') {
+//             wp_login_form(); // native login form
+//         } elseif ($auth_page === 'register') {
+//             // basic WP register form
+//             echo '<h2>Register</h2>';
+//             wp_register('', '');
+//         } elseif ($auth_page === 'lostpassword') {
+//             echo '<h2>Lost Password</h2>';
+//             echo '<p><a href="' . esc_url(wp_lostpassword_url()) . '">Click here to reset your password</a></p>';
+//         }
+//         echo '</div>';
 
-        get_footer();
-        exit;
-    }
-});
+//         get_footer();
+//         exit;
+//     }
+// });
 
 /**
  * Step 3: Override Default WordPress URLs
  */
 
 // So functions like wp_login_url(), wp_registration_url(), and wp_lostpassword_url() return your custom slugs:
-add_filter('login_url', function ($url, $redirect, $force_reauth) {
-    return home_url('/' . get_option('myplugin_login_slug', 'my-login') . '/');
-}, 10, 3);
+// add_filter('login_url', function ($url, $redirect, $force_reauth) {
+//     return home_url('/' . get_option('myplugin_login_slug', 'my-login') . '/');
+// }, 10, 3);
 
-add_filter('register_url', function ($url) {
-    return home_url('/' . get_option('myplugin_register_slug', 'my-register') . '/');
-});
+// add_filter('register_url', function ($url) {
+//     return home_url('/' . get_option('myplugin_register_slug', 'my-register') . '/');
+// });
 
-add_filter('lostpassword_url', function ($url, $redirect) {
-    return home_url('/' . get_option('myplugin_lost_slug', 'my-lost-password') . '/');
-}, 10, 2);
+// add_filter('lostpassword_url', function ($url, $redirect) {
+//     return home_url('/' . get_option('myplugin_lost_slug', 'my-lost-password') . '/');
+// }, 10, 2);
+
+/**
+ * Step 1: Hook Into Authentication
+ */
+
+// Override WordPress’s login behavior using authenticate filter:
+add_filter('authenticate', function ($user, $username, $password) {
+    // Skip if user already authenticated or empty
+    if ($user instanceof WP_User || empty($username) || empty($password)) {
+        return $user;
+    }
+
+    // $method = get_option('myplugin_login_method', 'both'); // default to both
+    // $method = get_option('myplugin_login_method', 'username'); // default to both
+    $method = get_option('myplugin_login_method', 'email'); // default to both
+
+    if ($method === 'email') {
+        // Require email only
+        if (!is_email($username)) {
+            return new WP_Error('invalid_email', __('You must use your email address to log in.'));
+        }
+        $user_obj = get_user_by('email', $username);
+        if ($user_obj) {
+            return wp_authenticate_username_password(null, $user_obj->user_login, $password);
+        }
+
+    } elseif ($method === 'username') {
+        // Require username only
+        if (is_email($username)) {
+            return new WP_Error('invalid_username', __('You must use your username to log in.'));
+        }
+        $user_obj = get_user_by('login', $username);
+        if ($user_obj) {
+            return wp_authenticate_username_password(null, $username, $password);
+        }
+
+    } else {
+        // both (default WP behavior, fallback to core)
+        return wp_authenticate_username_password(null, $username, $password);
+    }
+
+    return new WP_Error('invalid_login', __('Invalid credentials.'));
+}, 30, 3);
+
+
+/**
+ * Step 2: Adjust Login Form Label
+ */
+
+// If you want the login form label (Username or Email Address) to match the setting, filter gettext:
+add_filter('gettext', function ($translated_text, $text, $domain) {
+    // $method = get_option('myplugin_login_method', 'both');
+    // $method = get_option('myplugin_login_method', 'username');
+    $method = get_option('myplugin_login_method', 'email');
+
+    if ($text === 'Username or Email Address') {
+        if ($method === 'username') {
+            return __('Username');
+        } elseif ($method === 'email') {
+            return __('Email');
+        }
+    }
+
+    return $translated_text;
+}, 20, 3);
 
 
 
