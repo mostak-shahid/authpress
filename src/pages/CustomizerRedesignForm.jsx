@@ -157,7 +157,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     {
                                         settingLoading 
                                         ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                        : <h4>{__("Width, height, padding, background, border and border radious", "authpress")}</h4>
+                                        : <h4>{__("Border", "authpress")}</h4>
                                     }
                                     {
                                         settingLoading 
@@ -264,7 +264,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     {
                                         settingLoading 
                                         ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                        : <h4>{__("Width, height, padding, background, border and border radious", "authpress")}</h4>
+                                        : <h4>{__("Border", "authpress")}</h4>
                                     }
                                     {
                                         settingLoading 

@@ -20,6 +20,10 @@ import AjaxTable from "./pages/AjaxTable";
 import Page from "./pages/Page";
 import Feedback from "./pages/Feedback";
 import Footer from "./layouts/Footer/Footer";
+import CustomizerRedesignFields from "./pages/CustomizerRedesignFields";
+import CustomizerRedesignButton from "./pages/CustomizerRedesignButton";
+import CustomizerRedesignOther from "./pages/CustomizerRedesignOther";
+import CustomizerSettings from "./pages/CustomizerSettings";
 const NotFound = () => (
   <div>
     <h2>{__("404 - Page Not Found", "authpress")}</h2>
@@ -42,6 +46,11 @@ function App() {
         <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
         <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
         <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
+        <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />
+        <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
+        <Route path="/settings/customizer/redesign/other" element={<CustomizerRedesignOther/>} />
+        <Route path="/settings/customizer/settings" element={<CustomizerSettings/>} />
+
         <Route path="/settings/components/basic" element={<ComponentsBasic />} />
         <Route path="/settings/components/advanced" element={<ComponentsAdvanced />} />
         <Route path="/settings/base_input" element={<BaseInput />} />

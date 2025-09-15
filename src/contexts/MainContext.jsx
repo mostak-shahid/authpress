@@ -47,7 +47,7 @@ const settingsMenu = {
             },
             "redirect" : {
                 "title": __( "Redirect", "authpress" ),
-                "url":"/settings/customizer/redirect",
+                "url":"/settings/customizer/settings",
             }
         }
     },
