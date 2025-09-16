@@ -35,6 +35,7 @@ const Measurement = ({options, defaultValues = {}, allowNegative=false, name, ha
                                 <div class="input-group">
                                     <input 
                                         type="number" 
+                                        step="any"
                                         className="form-control"
                                         value={values[option] || ""}
                                         min={allowNegative? "": "0"}

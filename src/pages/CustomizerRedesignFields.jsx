@@ -4,6 +4,9 @@ import MediaUploader from '../components/MediaUploader/MediaUploader';
 import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+import Measurement from "../components/Measurement/Measurement";
+import Font from "../components/Font/Font";
+import Border from "../components/Border/Border";
 const CustomizerRedesignFields = ({handleChange}) => {
     const {
         settingData,
@@ -12,26 +15,39 @@ const CustomizerRedesignFields = ({handleChange}) => {
     return (
         <>
             {/* {console.log(settingData?.customizer?.redesign?.logo)} */}
-            <ul>
-                <li>Disable Remember Me?</li>
-                <li>Width</li>
-                <li>Font Size</li>
-                <li>Border</li>
-                <li>Disable Box Shadow?</li>
-                <li>Margin</li>
-                <li>Padding</li>
-                <li>Background</li>
-                <li>Text Color</li>
-                <li>Label Color</li>
-                <li>Label Font Size</li>
-            </ul>
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Logo Size", "authpress")}</h4>
+                            : <h4>{__("Disable Remember Me?", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-auto">
+                            <Switch 
+                                name="customizer.redesign.fields.disable_remember_me"
+                                checked={settingData?.customizer?.redesign?.fields?.disable_remember_me} // Pass "1"/"0" from API 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Width", "authpress")}</h4>
                         }
                         {
                             settingLoading 
@@ -42,34 +58,255 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <div className="mb-2 form-group">
-                                <label htmlFor="customizer-logo-width">{__('Width', 'authpress')}</label>
-                                <div class="input-group">                                
-                                    <input 
-                                        id="customizer-logo-width"
-                                        className="form-control"
-                                        type="number"
-                                        value={settingData?.customizer?.redesign?.logo?.width}
-                                        min="0"
-                                        onChange={(e) => handleChange('customizer.redesign.logo.width', e.target.value)}
-                                    /> 
-                                    <span class="input-group-text">px</span>
-                                </div> 
-                            </div>   
-                            <div className="mb-2 form-group">
-                                <label htmlFor="customizer-logo-height">{__('Height', 'authpress')}</label>
-                                <div class="input-group">                                
-                                    <input 
-                                        id="customizer-logo-height"
-                                        className="form-control"
-                                        type="number"
-                                        value={settingData?.customizer?.redesign?.logo?.height}
-                                        min="0"
-                                        onChange={(e) => handleChange('customizer.redesign.logo.height', e.target.value)}
-                                    /> 
-                                    <span class="input-group-text">px</span>
-                                </div> 
-                            </div>                       
+                            <Measurement
+                                options={[
+                                    "value",
+                                    "unit",
+                                ]}
+                                defaultValues={settingData?.customizer?.redesign?.fields?.width}
+                                // allowNegative={true}
+                                name="customizer.redesign.fields.width"
+                                handleChange={handleChange}
+                            /> 
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Height", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Measurement
+                                options={[
+                                    "value",
+                                    "unit",
+                                ]}
+                                defaultValues={settingData?.customizer?.redesign?.fields?.height}
+                                // allowNegative={true}
+                                name="customizer.redesign.fields.height"
+                                handleChange={handleChange}
+                            /> 
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Font", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Font 
+                                defaultValues={settingData?.customizer?.redesign?.fields?.font}
+                                name='customizer.redesign.fields.font' 
+                                handleChange={handleChange}
+                                options = {['color', 'font-size', 'font-weight', 'font-style', 'text-transform']}
+                            />  
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Border", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Border 
+                                options={[
+                                    'width',
+                                    'style',
+                                    'color',
+                                    'radius'
+                                ]}
+                                defaultValues={settingData?.customizer?.redesign?.fields?.border}
+                                name="customizer.redesign.form.wrapper.border"
+                                handleChange={handleChange}
+                            /> 
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Padding", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Measurement
+                                options={[
+                                    "top",
+                                    "right",
+                                    "bottom",
+                                    "left",
+                                    "unit",
+                                ]}
+                                defaultValues={settingData?.customizer?.redesign?.fields?.padding}
+                                // allowNegative={true}
+                                name="customizer.redesign.fields.padding"
+                                handleChange={handleChange}
+                            /> 
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Margin", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Measurement
+                                options={[
+                                    "top",
+                                    "right",
+                                    "bottom",
+                                    "left",
+                                    "unit",
+                                ]}
+                                defaultValues={settingData?.customizer?.redesign?.fields?.margin}
+                                // allowNegative={true}
+                                name="customizer.redesign.fields.margin"
+                                handleChange={handleChange}
+                            /> 
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Background Color", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-auto">
+                            <input 
+                                className="form-control"
+                                type="color"
+                                value={settingData?.customizer?.redesign?.fields?.background_color}
+                                onChange={(e) => handleChange('customizer.redesign.fields.background_color', e.target.value)}
+                            />                          
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Disable Box Shadow?", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-auto">
+                            <Switch 
+                                name="customizer.redesign.fields.disable_box_shadow"
+                                checked={settingData?.customizer?.redesign?.fields?.disable_box_shadow} // Pass "1"/"0" from API 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Label", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Font 
+                                defaultValues={settingData?.customizer?.redesign?.fields?.label_font}
+                                name='customizer.redesign.fields.label_font' 
+                                handleChange={handleChange}
+                                options = {['color', 'font-size', 'font-weight', 'font-style', 'text-transform']}
+                            />  
                         </div>
                     }
                 </div>

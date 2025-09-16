@@ -228,6 +228,53 @@ function authpress_get_default_options()
 
 					],
 				],
+				'fields' => [
+					'disable_remember_me' => 0,
+					'width' => [
+						'value' => '100',
+						'unit' => '%',
+					],
+					'height' => [
+						'value' => '40',
+						'unit' => 'px',
+					],
+					'font' => [
+						'color' => '#2c3338', 
+						'font-size' => '14', 
+						'font-weight'=> '', 
+						'font-style' => '', 
+						'text-transform' => '',
+					],
+					'border' => [
+						'width' => '1',
+						'style' => 'solid',
+						'color' => '#8c8f94',
+						'radius' => '4',
+					],
+					'disable_box_shadow' => 0,
+					'padding' => [
+						'top' => '0.1875',
+						'right' => '0.3125',
+						'bottom' => '0.1875',
+						'left' => '0.3125',
+						'unit' => 'rem',
+					],
+					'margin' => [
+						'top' => '0',
+						'right' => '6',
+						'bottom' => '16',
+						'left' => '0',
+						'unit' => 'px',
+					],
+					'background_color' => '#ffffff',
+					'label_font' => [
+						'color' => '#3c434a', 
+						'font-size' => '14', 
+						'font-weight'=> '', 
+						'font-style' => '', 
+						'text-transform' => '',
+					],
+				],
 			],
 		],
 		'base_input' => [
