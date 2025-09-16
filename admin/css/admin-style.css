@@ -113,8 +113,9 @@
 }
 .authpress-settings-template .authpress-settings-wrapper input[type=color].form-control {
   padding: 2px;
-  width: 27px;
-  flex: 0 0 27px;
+  height: 48px;
+  width: 48px;
+  flex: 0 0 48px;
 }
 .authpress-settings-template .authpress-settings-wrapper .button-link {
   background-color: transparent !important;

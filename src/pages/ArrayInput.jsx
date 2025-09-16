@@ -8,6 +8,9 @@ import Measurement from '../components/Measurement/Measurement';
 import BoxShadow from '../components/BoxShadow/BoxShadow';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+import LinkColor from "../components/LinkColor/LinkColor";
+import Font from "../components/Font/Font";
+import TextShadow from "../components/TextShadow/TextShadow";
 const ArrayInput = ({handleChange}) => {
     const {
         settingData,
@@ -15,6 +18,92 @@ const ArrayInput = ({handleChange}) => {
     } = useMain();
     return (
         <>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("TextShadow", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                                <TextShadow
+                                    options={["offsetX", "offsetY", "blur", "color"]}
+                                    defaultValues={{
+                                        offsetX: 2,
+                                        offsetY: 2,
+                                        blur: 5,
+                                        color: "#ff00ff",
+                                    }}
+                                    name="array_input.text_shadow"
+                                    handleChange={handleChange}
+                                />                       
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Font", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <Font 
+                                defaultValues={settingData?.array_input?.font}
+                                name='array_input.font' 
+                                handleChange={handleChange}
+                                options = {['color', 'font-size', 'font-weight', 'font-style', 'font-variant', 'font-stretch', 'text-align', 'text-decoration', 'text-transform']}
+                            />                         
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Link Color", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <LinkColor
+                                name="array_input.link_color"
+                                options={['normal', 'hover', 'active']}
+                                defaultValues={settingData?.array_input?.link_color}
+                                handleChange={handleChange}
+                            />                          
+                        </div>
+                    }
+                </div>
+            </div>
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
