@@ -11,6 +11,7 @@ import withForm from '../pages/withForm';
 import LinkColor from "../components/LinkColor/LinkColor";
 import Font from "../components/Font/Font";
 import TextShadow from "../components/TextShadow/TextShadow";
+import RgbaColorPicker from "../components/RgbaColorPicker/RgbaColorPicker";
 const ArrayInput = ({handleChange}) => {
     const {
         settingData,
@@ -18,6 +19,33 @@ const ArrayInput = ({handleChange}) => {
     } = useMain();
     return (
         <>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("TextShadow", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5">
+                            <RgbaColorPicker
+                                defaultValues={{ color: "#00ffcc", alpha: 0.8 }}
+                                name="array_input.rgba_color"
+                                mood="rgba"
+                                handleChange={handleChange}
+                            />                     
+                        </div>
+                    }
+                </div>
+            </div>
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">

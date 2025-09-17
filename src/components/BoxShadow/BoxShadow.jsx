@@ -6,16 +6,22 @@ const BoxShadow = ({
   defaultValues = {},
   name,
   handleChange,
+  allowNegative=true,
 }) => {
     const [values, setValues] = useState({
         offsetX: 0,
-        offsetY: 4,
-        blur: 10,
+        offsetY: 0,
+        blur: 0,
         spread: 0,
-        color: "rgba(0,0,0,0.25)",
+        color: "",
         inset: false,
         ...defaultValues,
     });
+
+    // const [values, setValues] =  useState([]);
+    // useEffect(() => {
+    //     setSelectedValues(defaultValues);
+    // }, [defaultValues]); // Include all dependencies
 
     const shadow = `${values.inset ? "inset " : ""}${values.offsetX}px ${
         values.offsetY
