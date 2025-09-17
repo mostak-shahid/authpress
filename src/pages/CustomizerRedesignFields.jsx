@@ -155,7 +155,7 @@ const CustomizerRedesignFields = ({handleChange}) => {
                                     'radius'
                                 ]}
                                 defaultValues={settingData?.customizer?.redesign?.fields?.border}
-                                name="customizer.redesign.form.wrapper.border"
+                                name="customizer.redesign.fields.border"
                                 handleChange={handleChange}
                             /> 
                         </div>
