@@ -11,7 +11,7 @@ import withForm from '../pages/withForm';
 import LinkColor from "../components/LinkColor/LinkColor";
 import Font from "../components/Font/Font";
 import TextShadow from "../components/TextShadow/TextShadow";
-import RgbaColorPicker from "../components/RgbaColorPicker/RgbaColorPicker";
+import ColorPicker from "../components/ColorPicker/ColorPicker";
 const ArrayInput = ({handleChange}) => {
     const {
         settingData,
@@ -36,7 +36,7 @@ const ArrayInput = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <RgbaColorPicker
+                            <ColorPicker
                                 defaultValues={{ color: "#00ffcc", alpha: 0.8 }}
                                 name="array_input.rgba_color"
                                 mood="rgba"
