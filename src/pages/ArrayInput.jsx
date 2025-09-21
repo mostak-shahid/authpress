@@ -36,8 +36,10 @@ const ArrayInput = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
+                            {console.log(settingData?.array_input?.rgba_color)}
                             <ColorPicker
-                                defaultValues={{ color: "#00ffcc", alpha: 0.8 }}
+                                // defaultValues={{ color: "#00ffcc", alpha: 0.8 }}
+                                defaultValues={settingData?.array_input?.rgba_color}
                                 name="array_input.rgba_color"
                                 mood="rgba"
                                 handleChange={handleChange}
