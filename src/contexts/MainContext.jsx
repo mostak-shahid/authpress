@@ -45,11 +45,30 @@ const settingsMenu = {
                     },
                 }
             },
-            "redirect" : {
-                "title": __( "Redirect", "authpress" ),
+            "additional_fields" : {
+                "title": __( "Additional Fields", "authpress" ),
+                "url":"/settings/customizer/additional_fields",
+            },
+            "settings" : {
+                "title": __( "Settings", "authpress" ),
                 "url":"/settings/customizer/settings",
             }
         }
+    },
+    "security": { 
+        "title": __( "Security", "authpress" ), 
+        "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
+        "url":"/settings/security"
+    },
+    "two_fa_authentication": { 
+        "title": __( "2FA Authentication", "authpress" ), 
+        "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
+        "url":"/settings/two_fa_authentication"
+    },
+    "password_less_authentication": { 
+        "title": __( "Passwordless Authentication", "authpress" ), 
+        "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
+        "url":"/settings/password_less_authentication"
     },
     "base_input": { 
         "title": __( "Base Input", "authpress" ), 

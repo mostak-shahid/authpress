@@ -11,23 +11,115 @@ const CustomizerSettings = ({handleChange}) => {
     } = useMain();
     return (
         <>
-            {/* {console.log(settingData?.customizer?.redesign?.logo)} */}
-            <ul>
-                <li>Login URL</li>
-                <li>Registration URL</li>
-                <li>Forgot Password URL</li>
-                <li>Enable phone number based login</li>
-                <li>Login By (Username, email, both)</li>
-                <li>Password Fields on registration page</li>
-                <li>Auto Remember Me</li>
-            </ul>
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Logo Size", "authpress")}</h4>
+                            : <h4>{__("Login URL", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5"> 
+                            <div className="form-group">
+                                <div class="input-group">   
+                                    <span class="input-group-text"><i class="dashicons dashicons-admin-links"></i></span>                             
+                                    <input 
+                                        id="customizer-logo-height"
+                                        className="form-control"
+                                        type="url"
+                                        value={settingData?.customizer?.settings?.login_url}
+                                        min="0"
+                                        onChange={(e) => handleChange('customizer.settings.login_url', e.target.value)}
+                                    /> 
+                                </div> 
+                            </div>                       
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Registration URL", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5"> 
+                            <div className="form-group">
+                                <div class="input-group">   
+                                    <span class="input-group-text"><i class="dashicons dashicons-admin-links"></i></span>                             
+                                    <input 
+                                        id="customizer-logo-height"
+                                        className="form-control"
+                                        type="url"
+                                        value={settingData?.customizer?.settings?.registration_url}
+                                        min="0"
+                                        onChange={(e) => handleChange('customizer.settings.registration_url', e.target.value)}
+                                    /> 
+                                </div> 
+                            </div>                       
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Forgot Password URL", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-5"> 
+                            <div className="form-group">
+                                <div class="input-group">   
+                                    <span class="input-group-text"><i class="dashicons dashicons-admin-links"></i></span>                             
+                                    <input 
+                                        id="customizer-logo-height"
+                                        className="form-control"
+                                        type="url"
+                                        value={settingData?.customizer?.settings?.forgot_password_url}
+                                        min="0"
+                                        onChange={(e) => handleChange('customizer.settings.forgot_password_url', e.target.value)}
+                                    /> 
+                                </div> 
+                            </div>                       
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Login By", "authpress")}</h4>
                         }
                         {
                             settingLoading 
@@ -38,34 +130,68 @@ const CustomizerSettings = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <div className="mb-2 form-group">
-                                <label htmlFor="customizer-logo-width">{__('Width', 'authpress')}</label>
-                                <div class="input-group">                                
-                                    <input 
-                                        id="customizer-logo-width"
-                                        className="form-control"
-                                        type="number"
-                                        value={settingData?.customizer?.redesign?.logo?.width}
-                                        min="0"
-                                        onChange={(e) => handleChange('customizer.redesign.logo.width', e.target.value)}
-                                    /> 
-                                    <span class="input-group-text">px</span>
-                                </div> 
-                            </div>   
-                            <div className="mb-2 form-group">
-                                <label htmlFor="customizer-logo-height">{__('Height', 'authpress')}</label>
-                                <div class="input-group">                                
-                                    <input 
-                                        id="customizer-logo-height"
-                                        className="form-control"
-                                        type="number"
-                                        value={settingData?.customizer?.redesign?.logo?.height}
-                                        min="0"
-                                        onChange={(e) => handleChange('customizer.redesign.logo.height', e.target.value)}
-                                    /> 
-                                    <span class="input-group-text">px</span>
-                                </div> 
-                            </div>                       
+                            <select 
+                                className="form-select"
+                                value={settingData?.customizer?.settings?.login_by} 
+                                onChange={(e) => handleChange('customizer.settings.login_by', e.target.value)}
+                            >
+                                <option value="username">{__("Username", "authpress")}</option>
+                                <option value="email">{__("Email", "authpress")}</option>
+                                <option value="both">{__("Both", "authpress")}</option>
+                                <option value="phone" disabled>{__("Phone Number", "authpress")} ({__("Pro", "authpress")})</option>
+                            </select>                         
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Auto Remember Me", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-auto">
+                            <Switch 
+                                name="customizer.settings.remember_me_always_on"
+                                checked={settingData?.customizer?.settings?.remember_me_always_on} // Pass "1"/"0" from API 
+                                onChange={handleChange} 
+                            />
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit pt-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Password Fields on registration page", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-auto">
+                            <Switch 
+                                name="customizer.settings.enable_registration_password"
+                                checked={settingData?.customizer?.settings?.enable_registration_password} // Pass "1"/"0" from API 
+                                onChange={handleChange} 
+                            />
                         </div>
                     }
                 </div>

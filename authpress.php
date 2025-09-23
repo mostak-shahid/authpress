@@ -326,6 +326,18 @@ function authpress_get_default_options()
 					],
 				],
 			],
+			'additional_fields' => [
+				'login' => [], // label, required, type, default, options
+				'registration' => []
+			],
+			'settings' => [
+				'login_url' => '',
+				'registration_url' => '',
+				'forgot_password_url' => '',
+				'login_by' => 'both', //username, email, both
+				'remember_me_always_on' => false,
+				'enable_registration_password' => false,
+			],
 		],
 		'base_input' => [
 			'text_input' => '',
