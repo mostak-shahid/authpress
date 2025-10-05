@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@coreui/icons": "^1.0.0",
-    "@wordpress/components": "^30.4.0",
+    "@wordpress/components": "^28.9.0",
     "ace-builds": "^1.43.2",
     "axios": "^1.11.0",
     "bootstrap": "^5.3.8",
@@ -32,7 +32,7 @@
     "react-router-dom": "^7.5.2"
   },
   "devDependencies": {
-    "@wordpress/scripts": "^30.23.0",
+    "@wordpress/scripts": "^19.2.4",
     "css-loader": "^7.1.2",
     "file-loader": "^6.2.0",
     "sass": "^1.84.0",

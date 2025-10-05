@@ -143,7 +143,7 @@ function authpress_get_default_options()
 						"attachment" => "scroll",
 					],
 					'video' => '',
-					'overlay' => '',
+					'overlay' => '#ffffff00',
 				],
 				'logo' => [
 					'image' => [

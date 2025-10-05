@@ -1,6 +1,4 @@
 import { __ } from "@wordpress/i18n";
-import React from 'react';
-import Gradient from '../components/Gradient/Gradient';
 import Background from '../components/Background/Background';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
@@ -49,10 +47,11 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     }
                 </div>
             </div>
-            {
+
+{
                 settingData?.customizer?.redesign?.background?.type === 'image' &&
             
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit border-bottom py-4">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -91,7 +90,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
             }
             {
                 settingData?.customizer?.redesign?.background?.type === 'gradient' &&
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit border-bottom py-4">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -119,38 +118,35 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     </div>
             }
             {
-                settingData?.customizer?.redesign?.background?.type === 'video' &&
-                    <>
-                        <div className="setting-unit border-bottom py-4">
-                            <div className="row justify-content-between">
-                                <div className="col-lg-7">
-                                    {
-                                        settingLoading 
-                                        ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                        : <h4>{__("Background Video", "authpress")}</h4>
-                                    }
-                                    {
-                                        settingLoading 
-                                        ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                                        : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
-                                    }
-                                </div>    
+                settingData?.customizer?.redesign?.background?.type === 'video' &&                
+                    <div className="setting-unit border-bottom py-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
                                 {
-                                    !settingLoading &&                               
-                                    <div className="col-lg-5">
-                                        <TextControl
-                                            placeholder="Youtube or Vimeo video URL"
-                                            type="url"
-                                            value={settingData?.customizer?.redesign?.background?.video}
-                                            onChange={(value) => handleChange('customizer.redesign.background.video', value)}
-                                        />                           
-                                    </div>
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Background Video", "authpress")}</h4>
                                 }
-                            </div>
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <TextControl
+                                        placeholder="Youtube or Vimeo video URL"
+                                        type="url"
+                                        value={settingData?.customizer?.redesign?.background?.video}
+                                        onChange={(value) => handleChange('customizer.redesign.background.video', value)}
+                                    />                           
+                                </div>
+                            }
                         </div>
-                    </>
+                    </div>                    
             }
-
             <div className="setting-unit pt-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
@@ -168,7 +164,6 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            {settingData?.customizer?.redesign?.background?.overlay}
                             <Colorpicker
                                 defaultValue={settingData?.customizer?.redesign?.background?.overlay}
                                 handleChange={(value) => handleChange('customizer.redesign.background.overlay', value)}
