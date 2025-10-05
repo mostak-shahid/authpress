@@ -1,0 +1,132 @@
+import React, { useEffect, useState } from "react";
+import PropTypes from "prop-types";
+import './ColorPicker.scss'
+
+const ColorPicker = ({
+  options = {},
+  defaultValues,
+  name,
+  mood = "rgba", // or hex
+  handleChange,
+}) => {
+  const [values, setValues] = useState({
+    color: defaultValues.color || "",
+    alpha:
+      typeof defaultValues.alpha === "number"
+        ? clamp(defaultValues.alpha, 0, 1)
+        : 1,
+  });
+
+  function clamp(v, a, b) {
+    return Math.min(b, Math.max(a, v));
+  }
+
+  function hexToRgb(hex) {
+    const safe = hex.replace("#", "");
+    const r = parseInt(safe.substring(0, 2), 16);
+    const g = parseInt(safe.substring(2, 4), 16);
+    const b = parseInt(safe.substring(4, 6), 16);
+    return { r, g, b };
+  }
+
+  function toCssString({ color, alpha }, moodMode) {
+    if (moodMode === "rgba") {
+      const { r, g, b } = hexToRgb(color);
+      const a = Math.round(clamp(Number(alpha) || 0, 0, 1) * 100) / 100;
+      return `rgba(${r}, ${g}, ${b}, ${a})`;
+    }
+    return color;
+  }
+
+  const updateValue = (option, value) => {
+    const updated =
+      option === "alpha"
+        ? { ...values, alpha: clamp(Number(value), 0, 1) }
+        : { ...values, [option]: value };
+    setValues(updated);
+    if (typeof handleChange === "function") {
+      handleChange(name, toCssString(updated, mood));
+    }
+  };
+
+  useEffect(() => {
+    if (typeof handleChange === "function") {
+      handleChange(name, toCssString(values, mood));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (typeof handleChange === "function") {
+      handleChange(name, toCssString(values, mood));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [mood]);
+
+  const previewBackground =
+    mood === "rgba" ? toCssString(values, "rgba") : values.color;
+
+  return (
+    <div className="color-picker-wrapper">
+      <div className="color-picker__row">
+        <label>Color</label>
+        <input
+          type="color"
+          value={values.color}
+          onChange={(e) => updateValue("color", e.target.value)}
+        />
+        <input
+          type="text"
+          value={values.color}
+          onChange={(e) => {
+            const raw = e.target.value.trim();
+            const normalized =
+              raw.startsWith("#") || raw === "" ? raw : `#${raw}`;
+            if (/^#([0-9A-Fa-f]{0,6})$/.test(normalized)) {
+              updateValue("color", normalized);
+            }
+          }}
+          placeholder="#rrggbb"
+        />
+      </div>
+
+      {mood === "rgba" && (
+        <div className="color-picker__row">
+          <label>Alpha</label>
+          <input
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+            value={values.alpha}
+            onChange={(e) => updateValue("alpha", e.target.value)}
+          />
+          <span>{Math.round(values.alpha * 100)}%</span>
+        </div>
+      )}
+
+      <div className="color-picker__row">
+        <label>Preview</label>
+        <div
+          className="color-picker__preview"
+          style={{ background: previewBackground }}
+        />
+        <div className="color-picker__output">
+          <code>{toCssString(values, mood)}</code>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+ColorPicker.propTypes = {
+  defaultValues: PropTypes.shape({
+    color: PropTypes.string,
+    alpha: PropTypes.number,
+  }),
+  name: PropTypes.string,
+  mood: PropTypes.string,
+  handleChange: PropTypes.func,
+};
+
+export default ColorPicker;
