@@ -328,10 +328,10 @@ const CustomizerRedesignForm = ({handleChange}) => {
                 </Accordion.Item>
             </Accordion>
             <Panel>
-                <PanelBody title="My Block Settings 1" initialOpen={ true }>
+                <PanelBody title="Form Wrapper" initialOpen={ true }>
                     <PanelRow>My Panel Inputs and Labels</PanelRow>
                 </PanelBody>
-                <PanelBody title="My Block Settings 2" initialOpen={ false }>
+                <PanelBody title={__('Form', 'authpress')} initialOpen={ false }>
                     <PanelRow>My Panel Inputs and Labels</PanelRow>
                 </PanelBody>
             </Panel>
