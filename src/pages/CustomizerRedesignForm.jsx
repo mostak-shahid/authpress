@@ -11,8 +11,12 @@ import {
     BoxControl,
     SelectControl,
     BorderBoxControl,
-    __experimentalInputControl as InputControl
+    __experimentalInputControl as InputControl,
+    Panel, 
+    PanelBody, 
+    PanelRow
 } from '@wordpress/components';
+import { more } from '@wordpress/icons';
 const colors = [
     { name: 'Blue 20', color: '#72aee6' },
     { name: 'Pink Flare', color: '#E1C0C8' },
@@ -323,6 +327,14 @@ const CustomizerRedesignForm = ({handleChange}) => {
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
+            <Panel>
+                <PanelBody title="My Block Settings 1" initialOpen={ true }>
+                    <PanelRow>My Panel Inputs and Labels</PanelRow>
+                </PanelBody>
+                <PanelBody title="My Block Settings 2" initialOpen={ false }>
+                    <PanelRow>My Panel Inputs and Labels</PanelRow>
+                </PanelBody>
+            </Panel>
 
         </>
     )
