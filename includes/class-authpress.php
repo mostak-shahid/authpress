@@ -119,7 +119,7 @@ class Authpress
 		 * side of the site.
 		 */
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-authpress-public.php';
-		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-customizer-redesign-background.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-customizer-redesign.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-import-export.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-more.php';
 

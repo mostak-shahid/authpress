@@ -1,11 +1,12 @@
 <?php
-class Authpress_Customizer_Redesign_Background {
+class Authpress_Customizer_Redesign {
 	protected $options;
 
 	public function __construct() {
 		$this->options = authpress_get_option();
 
 		add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets'], 20);
+		add_filter('login_headerurl', [$this, 'authpress_login_headerurl']);
 	}
 
 	public function enqueue_login_assets() {
@@ -31,7 +32,9 @@ class Authpress_Customizer_Redesign_Background {
 
 		// Add video background markup
 		$this->add_video_background();
-		// add_action('login_footer', [$this, 'add_video_background'], 10);
+
+		// Add custom logo styles
+		$this->add_custom_logo();
 	}
 
 	public function add_background_style() {
@@ -47,8 +50,11 @@ class Authpress_Customizer_Redesign_Background {
 
 		$css = ".login {";
 
-		if ($color) {
+		if ($type == 'gradient' && $color) {
 			$css .= "background: {$color};";
+		}
+		if ($type === 'image') {
+			$css .= "background-color: {$color};";
 		}
 		if ($image && $type === 'image') {
 			$css .= "background-image: url('{$image}');";
@@ -133,7 +139,32 @@ class Authpress_Customizer_Redesign_Background {
 			});
 		}
 	}
+	public function add_custom_logo() {
+		$logo = isset($this->options['customizer']['redesign']['logo']['image']['url']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['logo']['image']['url'])) : '';
+		$width = isset($this->options['customizer']['redesign']['logo']['width']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['logo']['width'])) : '';
+		$height = isset($this->options['customizer']['redesign']['logo']['height']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['logo']['height'])) : '';
+		$space = isset($this->options['customizer']['redesign']['logo']['space']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['logo']['space'])) : '';
+		if ($logo) {
+			$css = ".login h1 a {
+				display: block;
+				margin: 0 auto {$space};
+				background-repeat: no-repeat;
+				background-position: center;
+				background-size: contain;
+				width: {$width};
+				height: {$height};
+				min-height: {$height};
+				max-height: {$height};
+				background-image: url('{$logo}');
+			}";
+			wp_add_inline_style('login', $css);
+		}
+	}
+	public function authpress_login_headerurl() {
+		$url = isset($this->options['customizer']['redesign']['logo']['url']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['logo']['url'])) : '';
+		return $url ? esc_url($url) : home_url();
+	}	
 
 }
 
-new Authpress_Customizer_Redesign_Background();
+new Authpress_Customizer_Redesign();

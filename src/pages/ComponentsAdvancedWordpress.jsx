@@ -51,7 +51,7 @@ const ComponentsAdvancedWordpress = ({handleChange}) => {
     } = useMain();
     const [ alignment, setAlignment ] = useState( 'center center' );
     const [ angle, setAngle ] = useState( 0 );
-        const defaultBorder = {
+    const defaultBorder = {
         color: '#72aee6',
         style: 'dashed',
         width: '1px',

@@ -133,7 +133,10 @@ function authpress_get_default_options()
 				'background'=> [
 					'type' => 'image', // gradient, image, video
 					'background' => [
-						"image" => "",
+						"image" => [
+							'id' => '',
+							'url' => '',
+						],
 						"color" => "#f0f0f1",
 						"position" => "center",
 						"size" => "auto",
@@ -150,24 +153,26 @@ function authpress_get_default_options()
 						'id' => '',
 						'url' => '',
 					],
-					'width' => '64',
-					'height' => '64',
-					'space' => '24',
+					'width' => '64px',
+					'height' => '64px',
+					'space' => '24px',
 					'url' => 'https://wordpress.org/'
 				],
 				'form' => [
 					'wrapper' => [
-						'width' => '320',
+						'width' => '320px',
 						'padding' => [
-							'top' => '5',
-							'right' => '0',
-							'bottom' => '0',
-							'left' => '0',
-							'unit' => '%',
+							'top' => '5px',
+							'right' => '0px',
+							'bottom' => '0px',
+							'left' => '0px',
 						],
 						'position' => 'center',
 						'background' => [
-							"image" => "",
+							"image" => [
+								'id' => '',
+								'url' => '',
+							],
 							"color" => "",
 							"position" => "center",
 							"size" => "auto",
@@ -175,11 +180,12 @@ function authpress_get_default_options()
 							"attachment" => "scroll",
 						],
 						'border' => [
-							'color' => '',
-							'width' => '',
-							'style' => 'none',
-							'radius' => '',
+							'top' => ['color'=> '','style'=> 'none','width'=> '0px'],
+							'right' => ['color'=> '','style'=> 'none','width'=> '0px'],
+							'bottom' => ['color'=> '','style'=> 'none','width'=> '0px'],
+							'left' => ['color'=> '','style'=> 'none','width'=> '0px'],
 						],
+						'border_radius' => '0px',
 						//box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
 						"glass_effect" => false,
 					],

@@ -1,16 +1,49 @@
 import { __ } from "@wordpress/i18n";
-import React from 'react';
 import Border from '../components/Border/Border';
 import Measurement from '../components/Measurement/Measurement';
 import Background from '../components/Background/Background';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import Accordion from 'react-bootstrap/Accordion';
+import {useState} from 'react';
+import { 
+    __experimentalUnitControl as UnitControl, 
+    BoxControl,
+    SelectControl,
+    BorderBoxControl,
+    __experimentalInputControl as InputControl
+} from '@wordpress/components';
+const colors = [
+    { name: 'Blue 20', color: '#72aee6' },
+    { name: 'Pink Flare', color: '#E1C0C8' },
+    { name: 'Carissma', color: '#EA88A8' },
+    { name: 'Ash', color: '#A09998' },
+];
 const CustomizerRedesignForm = ({handleChange}) => {
     const {
         settingData,
         settingLoading
     } = useMain();
+    const units = [
+        { value: 'px', label: 'px' },
+        { value: '%', label: '%' },
+        { value: 'em', label: 'em' },
+        { value: 'rem', label: 'rem' },
+        { value: 'vw', label: 'vw' },
+    ];
+    const defaultBorder = {
+        color: '#72aee6',
+        style: 'dashed',
+        width: '1px',
+    };
+    const [ borders, setBorders ] = useState( {
+        top: defaultBorder,
+        right: defaultBorder,
+        bottom: defaultBorder,
+        left: defaultBorder,
+    } );
+    const onBorderChange = ( newBorders ) => setBorders( newBorders );
+    const [ border, setBorder ] = useState();
     return (
         <>
             {/* {console.log(settingData)} */}
@@ -35,17 +68,13 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                 {
                                     !settingLoading &&                               
                                     <div className="col-lg-5">
-                                        <div class="input-group">
-                                            <input 
-                                                className="form-control"
-                                                type="number"
-                                                min="320"
-                                                value={settingData?.customizer?.redesign?.form?.wrapper?.width}
-                                                onChange={(e) => handleChange('customizer.redesign.form.wrapper.width', e.target.value)}
-                                            /> 
-                                            <span class="input-group-text">px</span>
-                                        </div> 
-                                                                 
+                                        <UnitControl 
+                                            __next40pxDefaultSize 
+                                            onChange={(value) => handleChange('customizer.redesign.form.wrapper.width', value)}
+                                            value={settingData?.customizer?.redesign?.form?.wrapper?.width}
+                                            units={units}
+                                            min="320"
+                                        />                                                                 
                                     </div>
                                 }
                             </div>
@@ -68,19 +97,11 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                 {
                                     !settingLoading &&                               
                                     <div className="col-lg-5">
-                                        <Measurement
-                                            options={[
-                                                "top",
-                                                "right",
-                                                "bottom",
-                                                "left",
-                                                "unit",
-                                            ]}
-                                            defaultValues={settingData?.customizer?.redesign?.form?.wrapper?.padding}
-                                            allowNegative={true}
-                                            name="customizer.redesign.form.wrapper.padding"
-                                            handleChange={handleChange}
-                                        />                         
+                                        <BoxControl
+                                            __next40pxDefaultSize
+                                            values={ settingData?.customizer?.redesign?.form?.wrapper?.padding }
+                                            onChange={ (value) => handleChange('customizer.redesign.form.wrapper.padding', value) }
+                                        />                          
                                     </div>
                                 }
                             </div>
@@ -102,15 +123,18 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                 {
                                     !settingLoading &&                               
                                     <div className="col-lg-5">
-                                        <select 
-                                            className="form-select"
-                                            value={settingData?.customizer?.redesign?.form?.wrapper?.position} 
-                                            onChange={(e) => handleChange('customizer.redesign.form.wrapper.position', e.target.value)}
-                                        >
-                                            <option value="left">{__('Left','authpress')}</option>
-                                            <option value="center">{__('Center','authpress')}</option>
-                                            <option value="right">{__('Right','authpress')}</option>
-                                        </select>                         
+                                        <SelectControl
+                                            // label="Size"
+                                            value={ settingData?.customizer?.redesign?.form?.wrapper?.position }
+                                            options={ [
+                                                { label: __('Left','authpress'), value: 'left' },
+                                                { label: __('Center','authpress'), value: 'center' },
+                                                { label: __('Right','authpress'), value: 'right' },
+                                            ] }
+                                            onChange={ ( newValue ) => handleChange('customizer.redesign.form.wrapper.position', newValue ) }
+                                            __next40pxDefaultSize
+                                            __nextHasNoMarginBottom
+                                        />                         
                                     </div>
                                 }
                             </div>
@@ -168,16 +192,22 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                 {
                                     !settingLoading &&                               
                                     <div className="col-lg-5">
-                                        <Border 
-                                            options={[
-                                                'width',
-                                                'style',
-                                                'color',
-                                                'radius'
-                                            ]}
-                                             defaultValues={settingData?.customizer?.redesign?.form?.wrapper?.border}
-                                            name="customizer.redesign.form.wrapper.border"
-                                            handleChange={handleChange}
+                                        <BorderBoxControl
+                                            label={ __( 'Borders', 'authpress' ) }
+                                            __next40pxDefaultSize
+                                            colors={ colors }
+                                            value={ settingData?.customizer?.redesign?.form?.wrapper?.border }
+                                            onChange={(value) => handleChange('customizer.redesign.form.wrapper.border', value)}
+                                            
+                                        />
+                                        <UnitControl 
+                                            label={ __( 'Radius', 'authpress' ) }
+                                            __next40pxDefaultSize 
+                                            onChange={(value) => handleChange('customizer.redesign.form.wrapper.border_radius', value)}
+                                            value={ settingData?.customizer?.redesign?.form?.wrapper?.border_radius }
+                                            units={units}
+                                            min="0"
+                                            style={{marginTop: '10px'}}
                                         />                          
                                     </div>
                                 }
