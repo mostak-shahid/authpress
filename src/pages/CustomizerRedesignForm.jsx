@@ -14,40 +14,19 @@ import {
     __experimentalInputControl as InputControl,
     Panel, 
     PanelBody, 
-    PanelRow
+    PanelRow,
+    ToggleControl
 } from '@wordpress/components';
 import { more } from '@wordpress/icons';
-const colors = [
-    { name: 'Blue 20', color: '#72aee6' },
-    { name: 'Pink Flare', color: '#E1C0C8' },
-    { name: 'Carissma', color: '#EA88A8' },
-    { name: 'Ash', color: '#A09998' },
-];
+import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
+
 const CustomizerRedesignForm = ({handleChange}) => {
     const {
         settingData,
         settingLoading
     } = useMain();
-    const units = [
-        { value: 'px', label: 'px' },
-        { value: '%', label: '%' },
-        { value: 'em', label: 'em' },
-        { value: 'rem', label: 'rem' },
-        { value: 'vw', label: 'vw' },
-    ];
-    const defaultBorder = {
-        color: '#72aee6',
-        style: 'dashed',
-        width: '1px',
-    };
-    const [ borders, setBorders ] = useState( {
-        top: defaultBorder,
-        right: defaultBorder,
-        bottom: defaultBorder,
-        left: defaultBorder,
-    } );
-    const onBorderChange = ( newBorders ) => setBorders( newBorders );
-    const [ border, setBorder ] = useState();
+    const [ hasFixedBackground, setHasFixedBackground ] = useState( false );
+
     return (
         <>
             {/* {console.log(settingData)} */}
@@ -76,7 +55,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                                 __next40pxDefaultSize 
                                                 onChange={(value) => handleChange('customizer.redesign.form.wrapper.width', value)}
                                                 value={settingData?.customizer?.redesign?.form?.wrapper?.width}
-                                                units={units}
+                                                units={UNITS}
                                                 min="320"
                                             />                                                                 
                                         </div>
@@ -199,7 +178,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                             <BorderBoxControl
                                                 label={ __( 'Borders', 'authpress' ) }
                                                 __next40pxDefaultSize
-                                                colors={ colors }
+                                                colors={ COLORS }
                                                 value={ settingData?.customizer?.redesign?.form?.wrapper?.border }
                                                 onChange={(value) => handleChange('customizer.redesign.form.wrapper.border', value)}
                                                 
@@ -209,7 +188,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                                 __next40pxDefaultSize 
                                                 onChange={(value) => handleChange('customizer.redesign.form.wrapper.border_radius', value)}
                                                 value={ settingData?.customizer?.redesign?.form?.wrapper?.border_radius }
-                                                units={units}
+                                                units={UNITS}
                                                 min="0"
                                                 style={{marginTop: '10px'}}
                                             />                          
@@ -229,6 +208,32 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                         {
                                             settingLoading 
                                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                            : <h4>{__("Margin", "authpress")}</h4>
+                                        }
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                        }
+                                    </div>    
+                                    {
+                                        !settingLoading &&                               
+                                        <div className="col-lg-5">
+                                            <BoxControl
+                                                __next40pxDefaultSize
+                                                values={ settingData?.customizer?.redesign?.form?.unit?.margin}
+                                                onChange={ (value) => handleChange('customizer.redesign.form.unit.margin', value) }
+                                            />                         
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div className="setting-unit border-bottom py-4">
+                                <div className="row justify-content-between">
+                                    <div className="col-lg-7">
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
                                             : <h4>{__("Padding", "authpress")}</h4>
                                         }
                                         {
@@ -240,18 +245,10 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     {
                                         !settingLoading &&                               
                                         <div className="col-lg-5">
-                                            <Measurement
-                                                options={[
-                                                    "top",
-                                                    "right",
-                                                    "bottom",
-                                                    "left",
-                                                    "unit",
-                                                ]}
-                                                defaultValues={settingData?.customizer?.redesign?.form?.unit?.padding}
-                                                allowNegative={true}
-                                                name="customizer.redesign.form.unit.padding"
-                                                handleChange={handleChange}
+                                            <BoxControl
+                                                __next40pxDefaultSize
+                                                values={ settingData?.customizer?.redesign?.form?.unit?.padding}
+                                                onChange={ (value) => handleChange('customizer.redesign.form.unit.padding', value) }
                                             />                         
                                         </div>
                                     }
@@ -310,17 +307,57 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     {
                                         !settingLoading &&                               
                                         <div className="col-lg-5">
-                                            <Border 
-                                                options={[
-                                                    'width',
-                                                    'style',
-                                                    'color',
-                                                    'radius'
-                                                ]}
-                                                defaultValues={settingData?.customizer?.redesign?.form?.unit?.border}
-                                                name="customizer.redesign.form.unit.border"
-                                                handleChange={handleChange}
-                                            />                          
+                                            <BorderBoxControl
+                                                label={ __( 'Borders', 'authpress' ) }
+                                                __next40pxDefaultSize
+                                                colors={ COLORS }
+                                                value={ settingData?.customizer?.redesign?.form?.unit?.border }
+                                                onChange={(value) => handleChange('customizer.redesign.form.wrapper.border', value)}
+                                                
+                                            />
+                                            <UnitControl 
+                                                label={ __( 'Radius', 'authpress' ) }
+                                                __next40pxDefaultSize 
+                                                onChange={(value) => handleChange('customizer.redesign.form.wrapper.border_radius', value)}
+                                                value={ settingData?.customizer?.redesign?.form?.unit?.border_radius }
+                                                units={UNITS}
+                                                min="0"
+                                                style={{marginTop: '10px'}}
+                                            />                         
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div className="setting-unit border-bottom py-4">
+                                <div className="row justify-content-between">
+                                    <div className="col-lg-7">
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                            : <h4>{__("Border", "authpress")}</h4>
+                                        }
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                        }
+                                    </div>    
+                                    {
+                                        !settingLoading &&                               
+                                        <div className="col-lg-5">
+                                            <ToggleControl
+                                                __nextHasNoMarginBottom
+                                                label="Fixed Background"
+                                                help={
+                                                    hasFixedBackground
+                                                        ? 'Has fixed background.'
+                                                        : 'No fixed background.'
+                                                }
+                                                checked={ hasFixedBackground }
+                                                onChange={ (newValue) => {
+                                                    setHasFixedBackground( newValue );
+                                                } }
+                                            />                        
                                         </div>
                                     }
                                 </div>

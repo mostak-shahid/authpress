@@ -191,18 +191,16 @@ function authpress_get_default_options()
 					],
 					'unit' => [
 						'margin' => [
-							'top' => '24',
-							'right' => '0',
-							'bottom' => '24',
-							'left' => '0',
-							'unit' => 'px',
+							'top' => '24px',
+							'right' => '0px',
+							'bottom' => '24px',
+							'left' => '0px',
 						],
 						'padding' => [
-							'top' => '26',
-							'right' => '24',
-							'bottom' => '26',
-							'left' => '24',
-							'unit' => 'px',
+							'top' => '26px',
+							'right' => '24px',
+							'bottom' => '26px',
+							'left' => '24px',
 						],
 						'background' => [
 							"image" => "",
@@ -213,11 +211,12 @@ function authpress_get_default_options()
 							"attachment" => "scroll",
 						],
 						'border' => [
-							'color' => '#c3c4c7',
-							'width' => '1',
-							'style' => 'solid',
-							'radius' => '0',
+							'top' => ['color'=> '','style'=> 'none','width'=> '0px'],
+							'right' => ['color'=> '','style'=> 'none','width'=> '0px'],
+							'bottom' => ['color'=> '','style'=> 'none','width'=> '0px'],
+							'left' => ['color'=> '','style'=> 'none','width'=> '0px'],
 						],
+						'border_radius' => '0px',
 						//box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
 						"glass_effect" => false,
 

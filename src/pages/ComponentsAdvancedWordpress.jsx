@@ -23,8 +23,8 @@ import {
     __experimentalNavigationGroup as NavigationGroup,
     __experimentalNavigationItem as NavigationItem,
     __experimentalNavigationMenu as NavigationMenu,
- } from '@wordpress/components';
-
+} from '@wordpress/components';
+import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
 const colors = [
     { name: 'Blue 20', color: '#72aee6' },
     { name: 'Pink Flare', color: '#E1C0C8' },
