@@ -196,6 +196,38 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     }
                                 </div>
                             </div>
+                            <div className="setting-unit pt-4">
+                                <div className="row justify-content-between">
+                                    <div className="col-lg-7">
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                            : <h4>{__("Glass Effect", "authpress")}</h4>
+                                        }
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                        }
+                                    </div>    
+                                    {
+                                        !settingLoading &&                               
+                                        <div className="col-lg-auto">
+                                            <ToggleControl
+                                                __nextHasNoMarginBottom
+                                                // label="Fixed Background"
+                                                // help={
+                                                //     hasFixedBackground
+                                                //         ? 'Has fixed background.'
+                                                //         : 'No fixed background.'
+                                                // }
+                                                onChange={(value) => handleChange('customizer.redesign.form.wrapper.glass_effect', value)}
+                                                checked={ settingData?.customizer?.redesign?.form?.wrapper?.glass_effect }
+                                            />                        
+                                        </div>
+                                    }
+                                </div>
+                            </div>
                         </div>
                     </PanelRow>
                 </PanelBody>
@@ -312,13 +344,13 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                                 __next40pxDefaultSize
                                                 colors={ COLORS }
                                                 value={ settingData?.customizer?.redesign?.form?.unit?.border }
-                                                onChange={(value) => handleChange('customizer.redesign.form.wrapper.border', value)}
+                                                onChange={(value) => handleChange('customizer.redesign.form.unit.border', value)}
                                                 
                                             />
                                             <UnitControl 
                                                 label={ __( 'Radius', 'authpress' ) }
                                                 __next40pxDefaultSize 
-                                                onChange={(value) => handleChange('customizer.redesign.form.wrapper.border_radius', value)}
+                                                onChange={(value) => handleChange('customizer.redesign.form.unit.border_radius', value)}
                                                 value={ settingData?.customizer?.redesign?.form?.unit?.border_radius }
                                                 units={UNITS}
                                                 min="0"
@@ -328,13 +360,13 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     }
                                 </div>
                             </div>
-                            <div className="setting-unit border-bottom py-4">
+                            <div className="setting-unit pt-4">
                                 <div className="row justify-content-between">
                                     <div className="col-lg-7">
                                         {
                                             settingLoading 
                                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                            : <h4>{__("Border", "authpress")}</h4>
+                                            : <h4>{__("Glass Effect", "authpress")}</h4>
                                         }
                                         {
                                             settingLoading 
@@ -344,19 +376,17 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     </div>    
                                     {
                                         !settingLoading &&                               
-                                        <div className="col-lg-5">
+                                        <div className="col-lg-auto">
                                             <ToggleControl
                                                 __nextHasNoMarginBottom
-                                                label="Fixed Background"
-                                                help={
-                                                    hasFixedBackground
-                                                        ? 'Has fixed background.'
-                                                        : 'No fixed background.'
-                                                }
-                                                checked={ hasFixedBackground }
-                                                onChange={ (newValue) => {
-                                                    setHasFixedBackground( newValue );
-                                                } }
+                                                // label="Fixed Background"
+                                                // help={
+                                                //     hasFixedBackground
+                                                //         ? 'Has fixed background.'
+                                                //         : 'No fixed background.'
+                                                // }
+                                                onChange={(value) => handleChange('customizer.redesign.form.unit.glass_effect', value)}
+                                                checked={ settingData?.customizer?.redesign?.form?.unit?.glass_effect }
                                             />                        
                                         </div>
                                     }
