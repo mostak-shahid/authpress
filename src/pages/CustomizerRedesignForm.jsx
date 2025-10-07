@@ -1,23 +1,18 @@
 import { __ } from "@wordpress/i18n";
-import Border from '../components/Border/Border';
-import Measurement from '../components/Measurement/Measurement';
 import Background from '../components/Background/Background';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
-import Accordion from 'react-bootstrap/Accordion';
 import {useState} from 'react';
 import { 
     __experimentalUnitControl as UnitControl, 
     BoxControl,
     SelectControl,
     BorderBoxControl,
-    __experimentalInputControl as InputControl,
     Panel, 
     PanelBody, 
     PanelRow,
     ToggleControl
 } from '@wordpress/components';
-import { more } from '@wordpress/icons';
 import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
 
 const CustomizerRedesignForm = ({handleChange}) => {

@@ -1,12 +1,23 @@
 import { __ } from "@wordpress/i18n";
-import React from 'react';
-import MediaUploader from '../components/MediaUploader/MediaUploader';
 import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import Measurement from "../components/Measurement/Measurement";
 import Font from "../components/Font/Font";
 import Border from "../components/Border/Border";
+import Colorpicker from '../components/Colorpicker/Colorpicker';
+import { 
+    __experimentalUnitControl as UnitControl, 
+    BoxControl,
+    SelectControl,
+    BorderBoxControl,
+    __experimentalInputControl as InputControl,
+    Panel, 
+    PanelBody, 
+    PanelRow,
+    ToggleControl
+} from '@wordpress/components';
+import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
 const CustomizerRedesignFields = ({handleChange}) => {
     const {
         settingData,
@@ -32,11 +43,11 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.redesign.fields.disable_remember_me"
-                                checked={settingData?.customizer?.redesign?.fields?.disable_remember_me} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(value) => handleChange('customizer.redesign.fields.disable_remember_me', value)}
+                                checked={settingData?.customizer?.redesign?.fields?.disable_remember_me} 
+                            /> 
                         </div>
                     }
                 </div>
@@ -58,15 +69,11 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Measurement
-                                options={[
-                                    "value",
-                                    "unit",
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.fields?.width}
-                                // allowNegative={true}
-                                name="customizer.redesign.fields.width"
-                                handleChange={handleChange}
+                            <UnitControl 
+                                __next40pxDefaultSize 
+                                onChange={(value) => handleChange('customizer.redesign.fields.width', value)}
+                                value={settingData?.customizer?.redesign?.fields?.width}
+                                units={UNITS}
                             /> 
                         </div>
                     }
@@ -89,15 +96,11 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Measurement
-                                options={[
-                                    "value",
-                                    "unit",
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.fields?.height}
-                                // allowNegative={true}
-                                name="customizer.redesign.fields.height"
-                                handleChange={handleChange}
+                            <UnitControl 
+                                __next40pxDefaultSize 
+                                onChange={(value) => handleChange('customizer.redesign.fields.height', value)}
+                                value={settingData?.customizer?.redesign?.fields?.height}
+                                units={UNITS}
                             /> 
                         </div>
                     }
@@ -147,16 +150,22 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Border 
-                                options={[
-                                    'width',
-                                    'style',
-                                    'color',
-                                    'radius'
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.fields?.border}
-                                name="customizer.redesign.fields.border"
-                                handleChange={handleChange}
+                            <BorderBoxControl
+                                label={ __( 'Borders', 'authpress' ) }
+                                __next40pxDefaultSize
+                                colors={ COLORS }
+                                value={ settingData?.customizer?.redesign?.fields?.border }
+                                onChange={(value) => handleChange('customizer.redesign.fields.border', value)}
+                                
+                            />
+                            <UnitControl 
+                                label={ __( 'Radius', 'authpress' ) }
+                                __next40pxDefaultSize 
+                                onChange={(value) => handleChange('customizer.redesign.fields.border_radius', value)}
+                                value={ settingData?.customizer?.redesign?.fields?.border_radius }
+                                units={UNITS}
+                                min="0"
+                                style={{marginTop: '10px'}}
                             /> 
                         </div>
                     }
@@ -179,18 +188,10 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Measurement
-                                options={[
-                                    "top",
-                                    "right",
-                                    "bottom",
-                                    "left",
-                                    "unit",
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.fields?.padding}
-                                // allowNegative={true}
-                                name="customizer.redesign.fields.padding"
-                                handleChange={handleChange}
+                            <BoxControl
+                                __next40pxDefaultSize
+                                values={settingData?.customizer?.redesign?.fields?.padding}
+                                onChange={ (value) => handleChange('customizer.redesign.fields.padding', value) }
                             /> 
                         </div>
                     }
@@ -213,18 +214,10 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Measurement
-                                options={[
-                                    "top",
-                                    "right",
-                                    "bottom",
-                                    "left",
-                                    "unit",
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.fields?.margin}
-                                // allowNegative={true}
-                                name="customizer.redesign.fields.margin"
-                                handleChange={handleChange}
+                            <BoxControl
+                                __next40pxDefaultSize
+                                values={settingData?.customizer?.redesign?.fields?.margin}
+                                onChange={ (value) => handleChange('customizer.redesign.fields.margin', value) }
                             /> 
                         </div>
                     }
@@ -247,11 +240,10 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <input 
-                                className="form-control"
-                                type="color"
-                                value={settingData?.customizer?.redesign?.fields?.background_color}
-                                onChange={(e) => handleChange('customizer.redesign.fields.background_color', e.target.value)}
+                            <Colorpicker
+                                defaultValue={settingData?.customizer?.redesign?.fields?.background_color}
+                                handleChange={(value) => handleChange('customizer.redesign.fields.background_color', value)}
+                                mode='color'
                             />                          
                         </div>
                     }
@@ -275,16 +267,16 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.redesign.fields.disable_box_shadow"
-                                checked={settingData?.customizer?.redesign?.fields?.disable_box_shadow} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(value) => handleChange('customizer.redesign.fields.disable_box_shadow', value)}
+                                checked={settingData?.customizer?.redesign?.fields?.disable_box_shadow}
+                            /> 
                         </div>
                     }
                 </div>
             </div>
-            <div className="setting-unit border-bottom py-4">
+            <div className="setting-unit pt-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
                         {

@@ -224,14 +224,8 @@ function authpress_get_default_options()
 				],
 				'fields' => [
 					'disable_remember_me' => false,
-					'width' => [
-						'value' => '100',
-						'unit' => '%',
-					],
-					'height' => [
-						'value' => '40',
-						'unit' => 'px',
-					],
+					'width' => '100%',
+					'height' => '40px',
 					'font' => [
 						'color' => '#2c3338', 
 						'font-size' => '14', 
@@ -240,25 +234,25 @@ function authpress_get_default_options()
 						'text-transform' => '',
 					],
 					'border' => [
-						'width' => '1',
-						'style' => 'solid',
-						'color' => '#8c8f94',
-						'radius' => '4',
+						'top' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
+						'right' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
+						'bottom' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
+						'left' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
 					],
+					'border_radius' => '4px',
 					'disable_box_shadow' => 0,
+
 					'padding' => [
-						'top' => '0.1875',
-						'right' => '0.3125',
-						'bottom' => '0.1875',
-						'left' => '0.3125',
-						'unit' => 'rem',
+						'top' => '0.1875rem',
+						'right' => '0.3125rem',
+						'bottom' => '0.1875rem',
+						'left' => '0.3125rem',
 					],
 					'margin' => [
-						'top' => '0',
-						'right' => '6',
-						'bottom' => '16',
-						'left' => '0',
-						'unit' => 'px',
+						'top' => '0px',
+						'right' => '6px',
+						'bottom' => '16px',
+						'left' => '0px',
 					],
 					'background_color' => '#ffffff',
 					'label_font' => [

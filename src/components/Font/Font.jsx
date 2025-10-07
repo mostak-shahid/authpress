@@ -1,5 +1,11 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
+import Colorpicker from '../Colorpicker/Colorpicker';
+import { 
+    SelectControl,
+    FontSizePicker
+} from '@wordpress/components';
+import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../../lib/Constants';
 const Font = ({options, defaultValues = {}, name, handleChange}) => {
     // Initialize selected values with defaultValues
     const [values, setValues] = useState(defaultValues);
@@ -25,43 +31,71 @@ const Font = ({options, defaultValues = {}, name, handleChange}) => {
             <div className="font-wrapper">
                 <div className="row">
                     {options.map((option) => (
-                        <div key={option} className={`mb-2 from-group from-group-${option} col-${option === 'color' ? '12' : '6'}`}>
+                        <div key={option} className={`mb-2 from-group from-group-${option} col-${(option === 'color' || option === 'font-size') ? '12' : '6'}`}>
                             <label className="form-label text-capitalize">{option}</label>
                             {/* font-family → text input */}
                             {
                                 option === "color" ? (
-                                    <input
-                                        type="color"
-                                        value={values[option] || "#ffffff"}
-                                        onChange={(e) => updateValue(option, e.target.value)}
-                                        className="form-control"
-                                    />
+                                    // <input
+                                    //     type="color"
+                                    //     value={values[option] || "#ffffff"}
+                                    //     onChange={(e) => updateValue(option, e.target.value)}
+                                    //     className="form-control"
+                                    // />
+                                    <Colorpicker
+                                        defaultValue={values[option] || "#000000"}
+                                        handleChange={(value) => updateValue(option, value)}
+                                        mode='color'
+                                    /> 
                                 ) : option === "font-size" ? 
                                 (
-                                    <div class="input-group">
-                                        <input 
-                                            type="number" 
-                                            className="form-control"
-                                            value={values[option] || ""}
-                                            min="0"
-                                            onChange={(e) => updateValue(option, e.target.value)}
-                                        />
-                                        <span className="input-group-text">px</span>
-                                    </div>
+                                    // <div class="input-group">
+                                    //     <input 
+                                    //         type="number" 
+                                    //         className="form-control"
+                                    //         value={values[option] || ""}
+                                    //         min="0"
+                                    //         onChange={(e) => updateValue(option, e.target.value)}
+                                    //     />
+                                    //     <span className="input-group-text">px</span>
+                                    // </div>
+                                    <FontSizePicker
+                                        __next40pxDefaultSize
+                                        fontSizes={ FONT_SIZES }
+                                        value={ values[option] }
+                                        fallbackFontSize={ 16 }
+                                        onChange={ ( value ) => {
+                                            updateValue(option, value);
+                                        } }
+                                    /> 
                                 ) : (option === "font-weight" || option === "font-style" || option === "font-variant" || option === "font-stretch" || option === "text-align" || option === "text-decoration" || option === "text-transform") ? 
                                 (
-                                    <select
-                                        value={values[option] || ""}
-                                        onChange={(e) => updateValue(option, e.target.value)}
-                                        className="form-select"
-                                    >
-                                        <option value="">Select {option}</option>
-                                        {selectOptions[option]?.map((val) => (
-                                            <option key={val} value={val}>
-                                                {val}
-                                            </option>
-                                        ))}
-                                    </select>
+                                    // <select
+                                    //     value={values[option] || ""}
+                                    //     onChange={(e) => updateValue(option, e.target.value)}
+                                    //     className="form-select"
+                                    // >
+                                    //     <option value="">Select {option}</option>
+                                    //     {selectOptions[option]?.map((val) => (
+                                    //         <option key={val} value={val}>
+                                    //             {val}
+                                    //         </option>
+                                    //     ))}
+                                    // </select>
+                                    <SelectControl
+                                        label={ option.replace('-', ' ') }
+                                        value={ values[option] || "" }
+                                        options={ selectOptions[option].map(val => {
+                                            const valStr = String(val);
+                                            return {
+                                                label: __(valStr.charAt(0).toUpperCase() + valStr.slice(1), 'authpress'),
+                                                value: valStr,
+                                            };
+                                        })}
+                                        onChange={ newValue => updateValue(option, newValue) }
+                                        __next40pxDefaultSize
+                                        __nextHasNoMarginBottom
+                                    />
                                 ) : 
                                 (
                                     <input
