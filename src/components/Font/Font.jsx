@@ -32,7 +32,7 @@ const Font = ({options, defaultValues = {}, name, handleChange}) => {
                 <div className="row">
                     {options.map((option) => (
                         <div key={option} className={`mb-2 from-group from-group-${option} col-${(option === 'color' || option === 'font-size') ? '12' : '6'}`}>
-                            <label className="form-label text-capitalize">{option}</label>
+                            
                             {/* font-family → text input */}
                             {
                                 option === "color" ? (

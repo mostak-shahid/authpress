@@ -1,7 +1,4 @@
 import { __ } from "@wordpress/i18n";
-import React from 'react';
-import MediaUploader from '../components/MediaUploader/MediaUploader';
-import Switch from '../components/Switch/Switch';
 import Font from '../components/Font/Font';
 import LinkColor from '../components/LinkColor/LinkColor';
 import Measurement from '../components/Measurement/Measurement';
@@ -10,6 +7,29 @@ import BoxShadow from '../components/BoxShadow/BoxShadow';
 import TextShadow from '../components/TextShadow/TextShadow';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
+import { 
+    AlignmentMatrixControl, 
+    AnglePickerControl,
+    BorderBoxControl,
+    BorderControl,
+    BoxControl,
+    DatePicker,
+    DateTimePicker,
+    ColorIndicator,
+    ColorPalette,
+    ColorPicker,
+    GradientPicker,
+    MenuGroup,
+    MenuItem,
+    FontSizePicker,
+    SelectControl,
+    __experimentalNavigation as Navigation,
+    __experimentalNavigationGroup as NavigationGroup,
+    __experimentalNavigationItem as NavigationItem,
+    __experimentalNavigationMenu as NavigationMenu,
+    __experimentalUnitControl as UnitControl, 
+} from '@wordpress/components';
 const CustomizerRedesignButton = ({handleChange}) => {
     const {
         settingData,
@@ -115,18 +135,10 @@ const CustomizerRedesignButton = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Measurement
-                                options={[
-                                    "top",
-                                    "right",
-                                    "bottom",
-                                    "left",
-                                    "unit",
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.button?.padding}
-                                // allowNegative={true}
-                                name="customizer.redesign.button.padding"
-                                handleChange={handleChange}
+                            <BoxControl
+                                __next40pxDefaultSize
+                                values={ settingData?.customizer?.redesign?.button?.padding }
+                                onChange={ (value) => handleChange('customizer.redesign.button.padding', value) }
                             /> 
                         </div>
                     }
@@ -149,18 +161,10 @@ const CustomizerRedesignButton = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Measurement
-                                options={[
-                                    "top",
-                                    "right",
-                                    "bottom",
-                                    "left",
-                                    "unit",
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.button?.margin}
-                                allowNegative={true}
-                                name="customizer.redesign.button.margin"
-                                handleChange={handleChange}
+                            <BoxControl
+                                __next40pxDefaultSize
+                                values={ settingData?.customizer?.redesign?.button?.margin }
+                                onChange={ (value) => handleChange('customizer.redesign.button.margin', value) }
                             /> 
                         </div>
                     }
@@ -183,16 +187,22 @@ const CustomizerRedesignButton = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Border 
-                                options={[
-                                    'width',
-                                    'style',
-                                    'color',
-                                    'radius'
-                                ]}
-                                defaultValues={settingData?.customizer?.redesign?.button?.border}
-                                name="customizer.redesign.button.border"
-                                handleChange={handleChange}
+                            <BorderBoxControl
+                                label={ __( 'Borders', 'authpress' ) }
+                                __next40pxDefaultSize
+                                colors={ COLORS }
+                                value={ settingData?.customizer?.redesign?.button?.border }
+                                onChange={(value) => handleChange('customizer.redesign.button.border', value)}
+                                
+                            />
+                            <UnitControl 
+                                label={ __( 'Radius', 'authpress' ) }
+                                __next40pxDefaultSize 
+                                onChange={(value) => handleChange('customizer.redesign.button.border_radius', value)}
+                                value={ settingData?.customizer?.redesign?.button?.border_radius }
+                                units={UNITS}
+                                min="0"
+                                style={{marginTop: '10px'}}
                             /> 
                         </div>
                     }
@@ -282,15 +292,18 @@ const CustomizerRedesignButton = ({handleChange}) => {
                     </div>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-5">
-                            <select 
-                                className="form-select"
+                        <div className="col-lg-5">  
+                            <SelectControl
+                                // label="Size"
                                 value={settingData?.customizer?.redesign?.button?.width}
-                                onChange={(e) => handleChange('customizer.redesign.button.width', e.target.value)}
-                            >
-                                <option value="auto">{__("Auto", "authpress")}</option>
-                                <option value="full">{__("Full Width", "authpress")}</option>
-                            </select>                         
+                                options={ [
+                                    { label: __('Auto','authpress'), value: 'auto' },
+                                    { label: __('Full Width','authpress'), value: 'full' },
+                                ] }
+                                onChange={ ( newValue ) => handleChange('customizer.redesign.button.width', newValue ) }
+                                __next40pxDefaultSize
+                                __nextHasNoMarginBottom
+                            />                       
                         </div>
                     }
                 </div>
