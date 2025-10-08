@@ -1,10 +1,11 @@
 import { __ } from "@wordpress/i18n";
 import Font from '../components/Font/Font';
 import LinkColor from '../components/LinkColor/LinkColor';
-import Measurement from '../components/Measurement/Measurement';
-import Border from '../components/Border/Border';
 import BoxShadow from '../components/BoxShadow/BoxShadow';
 import TextShadow from '../components/TextShadow/TextShadow';
+import FontControl from '../components/FontControl/FontControl';
+import BoxShadowControl from '../components/BoxShadowControl/BoxShadowControl';
+import TextShadowControl from '../components/TextShadowControl/TextShadowControl';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
@@ -59,7 +60,7 @@ const CustomizerRedesignButton = ({handleChange}) => {
                                 name='customizer.redesign.button.font' 
                                 handleChange={handleChange}
                                 options = {['font-size', 'font-weight', 'font-style', 'text-transform']}
-                            />  
+                            /> 
                         </div>
                     }
                 </div>
