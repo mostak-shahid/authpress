@@ -18,21 +18,21 @@ const FontControl = ({ value = {}, onChange }) => {
     };
 
     return (
-        <PanelBody title={__('Font Settings', 'your-textdomain')} initialOpen={true}>
+        <PanelBody title={__('Font Settings', 'authpress')} initialOpen={true}>
             <ColorPalette
-                label={__('Font Color', 'your-textdomain')}
+                label={__('Font Color', 'authpress')}
                 value={font.color}
                 onChange={(color) => update('color', color)}
             />
             <RangeControl
-                label={__('Font Size (px)', 'your-textdomain')}
+                label={__('Font Size (px)', 'authpress')}
                 value={font.size}
                 onChange={(size) => update('size', size)}
                 min={8}
                 max={100}
             />
             <RangeControl
-                label={__('Line Height', 'your-textdomain')}
+                label={__('Line Height', 'authpress')}
                 value={font.lineHeight}
                 onChange={(lineHeight) => update('lineHeight', lineHeight)}
                 min={0.8}
@@ -40,7 +40,7 @@ const FontControl = ({ value = {}, onChange }) => {
                 step={0.1}
             />
             <SelectControl
-                label={__('Font Weight', 'your-textdomain')}
+                label={__('Font Weight', 'authpress')}
                 value={font.weight}
                 onChange={(weight) => update('weight', weight)}
                 options={[
@@ -51,7 +51,7 @@ const FontControl = ({ value = {}, onChange }) => {
                 ]}
             />
             <SelectControl
-                label={__('Font Style', 'your-textdomain')}
+                label={__('Font Style', 'authpress')}
                 value={font.style}
                 onChange={(style) => update('style', style)}
                 options={[
@@ -61,7 +61,7 @@ const FontControl = ({ value = {}, onChange }) => {
                 ]}
             />
             <SelectControl
-                label={__('Text Align', 'your-textdomain')}
+                label={__('Text Align', 'authpress')}
                 value={font.textAlign}
                 onChange={(textAlign) => update('textAlign', textAlign)}
                 options={[
@@ -72,7 +72,7 @@ const FontControl = ({ value = {}, onChange }) => {
                 ]}
             />
             <SelectControl
-                label={__('Text Transform', 'your-textdomain')}
+                label={__('Text Transform', 'authpress')}
                 value={font.textTransform}
                 onChange={(textTransform) => update('textTransform', textTransform)}
                 options={[
@@ -83,7 +83,7 @@ const FontControl = ({ value = {}, onChange }) => {
                 ]}
             />
             <SelectControl
-                label={__('Text Decoration', 'your-textdomain')}
+                label={__('Text Decoration', 'authpress')}
                 value={font.textDecoration}
                 onChange={(textDecoration) => update('textDecoration', textDecoration)}
                 options={[

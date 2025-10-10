@@ -22,7 +22,7 @@ const gradients = [
     { name: 'Forest', gradient: 'linear-gradient(135deg,#0f0,#090)' },
 ];
 
-export default function Colorpicker({ defaultValue, handleChange, mode = 'both' }) {
+export default function Colorpicker({ defaultValue, handleChange, mode = 'both', label='' }) {
     const [ isOpen, setIsOpen ] = useState(false);
 
     // dynamically choose which tabs to show
@@ -45,7 +45,7 @@ export default function Colorpicker({ defaultValue, handleChange, mode = 'both' 
             >                                   
                 <ColorIndicator colorValue={ defaultValue } /> 
                 <span className="color-picker-label">
-                    { mode === 'color' ? 'Select Color' : mode === 'gradient' ? 'Select Gradient' : 'Select Color or Gradient' }
+                    { label? label : mode === 'color' ? 'Select Color' : mode === 'gradient' ? 'Select Gradient' : 'Select Color or Gradient' }
                 </span>
             </Button>   
 

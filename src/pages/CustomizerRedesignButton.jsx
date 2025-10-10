@@ -59,7 +59,7 @@ const CustomizerRedesignButton = ({handleChange}) => {
                                 defaultValues={settingData?.customizer?.redesign?.button?.font}
                                 name='customizer.redesign.button.font' 
                                 handleChange={handleChange}
-                                options = {['font-size', 'font-weight', 'font-style', 'text-transform']}
+                                options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
                             /> 
                         </div>
                     }
@@ -138,6 +138,7 @@ const CustomizerRedesignButton = ({handleChange}) => {
                         <div className="col-lg-5">
                             <BoxControl
                                 __next40pxDefaultSize
+                                label={__("", "authpress")}
                                 values={ settingData?.customizer?.redesign?.button?.padding }
                                 onChange={ (value) => handleChange('customizer.redesign.button.padding', value) }
                             /> 
@@ -238,7 +239,13 @@ const CustomizerRedesignButton = ({handleChange}) => {
                                 //     inset: false,
                                 // }}
                                 handleChange={handleChange}
-                            />                          
+                            />  
+                            <hr />
+                            <BoxShadowControl
+                                value={settingData?.customizer?.redesign?.button?.boxshadow}
+                                onChange={(value) => handleChange('customizer.redesign.button.boxshadow"', value)}
+                                
+                            />                        
                         </div>
                     }
                 </div>

@@ -28,16 +28,18 @@ const Background = ({options, defaultValues = {}, name, handleChange}) => {
                 <div className="row">
                 {options.map((option) => (
                     <div key={option} className={`mb-2 from-group from-group-${option} col-${(option === 'image' || option === 'color') ? '12' : '6'}`}>
-                        <label className="form-label text-capitalize">{option}</label>
                         {/* color → color picker */}
                         {option === "color" && (
+                            <>
+                            <label className="form-label text-capitalize">{option}</label>
                             <Colorpicker
                                 type="color"
                                 defaultValue={values[option]}
                                 handleChange={(value) => updateValue(option, value)}
                                 className="form-control"
                                 mode='color'
-                            />
+                                />
+                            </>
                         )}
 
                         {/* image → external component */}
@@ -62,7 +64,7 @@ const Background = ({options, defaultValues = {}, name, handleChange}) => {
                             {/* rest → select dropdown */}
                             {option !== "color" && option !== "image" && (                                
                                 <SelectControl
-                                    // label="Size"
+                                    label={option}
                                     value={ values[option] || "" }
                                     options={selectOptions[option]?.map((val) => ({ label: val, value: val })) || []}
                                     onChange={(value) => updateValue(option, value)}

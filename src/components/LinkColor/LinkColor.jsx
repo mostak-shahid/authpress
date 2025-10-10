@@ -21,6 +21,7 @@ const LinkColor = ({options, defaultValues = {}, name, handleChange}) => {
                                 defaultValue={values[option] || "#000000"}
                                 handleChange={(value) => updateValue(option, value)}
                                 mode='color'
+                                label={`${option.charAt(0).toUpperCase() + option.slice(1)} Color`}
                             /> 
                         }
                     </div>
