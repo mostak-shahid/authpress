@@ -58,17 +58,88 @@ const settingsMenu = {
     "security": { 
         "title": __( "Security", "authpress" ), 
         "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
-        "url":"/settings/security"
+        "url":"/settings/security",
+        "sub": {
+            "password_policy" : {
+                "title": __( "Password policy", "authpress" ),                
+                "url":"/settings/security/password_policy",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            },
+            "active_logins" : {
+                "title": __( "Active Logins", "authpress" ),
+                "url":"/settings/security/active_logins",
+                "description": __( "Easily manage and monitor login sessions for your users with advanced controls to enhance security and prevent unauthorized access.", "authpress" ), 
+            },
+            "anti_bot" : {
+                "title": __( "Anti Bot", "authpress" ),
+                "url":"/settings/security/anti_bot",
+                "description": __( "Protect your sensitive information with cutting-edge security measures designed to safeguard your website. Implement robust encryption, prevent unauthorized access, and block potential threats before they arise. Whether it's user data, transaction details, or confidential content, ensure your information remains private, secure, and uncompromised at all times.", "authpress" ), 
+            },
+            "brute_force" : {
+                "title": __( "Brute Force", "authpress" ),
+                "url":"/settings/security/brute_force",
+                "description": __( "Limit the number of login attempts to prevent brute-force attacks and ensure the security of your login process.", "authpress" ),             
+            },
+            "blacklist_manager" : {
+                "title": __( "Blacklist Manager", "authpress" ),
+                "url":"/settings/security/blacklist_manager",
+                "description": __( "Limit the number of login attempts to prevent brute-force attacks and ensure the security of your login process.", "authpress" ), 
+            }
+        }
     },
     "two_fa_authentication": { 
         "title": __( "2FA Authentication", "authpress" ), 
         "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
-        "url":"/settings/two_fa_authentication"
+        "url":"/settings/two_fa_authentication",
+        "sub": {
+            "email_otp" : {
+                "title": __( "Email OTP", "authpress" ),                
+                "url":"/settings/two_fa_authentication/email_otp",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            },
+            "totp" : {
+                "title": __( "TOTP", "authpress" ),                
+                "url":"/settings/two_fa_authentication/totp",
+                "description": __( "TOTP (time based - most common algorithm; used by Google Authenticator)", "authpress" ), 
+            },
+            "hotp" : {
+                "title": __( "HOTP", "authpress" ),                
+                "url":"/settings/two_fa_authentication/hotp",
+                "description": __( "TOTP (event based - most common algorithm; used by Google Authenticator)", "authpress" ), 
+            },
+            "fixed_otp" : {
+                "title": __( "Fixed OTP", "authpress" ),                
+                "url":"/settings/two_fa_authentication/fixed_otp",
+                "description": __( "Dynamically generated fixed OTP", "authpress" ), 
+            },
+        }
     },
     "password_less_authentication": { 
         "title": __( "Passwordless Authentication", "authpress" ), 
         "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
-        "url":"/settings/password_less_authentication"
+        "url":"/settings/password_less_authentication",
+        "sub": {
+            "otl" : {
+                "title": __( "OTL", "authpress" ),                
+                "url":"/settings/password_less_authentication/otl",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            },
+            "social_login" : {
+                "title": __( "Social Login", "authpress" ),                
+                "url":"/settings/password_less_authentication/social_login",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            },
+            "qr_code" : {
+                "title": __( "QR Code", "authpress" ),                
+                "url":"/settings/password_less_authentication/qr_code",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            },
+            "puzzel" : {
+                "title": __( "Puzzel Login", "authpress" ),                
+                "url":"/settings/password_less_authentication/puzzel",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            },
+        }
     },
     "base_input": { 
         "title": __( "Base Input", "authpress" ), 

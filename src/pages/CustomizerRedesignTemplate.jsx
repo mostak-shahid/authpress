@@ -33,9 +33,9 @@ const CustomizerRedesignTemplate = ({handleChange}) => {
                                 defaultValue={settingData?.customizer?.redesign?.templates}
                                 // defaultValue='radio-1'
                                 options={[
-                                    { value: 'default-login', label: `<img class="img-fluid" src="${authpress_ajax_obj.image_url}default-login.png" alt=""  />` },
-                                    { value: 'default-login-left', label: `<img class="img-fluid" src="${authpress_ajax_obj.image_url}default-login-left.png" alt=""  />` },
-                                    { value: 'default-login-right', label: `<img class="img-fluid" src="${authpress_ajax_obj.image_url}default-login-right.png" alt=""  />` },
+                                    { value: 'default-login', label: `<img className="img-fluid" src="${authpress_ajax_obj.image_url}default-login.png" alt=""  />` },
+                                    { value: 'default-login-left', label: `<img className="img-fluid" src="${authpress_ajax_obj.image_url}default-login-left.png" alt=""  />` },
+                                    { value: 'default-login-right', label: `<img className="img-fluid" src="${authpress_ajax_obj.image_url}default-login-right.png" alt=""  />` },
                                 ]}
                                 name="customizer.redesign.templates"
                                 handleChange= {handleChange}

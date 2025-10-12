@@ -56,8 +56,8 @@ const BaseInput = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <div class="input-group">
-                                <span class="input-group-text" id="basic-addon1">@</span>
+                            <div className="input-group">
+                                <span className="input-group-text" id="basic-addon1">@</span>
                                 <input 
                                     className="form-control"
                                     type="text"

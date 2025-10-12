@@ -98,7 +98,7 @@ const BasicTable = ({handleChange}) => {
         orderable: false,
         className: "all",
         render: (data, type, row) =>
-            `<input type="checkbox" class="row-checkbox" data-id="${row.id}" ${
+            `<input type="checkbox" className="row-checkbox" data-id="${row.id}" ${
             selectedPosts.includes(row.id) ? "checked" : ""
             } />`,
     },
@@ -113,7 +113,7 @@ const BasicTable = ({handleChange}) => {
         className: "min-tablet",
         render: (d, t, row) =>
         row.author
-            ? `<img src="${row.author.avatar}" class="rounded-circle me-2" width="24" height="24"/> ${row.author.name}`
+            ? `<img src="${row.author.avatar}" className="rounded-circle me-2" width="24" height="24"/> ${row.author.name}`
             : "—",
     },
     { data: "title", title: "Title", className: "all" },
@@ -135,9 +135,9 @@ const BasicTable = ({handleChange}) => {
         title: "Action",
         className: "all",
         render: (d, t, row) => `
-        <button class="btn btn-sm btn-success me-1" onclick="window.changeStatus(${row.id}, 'publish')">Publish</button>
-        <button class="btn btn-sm btn-warning me-1" onclick="window.changeStatus(${row.id}, 'draft')">Draft</button>
-        <button class="btn btn-sm btn-danger" onclick="window.changeStatus(${row.id}, 'trash')">Trash</button>
+        <button className="btn btn-sm btn-success me-1" onclick="window.changeStatus(${row.id}, 'publish')">Publish</button>
+        <button className="btn btn-sm btn-warning me-1" onclick="window.changeStatus(${row.id}, 'draft')">Draft</button>
+        <button className="btn btn-sm btn-danger" onclick="window.changeStatus(${row.id}, 'trash')">Trash</button>
         `,
     },
     ];

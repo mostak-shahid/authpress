@@ -38,7 +38,7 @@ export default function Colorpicker({ defaultValue, handleChange, mode = 'both',
         <div className="color-picker-wrapper">
             <Button
                 variant="secondary"
-                className="color-picker-button"
+                className="color-picker-button border-authpress"
                 aria-label="Select Color or Gradient"
                 onClick={ () => setIsOpen(!isOpen) }
                 style={ { border: '1px solid #ccc', color: '#ccc', gap: '10px', boxShadow: 'none' } }

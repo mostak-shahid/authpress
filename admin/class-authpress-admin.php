@@ -125,6 +125,7 @@ class Authpress_Admin
 		wp_enqueue_script($this->plugin_name . '-admin-script', plugin_dir_url(__FILE__) . 'js/admin-script.js', array('jquery', 'jquery-ui-tabs'), $this->version, false);
 		$ajax_params = array(
 			'admin_url' => admin_url(),
+			'home_url' => home_url(),
 			'ajax_url' => admin_url('admin-ajax.php'),
 			'image_url' => AUTHPRESS_URL . 'assets/images/',
 			'_admin_nonce' => esc_attr(wp_create_nonce('authpress_admin_nonce')),

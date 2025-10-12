@@ -3,7 +3,12 @@ import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { 
-    ToggleControl
+    ToggleControl,
+    SelectControl,
+    Flex, 
+    FlexBlock, 
+    FlexItem,
+    TextControl
 } from '@wordpress/components';
 const CustomizerSettings = ({handleChange}) => {
     const {
@@ -29,19 +34,20 @@ const CustomizerSettings = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5"> 
-                            <div className="form-group">
-                                <div class="input-group">   
-                                    <span class="input-group-text"><i class="dashicons dashicons-admin-links"></i></span>                             
-                                    <input 
-                                        id="customizer-logo-height"
-                                        className="form-control"
-                                        type="url"
-                                        value={settingData?.customizer?.settings?.login_url}
-                                        min="0"
-                                        onChange={(e) => handleChange('customizer.settings.login_url', e.target.value)}
-                                    /> 
-                                </div> 
-                            </div>                       
+                            <Flex className="input-group-authpress">
+                                <FlexItem className="input-group-text">
+                                    <span>{authpress_ajax_obj.home_url}/</span>
+                                </FlexItem>
+                                <FlexBlock>
+                                    <TextControl
+                                        __nextHasNoMarginBottom
+                                        __next40pxDefaultSize
+                                        // label="Additional CSS Class"
+                                        value={ settingData?.customizer?.settings?.login_url }
+                                        onChange={ ( value ) => handleChange('customizer.settings.login_url', value) }
+                                    />
+                                </FlexBlock>
+                            </Flex>                     
                         </div>
                     }
                 </div>
@@ -63,19 +69,20 @@ const CustomizerSettings = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5"> 
-                            <div className="form-group">
-                                <div class="input-group">   
-                                    <span class="input-group-text"><i class="dashicons dashicons-admin-links"></i></span>                             
-                                    <input 
-                                        id="customizer-logo-height"
-                                        className="form-control"
-                                        type="url"
-                                        value={settingData?.customizer?.settings?.registration_url}
-                                        min="0"
-                                        onChange={(e) => handleChange('customizer.settings.registration_url', e.target.value)}
-                                    /> 
-                                </div> 
-                            </div>                       
+                            <Flex className="input-group-authpress">
+                                <FlexItem className="input-group-text">
+                                    <span>{authpress_ajax_obj.home_url}/</span>
+                                </FlexItem>
+                                <FlexBlock>
+                                    <TextControl
+                                        __nextHasNoMarginBottom
+                                        __next40pxDefaultSize
+                                        // label="Additional CSS Class"
+                                        value={ settingData?.customizer?.settings?.registration_url }
+                                        onChange={ ( value ) => handleChange('customizer.settings.registration_url', value) }
+                                    />
+                                </FlexBlock>
+                            </Flex>                        
                         </div>
                     }
                 </div>
@@ -97,19 +104,20 @@ const CustomizerSettings = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5"> 
-                            <div className="form-group">
-                                <div class="input-group">   
-                                    <span class="input-group-text"><i class="dashicons dashicons-admin-links"></i></span>                             
-                                    <input 
-                                        id="customizer-logo-height"
-                                        className="form-control"
-                                        type="url"
-                                        value={settingData?.customizer?.settings?.forgot_password_url}
-                                        min="0"
-                                        onChange={(e) => handleChange('customizer.settings.forgot_password_url', e.target.value)}
-                                    /> 
-                                </div> 
-                            </div>                       
+                            <Flex className="input-group-authpress">
+                                <FlexItem className="input-group-text">
+                                    <span>{authpress_ajax_obj.home_url}/</span>
+                                </FlexItem>
+                                <FlexBlock>
+                                    <TextControl
+                                        __nextHasNoMarginBottom
+                                        __next40pxDefaultSize
+                                        // label="Additional CSS Class"
+                                        value={ settingData?.customizer?.settings?.forgot_password_url }
+                                        onChange={ ( value ) => handleChange('customizer.settings.forgot_password_url', value) }
+                                    />
+                                </FlexBlock>
+                            </Flex>                       
                         </div>
                     }
                 </div>
@@ -130,17 +138,20 @@ const CustomizerSettings = ({handleChange}) => {
                     </div>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-5">
-                            <select 
-                                className="form-select"
-                                value={settingData?.customizer?.settings?.login_by} 
-                                onChange={(e) => handleChange('customizer.settings.login_by', e.target.value)}
-                            >
-                                <option value="username">{__("Username", "authpress")}</option>
-                                <option value="email">{__("Email", "authpress")}</option>
-                                <option value="both">{__("Both", "authpress")}</option>
-                                <option value="phone" disabled>{__("Phone Number", "authpress")} ({__("Pro", "authpress")})</option>
-                            </select>                         
+                        <div className="col-lg-5">  
+                            <SelectControl
+                                // label="Size"
+                                value={ settingData?.customizer?.settings?.login_by }
+                                options={ [
+                                    { label: __("Username", "authpress"), value: 'username' },
+                                    { label: __("Email", "authpress"), value: 'email' },
+                                    { label: __("Both", "authpress"), value: 'both' },
+                                    { label: __("Phone Number (Pro)", "authpress"), value: 'phone',disabled: true },
+                                ] }
+                                onChange={ ( newSize ) => handleChange('customizer.settings.login_by', newSize ) }
+                                __next40pxDefaultSize
+                                __nextHasNoMarginBottom
+                            />                       
                         </div>
                     }
                 </div>

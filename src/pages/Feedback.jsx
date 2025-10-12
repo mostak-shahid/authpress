@@ -44,8 +44,8 @@ const Feedback = () => {
                         <img className="img-fluid" src={`${authpress_ajax_obj.image_url}feedback.jpg`} alt="" />
                     </div> 
                     <div className="col-lg-6">
-                        <div class="mb-3">
-                            <label htmlFor="subject" class="form-label">{__("Subject", "authpress")}</label>
+                        <div className="mb-3">
+                            <label htmlFor="subject" className="form-label">{__("Subject", "authpress")}</label>
                             <input 
                                 id="subject"
                                 className="form-control"
@@ -54,8 +54,8 @@ const Feedback = () => {
                                 onChange={(e) => setSubject(e.target.value)}
                             /> 
                         </div>
-                        <div class="mb-3">
-                            <label htmlFor="message" class="form-label">{__("Message", "authpress")}</label>
+                        <div className="mb-3">
+                            <label htmlFor="message" className="form-label">{__("Message", "authpress")}</label>
                             <textarea 
                                 id="message"
                                 className="form-control"

@@ -28,14 +28,14 @@ const ComponentsBasic = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <div class="input-group">
+                            <div className="input-group">
                                 <input 
                                     className="form-control"
                                     type="text"
                                     value={settingData?.components?.basic?.ip}
                                     onChange={(e) => handleChange('components.basic.ip', e.target.value)}
                                 />
-                                <span class="input-group-text" id="basic-addon1"><i className="cil-reload"></i></span>
+                                <span className="input-group-text" id="basic-addon1"><i className="cil-reload"></i></span>
                             </div>                            
                         </div>
                     }

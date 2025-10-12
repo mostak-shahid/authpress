@@ -45,9 +45,9 @@ export default function Settings() {
                                 </div>
                             </div>
                             <div className="card-footer d-flex gap-2">
-                                <button type="button" class="btn btn-primary btn-sm">Save</button>
-                                <button type="button" class="btn btn-outline-primary btn-sm">Reset</button>
-                                <button type="button" class="btn btn-outline-primary btn-sm">Reset All</button>
+                                <button type="button" className="btn btn-primary btn-sm">Save</button>
+                                <button type="button" className="btn btn-outline-primary btn-sm">Reset</button>
+                                <button type="button" className="btn btn-outline-primary btn-sm">Reset All</button>
                             </div>
                         </div>
                     </div>
