@@ -1,9 +1,10 @@
 import { __ } from "@wordpress/i18n";
-import React from 'react';
-import MediaUploader from '../components/MediaUploader/MediaUploader';
 import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+import { 
+    ToggleControl
+} from '@wordpress/components';
 const CustomizerSettings = ({handleChange}) => {
     const {
         settingData,
@@ -161,11 +162,11 @@ const CustomizerSettings = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.settings.remember_me_always_on"
-                                checked={settingData?.customizer?.settings?.remember_me_always_on} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.settings.remember_me_always_on', newValue)}
+                                checked={settingData?.customizer?.settings?.remember_me_always_on}
+                            /> 
                         </div>
                     }
                 </div>
@@ -187,11 +188,11 @@ const CustomizerSettings = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.settings.enable_registration_password"
-                                checked={settingData?.customizer?.settings?.enable_registration_password} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.settings.enable_registration_password', newValue)}
+                                checked={settingData?.customizer?.settings?.enable_registration_password}
+                            /> 
                         </div>
                     }
                 </div>

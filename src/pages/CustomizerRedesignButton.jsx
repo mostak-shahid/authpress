@@ -1,9 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import Font from '../components/Font/Font';
 import LinkColor from '../components/LinkColor/LinkColor';
-import BoxShadow from '../components/BoxShadow/BoxShadow';
 import TextShadow from '../components/TextShadow/TextShadow';
-import FontControl from '../components/FontControl/FontControl';
 import BoxShadowControl from '../components/BoxShadowControl/BoxShadowControl';
 import TextShadowControl from '../components/TextShadowControl/TextShadowControl';
 import { useMain } from '../contexts/MainContext';
@@ -227,24 +225,10 @@ const CustomizerRedesignButton = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <BoxShadow
-                                name="customizer.redesign.button.boxshadow"
-                                defaultValues={settingData?.customizer?.redesign?.button?.boxshadow}
-                                // defaultValues={{
-                                //     offsetX: 0,
-                                //     offsetY: 8,
-                                //     blur: 20,
-                                //     spread: 0,
-                                //     color: "rgba(0,0,0,0.25)",
-                                //     inset: false,
-                                // }}
-                                handleChange={handleChange}
-                            />  
-                            <hr />
                             <BoxShadowControl
                                 value={settingData?.customizer?.redesign?.button?.boxshadow}
                                 onChange={(value) => handleChange('customizer.redesign.button.boxshadow"', value)}
-                                
+                                // className="border-start border-end border-bottom"
                             />                        
                         </div>
                     }
@@ -278,13 +262,17 @@ const CustomizerRedesignButton = ({handleChange}) => {
                                     name="customizer.redesign.button.textshadow"
                                     defaultValues={settingData?.customizer?.redesign?.button?.textshadow}
                                     handleChange={handleChange}
-                                />                       
+                                />
+                                <TextShadowControl
+                                    value={settingData?.customizer?.redesign?.button?.textshadow}
+                                    onChange={(textShadow) => handleChange("customizer.redesign.button.textshadow",textShadow)}
+                                />                   
                         </div>
                     }
                 </div>
             </div>
 
-            <div className="setting-unit border-bottom py-4">
+            <div className="setting-unit pt-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">
                         {

@@ -210,12 +210,6 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                         <div className="col-lg-auto">
                                             <ToggleControl
                                                 __nextHasNoMarginBottom
-                                                // label="Fixed Background"
-                                                // help={
-                                                //     hasFixedBackground
-                                                //         ? 'Has fixed background.'
-                                                //         : 'No fixed background.'
-                                                // }
                                                 onChange={(value) => handleChange('customizer.redesign.form.wrapper.glass_effect', value)}
                                                 checked={ settingData?.customizer?.redesign?.form?.wrapper?.glass_effect }
                                             />                        

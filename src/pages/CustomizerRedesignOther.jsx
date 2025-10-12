@@ -1,9 +1,10 @@
 import { __ } from "@wordpress/i18n";
-import React from 'react';
-import Switch from '../components/Switch/Switch';
 import Font from "../components/Font/Font";
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+import { 
+    ToggleControl
+} from '@wordpress/components';
 const CustomizerRedesignOther = ({handleChange}) => {
     const {
         settingData,
@@ -28,11 +29,11 @@ const CustomizerRedesignOther = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.redesign.other.disable_register_link"
-                                checked={settingData?.customizer?.redesign?.other?.disable_register_link} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.redesign.other.disable_register_link', newValue)}
+                                checked={settingData?.customizer?.redesign?.other?.disable_register_link}
+                            /> 
                         </div>
                     }
                 </div>
@@ -54,11 +55,11 @@ const CustomizerRedesignOther = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.redesign.other.disable_lost_password"
-                                checked={settingData?.customizer?.redesign?.other?.disable_lost_password} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.redesign.other.disable_lost_password', newValue)}
+                                checked={settingData?.customizer?.redesign?.other?.disable_lost_password}
+                            /> 
                         </div>
                     }
                 </div>
@@ -80,11 +81,11 @@ const CustomizerRedesignOther = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.redesign.other.disable_privacy_policy"
-                                checked={settingData?.customizer?.redesign?.other?.disable_privacy_policy} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.redesign.other.disable_privacy_policy', newValue)}
+                                checked={settingData?.customizer?.redesign?.other?.disable_privacy_policy}
+                            /> 
                         </div>
                     }
                 </div>
@@ -106,11 +107,11 @@ const CustomizerRedesignOther = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="customizer.redesign.other.disable_back_to_website"
-                                checked={settingData?.customizer?.redesign?.other?.disable_back_to_website} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.redesign.other.disable_back_to_website', newValue)}
+                                checked={settingData?.customizer?.redesign?.other?.disable_back_to_website}
+                            /> 
                         </div>
                     }
                 </div>

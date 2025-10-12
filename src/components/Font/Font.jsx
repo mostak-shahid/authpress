@@ -7,7 +7,7 @@ import {
     ToggleControl
 } from '@wordpress/components';
 import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../../lib/Constants';
-const Font = ({options, defaultValues = {}, name, handleChange}) => {
+const Font = ({options, defaultValues = {}, name, handleChange, className=''}) => {
     // Initialize selected values with defaultValues
     const [values, setValues] = useState(defaultValues);
     const [ enableFont, setEnableFont ] = useState( false );
@@ -34,30 +34,12 @@ const Font = ({options, defaultValues = {}, name, handleChange}) => {
     return (
         <>
             {console.log(defaultValues)}
-            <div className="font-wrapper">
-                <div className="d-flex justify-content-end border-top border-bottom py-2 mb-2">
-                    {/* <ToggleControl
-                        __nextHasNoMarginBottom
-                        label="Fixed Background"
-                        help={
-                            hasFixedBackground
-                                ? 'Has fixed background.'
-                                : 'No fixed background.'
-                        }
-                        // onChange={(value) => handleChange('customizer.redesign.fields.disable_remember_me', value)}
-                        // checked={settingData?.customizer?.redesign?.fields?.disable_remember_me} 
-                    />  */}
+            <div className={`font-wrapper ${className}`}>
+                <div className="d-flex justify-content-end mb-2">
                     <ToggleControl
-                        // __nextHasNoMarginBottom
                         label="Enable Font Options"
-                        // help={
-                        //     hasFixedBackground
-                        //         ? 'Has fixed background.'
-                        //         : 'No fixed background.'
-                        // }
                         checked={ enableFont }
                         onChange={ (newValue) => {
-                            // setEnableFont( newValue );
                             updateValue('enabled', newValue);
                         } }
                         className="mb-0"
