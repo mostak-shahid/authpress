@@ -412,11 +412,12 @@ function authpress_get_default_options()
 		// 'editor-input' => '<p>Lorem</p>',
 
 		'more' => [
-			'enable_scripts' => 0,
+			'enable_scripts' => false,
 			'css' => '/* CSS Code Here */',
 			'js' => '// JavaScript Code Here',
 			'header_content' => '<!-- Content inside HEAD tag -->',
 			'footer_content' => '<!-- Content inside BODY tag -->',
+			'delete_data_on' => 'delete',
 		],
 
 	];

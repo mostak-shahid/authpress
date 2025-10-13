@@ -1,9 +1,9 @@
 import { __ } from "@wordpress/i18n";
-import { useState } from "react";
-import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
-
+import { 
+    ToggleControl
+} from '@wordpress/components';
 
 import AceEditor from "react-ace";
 // Load modes and theme
@@ -16,10 +16,6 @@ const More = ({handleChange}) => {
         settingData,
         settingLoading,
     } = useMain();
-    const [cssCode, setCssCode] = useState("/* CSS Code Here */");
-    const [jsCode, setJsCode] = useState("// JavaScript Code Here");
-    const [htmlCode1, setHtmlCode1] = useState("<!-- HTML Code 1 -->");
-    const [htmlCode2, setHtmlCode2] = useState("<!-- HTML Code 2 -->");
     return (
         <>
             <div className="setting-unit border-bottom py-4">
@@ -39,11 +35,11 @@ const More = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Switch 
-                                name="more.enable_scripts"
-                                checked={settingData?.more.enable_scripts} // Pass "1"/"0" from API 
-                                onChange={handleChange} 
-                            />
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(value) => handleChange('more.enable_scripts', value)}
+                                checked={ settingData?.more.enable_scripts }
+                            />  
                         </div>
                     }
                 </div>

@@ -1,9 +1,8 @@
 import { __ } from "@wordpress/i18n";
-import Switch from '../components/Switch/Switch';
-import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import axios from "axios";
 import { useEffect, useState } from 'react';
+import { TextControl, TextareaControl } from '@wordpress/components';
 const Feedback = () => {
     const [subject, setSubject] = useState('')
     const [message, setMessage] = useState('')
@@ -45,24 +44,22 @@ const Feedback = () => {
                     </div> 
                     <div className="col-lg-6">
                         <div className="mb-3">
-                            <label htmlFor="subject" className="form-label">{__("Subject", "authpress")}</label>
-                            <input 
-                                id="subject"
-                                className="form-control"
-                                type="text"
-                                value={subject}
-                                onChange={(e) => setSubject(e.target.value)}
-                            /> 
+                            <TextControl
+                                __nextHasNoMarginBottom
+                                __next40pxDefaultSize
+                                label={__("Subject", "authpress")}
+                                value={ subject }
+                                onChange={ ( value ) => setSubject( value ) }
+                            />
                         </div>
                         <div className="mb-3">
-                            <label htmlFor="message" className="form-label">{__("Message", "authpress")}</label>
-                            <textarea 
-                                id="message"
-                                className="form-control"
-                                type="text"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                            /> 
+                            <TextareaControl
+                                __nextHasNoMarginBottom
+                                label={__("Message", "authpress")}
+                                // help="Enter some text"
+                                value={ message }
+                                onChange={ ( value ) => setMessage( value ) }
+                            />
                         </div>
                         <button 
                             type="button" 

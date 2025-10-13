@@ -3,8 +3,16 @@ import {
     ToggleControl,
     __experimentalUnitControl as UnitControl, 
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
+import {useState} from 'react';
 import Colorpicker from '../Colorpicker/Colorpicker';
+
+const units = [
+    { value: 'px', label: 'px' },
+    // { value: '%', label: '%' },
+    // { value: 'em', label: 'em' },
+    // { value: 'rem', label: 'rem' },
+    // { value: 'vw', label: 'vw' },
+];
 const BoxShadowControl = ({ value = {}, onChange, className='' }) => {
     const [shadow, setShadow] = useState(value);
 
@@ -13,20 +21,13 @@ const BoxShadowControl = ({ value = {}, onChange, className='' }) => {
         setShadow(newShadow);
         onChange(newShadow);
     };
-    const units = [
-        { value: 'px', label: 'px' },
-        // { value: '%', label: '%' },
-        // { value: 'em', label: 'em' },
-        // { value: 'rem', label: 'rem' },
-        // { value: 'vw', label: 'vw' },
-    ];
 
     return (
         <div className={`box-shadow-wrapper ${className}`}>
             <div className="d-flex justify-content-end mb-2">
                 
                 <ToggleControl
-                    label={__('Enable Shadow', 'authpress')}
+                    label={__('Enable Box Shadow', 'authpress')}
                     checked={!!shadow.enabled}
                     onChange={(enabled) => update('enabled', enabled)}
                 />

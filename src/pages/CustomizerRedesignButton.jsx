@@ -251,18 +251,6 @@ const CustomizerRedesignButton = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                                <TextShadow
-                                    options={["offsetX", "offsetY", "blur", "color"]}
-                                    // defaultValues={{
-                                    //     offsetX: 2,
-                                    //     offsetY: 2,
-                                    //     blur: 5,
-                                    //     color: "#ff00ff",
-                                    // }}
-                                    name="customizer.redesign.button.textshadow"
-                                    defaultValues={settingData?.customizer?.redesign?.button?.textshadow}
-                                    handleChange={handleChange}
-                                />
                                 <TextShadowControl
                                     value={settingData?.customizer?.redesign?.button?.textshadow}
                                     onChange={(textShadow) => handleChange("customizer.redesign.button.textshadow",textShadow)}
