@@ -28,6 +28,7 @@ import CustomizerRedesignOther from "./pages/CustomizerRedesignOther";
 import CustomizerSettings from "./pages/CustomizerSettings";
 
 import { useState } from "react";
+import Tools from "./pages/Tools";
 
 const NotFound = () => (
   <div>
@@ -74,6 +75,7 @@ function App() {
         <Route path="/page" element={<Page />} />
         <Route path="/settings/import_export" element={<ImportExport />} />
         <Route path="/settings/more" element={<More />} />
+        <Route path="/settings/tools" element={<Tools />} />
         <Route path="/settings/feedback" element={<Feedback />} />
         <Route path="*" element={<NotFound />} />
       </Routes>

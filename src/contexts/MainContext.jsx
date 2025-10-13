@@ -199,6 +199,11 @@ const settingsMenu = {
         "description": __( "Adding more features to your Store.", "authpress" ), 
         "url":"/settings/more"
     },
+    "tools": { 
+        "title": __( "Tools", "authpress" ), 
+        "description": __( "Adding more features to your Store.", "authpress" ), 
+        "url":"/settings/tools"
+    },
     "feedback": { 
         "title": __( "Feedback", "authpress" ), 
         "description": __( "We\'re constantly enhancing our product, and your feedback is key to staying ahead of the curve and delivering a stronger, more reliable security solution for you.", "authpress" ), 

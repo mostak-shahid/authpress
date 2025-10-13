@@ -2,14 +2,16 @@ import { __ } from "@wordpress/i18n";
 import withForm from '../pages/withForm';
 import axios from "axios";
 import { useEffect, useState } from 'react';
-import { TextControl, TextareaControl } from '@wordpress/components';
+import { TextControl, TextareaControl, Button } from '@wordpress/components';
+
+import { envelope, rotateRight, check } from '@wordpress/icons'; // Example icon
 const Feedback = () => {
     const [subject, setSubject] = useState('')
     const [message, setMessage] = useState('')
-    const [processing, setProcessing] = useState(false)
+    const [processing, setProcessing] = useState('normal'); // normal, processing, done
     const handleForm = async () => {
         if (subject && message) {
-            setProcessing(true);
+            setProcessing('processing');
             try {
                 const result = await axios.post(
                     "/wp-json/authpress/v1/feedback",
@@ -25,11 +27,18 @@ const Feedback = () => {
                     }
                 );
                 // You might want to handle success here
-                // console.log("Mail sent successfully:", result.data);
+                console.log(result);
+
+                setProcessing('done');
+                if (result.data.success) {
+                    setSubject('');
+                    setMessage('');
+                }
+
             } catch (error) {
                 console.error("Mail Sending Error:", error);
             } finally {
-                setProcessing(false);
+                setProcessing('normal');
             }
         } else {
             alert('Subject or Message can\'t be Empty')
@@ -61,16 +70,24 @@ const Feedback = () => {
                                 onChange={ ( value ) => setMessage( value ) }
                             />
                         </div>
-                        <button 
-                            type="button" 
-                            className="button button-primary" 
-                            onClick={handleForm}
-                            disabled={processing}
+                        <Button
+                            isDestructive={ processing=='processing'?true:false } // Red button
+                            isBusy={ processing!='normal'?true:false  } // Show loading indicator
+                            disabled={ processing!='normal'?true:false } // Disable the button
+                            isPressed={ false } // Appear pressed, Become black  
+                            icon={ processing=='processing'?rotateRight:processing=='done'?check:envelope} // Button icon
+                            iconPosition="left" // Icon position (left, right)
+                            iconSize={ 20 } // Icon size
+                            size="medium" // Button size (small, medium, large)
+                            style={ { marginRight: '8px' } } // Custom styles
+                            className={processing=='processing'?'button-processing':'' } // Custom class name (button-processing)                  
+                            variant="primary"
+                            onClick={ handleForm }
                         >
                             {
-                                processing ? __( "Sending...", "authpress" ) : __( "Send", "authpress" )
+                                processing == 'processing' ? __( "Sending...", "authpress" ) : __( "Send", "authpress" )
                             }
-                        </button>
+                        </Button>
                         
                     </div>  
                 </div>

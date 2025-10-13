@@ -417,7 +417,10 @@ function authpress_get_default_options()
 			'js' => '// JavaScript Code Here',
 			'header_content' => '<!-- Content inside HEAD tag -->',
 			'footer_content' => '<!-- Content inside BODY tag -->',
-			'delete_data_on' => 'delete',
+			
+		],
+		'tools' => [
+			'delete_data_on' => 'none', // delete, unstall, none
 		],
 
 	];

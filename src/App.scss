@@ -8,6 +8,11 @@ $border-authpress: #dee2e6;
         .components-input-control__backdrop,
         .components-button {
             border-color: $border-authpress!important;
+            &.button-processing {
+                svg {
+                    animation: spin 2s linear infinite;
+                }
+            }
         }
         .input-group-authpress {
             display: flex;
@@ -41,4 +46,8 @@ $border-authpress: #dee2e6;
             }
         }
     }
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }     
 }
