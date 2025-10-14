@@ -1,106 +1,165 @@
 import { __ } from '@wordpress/i18n';
-import {
-    PanelBody,
-    RangeControl,
+import { useEffect, useState } from 'react';
+import ColorPickerControl from '../ColorPickerControl/ColorPickerControl';
+import { 
     SelectControl,
-    ColorPalette,
-    TextControl,
+    FontSizePicker,
+    ToggleControl
 } from '@wordpress/components';
-import { useState } from '@wordpress/element';
-
-const FontControl = ({ value = {}, onChange }) => {
-    const [font, setFont] = useState(value);
-
-    const update = (key, val) => {
-        const newFont = { ...font, [key]: val };
-        setFont(newFont);
-        onChange(newFont);
+import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../../lib/Constants';
+const FontControl = ({options, defaultValues = {}, name, handleChange, className=''}) => {
+    // Initialize selected values with defaultValues
+    const [values, setValues] = useState(defaultValues);
+    const [ enableFont, setEnableFont ] = useState( false );
+    useEffect(() => {
+        const enabled = values.enabled || false
+        setEnableFont(enabled);
+    }, [values.enabled]);
+    const updateValue = (option, value) => {
+        const updated = { ...values, [option]: value };
+        setValues(updated);
+        handleChange(name, updated);
+    };
+    // Predefined select options for background-related CSS properties
+    const selectOptions = {
+        "font-weight": [100,200,300,400,500,600,700,800,900],
+        "font-style": ["normal", "italic", "oblique"],
+        "font-variant": ["normal", "small-caps"],
+        "font-stretch": ["normal", "condensed", "expanded"],
+        "text-align": ["left", "right", "center", "justify"],
+        "text-decoration": ["none", "underline", "overline", "line-through"],
+        "text-transform": ["none", "uppercase", "lowercase", "capitalize"],
     };
 
     return (
-        <PanelBody title={__('Font Settings', 'authpress')} initialOpen={true}>
-            <ColorPalette
-                label={__('Font Color', 'authpress')}
-                value={font.color}
-                onChange={(color) => update('color', color)}
-            />
-            <RangeControl
-                label={__('Font Size (px)', 'authpress')}
-                value={font.size}
-                onChange={(size) => update('size', size)}
-                min={8}
-                max={100}
-            />
-            <RangeControl
-                label={__('Line Height', 'authpress')}
-                value={font.lineHeight}
-                onChange={(lineHeight) => update('lineHeight', lineHeight)}
-                min={0.8}
-                max={3}
-                step={0.1}
-            />
-            <SelectControl
-                label={__('Font Weight', 'authpress')}
-                value={font.weight}
-                onChange={(weight) => update('weight', weight)}
-                options={[
-                    { label: 'Default', value: '' },
-                    { label: 'Normal', value: '400' },
-                    { label: 'Bold', value: '700' },
-                    { label: 'Light', value: '300' },
-                ]}
-            />
-            <SelectControl
-                label={__('Font Style', 'authpress')}
-                value={font.style}
-                onChange={(style) => update('style', style)}
-                options={[
-                    { label: 'Normal', value: 'normal' },
-                    { label: 'Italic', value: 'italic' },
-                    { label: 'Oblique', value: 'oblique' },
-                ]}
-            />
-            <SelectControl
-                label={__('Text Align', 'authpress')}
-                value={font.textAlign}
-                onChange={(textAlign) => update('textAlign', textAlign)}
-                options={[
-                    { label: 'Left', value: 'left' },
-                    { label: 'Center', value: 'center' },
-                    { label: 'Right', value: 'right' },
-                    { label: 'Justify', value: 'justify' },
-                ]}
-            />
-            <SelectControl
-                label={__('Text Transform', 'authpress')}
-                value={font.textTransform}
-                onChange={(textTransform) => update('textTransform', textTransform)}
-                options={[
-                    { label: 'None', value: 'none' },
-                    { label: 'Uppercase', value: 'uppercase' },
-                    { label: 'Lowercase', value: 'lowercase' },
-                    { label: 'Capitalize', value: 'capitalize' },
-                ]}
-            />
-            <SelectControl
-                label={__('Text Decoration', 'authpress')}
-                value={font.textDecoration}
-                onChange={(textDecoration) => update('textDecoration', textDecoration)}
-                options={[
-                    { label: 'None', value: 'none' },
-                    { label: 'Underline', value: 'underline' },
-                    { label: 'Overline', value: 'overline' },
-                    { label: 'Line-through', value: 'line-through' },
-                ]}
-            />
-        </PanelBody>
+        <>
+            {console.log(defaultValues)}
+            <div className={`font-wrapper ${className}`}>
+                <div className="d-flex justify-content-end mb-2">
+                    <ToggleControl
+                        label="Enable Font Options"
+                        checked={ enableFont }
+                        onChange={ (newValue) => {
+                            updateValue('enabled', newValue);
+                        } }
+                        className="mb-0"
+                    />
+                </div>  
+                {
+                    enableFont && 
+                        <div className="row">
+                            {options.map((option) => (
+                                <div key={option} className={`mb-2 from-group from-group-${option} col-${(option === 'color' || option === 'font-size') ? '12' : '6'}`}>
+                                    
+                                    {/* font-family → text input */}
+                                    {
+                                        option === "color" ? (
+                                            <ColorPickerControl
+                                                defaultValue={values[option] || "#000000"}
+                                                label={__('Font Color', 'authpress')}
+                                                handleChange={(value) => updateValue(option, value)}
+                                                mode='color'
+                                            /> 
+                                        ) : option === "font-size" ? 
+                                        (
+                                            <FontSizePicker
+                                                __next40pxDefaultSize
+                                                fontSizes={ FONT_SIZES }
+                                                value={ values[option] }
+                                                fallbackFontSize={ 16 }
+                                                onChange={ ( value ) => {
+                                                    updateValue(option, value);
+                                                } }
+                                            /> 
+                                        ) : (
+                                            option === "font-weight" || 
+                                            option === "font-style" || 
+                                            option === "text-align" || 
+                                            option === "text-transform" ||
+                                            option === "text-decoration" ||
+                                            option === "font-variant" || 
+                                            option === "font-stretch" 
+                                        ) ?
+                                        (
+                                            <SelectControl
+                                                label={ option.replace('-', ' ') }
+                                                value={ values[option] || "" }
+                                                options={ selectOptions[option].map(val => {
+                                                    const valStr = String(val);
+                                                    return {
+                                                        label: __(valStr.charAt(0).toUpperCase() + valStr.slice(1), 'authpress'),
+                                                        value: valStr,
+                                                    };
+                                                })}
+                                                onChange={ newValue => updateValue(option, newValue) }
+                                                __next40pxDefaultSize
+                                                __nextHasNoMarginBottom
+                                            />
+                                        ) : (option === "line-height") ? 
+                                        (
+                                            <RangeControl
+                                                label={__('Line Height', 'authpress')}
+                                                value={values[option] || ""}
+                                                onChange={(value) => updateValue(option, value)}
+                                                min={0.8}
+                                                max={3}
+                                                step={0.1}
+                                            />
+                                        ) : 
+                                        (
+                                            <input
+                                                type="text"
+                                                value={values[option] || ""}
+                                                onChange={(e) => updateValue(option, e.target.value)}
+                                                className="form-control"
+                                            />
+                                        )
+                                    }
+                                </div>
+                            ))}                    
+                        </div>
+                }        
+            </div>
+        </>
     );
-};
-
+}
 export default FontControl;
+/*
+// Uses
+<FontControl
+    data={settingData?.elements?.advanced?.media_uploader} 
+    name='elements.advanced.media_uploader' 
+    handleChange={handleChange}
+    options = {{
+        frame:{
+            title: __("Select or Upload Image", "authpress"),
+        },
+        library: {type: 'image'},
+        buttons: {
+            upload: __("Upload Image", "authpress"),
+            remove: __("Remove", "authpress"),
+            select: __("Use this image", "authpress")                                            
+        }
+    }}
+/>
+Core Font Attributes:
+font-family: Specifies the typeface to be used. Multiple font names can be provided as a fallback system, e.g., font-family: "Arial", sans-serif;.
+font-size: Sets the size of the text. Values can be absolute (e.g., px, pt) or relative (e.g., em, rem, %).
+font-weight: Controls the thickness or boldness of the font. Values include keywords like normal, bold, bolder, lighter, or numerical values from 100 to 900.
+font-style: Determines the slant of the text, typically normal, italic, or oblique.
+font-variant: Specifies whether a text should be displayed in a small-caps font (normal or small-caps). 
+line-height: Sets the distance between lines of text.
+font-stretch: Allows for the adjustment of the font's width, with values like normal, condensed, expanded, etc.
 
-// Usage Example
-// <FontControl
-//     value={attributes.font}
-//     onChange={(font) => setAttributes({ font })}
-// />
+Additional Font-Related Attributes:
+letter-spacing: Adjusts the spacing between characters.
+word-spacing: Modifies the spacing between words.
+text-align: Controls the horizontal alignment of text within its container (e.g., left, right, center, justify).
+text-decoration: Adds decorative lines to text, such as underline, overline, or line-through.
+text-transform: Controls the capitalization of text (e.g., uppercase, lowercase, capitalize).
+color: Sets the color of the text.
+
+Shorthand Property:
+The font shorthand property allows for setting multiple font-related attributes in a single declaration, following a specific order: font-style font-variant font-weight font-stretch font-size/line-height font-family. For example:
+//font: italic small-caps bold 16px/1.5 "Times New Roman", serif;
+*/

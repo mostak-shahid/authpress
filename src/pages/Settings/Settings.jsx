@@ -1,7 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import React from 'react';
 import MultiLevelListGroup from '../../components/MultiLevelListGroup/MultiLevelListGroup';
-import Switch from '../../components/Switch/Switch';
 import { useMain } from "../../contexts/MainContext";
 export default function Settings() {
     const {

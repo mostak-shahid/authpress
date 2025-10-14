@@ -1,9 +1,9 @@
 import { __ } from "@wordpress/i18n";
-import Background from '../components/Background/Background';
+import BackgroundControl from '../components/BackgroundControl/BackgroundControl';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { SelectControl } from '@wordpress/components';
-import Colorpicker from '../components/Colorpicker/Colorpicker';
+import ColorPickerControl from '../components/ColorPickerControl/ColorPickerControl';
 import { TextControl } from '@wordpress/components';
 const CustomizerRedesignBackground = ({handleChange}) => {
     const {
@@ -68,7 +68,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                             {
                                 !settingLoading &&                               
                                 <div className="col-lg-5">
-                                    <Background
+                                    <BackgroundControl
                                         options={[
                                             "image",
                                             "color",
@@ -107,7 +107,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                             {
                                 !settingLoading &&                               
                                 <div className="col-lg-5">
-                                    <Colorpicker
+                                    <ColorPickerControl
                                         defaultValue={settingData?.customizer?.redesign?.background?.background?.color}
                                         handleChange={(value) => handleChange('customizer.redesign.background.background.color', value)}
                                         mode='gradient'
@@ -164,7 +164,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Colorpicker
+                            <ColorPickerControl
                                 defaultValue={settingData?.customizer?.redesign?.background?.overlay}
                                 handleChange={(value) => handleChange('customizer.redesign.background.overlay', value)}
                                 mode='color'

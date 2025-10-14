@@ -6,6 +6,11 @@
 .authpress-settings-template .authpress-settings-wrapper .components-button {
   border-color: #dee2e6 !important;
 }
+.authpress-settings-template .authpress-settings-wrapper .border-authpress.button-processing svg,
+.authpress-settings-template .authpress-settings-wrapper .components-input-control__backdrop.button-processing svg,
+.authpress-settings-template .authpress-settings-wrapper .components-button.button-processing svg {
+  animation: spin 2s linear infinite;
+}
 .authpress-settings-template .authpress-settings-wrapper .input-group-authpress {
   display: flex;
   align-items: stretch;
@@ -36,4 +41,13 @@
   border-color: #86b7fe;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }/*# sourceMappingURL=App.css.map */

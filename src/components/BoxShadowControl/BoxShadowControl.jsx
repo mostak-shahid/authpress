@@ -4,7 +4,7 @@ import {
     __experimentalUnitControl as UnitControl, 
 } from '@wordpress/components';
 import {useState} from 'react';
-import Colorpicker from '../Colorpicker/Colorpicker';
+import ColorPickerControl from '../ColorPickerControl/ColorPickerControl';
 
 const units = [
     { value: 'px', label: 'px' },
@@ -74,7 +74,7 @@ const BoxShadowControl = ({ value = {}, onChange, className='' }) => {
                         units={units}
                         className='mb-2'
                     />
-                    <Colorpicker
+                    <ColorPickerControl
                         defaultValue={shadow.color || "#000000"}
                         handleChange={(color) => update('color', color)}
                         mode='color'

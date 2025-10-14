@@ -29,11 +29,6 @@
 .authpress-settings-template .authpress-settings-wrapper .link,
 .authpress-settings-template .authpress-settings-wrapper a {
   text-decoration: none;
-  color: var(--authpress-color);
-}
-.authpress-settings-template .authpress-settings-wrapper .link:hover,
-.authpress-settings-template .authpress-settings-wrapper a:hover {
-  color: #000000;
 }
 .authpress-settings-template .authpress-settings-wrapper .link {
   cursor: pointer;

@@ -24,7 +24,7 @@ import {
     __experimentalNavigationItem as NavigationItem,
     __experimentalNavigationMenu as NavigationMenu,
 } from '@wordpress/components';
-import Colorpicker from '../components/Colorpicker/Colorpicker';
+import ColorPickerControl from '../components/ColorPickerControl/ColorPickerControl';
 
 const colors = [
     { name: 'Blue 20', color: '#72aee6' },
@@ -94,7 +94,7 @@ const ComponentsAdvancedCustom = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Colorpicker
+                            <ColorPickerControl
                                 defaultValue={settingData?.components?.advanced?.custom?.color_picker}
                                 handleChange={(value) => handleChange('components.advanced.custom.color_picker', value)}
                                 mode='color'
@@ -120,7 +120,7 @@ const ComponentsAdvancedCustom = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Colorpicker
+                            <ColorPickerControl
                                 defaultValue={settingData?.components?.advanced?.custom?.gradient_picker}
                                 handleChange={(value) => handleChange('components.advanced.custom.gradient_picker', value)}
                                 mode='gradient'
@@ -146,7 +146,7 @@ const ComponentsAdvancedCustom = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Colorpicker
+                            <ColorPickerControl
                                 defaultValue={settingData?.components?.advanced?.custom?.color_gradient_picker}
                                 handleChange={(value) => handleChange('components.advanced.custom.color_gradient_picker', value)}
                                 mode='both'

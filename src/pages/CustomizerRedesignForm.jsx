@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import Background from '../components/Background/Background';
+import BackgroundControl from '../components/BackgroundControl/BackgroundControl';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import {useState} from 'react';
@@ -134,7 +134,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     {
                                         !settingLoading &&                               
                                         <div className="col-lg-5">
-                                            <Background
+                                            <BackgroundControl
                                                 options={[
                                                     "image",
                                                     "color",
@@ -292,7 +292,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     {
                                         !settingLoading &&                               
                                         <div className="col-lg-5">
-                                            <Background
+                                            <BackgroundControl
                                                 options={[
                                                     "image",
                                                     "color",
@@ -368,12 +368,6 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                         <div className="col-lg-auto">
                                             <ToggleControl
                                                 __nextHasNoMarginBottom
-                                                // label="Fixed Background"
-                                                // help={
-                                                //     hasFixedBackground
-                                                //         ? 'Has fixed background.'
-                                                //         : 'No fixed background.'
-                                                // }
                                                 onChange={(value) => handleChange('customizer.redesign.form.unit.glass_effect', value)}
                                                 checked={ settingData?.customizer?.redesign?.form?.unit?.glass_effect }
                                             />                        

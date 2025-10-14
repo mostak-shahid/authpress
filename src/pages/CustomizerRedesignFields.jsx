@@ -1,11 +1,8 @@
 import { __ } from "@wordpress/i18n";
-import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
-import Measurement from "../components/Measurement/Measurement";
-import Font from "../components/Font/Font";
-import Border from "../components/Border/Border";
-import Colorpicker from '../components/Colorpicker/Colorpicker';
+import FontControl from "../components/FontControl/FontControl";
+import ColorPickerControl from '../components/ColorPickerControl/ColorPickerControl';
 import { 
     __experimentalUnitControl as UnitControl, 
     BoxControl,
@@ -123,7 +120,7 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Font 
+                            <FontControl 
                                 defaultValues={settingData?.customizer?.redesign?.fields?.font}
                                 name='customizer.redesign.fields.font' 
                                 handleChange={handleChange}
@@ -240,7 +237,7 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-auto">
-                            <Colorpicker
+                            <ColorPickerControl
                                 defaultValue={settingData?.customizer?.redesign?.fields?.background_color}
                                 handleChange={(value) => handleChange('customizer.redesign.fields.background_color', value)}
                                 mode='color'
@@ -293,7 +290,7 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Font 
+                            <FontControl 
                                 defaultValues={settingData?.customizer?.redesign?.fields?.label_font}
                                 name='customizer.redesign.fields.label_font' 
                                 handleChange={handleChange}

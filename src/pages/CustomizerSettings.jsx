@@ -1,5 +1,4 @@
 import { __ } from "@wordpress/i18n";
-import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { 

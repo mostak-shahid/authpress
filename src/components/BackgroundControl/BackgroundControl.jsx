@@ -1,9 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
-import Colorpicker from '../Colorpicker/Colorpicker'
+import ColorPickerControl from '../ColorPickerControl/ColorPickerControl'
 import MediaUploader from '../MediaUploader/MediaUploader'
 import { SelectControl } from '@wordpress/components';
-const Background = ({options, defaultValues = {}, name, handleChange}) => {
+const BackgroundControl = ({options, defaultValues = {}, name, handleChange}) => {
     // Initialize selected values with defaultValues
     const [values, setValues] = useState(defaultValues);
 
@@ -32,7 +32,7 @@ const Background = ({options, defaultValues = {}, name, handleChange}) => {
                         {option === "color" && (
                             <>
                             <label className="form-label text-capitalize">{option}</label>
-                            <Colorpicker
+                            <ColorPickerControl
                                 type="color"
                                 defaultValue={values[option]}
                                 handleChange={(value) => updateValue(option, value)}
@@ -80,4 +80,4 @@ const Background = ({options, defaultValues = {}, name, handleChange}) => {
         </>
     );    
 }
-export default Background;
+export default BackgroundControl;

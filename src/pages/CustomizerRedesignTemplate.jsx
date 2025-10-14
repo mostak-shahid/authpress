@@ -1,7 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import React from 'react';
 import Radio from '../components/Radio/Radio';
-import Switch from '../components/Switch/Switch';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 const CustomizerRedesignTemplate = ({handleChange}) => {

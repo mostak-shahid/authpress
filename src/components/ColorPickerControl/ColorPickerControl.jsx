@@ -7,7 +7,7 @@ import {
     TabPanel,
     Button,
 } from '@wordpress/components';
-import './Colorpicker.scss';
+import './ColorPickerControl.scss';
 
 const colors = [
     { name: 'Blue 20', color: '#72aee6' },
@@ -22,7 +22,7 @@ const gradients = [
     { name: 'Forest', gradient: 'linear-gradient(135deg,#0f0,#090)' },
 ];
 
-export default function Colorpicker({ defaultValue, handleChange, mode = 'both', label='' }) {
+export default function ColorPickerControl({ defaultValue, handleChange, mode = 'both', label='', className='' }) {
     const [ isOpen, setIsOpen ] = useState(false);
 
     // dynamically choose which tabs to show
@@ -35,7 +35,7 @@ export default function Colorpicker({ defaultValue, handleChange, mode = 'both',
     }
 
     return (
-        <div className="color-picker-wrapper">
+        <div className={`color-picker-control ${className}`}>
             <Button
                 variant="secondary"
                 className="color-picker-button border-authpress"

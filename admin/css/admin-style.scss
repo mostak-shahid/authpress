@@ -29,10 +29,6 @@
     .link,
     a {
       text-decoration: none;
-      color: var(--authpress-color);
-      &:hover {
-        color: #000000;
-      }
     }
     .link {
       cursor: pointer;

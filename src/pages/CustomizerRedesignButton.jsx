@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import Font from '../components/Font/Font';
+import FontControl from '../components/FontControl/FontControl';
 import LinkColor from '../components/LinkColor/LinkColor';
 import TextShadow from '../components/TextShadow/TextShadow';
 import BoxShadowControl from '../components/BoxShadowControl/BoxShadowControl';
@@ -53,7 +53,7 @@ const CustomizerRedesignButton = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Font 
+                            <FontControl 
                                 defaultValues={settingData?.customizer?.redesign?.button?.font}
                                 name='customizer.redesign.button.font' 
                                 handleChange={handleChange}

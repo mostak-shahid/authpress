@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
-import Colorpicker from '../Colorpicker/Colorpicker';
+import ColorPickerControl from '../ColorPickerControl/ColorPickerControl';
 const LinkColor = ({options, defaultValues = {}, name, handleChange}) => {
     // Initialize selected values with defaultValues
     const [values, setValues] = useState(defaultValues);
@@ -17,7 +17,7 @@ const LinkColor = ({options, defaultValues = {}, name, handleChange}) => {
                     <div key={option} className={`from-group from-group-${option}`}>
                         {/* color → color picker */}
                         {
-                            <Colorpicker
+                            <ColorPickerControl
                                 defaultValue={values[option] || "#000000"}
                                 handleChange={(value) => updateValue(option, value)}
                                 mode='color'

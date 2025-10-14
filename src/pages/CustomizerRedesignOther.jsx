@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import Font from "../components/Font/Font";
+import FontControl from "../components/FontControl/FontControl";
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { 
@@ -133,7 +133,7 @@ const CustomizerRedesignOther = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <Font 
+                            <FontControl 
                                 defaultValues={settingData?.customizer?.redesign?.other?.font}
                                 name='customizer.redesign.other.font' 
                                 handleChange={handleChange}

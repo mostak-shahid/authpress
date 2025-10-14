@@ -325,36 +325,7 @@ function authpress_get_default_options()
 				'remember_me_always_on' => false,
 				'enable_registration_password' => false,
 			],
-		],
-		'base_input' => [
-			'text_input' => '',
-			'email_input' => '',
-			'color_input' => '',
-			'date_input' => '',
-			'datetime_local_input' => '',
-			'textarea_input' => '',
-			'switch_input' => '1',
-			'radio_input' => 'radio-2',
-			'datalist_input' => '',
-			'select_input' => '',
-		],
-		'array_input' => [
-			'checkbox_input' => [],
-			'multi_select_input' => [],
-			'background' => [
-				'image' => [
-					'url' => '',
-					'id' => 0
-				],
-				'color' => '#ff00ff',
-				'position' => 'center',
-				'size' => 'cover',
-				'repeat' => 'repeat',
-				'origin' => 'padding-box',
-				'clip' => 'border-box',
-				'attachment' => 'scroll'
-			],
-		],		
+		],	
 		'components' => [
 			'basic' => [
 				'ip' => '',

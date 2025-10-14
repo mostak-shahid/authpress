@@ -10,7 +10,6 @@ import { formDataPost, setNestedValue, urlToArr } from "../lib/Helpers"; // Impo
 import Toast from 'react-bootstrap/Toast';
 import ToastContainer from 'react-bootstrap/ToastContainer';
 import Details from '../data/details.json';
-import VerticalMenu from "../components/VerticalMenu/VerticalMenu";
 const withForm = (OriginalComponent) => {     
     function NewComponent() {
         const {
