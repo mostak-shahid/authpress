@@ -74,6 +74,15 @@ import {
     TabbableContainer,
     Navigator,
     Notice,
+    Placeholder,
+    Popover,
+    ProgressBar,
+    RadioControl,
+    RangeControl,
+    SandBox,
+    ScrollLock,
+    SearchControl,
+    SelectControl,
 
     __experimentalInputControl as InputControl,
     __experimentalText as Text,
@@ -90,9 +99,12 @@ import {
     __experimentalNavigationItem as NavigationItem,
     __experimentalNavigationMenu as NavigationMenu,
     __experimentalNumberControl as NumberControl,
+    __experimentalRadio as Radio,
+    __experimentalRadioGroup as RadioGroup,
+    __experimentalScrollable as Scrollable,
 } from '@wordpress/components';
 import { Icon, more, envelope, rotateRight, check, arrowUp, arrowDown, trash } from '@wordpress/icons'; // Example icon
-import { UNITS, GRADIENTS, COLORS, DUOTONE_PALETTE, COLOR_PALETTE, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
+import { UNITS, GRADIENTS, COLORS, DUOTONE_PALETTE, COLOR_PALETTE, DEFAULT_BORDER, FONT_SIZES, OPTIONS } from '../lib/Constants';
 
 const ComponentsBasic = ({handleChange}) => {
     const {
@@ -116,7 +128,7 @@ const ComponentsBasic = ({handleChange}) => {
         bottom: '50px',
     } );
     const [ selectedDate, setSelectedDate ] = useState(new Date());
-    const [ isChecked, setChecked ] = useState( true );
+    const [ toggle, setToggle ] = useState( true );
     const [ hasCopied, setHasCopied ] = useState( false );
     const [ color, setColor ] = useState ( '#f00' );
     const [ duotone, setDuotone ] = useState( [ '#000000', '#ffffff' ] );
@@ -210,11 +222,26 @@ const ComponentsBasic = ({handleChange}) => {
     const openModal = () => setModalOpen( true );
     const closeModal = () => setModalOpen( false );
     // Modal
+    // Popover
+    const [ popoverVisible, setPopoverVisible ] = useState( false );
+    const togglePopoverVisible = () => {
+        setPopoverVisible( ( state ) => ! state );
+    };
+    // Popover
+    const [ radioOption, setRadioOption ] = useState( 'a' );
+
+    const [ isScrollLocked, setIsScrollLocked ] = useState( false );
+
+    const toggleLock = () => {
+        setIsScrollLocked( ( locked ) => ! locked );
+    };
 
 
     const onNavigate = ( index, target ) => {
         console.log( `Navigates to ${ index }`, target );
     }
+    const [ searchInput, setSearchInput ] = useState( '' );
+    const [ size, setSize ] = useState( '50%' );
 
 
     const handleButtonClick = () => {
@@ -233,7 +260,7 @@ const ComponentsBasic = ({handleChange}) => {
     }
     return (
         <>
-            <h4>{__("NumberControl", "authpress")}</h4>
+            <h4>{__("SelectControl", "authpress")}</h4>
             <Panel>
                 <PanelBody title={__('AlignmentMatrixControl', 'authpress')} initialOpen={ true }>                    
                     <div className="setting-unit pt-4">
@@ -663,7 +690,7 @@ const ComponentsBasic = ({handleChange}) => {
                                 {
                                     settingLoading 
                                     ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                    : <h4>{__("CheckboxControl", "authpress")}</h4>
+                                    : <h4>{__("FormToggle", "authpress")}</h4>
                                 }
                                 {
                                     settingLoading 
@@ -674,17 +701,9 @@ const ComponentsBasic = ({handleChange}) => {
                             {
                                 !settingLoading &&                               
                                 <div className="col-lg-5">
-                                    <CheckboxControl
-                                        __nextHasNoMarginBottom
-                                        label="Is author"
-                                        help="Is the user a author or not?"
-                                        checked={ isChecked }
-                                        onChange={ setChecked }
-                                    />  
-                                    <hr/>
                                     <FormToggle
-                                        checked={ isChecked }
-                                        onChange={ () => setChecked( ( state ) => ! state ) }
+                                        checked={ toggle }
+                                        onChange={ () => setToggle( ( state ) => ! state ) }
                                     />               
                                 </div>
                             }
@@ -931,7 +950,7 @@ const ComponentsBasic = ({handleChange}) => {
                             }
                         </div>
                     </div>  
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -957,7 +976,7 @@ const ComponentsBasic = ({handleChange}) => {
                             }
                         </div>
                     </div> 
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -984,7 +1003,147 @@ const ComponentsBasic = ({handleChange}) => {
                                 </div>
                             }
                         </div>
-                    </div>                                 
+                    </div>  
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("CheckboxControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <CheckboxControl
+                                        __nextHasNoMarginBottom
+                                        label="Is author"
+                                        help="Is the user a author or not?"
+                                        checked={ toggle }
+                                        onChange={ setToggle }
+                                    />                
+                                </div>
+                            }
+                        </div>
+                    </div>                                
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("SelectControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <SelectControl
+                                        label="Size"
+                                        value={ size }
+                                        options={OPTIONS}
+                                        onChange={ ( newSize ) => setSize( newSize ) }
+                                        __next40pxDefaultSize
+                                        __nextHasNoMarginBottom
+                                    />              
+                                </div>
+                            }
+                        </div>
+                    </div>                                
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("RadioControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <RadioControl
+                                        label="User type"
+                                        help="The type of the current user"
+                                        selected={ radioOption }
+                                        options={ [
+                                            { label: 'Author', value: 'a' },
+                                            { label: 'Editor', value: 'e' },
+                                        ] }
+                                        onChange={ ( value ) => setRadioOption( value ) }
+                                    />               
+                                </div>
+                            }
+                        </div>
+                    </div>                                
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("RadioGroup, Radio", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <RadioGroup label="User type" onChange={ setRadioOption } checked={ radioOption }>
+                                        <Radio __next40pxDefaultSize value="a">Author</Radio>
+                                        <Radio __next40pxDefaultSize value="e">Editor</Radio>
+                                    </RadioGroup>              
+                                </div>
+                            }
+                        </div>
+                    </div>                                
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("SearchControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <SearchControl
+                                        __nextHasNoMarginBottom
+                                        label={ __( 'Search posts' ) }
+                                        value={ searchInput }
+                                        onChange={ setSearchInput }
+                                    />            
+                                </div>
+                            }
+                        </div>
+                    </div>                                
                 </PanelBody>
                 <PanelBody title={__('Icons', 'authpress')} initialOpen={ false }>                                              
                     <div className="setting-unit pt-4">
@@ -1007,6 +1166,7 @@ const ComponentsBasic = ({handleChange}) => {
                                     <Dashicon icon="admin-home" />
                                     <Dashicon icon="products" />
                                     <Dashicon icon="wordpress" />
+                                    <Placeholder icon={ more } label="Placeholder" />
                                 </div>
                             }
                         </div>
@@ -1753,6 +1913,173 @@ const ComponentsBasic = ({handleChange}) => {
                                 !settingLoading &&                               
                                 <div className="col-lg-5">
                                     <Notice status="error">An unknown error occurred.</Notice>
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('Popover', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Popover", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Button variant="secondary" onClick={ togglePopoverVisible }>
+                                        Toggle Popover!
+                                        { popoverVisible && <Popover>Popover is toggled!</Popover> }
+                                    </Button>
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('ProgressBar', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ProgressBar", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <ProgressBar 
+                                        value={ 50 } 
+                                    />
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('SandBox', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("SandBox", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <SandBox html="<p>Content</p>" title="SandBox" type="embed" />
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('RangeControl', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("RangeControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <RangeControl
+                                        __nextHasNoMarginBottom
+                                        __next40pxDefaultSize
+                                        label="Columns"
+                                        value={ value }
+                                        onChange={ ( value ) => setValue( value ) }
+                                        min={ 2 }
+                                        max={ 10 }
+                                    />
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('Scroll', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ScrollLock", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <div>
+                                        <Button variant="secondary" onClick={ toggleLock }>
+                                            Toggle scroll lock
+                                        </Button>
+                                        { isScrollLocked && <ScrollLock /> }
+                                        <p>
+                                            Scroll locked:
+                                            <strong>{ isScrollLocked ? 'Yes' : 'No' }</strong>
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Scrollable", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Scrollable style={ { maxHeight: 200 } }>
+                                        <div style={ { height: 500 } }>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Corrupti id minima temporibus, inventore laboriosam, molestias repudiandae officiis quidem saepe earum culpa soluta nobis? Deleniti amet, quibusdam earum illum dolorem et? Eaque, quas porro! Rem in cumque architecto consequuntur temporibus, nisi laborum cum, quaerat ullam, modi aliquam provident repudiandae. Error, itaque veritatis minima eos est in repudiandae architecto neque unde sunt ducimus quos aliquam, quibusdam explicabo quaerat repellat soluta cum asperiores praesentium dolor, labore dolorum iste odio. Odit beatae ad exercitationem delectus culpa cum in, vero sapiente vitae repellat vel laboriosam earum pariatur? Debitis doloremque, fugiat autem consectetur quas sequi veniam perspiciatis tempore voluptates, dignissimos cumque. Non, minima, optio earum nemo numquam ex cumque ut inventore laborum perspiciatis velit accusamus ipsa atque quia rerum veritatis beatae natus quibusdam ipsam exercitationem quisquam, eius voluptatibus. Officia adipisci maiores accusantium culpa? Rerum illum cum mollitia, consectetur quaerat, reprehenderit, a libero aspernatur voluptatibus laudantium facilis.</div>
+                                    </Scrollable>
+                                    
                                 </div>
                             }
                         </div>

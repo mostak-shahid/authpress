@@ -1,5 +1,10 @@
 // src/lib/Constants.js
 import { __ } from "@wordpress/i18n";
+export const OPTIONS = [
+    { label: 'Big', value: '100%' },
+    { label: 'Medium', value: '50%' },
+    { label: 'Small', value: '25%' },
+]; 
 export const UNITS = [
     { value: 'px', label: 'px' },
     { value: '%', label: '%' },
@@ -23,14 +28,39 @@ export const COLORS = [
 
 export const FONT_SIZES = [
     {
-        name: __('Small'),
-        slug: 'small',
-        size: 12,
+        name: __('H1'),
+        slug: 'h1',
+        size: 40,
     },
     {
-        name: __('Big'),
-        slug: 'big',
-        size: 26,
+        name: __('H2'),
+        slug: 'h2',
+        size: 32,
+    },
+    {
+        name: __('H3'),
+        slug: 'h3',
+        size: 28,
+    },
+    {
+        name: __('H4'),
+        slug: 'h4',
+        size: 24,
+    },
+    {
+        name: __('H5'),
+        slug: 'h5',
+        size: 20,
+    },
+    {
+        name: __('H6'),
+        slug: 'H6',
+        size: 16,
+    },
+    {
+        name: __('P'),
+        slug: 'p',
+        size: 12,
     },
 ];
 export const DUOTONE_PALETTE = [
