@@ -233,7 +233,7 @@ const ComponentsBasic = ({handleChange}) => {
     }
     return (
         <>
-            <h4>{__("Grid", "authpress")}</h4>
+            <h4>{__("NumberControl", "authpress")}</h4>
             <Panel>
                 <PanelBody title={__('AlignmentMatrixControl', 'authpress')} initialOpen={ true }>                    
                     <div className="setting-unit pt-4">
