@@ -50,7 +50,10 @@ import {
     DropdownMenu, 
     MenuGroup, 
     MenuItem,
+    MenuItemsChoice,
     Dropdown,
+    __experimentalItemGroup as ItemGroup,
+    __experimentalItem as Item,
     //Menu
     ExternalLink,
     // Flex
@@ -63,7 +66,16 @@ import {
     FontSizePicker,
 
     FormTokenField,
+    Guide,
+    navigateRegions,
+    IsolatedEventContainer,
+    Modal,
+    NavigableMenu,
+    TabbableContainer,
+    Navigator,
+    Notice,
 
+    __experimentalInputControl as InputControl,
     __experimentalText as Text,
     __experimentalHeading as Heading,
     __experimentalConfirmDialog as ConfirmDialog,
@@ -72,6 +84,12 @@ import {
         __experimentalElevation as Elevation,
     __experimentalSurface as Surface,
     __experimentalGrid as Grid,
+    __experimentalHStack as HStack,
+    __experimentalNavigation as Navigation,
+    __experimentalNavigationGroup as NavigationGroup,
+    __experimentalNavigationItem as NavigationItem,
+    __experimentalNavigationMenu as NavigationMenu,
+    __experimentalNumberControl as NumberControl,
 } from '@wordpress/components';
 import { Icon, more, envelope, rotateRight, check, arrowUp, arrowDown, trash } from '@wordpress/icons'; // Example icon
 import { UNITS, GRADIENTS, COLORS, DUOTONE_PALETTE, COLOR_PALETTE, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
@@ -170,9 +188,33 @@ const ComponentsBasic = ({handleChange}) => {
         'Oceania',
     ];
     const [ selectedContinents, setSelectedContinents ] = useState( [] );
-
     // FormTokenField
+    const [ isOpen, setIsOpen ] = useState( true );
+    const [ value, setValue ] = useState( '' );
+    // MenuGroup
+    const [ mode, setMode ] = useState( 'visual' );
+    const choices = [
+        {
+            value: 'visual',
+            label: 'Visual editor',
+        },
+        {
+            value: 'text',
+            label: 'Code editor',
+        },
+    ];
+    // MenuGroup
 
+    // Modal
+    const [ modalOpen, setModalOpen ] = useState( false );
+    const openModal = () => setModalOpen( true );
+    const closeModal = () => setModalOpen( false );
+    // Modal
+
+
+    const onNavigate = ( index, target ) => {
+        console.log( `Navigates to ${ index }`, target );
+    }
 
 
     const handleButtonClick = () => {
@@ -185,6 +227,9 @@ const ComponentsBasic = ({handleChange}) => {
                 setProcessing('normal');
             }, 2000);
         }, 3000);
+    }
+    const clickHandler = () => {
+        console.log('xyz')
     }
     return (
         <>
@@ -424,7 +469,7 @@ const ComponentsBasic = ({handleChange}) => {
                             }
                         </div>
                     </div>                   
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -451,7 +496,52 @@ const ComponentsBasic = ({handleChange}) => {
                                 </div>
                             }
                         </div>
-                    </div>                   
+                    </div>     
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("NavigableMenu, TabbableContainer", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <div>
+                                        <span>Navigable Menu:</span>
+                                        <NavigableMenu onNavigate={ onNavigate } orientation="horizontal">
+                                            <Button variant="secondary">Item 1</Button>
+                                            <Button variant="secondary">Item 2</Button>
+                                            <Button variant="secondary">Item 3</Button>
+                                        </NavigableMenu>
+
+                                        <span>Tabbable Container:</span>
+                                        <TabbableContainer onNavigate={ onNavigate }>
+                                            <Button variant="secondary" tabIndex="0">
+                                                Section 1
+                                            </Button>
+                                            <Button variant="secondary" tabIndex="0">
+                                                Section 2
+                                            </Button>
+                                            <Button variant="secondary" tabIndex="0">
+                                                Section 3
+                                            </Button>
+                                            <Button variant="secondary" tabIndex="0">
+                                                Section 4
+                                            </Button>
+                                        </TabbableContainer>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>                
                 </PanelBody>
                 <PanelBody title={__('Calendar', 'authpress')} initialOpen={ false }>                    
                     <div className="setting-unit py-4 border-bottom">
@@ -806,7 +896,7 @@ const ComponentsBasic = ({handleChange}) => {
                     </div>                                 
                 </PanelBody>
                 <PanelBody title={__('Form Elements', 'authpress')} initialOpen={ false }>                                              
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -836,6 +926,60 @@ const ComponentsBasic = ({handleChange}) => {
                                         options={ optionsCustomSelectControl }
                                         onChange={ ( { selectedItem } ) => setFontSize( selectedItem ) }
                                         value={ options.find( ( option ) => option.key === fontSize.key ) }
+                                    />
+                                </div>
+                            }
+                        </div>
+                    </div>  
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("InputControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <InputControl
+                                        __next40pxDefaultSize
+                                        value={ value }
+                                        onChange={ ( nextValue ) => setValue( nextValue ?? '' ) }
+                                    />
+                                </div>
+                            }
+                        </div>
+                    </div> 
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("NumberControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <NumberControl
+                                        __next40pxDefaultSize
+                                        isShiftStepEnabled={ true }
+                                        onChange={ setValue }
+                                        shiftStep={ 10 }
+                                        value={ value }
                                     />
                                 </div>
                             }
@@ -1047,6 +1191,107 @@ const ComponentsBasic = ({handleChange}) => {
                                 </div>
                             }
                         </div>
+                    </div>                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ItemGroup, Item", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    
+                                    <ItemGroup>
+                                        <Item>Code</Item>
+                                        <Item>is</Item>
+                                        <Item>Poetry</Item>
+                                    </ItemGroup>
+                                </div>
+                            }
+                        </div>
+                    </div> 
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("MenuGroup, MenuItemsChoice", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">                                    
+                                    <MenuGroup label="Editor">
+                                        <MenuItemsChoice
+                                            choices={ choices }
+                                            value={ mode }
+                                            onSelect={ ( newMode ) => setMode( newMode ) }
+                                        />
+                                    </MenuGroup>
+                                </div>
+                            }
+                        </div>
+                    </div>  
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Navigation, NavigationMenu", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("'Navigation' is deprecated. 'NavigationMenu' is deprecated. 'NavigationItem' is deprecated. 'NavigationGroup' is deprecated.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Navigation>
+                                        <NavigationMenu title="Home">
+                                            <NavigationGroup title="Group 1">
+                                                <NavigationItem item="item-1" title="Item 1" />
+                                                <NavigationItem item="item-2" title="Item 2" />
+                                            </NavigationGroup>
+                                            <NavigationGroup title="Group 2">
+                                                <NavigationItem
+                                                    item="item-3"
+                                                    navigateToMenu="category"
+                                                    title="Category"
+                                                />
+                                            </NavigationGroup>
+                                        </NavigationMenu>
+
+                                        <NavigationMenu
+                                            backButtonLabel="Home"
+                                            menu="category"
+                                            parentMenu="root"
+                                            title="Category"
+                                        >
+                                            <NavigationItem badge="1" item="child-1" title="Child 1" />
+                                            <NavigationItem item="child-2" title="Child 2" />
+                                        </NavigationMenu>
+                                    </Navigation>
+                                </div>
+                            }
+                        </div>
                     </div>                                 
                 </PanelBody>
                 <PanelBody title={__('Elevation, Surface', 'authpress')} initialOpen={ false }>                                              
@@ -1101,8 +1346,8 @@ const ComponentsBasic = ({handleChange}) => {
                         </div>
                     </div>                                     
                 </PanelBody>
-                <PanelBody title={__('Flex, Grid', 'authpress')} initialOpen={ false }>                                              
-                    <div className="setting-unit pt-4">
+                <PanelBody title={__('Flex, Grid, HStack', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -1145,7 +1390,7 @@ const ComponentsBasic = ({handleChange}) => {
                             }
                         </div>
                     </div>                                     
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -1170,7 +1415,33 @@ const ComponentsBasic = ({handleChange}) => {
                                 </div>
                             }
                         </div>
-                    </div>                                     
+                    </div>
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("HStack", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <HStack>
+                                        <Text>Code</Text>
+                                        <Text>is</Text>
+                                        <Text>Poetry</Text>
+                                    </HStack>
+                                </div>
+                            }
+                        </div>
+                    </div>                                      
                 </PanelBody>
                 <PanelBody title={__('FocalPointPicker', 'authpress')} initialOpen={ false }>                                              
                     <div className="setting-unit pt-4">
@@ -1320,6 +1591,168 @@ const ComponentsBasic = ({handleChange}) => {
                                         onChange={ ( tokens ) => setSelectedContinents( tokens ) }
                                         __nextHasNoMarginBottom
                                     />
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('Guide', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Guide", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Guide
+                                        onFinish={ () => setIsOpen( false ) }
+                                        pages={ [
+                                            {
+                                                content: <p>Welcome to the ACME Store!</p>,
+                                            },
+                                            {
+                                                image: <img src="https://acmestore.com/add-to-cart.png" />,
+                                                content: (
+                                                    <p>
+                                                        Click <i>Add to Cart</i> to buy a product.
+                                                    </p>
+                                                ),
+                                            },
+                                        ] }
+                                    />
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('IsolatedEventContainer', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("IsolatedEventContainer", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("IsolatedEventContainer is deprecated since version 5.7.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <IsolatedEventContainer
+                                        className="component-some_component"
+                                        onClick={ clickHandler }
+                                    >
+                                        <p>This is an isolated component</p>
+                                    </IsolatedEventContainer>
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('Modal', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Modal", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <>
+                                        <Button variant="secondary" onClick={ openModal }>
+                                            Open Modal
+                                        </Button>
+                                        { modalOpen && (
+                                            <Modal title="This is my modal" onRequestClose={ closeModal }>
+                                                <Button variant="secondary" onClick={ closeModal }>
+                                                    My custom close button
+                                                </Button>
+                                            </Modal>
+                                        ) }
+                                    </>
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('Navigator', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Navigator", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("'Navigation' is deprecated. 'NavigationMenu' is deprecated. 'NavigationItem' is deprecated. 'NavigationGroup' is deprecated.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Navigator initialPath="/">
+                                        <Navigator.Screen path="/">
+                                            <p>This is the home screen.</p>
+                                            <Navigator.Button path="/child">
+                                                Navigate to child screen.
+                                            </Navigator.Button>
+                                        </Navigator.Screen>
+                                        <Navigator.Screen path="/child">
+                                            <p>This is the child screen.</p>
+                                            <Navigator.BackButton>Go back</Navigator.BackButton>
+                                        </Navigator.Screen>
+                                    </Navigator>
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                </PanelBody>
+                <PanelBody title={__('Notice', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Notice", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("status: warning | success | error | info", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Notice status="error">An unknown error occurred.</Notice>
                                 </div>
                             }
                         </div>
