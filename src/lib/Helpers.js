@@ -1,4 +1,4 @@
-import axios from "axios";
+import apiFetch from "@wordpress/api-fetch";
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 // Helper function to set nested values dynamically
@@ -50,14 +50,18 @@ export const formDataPost = async (action, data = {})=> {
             formData.append(key, value);
         });
         // Make the POST request
-        const response = await axios.post(
-            authpress_ajax_obj.ajax_url,
-            formData
-        );
-        if (response.data.success) {
-            return response.data; 
+        const response = await apiFetch({
+            url: authpress_ajax_obj.ajax_url,
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-WP-Nonce': authpress_ajax_obj.api_nonce
+            }
+        });
+        if (response.success) {
+            return response; 
         } else {
-            throw new Error(response.data.data.error_message || 'Reset failed');
+            throw new Error(response.data?.error_message || 'Reset failed');
         }
     } catch (error) {
         console.error('API Service Error:', error);

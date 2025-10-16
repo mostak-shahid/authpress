@@ -2,7 +2,7 @@ import { __ } from "@wordpress/i18n";
 import { useMain } from '../contexts/MainContext';
 import withForm from './withForm';
 import React, { useState, useEffect, useRef } from "react";
-import axios from "axios";
+import apiFetch from "@wordpress/api-fetch";
 import DataTable from "datatables.net-react";
 import DT from "datatables.net-bs5";
 import Responsive from "datatables.net-responsive-bs5";
@@ -13,9 +13,6 @@ import "datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css";
 
 DataTable.use(DT);
 DataTable.use(Responsive);
-
-// ✅ Set nonce header globally for all axios calls
-axios.defaults.headers.common["X-WP-Nonce"] = authpress_ajax_obj.api_nonce;
 
 const AjaxTable = () => {
     const [reloadTable, setReloadTable] = useState(0);
@@ -36,8 +33,15 @@ const AjaxTable = () => {
 
     // ✅ Single post status change
     window.changeStatus = async (postId, newStatus) => {
-        await axios.post(`/wp-json/authpress/v1/post/${postId}/status`, {
-            status: newStatus,
+        await apiFetch({
+            path: `/authpress/v1/post/${postId}/status`,
+            method: "POST",
+            data: {
+                status: newStatus,
+            },
+            headers: {
+                "X-WP-Nonce": authpress_ajax_obj.api_nonce,
+            }
         });
         // const api = window.$?.fn?.dataTable?.tables({ api: true });
         // api?.ajax?.reload();
@@ -50,9 +54,16 @@ const AjaxTable = () => {
             alert("Please select posts and choose an action.");
             return;
         }
-        await axios.post("/wp-json/authpress/v1/posts/status", {
-            ids: selectedPosts,
-            status: bulkAction,
+        await apiFetch({
+            path: "/authpress/v1/posts/status",
+            method: "POST",
+            data: {
+                ids: selectedPosts,
+                status: bulkAction,
+            },
+            headers: {
+                "X-WP-Nonce": authpress_ajax_obj.api_nonce,
+            }
         });
         setSelectedPosts([]);
         // const api = window.$?.fn?.dataTable?.tables({ api: true });
@@ -191,29 +202,30 @@ const AjaxTable = () => {
             const page = data.start / data.length + 1;
             const perPage = data.length;
 
-            let url = `/wp-json/authpress/v1/posts?page=${page}&per_page=${perPage}&status=${encodeURIComponent(statusRef.current)}`;
+            let path = `/authpress/v1/posts?page=${page}&per_page=${perPage}&status=${encodeURIComponent(statusRef.current)}`;
 
             if (data.search?.value) {
-                url += `&search=${encodeURIComponent(data.search.value)}`;
+                path += `&search=${encodeURIComponent(data.search.value)}`;
             }
 
             if (data.order?.length) {
                 const order = data.order[0];
                 const col = columns[order.column]?.data;
                 if (col === "title" || col === "date" || col === "id") {
-                url += `&orderby=${col}&order=${order.dir}`;
+                path += `&orderby=${col}&order=${order.dir}`;
                 }
             }
 
-            const res = await axios.get(url, {
+            const res = await apiFetch({
+                path,
                 headers: { "X-WP-Nonce": authpress_ajax_obj.api_nonce },
             });
 
             callback({
                 draw: data.draw,
-                recordsTotal: res.data.total,
-                recordsFiltered: res.data.total,
-                data: res.data.data,
+                recordsTotal: res.total,
+                recordsFiltered: res.total,
+                data: res.data,
             });
             },
             initComplete: function () {

@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import axios from "axios";
+import apiFetch from "@wordpress/api-fetch";
 import React, { useEffect, useState } from 'react';
 import DataTable from 'react-data-table-component';
 export default function UserTable() {
@@ -62,13 +62,15 @@ export default function UserTable() {
     ]
 
     useEffect(() => {
-        const baseURL = '/wp-json/authpress/v1';        
+        const basePath = '/authpress/v1';        
         const getRoleData = async () => {
             try {
-                const response = await axios.get(`${baseURL}/get-roles`);
+                const response = await apiFetch({
+                    path: `${basePath}/get-roles`
+                });
                 // setSettingData(response.data);
                 // Convert the object into an array of objects
-                const rolesArray = Object.entries(response.data).map(([key, value]) => ({
+                const rolesArray = Object.entries(response).map(([key, value]) => ({
                     role: key,
                     ...value
                 }));
@@ -109,12 +111,14 @@ export default function UserTable() {
     },[])
     */
     useEffect(() => {
-        const baseURL = '/wp-json/authpress/v1';        
+        const basePath = '/authpress/v1';        
         const getUserData = async () => {
             try {
-                const response = await axios.get(`${baseURL}/get-users`);
-                setUserList(response.data)
-                setRecords(response.data)                
+                const response = await apiFetch({
+                    path: `${basePath}/get-users`
+                });
+                setUserList(response)
+                setRecords(response)                
             } catch (error) {
                 console.log(error);
             }

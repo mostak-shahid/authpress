@@ -1,6 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import withForm from '../pages/withForm';
-import axios from "axios";
+import apiFetch from "@wordpress/api-fetch";
 import { useEffect, useState } from 'react';
 import { TextControl, TextareaControl, Button } from '@wordpress/components';
 
@@ -13,24 +13,22 @@ const Feedback = () => {
         if (subject && message) {
             setProcessing('processing');
             try {
-                const result = await axios.post(
-                    "/wp-json/authpress/v1/feedback",
-                    {
-                        subject: subject,
-                        message: message
+                const result = await apiFetch({
+                    path: "/authpress/v1/feedback",
+                    method: "POST",
+                    data: {
+                        subject,
+                        message
                     },
-                    {
-                        headers: {
-                            'X-WP-Nonce': authpress_ajax_obj.api_nonce,
-                            'Content-Type': 'application/json'
-                        }
+                    headers: {
+                        'X-WP-Nonce': authpress_ajax_obj.api_nonce
                     }
-                );
+                });
                 // You might want to handle success here
                 console.log(result);
 
                 setProcessing('done');
-                if (result.data.success) {
+                if (result.success) {
                     setSubject('');
                     setMessage('');
                 }

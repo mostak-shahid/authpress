@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import { useEffect, useState } from 'react';
 import PluginCard from "../../components/PluginCard/PluginCard";
 import { useMain } from '../../contexts/MainContext';
@@ -15,10 +15,10 @@ export default function Dashboard() {
     useEffect(() => {
         const fetchPlugins = async () => {
         try {
-            // const response = await axios.get('https://raw.githubusercontent.com/mostak-shahid/update/refs/heads/master/plugin-details.json');
-            const response = await axios.get(`/wp-json/authpress/v1/plugins`);
+            // const response = await apiFetch({ path: 'https://raw.githubusercontent.com/mostak-shahid/update/refs/heads/master/plugin-details.json' });
+            const response = await apiFetch({ path: `/authpress/v1/plugins` });
             // 
-            setPlugins(response.data.plugins);
+            setPlugins(response.plugins);
         } catch (error) {
             setError('Error fetching plugin data:', error);
         } finally {

@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-// import axios from "axios";
+// import apiFetch from "@wordpress/api-fetch";
 import { createContext, useContext, useState } from "react";
 // import { extractJSONFromHTML } from "../lib/Helpers";
 // import menuData from "../data/pages.json"; // Load menu JSON

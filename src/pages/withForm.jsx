@@ -1,6 +1,6 @@
 
 import { __ } from "@wordpress/i18n";
-import axios from "axios";
+import apiFetch from "@wordpress/api-fetch";
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import MultiLevelListGroup from "../components/MultiLevelListGroup/MultiLevelListGroup";
@@ -41,14 +41,17 @@ const withForm = (OriginalComponent) => {
 
         const location = useLocation();
         
-        const OPTIONS_API_URL = "/wp-json/authpress/v1/options";
+        const OPTIONS_API_URL = "/authpress/v1/options";
 
         useEffect(() => {
-            const baseURL = '/wp-json/authpress/v1';        
+            const basePath = '/authpress/v1';        
             const fetchSettingData = async () => {
                 try {
-                    const response = await axios.get(`${baseURL}/options`, {headers: {'X-WP-Nonce': authpress_ajax_obj.api_nonce }});
-                    setSettingData(response.data);
+                    const response = await apiFetch({
+                        path: `${basePath}/options`,
+                        headers: { 'X-WP-Nonce': authpress_ajax_obj.api_nonce }
+                    });
+                    setSettingData(response);
                     setSettingLoading(false)
                 } catch (error) {
                     console.log(error);
@@ -68,31 +71,25 @@ const withForm = (OriginalComponent) => {
         };
         const handleSave = async () => {
             setSaving('processing');
-            axios.post(
-                OPTIONS_API_URL, 
-                {'authpress_options': settingData},
-                {
+            try {
+                await apiFetch({
+                    path: OPTIONS_API_URL,
+                    method: 'POST',
+                    data: { authpress_options: settingData },
                     headers: {
-                        'X-WP-Nonce': authpress_ajax_obj.api_nonce,
-                        'Content-Type': 'application/json'
+                        'X-WP-Nonce': authpress_ajax_obj.api_nonce
                     }
-                }
-            )
-            .then(response => {
+                });
                 window.scrollTo(0, 0);
                 setSettingReload(Math.random);
-                // Optionally handle the response   
-                // console.log("Settings saved successfully:", response.data);
                 setSaving('done');
                 setTimeout(() => {
                     setSaving('normal');
                 }, 1000);
-                setShowToast(true)
-                
-            })
-            .catch(
-                error => console.error("Error saving settings:", error)
-            );
+                setShowToast(true);
+            } catch (error) {
+                console.error("Error saving settings:", error);
+            }
         };
        const handleReset = async (name) => {
             // console.log(name)
