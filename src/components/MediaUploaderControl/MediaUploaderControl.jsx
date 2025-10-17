@@ -1,8 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
 import './MediaUploaderControl.scss';
-import { Button, TextControl,
-    Dashicon,  } from '@wordpress/components';
+import { Button, TextControl, Dashicon } from '@wordpress/components';
 export default function MediaUploaderControl({ data, name, handleChange, options={}, className='' }) {    
     const [media, setMedia] = useState({});
 
@@ -41,11 +40,10 @@ export default function MediaUploaderControl({ data, name, handleChange, options
 			*/
 		});
         frame.on("select", function(){
-            var image = frame.state().get("selection").first().toJSON();
-            var thumbnail = (image.sizes.thumbnail.url)?image.sizes.thumbnail.url:image.url;
-            // console.log(image);
-            setMedia({id:image.id, url:image.url});
-            handleChange(name, {id:image.id, url:image.url});
+            var media = frame.state().get("selection").first().toJSON();
+            var thumbnail = (media?.sizes?.thumbnail?.url)?media.sizes.thumbnail.url:media.thumb.src;
+            setMedia({id:media.id, url:media.url, thumbnail:thumbnail});
+            handleChange(name, {id:media.id, url:media.url, thumbnail:thumbnail});
         });	
 
         // Finally, open the modal on click
@@ -54,7 +52,7 @@ export default function MediaUploaderControl({ data, name, handleChange, options
     const removeImage  = (event) => {
         event.preventDefault();
         setMedia({id:0, url:''});
-        handleChange(name, {id:0, url:''});
+        handleChange(name, {id:0, url:'', thumbnail:''});
     }
     return (
         <>
@@ -64,7 +62,7 @@ export default function MediaUploaderControl({ data, name, handleChange, options
                     <div className="col-6">
                         { media?.url && media?.id ?                     
                             <div className="file-name background-primary with-close-button">
-                                <img className="uploaded-image" src={media?.sizes?.thumbnail?.url? media.sizes.thumbnail.url:media.url} onClick={runUploader} />                                
+                                <img className="uploaded-image" src={media?.thumbnail} onClick={runUploader} />                                
                                 <Dashicon className="authpress-remove-image text-danger" onClick={removeImage} icon="remove" />
                             </div> : 
                             <div className="file-name background-primary d-flex align-items-center justify-content-center" onClick={runUploader}>

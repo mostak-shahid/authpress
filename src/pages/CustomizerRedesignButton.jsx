@@ -1,32 +1,15 @@
 import { __ } from "@wordpress/i18n";
 import FontControl from '../components/FontControl/FontControl';
 import LinkColor from '../components/LinkColor/LinkColor';
-import TextShadow from '../components/TextShadow/TextShadow';
 import BoxShadowControl from '../components/BoxShadowControl/BoxShadowControl';
 import TextShadowControl from '../components/TextShadowControl/TextShadowControl';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
-import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../lib/Constants';
+import { UNITS, COLORS } from '../lib/Constants';
 import { 
-    AlignmentMatrixControl, 
-    AnglePickerControl,
     BorderBoxControl,
-    BorderControl,
     BoxControl,
-    DatePicker,
-    DateTimePicker,
-    ColorIndicator,
-    ColorPalette,
-    ColorPicker,
-    GradientPicker,
-    MenuGroup,
-    MenuItem,
-    FontSizePicker,
     SelectControl,
-    __experimentalNavigation as Navigation,
-    __experimentalNavigationGroup as NavigationGroup,
-    __experimentalNavigationItem as NavigationItem,
-    __experimentalNavigationMenu as NavigationMenu,
     __experimentalUnitControl as UnitControl, 
 } from '@wordpress/components';
 const CustomizerRedesignButton = ({handleChange}) => {

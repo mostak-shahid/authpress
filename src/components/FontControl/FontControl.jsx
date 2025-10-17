@@ -6,7 +6,7 @@ import {
     FontSizePicker,
     ToggleControl
 } from '@wordpress/components';
-import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../../lib/Constants';
+import { FONT_SIZES } from '../../lib/Constants';
 const FontControl = ({options, defaultValues = {}, name, handleChange, className=''}) => {
     // Initialize selected values with defaultValues
     const [values, setValues] = useState(defaultValues);
@@ -54,12 +54,15 @@ const FontControl = ({options, defaultValues = {}, name, handleChange, className
                                     {/* font-family → text input */}
                                     {
                                         option === "color" ? (
-                                            <ColorPickerControl
-                                                defaultValue={values[option] || "#000000"}
-                                                label={__('Font Color', 'authpress')}
-                                                handleChange={(value) => updateValue(option, value)}
-                                                mode='color'
-                                            /> 
+                                            <>
+                                                <label className="form-label">{__('color', 'authpress')}</label>
+                                                <ColorPickerControl
+                                                    defaultValue={values[option] || "#000000"}
+                                                    label={__('Font Color', 'authpress')}
+                                                    handleChange={(value) => updateValue(option, value)}
+                                                    mode='color'
+                                                /> 
+                                            </>
                                         ) : option === "font-size" ? 
                                         (
                                             <FontSizePicker
@@ -126,22 +129,22 @@ const FontControl = ({options, defaultValues = {}, name, handleChange, className
 export default FontControl;
 /*
 // Uses
-<FontControl
-    data={settingData?.elements?.advanced?.media_uploader} 
-    name='elements.advanced.media_uploader' 
+<FontControl 
+    defaultValues={settingData?.customizer?.redesign?.fields?.label_font}
+    name='customizer.redesign.fields.label_font' 
     handleChange={handleChange}
-    options = {{
-        frame:{
-            title: __("Select or Upload Image", "authpress"),
-        },
-        library: {type: 'image'},
-        buttons: {
-            upload: __("Upload Image", "authpress"),
-            remove: __("Remove", "authpress"),
-            select: __("Use this image", "authpress")                                            
-        }
-    }}
-/>
+    options = {[
+        "color", 
+        "font-size",
+        "font-weight",
+        "font-style",
+        "font-variant",
+        "font-stretch",
+        "text-align",
+        "text-decoration",
+        "text-transform",
+    ]}
+/> 
 Core Font Attributes:
 font-family: Specifies the typeface to be used. Multiple font names can be provided as a fallback system, e.g., font-family: "Arial", sans-serif;.
 font-size: Sets the size of the text. Values can be absolute (e.g., px, pt) or relative (e.g., em, rem, %).

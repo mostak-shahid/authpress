@@ -23,7 +23,8 @@ export const COLORS = [
     { name: 'Blue 20', color: '#72aee6' },
     { name: 'Pink Flare', color: '#E1C0C8' },
     { name: 'Carissma', color: '#EA88A8' },
-    { name: 'Ash', color: '#A09998' },
+    { name: 'Ash', color: '#A09998' },  
+    
 ];
 
 export const FONT_SIZES = [

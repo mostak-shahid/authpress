@@ -5,6 +5,16 @@ import PluginCard from "../../components/PluginCard/PluginCard";
 import { useMain } from '../../contexts/MainContext';
 import Details from '../../data/details.json';
 import './Dashboard.scss';
+import {
+    Card,
+    CardHeader,
+    CardBody,
+    CardFooter,
+    Flex, 
+    FlexBlock, 
+    FlexItem,
+    Button, 
+} from '@wordpress/components';
 export default function Dashboard() {
     const {
         settingsMenu,
@@ -31,45 +41,42 @@ export default function Dashboard() {
     return (
         <div className="authpress-settings">
             <div className="container">
-                <div className="card mt-0 mb-3 rounded-0">
-                    <div className="card-body p-5">
-                        <div className="row">
-                            <div className="col-lg-12">
-                                    <h2 className="card-title">{__(`Welcome to ${Details?.name}`, "authpress")}</h2>
-                                    <div className="card-text">
-                                        <p>
-                                            {__("Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste mollitia voluptates molestiae nihil! Atque repellendus, nulla, aut magni in, sunt optio labore commodi at ipsa voluptatibus provident eveniet perferendis consequuntur.", "authpress")}
-                                        </p>
-                                        
-                                        <p>                                            
-                                            {__("AuthPress is an all-in-one toolkit to enhance your WooCommerce store. This is a highly effective plugin developed for assisting online businesses in improving sales and profits.", "authpress")}
-                                        </p>
-                                    </div>
+                <Card className="mb-3 rounded-0">
+                    <CardBody className="p-5">
+                        <div className="content">
+                            <h2 className="card-title">{__(`Welcome to ${Details?.name}`, "authpress")}</h2>
+                            <div className="card-text">
+                                <p>
+                                    {__("Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste mollitia voluptates molestiae nihil! Atque repellendus, nulla, aut magni in, sunt optio labore commodi at ipsa voluptatibus provident eveniet perferendis consequuntur.", "authpress")}
+                                </p>
+                                
+                                <p>                                            
+                                    {__("AuthPress is an all-in-one toolkit to enhance your WooCommerce store. This is a highly effective plugin developed for assisting online businesses in improving sales and profits.", "authpress")}
+                                </p>
                             </div>
                         </div>
-                        
-                    </div>
-                </div>
+                    </CardBody>
+                </Card>
                 <div className="row">
                     <div className="col-lg-8 mb-4 mb-lg-0">
-                        <div className="dashboard-features-card card mt-0 mb-3 rounded-0">
-                            <div className="card-header">
+                        <Card className="dashboard-features-card mb-3 rounded-0">
+                            <CardHeader className="card-header">
                                 {__("Features", "authpress")}
-                            </div>
-                            <div className="card-body ">
+                            </CardHeader>
+                            <CardBody className="card-body">
                                 {Object.values(settingsMenu).map(feature => (
                                     <div className="feature">
                                         <h4 className="feature-title">{feature?.title}</h4>
                                         <div className="feature-intro">{feature?.description}</div>
                                     </div>
                                 ))}
-                            </div>
-                        </div>
-                        <div className="card mt-0 mb-3 rounded-0">
-                            <div className="card-header">
+                            </CardBody>
+                        </Card>
+                        <Card className="mb-3 rounded-0">
+                            <CardHeader className="card-header">
                                 {__("Extend Your Website", "authpress")}
-                            </div>
-                            <div className="card-body">
+                            </CardHeader>
+                            <CardBody className="card-body">
                                 <div className="row">
                                     {
                                         pluginsLoading 
@@ -119,13 +126,13 @@ export default function Dashboard() {
                                         </>
                                     }
                                 </div>
-                            </div>
-                        </div>
+                            </CardBody>
+                        </Card>
                     </div>
                     <div className="col-lg-4">
                         
-                        <div className="card mt-0 mb-3 rounded-0">
-                            <div className="card-body">                                
+                        <Card className="mb-3 rounded-0">
+                            <CardBody className="card-body">                                
                                 <h4 className="card-title">
                                     {__("VIP Priority Support", "authpress")}
                                 </h4>
@@ -135,10 +142,10 @@ export default function Dashboard() {
                                 <a href="#" className="card-link">
                                     {__("Support", "authpress")}
                                 </a>
-                            </div>
-                        </div>
-                        <div className="card mt-0 mb-3 rounded-0">
-                            <div className="card-body">                                
+                            </CardBody>
+                        </Card>
+                        <Card className="mb-3 rounded-0">
+                            <CardBody className="card-body">                                
                                 <h4 className="card-title">
                                     {__("Join the Community", "authpress")}                                    
                                 </h4>
@@ -148,10 +155,10 @@ export default function Dashboard() {
                                 <a href="#" className="card-link">
                                     {__("Join", "authpress")}
                                 </a>
-                            </div>
-                        </div>
-                        <div className="card mt-0 mb-3 rounded-0">
-                            <div className="card-body">                                
+                            </CardBody>
+                        </Card>
+                        <Card className="mb-3 rounded-0">
+                            <CardBody className="card-body">                                
                                 <h4 className="card-title">
                                     {__("Rate Us", "authpress")}                                    
                                 </h4>
@@ -161,8 +168,8 @@ export default function Dashboard() {
                                 <a href="#" className="card-link">
                                     {__("Rate", "authpress")}
                                 </a>
-                            </div>
-                        </div>
+                            </CardBody>
+                        </Card>
                     </div>
                 </div>
             </div>

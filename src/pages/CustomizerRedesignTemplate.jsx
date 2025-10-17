@@ -1,13 +1,19 @@
 import { __ } from "@wordpress/i18n";
 import React from 'react';
-import Radio from '../components/Radio/Radio';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+const layouts = [
+    'default-login', 'default-login-left', 'default-login-right'
+];
 const CustomizerRedesignTemplate = ({handleChange}) => {
     const {
         settingData,
         settingLoading
     } = useMain();
+    const onClick = (template) => {
+        handleChange('customizer.redesign.templates',template);
+        // Do some more task with template variable
+    }
     return (
         <>
             {/* {console.log(settingData)} */}
@@ -28,19 +34,22 @@ const CustomizerRedesignTemplate = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-12 mt-4">
-                            <Radio
-                                defaultValue={settingData?.customizer?.redesign?.templates}
-                                // defaultValue='radio-1'
-                                options={[
-                                    { value: 'default-login', label: `<img className="img-fluid" src="${authpress_ajax_obj.image_url}default-login.png" alt=""  />` },
-                                    { value: 'default-login-left', label: `<img className="img-fluid" src="${authpress_ajax_obj.image_url}default-login-left.png" alt=""  />` },
-                                    { value: 'default-login-right', label: `<img className="img-fluid" src="${authpress_ajax_obj.image_url}default-login-right.png" alt=""  />` },
-                                ]}
-                                name="customizer.redesign.templates"
-                                handleChange= {handleChange}
-                                type="inline" // block
-                                hasMedia="1"
-                            />                           
+                            <div className="row">
+                                {layouts.map((template) => (
+                                    <div
+                                        key={template}
+                                        className="col-lg-4 mb-4"                                        
+                                    >
+                                        <img 
+                                            style={{ cursor: "pointer" }} 
+                                            className={`img-fluid border border-5 ${settingData?.customizer?.redesign?.templates == template ?'border-primary':''}`}
+                                            src={`${authpress_ajax_obj.image_url}${template}.png`} alt=""
+                                            data-src={template}
+                                            onClick={ () => onClick(template) }
+                                        />
+                                    </div>
+                                ))}
+                            </div>                 
                         </div>
                     }
                 </div>

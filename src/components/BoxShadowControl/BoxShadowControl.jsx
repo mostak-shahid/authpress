@@ -34,57 +34,74 @@ const BoxShadowControl = ({ value = {}, onChange, className='' }) => {
             </div> 
             {shadow.enabled && (
                 <>
-                    <UnitControl
-                        __next40pxDefaultSize 
-                        label={__('Horizontal Offset (px)', 'authpress')}
-                        value={shadow.x}
-                        onChange={(x) => update('x', x)}
-                        min={-50}
-                        max={50}
-                        units={units}
-                        className='mb-2'
-                    />
-                    <UnitControl
-                        __next40pxDefaultSize 
-                        label={__('Vertical Offset (px)', 'authpress')}
-                        value={shadow.y}
-                        onChange={(y) => update('y', y)}
-                        min={-50}
-                        max={50}
-                        units={units}
-                        className='mb-2'
-                    />
-                    <UnitControl
-                        __next40pxDefaultSize 
-                        label={__('Blur (px)', 'authpress')}
-                        value={shadow.blur}
-                        onChange={(blur) => update('blur', blur)}
-                        min={0}
-                        max={100}
-                        units={units}
-                        className='mb-2'
-                    />
-                    <UnitControl
-                        __next40pxDefaultSize 
-                        label={__('Spread (px)', 'authpress')}
-                        value={shadow.spread}
-                        onChange={(spread) => update('spread', spread)}
-                        min={-50}
-                        max={50}
-                        units={units}
-                        className='mb-2'
-                    />
-                    <ColorPickerControl
-                        defaultValue={shadow.color || "#000000"}
-                        handleChange={(color) => update('color', color)}
-                        mode='color'
-                        label={__('Shadow Color', 'authpress')}
-                    /> 
-                    <ToggleControl
-                        label={__('Inset', 'authpress')}
-                        checked={!!shadow.inset}
-                        onChange={(inset) => update('inset', inset)}
-                    />
+                    <div className="row">
+                        <div className="col-6">
+                            <UnitControl
+                                __next40pxDefaultSize 
+                                label={__('Horizontal Offset (px)', 'authpress')}
+                                value={shadow.x}
+                                onChange={(x) => update('x', x)}
+                                min={-50}
+                                max={50}
+                                units={units}
+                                className='mb-2'
+                            />
+                        </div>
+                        <div className="col-6">
+                            <UnitControl
+                                __next40pxDefaultSize 
+                                label={__('Vertical Offset (px)', 'authpress')}
+                                value={shadow.y}
+                                onChange={(y) => update('y', y)}
+                                min={-50}
+                                max={50}
+                                units={units}
+                                className='mb-2'
+                            />
+                        </div>
+                        <div className="col-6">
+                            <UnitControl
+                                __next40pxDefaultSize 
+                                label={__('Blur (px)', 'authpress')}
+                                value={shadow.blur}
+                                onChange={(blur) => update('blur', blur)}
+                                min={0}
+                                max={100}
+                                units={units}
+                                className='mb-2'
+                            />
+                        </div>
+                        <div className="col-6">
+                            <UnitControl
+                                __next40pxDefaultSize 
+                                label={__('Spread (px)', 'authpress')}
+                                value={shadow.spread}
+                                onChange={(spread) => update('spread', spread)}
+                                min={-50}
+                                max={50}
+                                units={units}
+                                className='mb-2'
+                            />
+                        </div>
+                    </div>
+                    <div className='row align-items-end'>
+                        <div className="col-6">
+                            <label className="form-label">{__('color', 'authpress')}</label>
+                            <ColorPickerControl
+                                defaultValue={shadow.color || "#000000"}
+                                handleChange={(color) => update('color', color)}
+                                mode='color'
+                                label={__('Shadow Color', 'authpress')}
+                            /> 
+                        </div>
+                        <div className="col-6">
+                            <ToggleControl
+                                label={__('Inset', 'authpress')}
+                                checked={!!shadow.inset}
+                                onChange={(inset) => update('inset', inset)}                            
+                            />
+                        </div>
+                    </div>
                 </>
             )}
         </div>

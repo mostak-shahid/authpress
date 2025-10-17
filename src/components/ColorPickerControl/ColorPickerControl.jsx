@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { GRADIENTS, COLORS } from '../../lib/Constants';
 import {
     ColorIndicator, 
     ColorPalette, 
@@ -8,19 +9,6 @@ import {
     Button,
 } from '@wordpress/components';
 import './ColorPickerControl.scss';
-
-const colors = [
-    { name: 'Blue 20', color: '#72aee6' },
-    { name: 'Pink Flare', color: '#E1C0C8' },
-    { name: 'Carissma', color: '#EA88A8' },
-    { name: 'Ash', color: '#A09998' },
-];
-
-const gradients = [
-    { name: 'Sunset', gradient: 'linear-gradient(135deg,#f00,#ff0)' },
-    { name: 'Ocean', gradient: 'linear-gradient(135deg,#00f,#0ff)' },
-    { name: 'Forest', gradient: 'linear-gradient(135deg,#0f0,#090)' },
-];
 
 export default function ColorPickerControl({ defaultValue, handleChange, mode = 'both', label='', className='' }) {
     const [ isOpen, setIsOpen ] = useState(false);
@@ -41,7 +29,7 @@ export default function ColorPickerControl({ defaultValue, handleChange, mode = 
                 className="color-picker-button border-authpress"
                 aria-label="Select Color or Gradient"
                 onClick={ () => setIsOpen(!isOpen) }
-                style={ { border: '1px solid #ccc', color: '#ccc', gap: '10px', boxShadow: 'none' } }
+                style={ { border: '1px solid #ccc', color: '#ccc', gap: '10px', boxShadow: 'none', width: '100%' } }
             >                                   
                 <ColorIndicator colorValue={ defaultValue } /> 
                 <span className="color-picker-label">
@@ -60,7 +48,7 @@ export default function ColorPickerControl({ defaultValue, handleChange, mode = 
                             <>
                                 { tab.name === 'color' && (
                                     <ColorPalette
-                                        colors={ colors }
+                                        colors={ COLORS }
                                         value={ defaultValue }
                                         onChange={ ( color ) => handleChange(color) }
                                         enableAlpha={ true }
@@ -71,7 +59,7 @@ export default function ColorPickerControl({ defaultValue, handleChange, mode = 
                                     <GradientPicker
                                         value={ defaultValue }
                                         onChange={ ( newGradient ) => handleChange(newGradient) }
-                                        gradients={ gradients }
+                                        gradients={ GRADIENTS }
                                     />
                                 ) }
                             </>
