@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import MediaUploader from '../components/MediaUploader/MediaUploader';
+import MediaUploaderControl from '../components/MediaUploaderControl/MediaUploaderControl';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { 
@@ -40,7 +40,7 @@ const CustomizerRedesignLogo = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <div className="col-lg-5">
-                            <MediaUploader 
+                            <MediaUploaderControl 
                                 data={settingData?.customizer?.redesign?.logo?.image} 
                                 name='customizer.redesign.logo.image' 
                                 handleChange={handleChange}

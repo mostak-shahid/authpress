@@ -1,9 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
-import removeMedia from '../../assets/images/removeMedia.svg';
-import uploadMedia from '../../assets/images/uploadMedia.svg';
-import './MediaUploader.scss';
-export default function MediaUploader({ data, name, handleChange, options={} }) {    
+import './MediaUploaderControl.scss';
+import { Button, TextControl,
+    Dashicon,  } from '@wordpress/components';
+export default function MediaUploaderControl({ data, name, handleChange, options={}, className='' }) {    
     const [media, setMedia] = useState({});
 
     useEffect(()=> {
@@ -59,21 +59,21 @@ export default function MediaUploader({ data, name, handleChange, options={} }) 
     return (
         <>
             {/* {console.log(data)} */}
-            <div className="authpress-media-uploader-unit">
+            <div className={`authpress-media-uploader-unit ${className}`}>
                 <div className="media-uploader row align-items-center">
                     <div className="col-6">
                         { media?.url && media?.id ?                     
                             <div className="file-name background-primary with-close-button">
-                                <img className="uploaded-image" src={media?.sizes?.thumbnail?.url? media.sizes.thumbnail.url:media.url} onClick={runUploader} />
-                                <img className="authpress-remove-image" onClick={removeImage} src={removeMedia} alt="" />
+                                <img className="uploaded-image" src={media?.sizes?.thumbnail?.url? media.sizes.thumbnail.url:media.url} onClick={runUploader} />                                
+                                <Dashicon className="authpress-remove-image text-danger" onClick={removeImage} icon="remove" />
                             </div> : 
                             <div className="file-name background-primary d-flex align-items-center justify-content-center" onClick={runUploader}>
                                 <div className="no-media-wrap">
                                     <div className="img-wrap">
-                                        <img className="uploaded-image" src={uploadMedia} />
+                                        <Dashicon icon="cloud-upload" />
                                     </div>  
                                     <div className="text-wrap">
-                                        <span className="title">{__("Upload Image", "authpress")}</span>
+                                        <span className="title">{__("Upload Media", "authpress")}</span>
                                         <span className="sub-title">{__("Use the upload button", "authpress")} <br/> {__("and select media  ", "authpress")}</span>
                                     </div> 
 
@@ -84,21 +84,34 @@ export default function MediaUploader({ data, name, handleChange, options={} }) 
                     <div className="col-6">
                         <div className="file-detail">
                             <div className="button-wrapper d-flex flex-column gap-2">
-                                <button type="button" className="button button-primary" onClick={runUploader}>
+                                <Button
+                                    variant="primary"
+                                    onClick={ runUploader }
+                                    className='justify-content-center'
+                                >
                                     {options?.buttons?.upload || __("Upload Image", "authpress")}
-                                </button>                        
-                                <button type="button" className="button button-secondary" onClick={removeImage}>
-                                    {options?.buttons?.remove || __("Remove", "authpress")}
-                                </button>  
-                                <div className="file-link">
-                                    <label>                                    
-                                        <input type="text" value={media?.url? media.url:''} readOnly style={{maxWidth: '100%'}} />
-                                        <input type="hidden" value={media?.id? media.id:''} readOnly/>
-                                        {
-                                            options?.message?.info && 
-                                            <div className="input-help mt-small"  dangerouslySetInnerHTML={{__html: options.message.info}} />
-                                        }
-                                    </label>
+                                </Button>    
+                                <Button
+                                    variant="secondary"
+                                    onClick={ removeImage }
+                                    className='justify-content-center'
+                                >
+                                    {options?.buttons?.remove || __("Remove Image", "authpress")}
+                                </Button>      
+                                <div className="file-link">                                                                     
+                                    <TextControl
+                                        __nextHasNoMarginBottom
+                                        __next40pxDefaultSize
+                                        // label="Additional CSS Class"
+                                        value={ media?.url? media.url:'' }
+                                        readOnly
+                                        // onChange={ ( value ) => setClassName( value ) }
+                                    />
+                                    <input type="hidden" value={media?.id? media.id:''} readOnly/>
+                                    {
+                                        options?.message?.info && 
+                                        <div className="input-help mt-small"  dangerouslySetInnerHTML={{__html: options.message.info}} />
+                                    }                                    
                                 </div>                                                  
                             </div>
                         </div> 
@@ -110,7 +123,7 @@ export default function MediaUploader({ data, name, handleChange, options={} }) 
 }
 /*
 // Uses
-<MediaUploader 
+<MediaUploaderControl 
     data={settingData?.elements?.advanced?.media_uploader} 
     name='elements.advanced.media_uploader' 
     handleChange={handleChange}

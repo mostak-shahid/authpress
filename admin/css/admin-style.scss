@@ -94,31 +94,6 @@
       margin: 0;
       margin-bottom: 10px;
     }
-    input[type="color"].form-control,
-    input[type="date"].form-control,
-    input[type="datetime-local"].form-control,
-    input[type="datetime"].form-control,
-    input[type="email"].form-control,
-    input[type="month"].form-control,
-    input[type="number"].form-control,
-    input[type="password"].form-control,
-    input[type="search"].form-control,
-    input[type="tel"].form-control,
-    input[type="text"].form-control,
-    input[type="time"].form-control,
-    input[type="url"].form-control,
-    input[type="week"].form-control,
-    select.form-control,
-    select.form-select,
-    textarea.form-control {
-      border: 1px solid #dee2e6;
-    }
-    input[type="color"].form-control {
-      padding: 2px;
-      height: 48px;
-      width: 48px;
-      flex: 0 0 48px;
-    }
     .button-link {
       background-color: transparent!important;
     }
@@ -177,56 +152,30 @@
           }
         }
         .navbar-brand {
-          color: #000000;
           img {
             width: 40px;
             height: auto;
           }
-          span {
-            font-weight: 700;
-          }
-          &:hover {
-            color: var(--authpress-color);
-          }
-          &:focus {
-            box-shadow: none;
-          }
-        }
-        .nav-item {
-          margin-bottom: 0;
-        }
-      }
-      .list-group {
-        .list-group-item {
-          margin-bottom: 0;
         }
       }
       .authpress-settings {
-        padding: 30px;
-        .card {
-          margin-top: 0;
-          padding: 0;
-          max-width: unset;
-        }
-        .sidebar {
-          .list-group-item {
-            border-style: none;
-            &:focus,
-            &:hover {
-              background-color: transparent;
-            }
-          }
-          .submenu {
-            margin-left: 16px;
-            .list-group-item {
-              border-left: 2px solid #eaeaea;
-            }
-          }
-        }
-        .setting-unit {
-          .title-group {
-          }
-        }
+        padding: 30px;   
+        
+        .form-label {
+          font-size: 11px;
+          font-weight: 500;
+          line-height: 1.4;
+          text-transform: uppercase;
+          box-sizing: border-box;
+          display: block;
+          padding-top: 0px;
+          padding-bottom: 0px;
+          max-width: 100%;
+          z-index: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }     
       }
     }
   }

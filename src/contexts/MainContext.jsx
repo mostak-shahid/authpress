@@ -149,10 +149,14 @@ const settingsMenu = {
             "basic" : {
                 "title": __( "Basic", "authpress" ),                
                 "url":"/settings/components/basic",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            
             },
             "advanced" : {
                 "title": __( "Advanced", "authpress" ),
                 "url":"/settings/components/advanced",
+                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+            
             },
             "datatable": { 
                 "title": __( "Datatable", "authpress" ), 

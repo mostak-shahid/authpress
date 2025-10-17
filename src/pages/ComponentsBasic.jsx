@@ -33,6 +33,7 @@ import {
     CustomSelectControl,
     FormFileUpload,
     FormToggle,
+    TextareaControl,
     // Form Elements
     // Color
     ColorIndicator,
@@ -83,6 +84,20 @@ import {
     ScrollLock,
     SearchControl,
     SelectControl,
+    Snackbar,
+    Spinner,
+    TabPanel,
+    TextHighlight,
+    ToggleControl,
+    Tooltip,
+
+    Toolbar, 
+    ToolbarButton,
+    ToolbarDropdownMenu,
+    ToolbarGroup, 
+    ToolbarItem,
+
+    __experimentalTruncate as Truncate,
 
     __experimentalInputControl as InputControl,
     __experimentalText as Text,
@@ -90,7 +105,7 @@ import {
     __experimentalConfirmDialog as ConfirmDialog,
     __experimentalDimensionControl as DimensionControl,
     __experimentalDivider as Divider,
-        __experimentalElevation as Elevation,
+    __experimentalElevation as Elevation,
     __experimentalSurface as Surface,
     __experimentalGrid as Grid,
     __experimentalHStack as HStack,
@@ -102,9 +117,40 @@ import {
     __experimentalRadio as Radio,
     __experimentalRadioGroup as RadioGroup,
     __experimentalScrollable as Scrollable,
+    __experimentalSpacer as Spacer,
+    __experimentalView as View,
+    __experimentalToggleGroupControl as ToggleGroupControl,
+    __experimentalToggleGroupControlOptionIcon as ToggleGroupControlOptionIcon,
+    __experimentalToggleGroupControlOption as ToggleGroupControlOption,
+    __experimentalToolsPanel as ToolsPanel,
+    __experimentalToolsPanelItem as ToolsPanelItem,
+
+
 } from '@wordpress/components';
-import { Icon, more, envelope, rotateRight, check, arrowUp, arrowDown, trash } from '@wordpress/icons'; // Example icon
+import { 
+    Icon, 
+    more, 
+    envelope, 
+    rotateRight, 
+    check, 
+    trash, 
+    formatLowercase, 
+    formatUppercase, 
+    pencil,
+    arrowLeft,
+    arrowRight,
+    arrowUp,
+    arrowDown,
+    paragraph, 
+    formatBold, 
+    formatItalic, 
+    link,
+    help,
+} from '@wordpress/icons'; // Example icon
 import { UNITS, GRADIENTS, COLORS, DUOTONE_PALETTE, COLOR_PALETTE, DEFAULT_BORDER, FONT_SIZES, OPTIONS } from '../lib/Constants';
+const onTabSelect = ( tabName ) => {
+    console.log( 'Selecting tab', tabName );
+};
 
 const ComponentsBasic = ({handleChange}) => {
     const {
@@ -242,6 +288,21 @@ const ComponentsBasic = ({handleChange}) => {
     }
     const [ searchInput, setSearchInput ] = useState( '' );
     const [ size, setSize ] = useState( '50%' );
+    const [ text, setText ] = useState( '' );
+    // ToolsPanel
+    const [ height, setHeight ] = useState();
+    const [ width, setWidth ] = useState();
+    const [ padding, setPadding ] = useState();
+    const [ margin, setMargin ] = useState();
+
+    const resetAll = () => {
+        setHeight( undefined );
+        setWidth( undefined );
+        setPadding( undefined );
+        setMargin( undefined );
+    };
+    // ToolsPanel
+
 
 
     const handleButtonClick = () => {
@@ -258,6 +319,12 @@ const ComponentsBasic = ({handleChange}) => {
     const clickHandler = () => {
         console.log('xyz')
     }
+    const onSelect = () => {
+        console.log( 'Select clicked' );
+    };
+    const onMove = () => {
+        console.log( 'Move clicked' );
+    };
     return (
         <>
             <h4>{__("SelectControl", "authpress")}</h4>
@@ -684,7 +751,7 @@ const ComponentsBasic = ({handleChange}) => {
                     </div>                                 
                 </PanelBody>
                 <PanelBody title={__('Toggle', 'authpress')} initialOpen={ false }>                                               
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -705,6 +772,88 @@ const ComponentsBasic = ({handleChange}) => {
                                         checked={ toggle }
                                         onChange={ () => setToggle( ( state ) => ! state ) }
                                     />               
+                                </div>
+                            }
+                        </div>
+                    </div>                                 
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ToggleControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <ToggleControl
+                                        __nextHasNoMarginBottom
+                                        label="Fixed Background"
+                                        help={
+                                            toggle
+                                                ? 'Has fixed background.'
+                                                : 'No fixed background.'
+                                        }
+                                        checked={ toggle }
+                                        onChange={ (newValue) => {
+                                            setToggle( newValue );
+                                        } }
+                                    />             
+                                </div>
+                            }
+                        </div>
+                    </div>                                 
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ToggleGroupControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <ToggleGroupControl __nextHasNoMarginBottom __next40pxDefaultSize>
+                                        <ToggleGroupControlOptionIcon
+                                            value="uppercase"
+                                            icon={ formatUppercase }
+                                            label="Uppercase"
+                                        />
+                                        <ToggleGroupControlOptionIcon
+                                            value="lowercase"
+                                            icon={ formatLowercase }
+                                            label="Lowercase"
+                                        />
+                                    </ToggleGroupControl>   
+                                    <hr/>
+                                    <ToggleGroupControl
+                                        label="my label"
+                                        value="vertical"
+                                        isBlock
+                                        __nextHasNoMarginBottom
+                                        __next40pxDefaultSize
+                                    >
+                                        <ToggleGroupControlOption
+                                            value="horizontal"
+                                            label="Horizontal"
+                                            showTooltip={ true }
+                                        />
+                                        <ToggleGroupControlOption value="vertical" label="Vertical" />
+                                    </ToggleGroupControl>           
                                 </div>
                             }
                         </div>
@@ -1140,6 +1289,34 @@ const ComponentsBasic = ({handleChange}) => {
                                         value={ searchInput }
                                         onChange={ setSearchInput }
                                     />            
+                                </div>
+                            }
+                        </div>
+                    </div>                                
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("TextareaControl", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <TextareaControl
+                                        __nextHasNoMarginBottom
+                                        label="Text"
+                                        help="Enter some text"
+                                        value={ text }
+                                        onChange={ ( value ) => setText( value ) }
+                                    />           
                                 </div>
                             }
                         </div>
@@ -1895,7 +2072,7 @@ const ComponentsBasic = ({handleChange}) => {
                     </div>                                     
                 </PanelBody>
                 <PanelBody title={__('Notice', 'authpress')} initialOpen={ false }>                                              
-                    <div className="setting-unit pt-4">
+                    <div className="setting-unit py-4 border-bottom">
                         <div className="row justify-content-between">
                             <div className="col-lg-7">
                                 {
@@ -1913,6 +2090,28 @@ const ComponentsBasic = ({handleChange}) => {
                                 !settingLoading &&                               
                                 <div className="col-lg-5">
                                     <Notice status="error">An unknown error occurred.</Notice>
+                                </div>
+                            }
+                        </div>
+                    </div>                                     
+                    <div className="setting-unit pt-4">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Snackbar", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum dolor, sit amet consectetur adipisicing elit. Ut, nam.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Snackbar>Post published successfully.</Snackbar>
                                 </div>
                             }
                         </div>
@@ -2084,6 +2283,344 @@ const ComponentsBasic = ({handleChange}) => {
                             }
                         </div>
                     </div>                                     
+                </PanelBody>
+                <PanelBody title={__('View, Spacer, Surface', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("View, Spacer", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <View>
+                                        <Spacer marginBottom={10}>
+                                            <Heading>WordPress.org</Heading>
+                                        </Spacer>
+                                        <Text>Code is Poetry</Text>
+                                    </View>
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Surface", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Surface borderBottom={true}>
+                                        <Heading>WordPress.org</Heading>
+                                    </Surface>
+                                    <Text>Code is Poetry</Text>
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                </PanelBody>
+                <PanelBody title={__('Spinner', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Spinner", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Spinner />
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                </PanelBody>
+                <PanelBody title={__('TabPanel', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("TabPanel", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                        <TabPanel
+                                            className="my-tab-panel"
+                                            activeClass="active-tab"
+                                            onSelect={ onTabSelect }
+                                            tabs={ [
+                                                {
+                                                    name: 'tab1',
+                                                    title: 'Tab 1',
+                                                    className: 'tab-one',
+                                                },
+                                                {
+                                                    name: 'tab2',
+                                                    title: 'Tab 2',
+                                                    className: 'tab-two',
+                                                },
+                                            ] }
+                                        >
+                                            { ( tab ) => <p>{ tab.title }</p> }
+                                        </TabPanel>
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                </PanelBody>
+                <PanelBody title={__('TextHighlight', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("TextHighlight", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                        <TextHighlight
+                                            text="Why do we like Gutenberg? Because Gutenberg is the best!"
+                                            highlight="Gutenberg"
+                                        />
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                </PanelBody>
+                <PanelBody title={__('Toolbar', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ToolbarButton", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                        <Toolbar label="Options">
+                                            <ToolbarButton
+                                                icon={ pencil }
+                                                label="Edit"
+                                                onClick={ () => alert( 'Editing' ) }
+                                            />
+                                        </Toolbar>
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ToolbarDropdownMenu", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                        <Toolbar label="Options">
+                                            <ToolbarDropdownMenu
+                                                icon={ more }
+                                                label="Select a direction"
+                                                controls={ [
+                                                    {
+                                                        title: 'Up',
+                                                        icon: arrowUp,
+                                                        onClick: () => console.log( 'up' ),
+                                                    },
+                                                    {
+                                                        title: 'Right',
+                                                        icon: arrowRight,
+                                                        onClick: () => console.log( 'right' ),
+                                                    },
+                                                    {
+                                                        title: 'Down',
+                                                        icon: arrowDown,
+                                                        onClick: () => console.log( 'down' ),
+                                                    },
+                                                    {
+                                                        title: 'Left',
+                                                        icon: arrowLeft,
+                                                        onClick: () => console.log( 'left' ),
+                                                    },
+                                                ] }
+                                            />
+                                        </Toolbar>
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ToolbarGroup", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Toolbar label="Options">
+                                        <ToolbarGroup>
+                                            <ToolbarButton icon={ paragraph } label="Paragraph" />
+                                        </ToolbarGroup>
+                                        <ToolbarGroup>
+                                            <ToolbarButton icon={ formatBold } label="Bold" />
+                                            <ToolbarButton icon={ formatItalic } label="Italic" />
+                                            <ToolbarButton icon={ link } label="Link" />
+                                        </ToolbarGroup>
+                                    </Toolbar>
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("ToolbarItem", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Toolbar label="Options">
+                                        <ToolbarItem as={ Button }>I am a toolbar button</ToolbarItem>
+                                        <ToolbarItem as="button">I am another toolbar button</ToolbarItem>
+                                    </Toolbar>
+                                </div>
+                            }
+                        </div>
+                    </div>                                          
+                </PanelBody>
+                <PanelBody title={__('Tooltip', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Tooltip", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                        <Tooltip text="More information">
+                                            <Dashicon icon="products" />
+                                        </Tooltip>
+                                </div>
+                            }
+                        </div>
+                    </div>                                  
+                </PanelBody>
+                <PanelBody title={__('Truncate', 'authpress')} initialOpen={ false }>                                              
+                    <div className="setting-unit py-4 border-bottom">
+                        <div className="row justify-content-between">
+                            <div className="col-lg-7">
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                    : <h4>{__("Truncate", "authpress")}</h4>
+                                }
+                                {
+                                    settingLoading 
+                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                }
+                            </div>    
+                            {
+                                !settingLoading &&                               
+                                <div className="col-lg-5">
+                                    <Truncate
+                                        ellipsizeMode="auto"
+                                    >
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ex
+                                        neque, vulputate a diam et, luctus convallis lacus. Vestibulum ac
+                                        mollis mi. Morbi id elementum massa.
+                                    </Truncate>
+                                </div>
+                            }
+                        </div>
+                    </div>                                  
                 </PanelBody>
             </Panel>
             

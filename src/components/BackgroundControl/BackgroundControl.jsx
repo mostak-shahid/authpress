@@ -1,9 +1,9 @@
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import ColorPickerControl from '../ColorPickerControl/ColorPickerControl'
-import MediaUploader from '../MediaUploader/MediaUploader'
+import MediaUploaderControl from '../MediaUploaderControl/MediaUploaderControl'
 import { SelectControl } from '@wordpress/components';
-const BackgroundControl = ({options, defaultValues = {}, name, handleChange}) => {
+const BackgroundControl = ({options, defaultValues = {}, name, handleChange, className=''}) => {
     // Initialize selected values with defaultValues
     const [values, setValues] = useState(defaultValues);
 
@@ -24,19 +24,17 @@ const BackgroundControl = ({options, defaultValues = {}, name, handleChange}) =>
     };
     return (
         <>
-            <div className="background-wrapper">
+            <div className={`background-wrapper ${className}`}>
                 <div className="row">
                 {options.map((option) => (
                     <div key={option} className={`mb-2 from-group from-group-${option} col-${(option === 'image' || option === 'color') ? '12' : '6'}`}>
                         {/* color → color picker */}
                         {option === "color" && (
                             <>
-                            <label className="form-label text-capitalize">{option}</label>
+                            <label className="form-label">{option}</label>
                             <ColorPickerControl
-                                type="color"
                                 defaultValue={values[option]}
                                 handleChange={(value) => updateValue(option, value)}
-                                className="form-control"
                                 mode='color'
                                 />
                             </>
@@ -44,7 +42,7 @@ const BackgroundControl = ({options, defaultValues = {}, name, handleChange}) =>
 
                         {/* image → external component */}
                         {option === "image" &&  (
-                            <MediaUploader 
+                            <MediaUploaderControl 
                                 data={values?.image? values.image : {id:0, url:''}} 
                                 name={`${name}.image`}
                                 handleChange={handleChange}

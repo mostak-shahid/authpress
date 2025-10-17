@@ -87,31 +87,6 @@
   margin: 0;
   margin-bottom: 10px;
 }
-.authpress-settings-template .authpress-settings-wrapper input[type=color].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=date].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=datetime-local].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=datetime].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=email].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=month].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=number].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=password].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=search].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=tel].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=text].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=time].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=url].form-control,
-.authpress-settings-template .authpress-settings-wrapper input[type=week].form-control,
-.authpress-settings-template .authpress-settings-wrapper select.form-control,
-.authpress-settings-template .authpress-settings-wrapper select.form-select,
-.authpress-settings-template .authpress-settings-wrapper textarea.form-control {
-  border: 1px solid #dee2e6;
-}
-.authpress-settings-template .authpress-settings-wrapper input[type=color].form-control {
-  padding: 2px;
-  height: 48px;
-  width: 48px;
-  flex: 0 0 48px;
-}
 .authpress-settings-template .authpress-settings-wrapper .button-link {
   background-color: transparent !important;
 }
@@ -158,48 +133,29 @@
 .authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .navbar-nav.navbar-nav-left .nav-link.active, .authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .navbar-nav.navbar-nav-left .nav-link:hover {
   color: var(--authpress-color);
 }
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .navbar-brand {
-  color: #000000;
-}
 .authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .navbar-brand img {
   width: 40px;
   height: auto;
 }
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .navbar-brand span {
-  font-weight: 700;
-}
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .navbar-brand:hover {
-  color: var(--authpress-color);
-}
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .navbar-brand:focus {
-  box-shadow: none;
-}
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container nav.navbar .nav-item {
-  margin-bottom: 0;
-}
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .list-group .list-group-item {
-  margin-bottom: 0;
-}
 .authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings {
   padding: 30px;
 }
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings .card {
-  margin-top: 0;
-  padding: 0;
-  max-width: unset;
+.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings .form-label {
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  display: block;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  max-width: 100%;
+  z-index: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings .sidebar .list-group-item {
-  border-style: none;
-}
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings .sidebar .list-group-item:focus, .authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings .sidebar .list-group-item:hover {
-  background-color: transparent;
-}
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings .sidebar .submenu {
-  margin-left: 16px;
-}
-.authpress-settings-template .authpress-settings-wrapper .authpress-settings-container .authpress-settings .sidebar .submenu .list-group-item {
-  border-left: 2px solid #eaeaea;
-}
+
 .loading-skeleton {
   background: linear-gradient(45deg, #e0e0e0 25%, #f8f8f8 50%, #e0e0e0 75%);
   background-size: 200% 100%;
