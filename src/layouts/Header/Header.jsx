@@ -83,13 +83,13 @@ export default function Header() {
                                 <a className="nav-link disabled" aria-disabled="true">{Details?.version} {__( 'Core', "authpress" )}</a>
                             </li>
                             <li className="nav-item">
-                                <a href="https://wordpress.org/support/plugin/authpress/" target="_blank" className="nav-link" title={__( 'Documentation', "authpress" )}><span class="dashicons dashicons-editor-help d-none d-lg-inline"></span><span className="d-lg-none">{__( 'Documentation', "authpress" )}</span></a>
+                                <a href="https://wordpress.org/support/plugin/authpress/" target="_blank" className="nav-link" title={__( 'Documentation', "authpress" )}><span className="dashicons dashicons-editor-help d-none d-lg-inline"></span><span className="d-lg-none">{__( 'Documentation', "authpress" )}</span></a>
                             </li>
                             <li className="nav-item">
-                                <a href="https://wordpress.org/support/plugin/authpress/reviews/#new-post"  target="_blank" className="nav-link" title={__( 'Knowledge Base', "authpress" )}><span class="dashicons dashicons-book d-none d-lg-inline"></span><span className="d-lg-none">{__( 'Knowledge Base', "authpress" )}</span></a>
+                                <a href="https://wordpress.org/support/plugin/authpress/reviews/#new-post"  target="_blank" className="nav-link" title={__( 'Knowledge Base', "authpress" )}><span className="dashicons dashicons-book d-none d-lg-inline"></span><span className="d-lg-none">{__( 'Knowledge Base', "authpress" )}</span></a>
                             </li>
                             <li className="nav-item" onClick={handleShow}>
-                                <a className="nav-link" title={__( 'What\'s New', "authpress" )}><span class="dashicons dashicons-megaphone d-none d-lg-inline"></span><span className="d-lg-none">{__( 'What\'s New', "authpress" )}</span></a>
+                                <a className="nav-link" title={__( 'What\'s New', "authpress" )}><span className="dashicons dashicons-megaphone d-none d-lg-inline"></span><span className="d-lg-none">{__( 'What\'s New', "authpress" )}</span></a>
                             </li>
                             {/* <NavDropdown 
                                 title={

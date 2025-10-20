@@ -25,6 +25,7 @@ const BackgroundControl = ({options, defaultValues = {}, name, handleChange, cla
     return (
         <>
             <div className={`background-wrapper ${className}`}>
+                {console.log('values', values)}
                 <div className="row">
                 {options.map((option) => (
                     <div key={option} className={`mb-2 from-group from-group-${option} col-${(option === 'image' || option === 'color') ? '12' : '6'}`}>
