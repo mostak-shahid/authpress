@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { formDataPost } from "../../lib/Helpers"; // Import utility function
 import './PluginCard.scss';
 export default function PluginCard({image, name, intro, plugin_source='internal', plugin_slug='', plugin_file='', download_url=''}) {
@@ -15,14 +15,10 @@ export default function PluginCard({image, name, intro, plugin_source='internal'
     data-plugin_slug="mos-product-specifications-tab"
     */
     const [pluginStatus, setPluginStatus] = useState("checking");
-    const [pluginFile, setPluginFile] = useState(null);
     const [errorMessage, setErrorMessage] = useState("");
 
     // Check plugin status on component mount
-    useEffect(() => {
-        checkPluginStatus();
-    }, [plugin_slug]);
-    const checkPluginStatus = async () => {
+    const checkPluginStatus = useCallback(async () => {
         setPluginStatus("checking");
         setErrorMessage("");
         try {
@@ -36,7 +32,11 @@ export default function PluginCard({image, name, intro, plugin_source='internal'
         } finally {
             // setPluginStatusLoading(false);
         }
-    };
+    }, [plugin_file]);
+
+    useEffect(() => {
+        checkPluginStatus();
+    }, [checkPluginStatus, plugin_slug]);
 
     const handlePlugin = async () => {              
         // setProcessing(true);     
@@ -103,14 +103,13 @@ export default function PluginCard({image, name, intro, plugin_source='internal'
         setPluginStatus("installing");
         setErrorMessage("");
         try {
-            const result = await formDataPost('authpress_ajax_install_plugins', {
+            await formDataPost('authpress_ajax_install_plugins', {
                 sub_action:'install',
                 download_url:download_url,                
                 plugin_slug:plugin_slug,
                 plugin_file:plugin_file,
                 plugin_source:plugin_source,
             }); 
-            console.log("Result:", result); // check structure here
         } catch (error) {
             setErrorMessage(error.message);
         } finally {
@@ -122,14 +121,13 @@ export default function PluginCard({image, name, intro, plugin_source='internal'
         setPluginStatus("activating");
         setErrorMessage("");        
         try {
-            const result = await formDataPost('authpress_ajax_install_plugins', {
+            await formDataPost('authpress_ajax_install_plugins', {
                 sub_action:'activate',
                 download_url:download_url,                
                 plugin_slug:plugin_slug,
                 plugin_file:plugin_file,
                 plugin_source:plugin_source,
             }); 
-            console.log("Result:", result); // check structure here
         } catch (error) {
             setErrorMessage(error.message);
         } finally {

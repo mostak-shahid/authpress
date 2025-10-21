@@ -1,31 +1,50 @@
 import { __ } from '@wordpress/i18n';
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ColorPickerControl from '../ColorPickerControl/ColorPickerControl'
 import MediaUploaderControl from '../MediaUploaderControl/MediaUploaderControl'
 import { SelectControl } from '@wordpress/components';
+
+const SELECT_OPTIONS = {
+    position: ["left top", "left center", "left bottom", "center top", "center", "center bottom", "right top", "right center", "right bottom"],
+    size: ["auto", "cover", "contain"],
+    repeat: ["repeat", "repeat-x", "repeat-y", "no-repeat"],
+    origin: ["padding-box", "border-box", "content-box"],
+    clip: ["border-box", "padding-box", "content-box", "text"],
+    attachment: ["scroll", "fixed", "local"],
+};
+
 const BackgroundControl = ({options, defaultValues = {}, name, handleChange, className=''}) => {
-    // Initialize selected values with defaultValues
-    const [values, setValues] = useState(defaultValues);
+    const [values, setValues] = useState(() => (
+        defaultValues && typeof defaultValues === 'object' ? { ...defaultValues } : {}
+    ));
 
-    const updateValue = (option, value) => {
-        const updated = { ...values, [option]: value };
-        setValues(updated);
-        handleChange(name, updated);
-    };
+    useEffect(() => {
+        setValues(defaultValues && typeof defaultValues === 'object' ? { ...defaultValues } : {});
+    }, [defaultValues]);
 
-    // Predefined select options for background-related CSS properties
-    const selectOptions = {
-        position: ["left top", "left center", "left bottom", "center top", "center", "center bottom", "right top", "right center", "right bottom"],
-        size: ["auto", "cover", "contain"],
-        repeat: ["repeat", "repeat-x", "repeat-y", "no-repeat"],
-        origin: ["padding-box", "border-box", "content-box"],
-        clip: ["border-box", "padding-box", "content-box", "text"],
-        attachment: ["scroll", "fixed", "local"],
-    };
+    const updateValue = useCallback((option, value) => {
+        setValues(prev => {
+            const updated = { ...prev, [option]: value };
+            handleChange(name, updated);
+            return updated;
+        });
+    }, [handleChange, name]);
+
+    const handleImageChange = useCallback((_, value) => {
+        setValues(prev => {
+            const updated = { ...prev, image: value };
+            handleChange(name, updated);
+            return updated;
+        });
+    }, [handleChange, name]);
+
+    const imageData = values?.image && typeof values.image === 'object'
+        ? values.image
+        : { id: 0, url: '', thumbnail: '' };
+
     return (
         <>
             <div className={`background-wrapper ${className}`}>
-                {console.log('values', values)}
                 <div className="row">
                 {options.map((option) => (
                     <div key={option} className={`mb-2 from-group from-group-${option} col-${(option === 'image' || option === 'color') ? '12' : '6'}`}>
@@ -44,9 +63,9 @@ const BackgroundControl = ({options, defaultValues = {}, name, handleChange, cla
                         {/* image → external component */}
                         {option === "image" &&  (
                             <MediaUploaderControl 
-                                data={values?.image? values.image : {id:0, url:''}} 
+                                data={imageData} 
                                 name={`${name}.image`}
-                                handleChange={handleChange}
+                                handleChange={handleImageChange}
                                 options = {{
                                     frame:{
                                         title: __("Select or Upload Image", "authpress"),
@@ -65,7 +84,7 @@ const BackgroundControl = ({options, defaultValues = {}, name, handleChange, cla
                                 <SelectControl
                                     label={option}
                                     value={ values[option] || "" }
-                                    options={selectOptions[option]?.map((val) => ({ label: val, value: val })) || []}
+                                    options={SELECT_OPTIONS[option]?.map((val) => ({ label: val, value: val })) || []}
                                     onChange={(value) => updateValue(option, value)}
                                     __next40pxDefaultSize
                                     __nextHasNoMarginBottom

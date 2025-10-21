@@ -1,39 +1,44 @@
 import { __ } from '@wordpress/i18n';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import ColorPickerControl from '../ColorPickerControl/ColorPickerControl';
 import { 
     SelectControl,
     FontSizePicker,
-    ToggleControl
+    ToggleControl,
+    RangeControl
 } from '@wordpress/components';
 import { FONT_SIZES } from '../../lib/Constants';
+const sanitizeDefaults = (value) => (
+    value && typeof value === 'object' ? value : {}
+);
+const SELECT_OPTIONS = {
+    "font-weight": [100,200,300,400,500,600,700,800,900],
+    "font-style": ["normal", "italic", "oblique"],
+    "font-variant": ["normal", "small-caps"],
+    "font-stretch": ["normal", "condensed", "expanded"],
+    "text-align": ["left", "right", "center", "justify"],
+    "text-decoration": ["none", "underline", "overline", "line-through"],
+    "text-transform": ["none", "uppercase", "lowercase", "capitalize"],
+};
 const FontControl = ({options, defaultValues = {}, name, handleChange, className=''}) => {
-    // Initialize selected values with defaultValues
-    const [values, setValues] = useState(defaultValues);
-    const [ enableFont, setEnableFont ] = useState( false );
+    const [values, setValues] = useState(() => ({ ...sanitizeDefaults(defaultValues) }));
+
     useEffect(() => {
-        const enabled = values.enabled || false
-        setEnableFont(enabled);
-    }, [values.enabled]);
-    const updateValue = (option, value) => {
-        const updated = { ...values, [option]: value };
-        setValues(updated);
-        handleChange(name, updated);
-    };
-    // Predefined select options for background-related CSS properties
-    const selectOptions = {
-        "font-weight": [100,200,300,400,500,600,700,800,900],
-        "font-style": ["normal", "italic", "oblique"],
-        "font-variant": ["normal", "small-caps"],
-        "font-stretch": ["normal", "condensed", "expanded"],
-        "text-align": ["left", "right", "center", "justify"],
-        "text-decoration": ["none", "underline", "overline", "line-through"],
-        "text-transform": ["none", "uppercase", "lowercase", "capitalize"],
-    };
+        setValues({ ...sanitizeDefaults(defaultValues) });
+    }, [defaultValues]);
+
+    const updateValue = useCallback((option, value) => {
+        setValues(prev => {
+            const updated = { ...prev, [option]: value };
+            handleChange(name, updated);
+            return updated;
+        });
+    }, [handleChange, name]);
+
+    const enableFont = Boolean(values.enabled);
 
     return (
         <>
-            {console.log(defaultValues)}
             <div className={`font-wrapper ${className}`}>
                 <div className="d-flex justify-content-end mb-2">
                     <ToggleControl
@@ -87,7 +92,7 @@ const FontControl = ({options, defaultValues = {}, name, handleChange, className
                                             <SelectControl
                                                 label={ option.replace('-', ' ') }
                                                 value={ values[option] || "" }
-                                                options={ selectOptions[option].map(val => {
+                                                options={ SELECT_OPTIONS[option].map(val => {
                                                     const valStr = String(val);
                                                     return {
                                                         label: __(valStr.charAt(0).toUpperCase() + valStr.slice(1), 'authpress'),
