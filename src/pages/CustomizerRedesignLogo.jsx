@@ -4,7 +4,8 @@ import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { 
     __experimentalUnitControl as UnitControl, 
-    __experimentalInputControl as InputControl
+    __experimentalInputControl as InputControl,    
+    ToggleControl,
 } from '@wordpress/components';
 
 
@@ -23,6 +24,32 @@ const CustomizerRedesignLogo = ({handleChange}) => {
     return (
         <>
             {/* {console.log(settingData?.customizer?.redesign?.logo)} */}
+            <div className="setting-unit pt-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Hide logo", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-lg-auto">
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(value) => handleChange('customizer.redesign.logo.disabled', value)}
+                                checked={ settingData?.customizer?.redesign?.logo?.disabled }
+                            />                        
+                        </div>
+                    }
+                </div>
+            </div>
             <div className="setting-unit border-bottom py-4">
                 <div className="row justify-content-between">
                     <div className="col-lg-7">

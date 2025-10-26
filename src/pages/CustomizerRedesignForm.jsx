@@ -51,8 +51,62 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                                 onChange={(value) => handleChange('customizer.redesign.form.wrapper.width', value)}
                                                 value={settingData?.customizer?.redesign?.form?.wrapper?.width}
                                                 units={UNITS}
-                                                min="320"
+                                                min="0"
                                             />                                                                 
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div className="setting-unit border-bottom py-4">
+                                <div className="row justify-content-between">
+                                    <div className="col-lg-7">
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                            : <h4>{__("Height", "authpress")}</h4>
+                                        }
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                        }
+                                    </div>    
+                                    {
+                                        !settingLoading &&                               
+                                        <div className="col-lg-5">
+                                            <UnitControl 
+                                                __next40pxDefaultSize 
+                                                onChange={(value) => handleChange('customizer.redesign.form.wrapper.height', value)}
+                                                value={settingData?.customizer?.redesign?.form?.wrapper?.height}
+                                                units={UNITS}
+                                                min="0"
+                                            />                                                                 
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div className="setting-unit border-bottom py-4">
+                                <div className="row justify-content-between">
+                                    <div className="col-lg-7">
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                                            : <h4>{__("Margin", "authpress")}</h4>
+                                        }
+                                        {
+                                            settingLoading 
+                                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                        }
+                                    </div>    
+                                    {
+                                        !settingLoading &&                               
+                                        <div className="col-lg-5">
+                                            <BoxControl
+                                                __next40pxDefaultSize
+                                                values={ settingData?.customizer?.redesign?.form?.wrapper?.margin }
+                                                onChange={ (value) => handleChange('customizer.redesign.form.wrapper.margin', value) }
+                                            />                          
                                         </div>
                                     }
                                 </div>
@@ -328,6 +382,7 @@ const CustomizerRedesignForm = ({handleChange}) => {
                                     {
                                         !settingLoading &&                               
                                         <div className="col-lg-5">
+                                            {console.log(settingData?.customizer?.redesign?.form?.unit?.border)}
                                             <BorderBoxControl
                                                 label={ __( 'Borders', 'authpress' ) }
                                                 __next40pxDefaultSize

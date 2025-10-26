@@ -133,10 +133,7 @@ function authpress_get_default_options()
 				'background'=> [
 					'type' => 'image', // gradient, image, video
 					'background' => [
-						"image" => [
-							'id' => '',
-							'url' => '',
-						],
+						"image" => [],
 						"color" => "#f0f0f1",
 						"position" => "center",
 						"size" => "auto",
@@ -149,10 +146,8 @@ function authpress_get_default_options()
 					'overlay' => '#ffffff00',
 				],
 				'logo' => [
-					'image' => [
-						'id' => '',
-						'url' => '',
-					],
+					'disabled' => false,
+					'image' => [],
 					'width' => '64px',
 					'height' => '64px',
 					'space' => '24px',
@@ -161,8 +156,10 @@ function authpress_get_default_options()
 				'form' => [
 					'wrapper' => [
 						'width' => '320px',
+						'height' => '',
+						'margin' => [],
 						'padding' => [
-							'top' => '5px',
+							'top' => '5%',
 							'right' => '0px',
 							'bottom' => '0px',
 							'left' => '0px',
@@ -179,12 +176,7 @@ function authpress_get_default_options()
 							"repeat" => "repeat",
 							"attachment" => "scroll",
 						],
-						'border' => [
-							'top' => ['color'=> '','style'=> 'none','width'=> '0px'],
-							'right' => ['color'=> '','style'=> 'none','width'=> '0px'],
-							'bottom' => ['color'=> '','style'=> 'none','width'=> '0px'],
-							'left' => ['color'=> '','style'=> 'none','width'=> '0px'],
-						],
+						'border' => [],
 						'border_radius' => '0px',
 						//box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
 						"glass_effect" => false,
@@ -210,12 +202,7 @@ function authpress_get_default_options()
 							"repeat" => "repeat",
 							"attachment" => "scroll",
 						],
-						'border' => [
-							'top' => ['color'=> '','style'=> 'none','width'=> '0px'],
-							'right' => ['color'=> '','style'=> 'none','width'=> '0px'],
-							'bottom' => ['color'=> '','style'=> 'none','width'=> '0px'],
-							'left' => ['color'=> '','style'=> 'none','width'=> '0px'],
-						],
+						'border' => [],
 						'border_radius' => '0px',
 						//box-shadow: 0 1px 3px rgba(0, 0, 0, .04);
 						"glass_effect" => false,
@@ -314,16 +301,20 @@ function authpress_get_default_options()
 				],
 			],
 			'additional_fields' => [
-				'login' => [], // label, required, type, default, options
-				'registration' => []
+				'login' => [
+					'remember_me_always_on' => false,
+
+				], // label, required, type, default, options
+				'registration' => [
+					
+				'enable_registration_password' => false,
+				]
 			],
 			'settings' => [
 				'login_url' => '',
 				'registration_url' => '',
 				'forgot_password_url' => '',
 				'login_by' => 'both', //username, email, both
-				'remember_me_always_on' => false,
-				'enable_registration_password' => false,
 			],
 		],	
 		'components' => [

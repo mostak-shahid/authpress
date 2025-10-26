@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
 import './MediaUploaderControl.scss';
 import { Button, TextControl, Dashicon } from '@wordpress/components';
-export default function MediaUploaderControl({ data, name, handleChange, options={}, className='' }) {    
+export default function MediaUploaderControl({ data={}, name, handleChange, options={}, className='' }) {    
     const [media, setMedia] = useState({});
 
     useEffect(()=> {
@@ -41,7 +41,8 @@ export default function MediaUploaderControl({ data, name, handleChange, options
 		});
         frame.on("select", function(){
             var media = frame.state().get("selection").first().toJSON();
-            var thumbnail = (media?.sizes?.thumbnail?.url)?media.sizes.thumbnail.url:media.thumb.src;
+            console.log(media);
+            var thumbnail = (media?.sizes?.thumbnail?.url)?media.sizes.thumbnail.url:(media?.sizes?.full?.url)?media.sizes.full.url:media.thumb.src;
             setMedia({id:media.id, url:media.url, thumbnail:thumbnail});
             handleChange(name, {id:media.id, url:media.url, thumbnail:thumbnail});
         });	
