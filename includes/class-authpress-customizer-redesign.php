@@ -4,13 +4,42 @@ class Authpress_Customizer_Redesign {
 
 	public function __construct() {
 		$this->options = authpress_get_option();
-		$disable_remember_me       = isset($this->options['customizer']['redesign']['fields']['disable_remember_me']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['disable_remember_me'])) : false;
+		add_filter( 'login_body_class', [$this, 'authpress_add_login_body_class'] );
+		$disable_remember_me       = isset($this->options['customizer']['redesign']['other']['disable_remember_me']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['other']['disable_remember_me'])) : false;
 
 		add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets'], 20);
 		add_filter('login_headerurl', [$this, 'authpress_login_headerurl']);
 		if ($disable_remember_me) {
 			add_filter('login_form_defaults', [$this, 'authpress_login_remember_me_checked'], 10, 3);
 		}
+		$disable_lost_password = isset($this->options['customizer']['redesign']['other']['disable_lost_password']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['other']['disable_lost_password'])) : false;
+		if ($disable_lost_password) {
+			add_action( 'login_head', [$this, 'authpress_hide_lost_password'] );
+		}
+		$disable_register_link = isset($this->options['customizer']['redesign']['other']['disable_register_link']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['other']['disable_register_link'])) : false;
+		if ($disable_register_link) {
+			add_action( 'login_head', [$this, 'authpress_disable_registration_by_css'] );
+			add_action( 'init', [$this, 'authpress_block_register_page'] );
+			add_filter( 'option_users_can_register', '__return_false' );
+		}
+		$disable_back_to_website = isset($this->options['customizer']['redesign']['other']['disable_back_to_website']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['other']['disable_back_to_website'])) : false;
+		if ($disable_back_to_website) {			
+   			add_filter( 'login_display_language_dropdown', '__return_false' ); // Keep consistent
+			add_action( 'login_head', [$this, 'authpress_disable_back_to_website_by_css'] );
+		}
+		
+		$disable_privacy_policy = isset($this->options['customizer']['redesign']['other']['disable_privacy_policy']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['other']['disable_privacy_policy'])) : false;
+		if ($disable_privacy_policy){
+			// Disable link completely
+			add_filter( 'privacy_policy_url', '__return_empty_string' );
+			add_action( 'login_head', [$this, 'authpress_remove_privacy_policy_everywhere'] );
+		}
+		$disable_lost_password = isset($this->options['customizer']['redesign']['other']['disable_lost_password']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['other']['disable_lost_password'])) : false;
+		if ($disable_lost_password){
+			add_action( 'login_head', [$this, 'authpress_remove_lost_password_features'] );
+			add_action( 'init', [$this, 'authpress_block_lostpassword_page'] );
+		}
+
 		add_filter('login_footer', function () {
 			// echo '<pre>';
 			// var_dump($this->options['customizer']['redesign']['button']);
@@ -20,8 +49,11 @@ class Authpress_Customizer_Redesign {
 
 	public function enqueue_login_assets() {
 		// Enqueue a base style handle to attach inline CSS
-		wp_register_style('authpress-login-style', false); // no external CSS file
-		wp_enqueue_style('authpress-login-style');
+		// wp_register_style('authpress-login-style', false); // no external CSS file
+		wp_enqueue_style('authpress-login-style', AUTHPRESS_URL . 'assets/css/login.css', array(), '1.0.0', 'all');
+		wp_enqueue_script('authpress-login-script', AUTHPRESS_URL . 'assets/js/login.js', array('jquery'), '1.0.0', false);
+		
+		// wp_enqueue_style('authpress-login-style');
 		$css = '';
 
 		// Handle Jarallax scripts if video background
@@ -112,8 +144,8 @@ class Authpress_Customizer_Redesign {
 		if ($wrapper_height) {
 			$css .= "height: {$wrapper_height};";
 		}
-		$css .= $this->authpress_generate_padding_css($wrapper_padding);
-		$css .= $this->authpress_generate_margin_css($wrapper_margin);
+		$css .= $this->authpress_generate_boxcontrol_css($wrapper_padding);
+		$css .= $this->authpress_generate_boxcontrol_css($wrapper_margin, 'margin');
 
 		if ($wrapper_position == 'left') {$css .= "margin-left: 0;";}
 		else if ($wrapper_position == 'right') {$css .= "margin-right: 0;";}
@@ -144,8 +176,8 @@ class Authpress_Customizer_Redesign {
 		
 		$css .= ".login form {";
 		
-		$css .= $this->authpress_generate_padding_css($unit_padding);
-		$css .= $this->authpress_generate_margin_css($unit_margin);
+		$css .= $this->authpress_generate_boxcontrol_css($unit_padding);
+		$css .= $this->authpress_generate_boxcontrol_css($unit_margin, 'margin');
 		$css .= $this->authpress_generate_background_css($unit_background);
 		$css .= $this->authpress_generate_border_css($unit_border);
 
@@ -165,7 +197,7 @@ class Authpress_Customizer_Redesign {
 		
 
 		
-		$disable_remember_me       = isset($this->options['customizer']['redesign']['fields']['disable_remember_me']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['disable_remember_me'])) : false;
+		$disable_remember_me       = isset($this->options['customizer']['redesign']['other']['disable_remember_me']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['other']['disable_remember_me'])) : false;
 		if ($disable_remember_me) {
 			$css .= ".login #loginform .forgetmenot { display: none; }";
 		}
@@ -190,8 +222,8 @@ class Authpress_Customizer_Redesign {
 			$css .= "border-radius: {$fields_border_radius};";
 		}
 		$css .= $this->authpress_generate_boxshadow_css($fields_boxshadow);
-		$css .= $this->authpress_generate_padding_css($fields_padding);
-		$css .= $this->authpress_generate_margin_css($fields_margin);
+		$css .= $this->authpress_generate_boxcontrol_css($fields_padding);
+		$css .= $this->authpress_generate_boxcontrol_css($fields_margin, 'margin');
 		if ($fields_background_color) {
 			$css .= "background-color: {$fields_background_color};";
 		}
@@ -217,6 +249,37 @@ class Authpress_Customizer_Redesign {
 		$button_textshadow = isset($this->options['customizer']['redesign']['button']['textshadow']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['button']['textshadow']), 'sanitize_text_field') : [];	
 		$button_size = isset($this->options['customizer']['redesign']['button']['size']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['button']['size'])) : 'auto';
 
+		$css .= '.login form .submit .button-primary {';
+		$css .= $this->authpress_generate_font_css($button_font);
+		$css .= $this->authpress_generate_background_css($button_background);
+		// $css .= $this->authpress_generate_color_css($button_color);
+		$css .= $this->authpress_generate_boxcontrol_css($button_padding);
+		$css .= $this->authpress_generate_boxcontrol_css($button_margin, 'margin');
+		$css .= $this->authpress_generate_border_css($button_border);
+		if ($button_border_radius) {
+			$css .= "border-radius: {$button_border_radius};";
+		}
+		$css .= $this->authpress_generate_boxshadow_css($button_boxshadow);
+		$css .= $this->authpress_generate_textshadow_css($button_textshadow);
+		if ($button_size && $button_size != 'auto') {
+			$css .= "width: 100%;";
+		}
+		isset($button_background['normal'])? $css .= 'background-color'. $button_background['normal']. ';':'';
+		isset($button_color['normal'])? $css .= 'color'. $button_color['normal']. ';':'';
+		$css .= "}";
+
+		// Button hover states
+		$css .= '.login form .submit .button-primary.hover, .login form .submit .button-primary:hover, .login form .submit .button-primary.focus, .login form .submit .button-primary:focus {';
+		isset($button_background['hover'])? $css .= 'background-color'. $button_background['hover']. ';':'';
+		isset($button_color['hover'])? $css .= 'color'. $button_color['hover']. ';':'';
+		$css .= "}";
+
+		// Button active states
+		$css .= '.login form .submit .button-primary.active, .login form .submit .button-primary.active:hover, .login form .submit .button-primary.active:focus, .login form .submit .button-primary:active {';		
+			isset($button_background['active'])? $css .= 'background-color'. $button_background['active']. ';':'';
+			isset($button_color['active'])? $css .= 'color'. $button_color['active']. ';':'';
+		$css .= "}";
+
 
 		$type = isset($this->options['customizer']['redesign']['background']['type']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['background']['type'])) : 'color';
 		$background = isset($this->options['customizer']['redesign']['background']['background']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['background']['background']), 'sanitize_text_field') : [];
@@ -228,6 +291,10 @@ class Authpress_Customizer_Redesign {
 		$css .= "}";
 
 		wp_add_inline_style('authpress-login-style', $css);
+	}
+	public function authpress_add_login_body_class( $classes ) {
+		$classes[] = 'loginpress-login-page'; // 👈 change this to your desired class name
+		return $classes;
 	}
 
 	// Always remember users when they log in
@@ -310,13 +377,15 @@ class Authpress_Customizer_Redesign {
 		return $css;
 	}
 	
-	public function authpress_generate_padding_css($option){
+	public function authpress_generate_boxcontrol_css($option, $mode = 'padding'){
+		$mood = strtolower($mode);
+		$mood = in_array($mood, ['padding','margin']) ? $mood : 'padding';
 		$css = '';
 		if ($option && is_array($option)) {
-			isset($option['top'])? $css .= "padding-top: ".sanitize_text_field(wp_unslash($option['top'])).";":'';
-			isset($option['right'])? $css .= "padding-right: ".sanitize_text_field(wp_unslash($option['right'])).";":'';
-			isset($option['bottom'])? $css .= "padding-bottom: ".sanitize_text_field(wp_unslash($option['bottom'])).";":'';
-			isset($option['left'])? $css .= "padding-left: ".sanitize_text_field(wp_unslash($option['left'])).";":'';
+			isset($option['top'])? $css .= $mood . "-top: ".sanitize_text_field(wp_unslash($option['top'])).";":'';
+			isset($option['right'])? $css .= $mood . "-right: ".sanitize_text_field(wp_unslash($option['right'])).";":'';
+			isset($option['bottom'])? $css .= $mood . "-bottom: ".sanitize_text_field(wp_unslash($option['bottom'])).";":'';
+			isset($option['left'])? $css .= $mood . "-left: ".sanitize_text_field(wp_unslash($option['left'])).";":'';
 		}
 		return $css;
 	}
@@ -369,6 +438,77 @@ class Authpress_Customizer_Redesign {
 		}
 		return $css;
 	}
+	public function authpress_hide_lost_password() {
+		echo '<style>.login #nav a.wp-login-lost-password { display: none !important; }</style>';
+	}
+	public function authpress_disable_registration_by_css() {
+		// Hide register link
+		echo '<style>.login #nav a[href*="register"] { display:none !important; }</style>';
+	}
+	public function authpress_block_register_page() {
+		global $pagenow;
+		if ( $pagenow === 'wp-login.php' && isset($_GET['action']) && $_GET['action'] === 'register' ) {
+			wp_redirect( home_url('/wp-login.php') ); // Redirect elsewhere
+			exit;
+		}
+	}
+	public function authpress_disable_back_to_website_by_css() {
+		?>
+			<style>#backtoblog { display: none !important; }</style>
+		<?php
+	}
+	public function authpress_remove_lost_password_features() {
+		// Hide link visually
+		echo '<style>.login #nav a[href*="lostpassword"] { display: none !important; }</style>';
+	}
+	// add_action( 'login_head', 'authpress_remove_lost_password_features' );
+
+	// Block direct access
+	public function authpress_block_lostpassword_page() {
+		global $pagenow;
+		if ( $pagenow === 'wp-login.php' && isset($_GET['action']) && $_GET['action'] === 'lostpassword' ) {
+			wp_redirect( home_url() );
+			exit;
+		}
+	}
+	// add_action( 'init', 'authpress_block_lostpassword_page' );
+	public function authpress_remove_privacy_policy_everywhere() {
+		// Hide via CSS (for older WP versions)
+		echo '<style>.privacy-policy-page-link { display:none !important; }</style>';
+	}
 }
 
 new Authpress_Customizer_Redesign();
+/*
+// Add custom body class on the login page
+function authpress_add_login_body_class( $classes ) {
+    $classes[] = 'my-custom-login'; // 👈 change this to your desired class name
+    return $classes;
+}
+add_filter( 'login_body_class', 'wpw_add_login_body_class' );
+function wpw_customize_lost_password() {
+    // 1. Hide the link via CSS
+    echo '<style>.login #nav a.wp-login-lost-password { display: none !important; }</style>';
+}
+add_action( 'login_head', 'wpw_customize_lost_password' );
+
+function wpw_custom_lost_password_text( $text ) {
+    if ( $text == 'Lost your password?' ) {
+        $text = 'Forgot your login info?';
+    }
+    return $text;
+}
+add_filter( 'gettext', 'wpw_custom_lost_password_text' );
+
+function wpw_custom_lost_password_url( $url, $redirect ) {
+    return home_url( '/custom-reset/' );
+}
+add_filter( 'lostpassword_url', 'wpw_custom_lost_password_url', 10, 2 );
+
+
+
+
+
+
+
+*/

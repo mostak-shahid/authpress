@@ -18,6 +18,32 @@ const CustomizerRedesignOther = ({handleChange}) => {
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Disable Remember Me?", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-auto">
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.redesign.other.disable_remember_me', newValue)}
+                                checked={settingData?.customizer?.redesign?.other?.disable_remember_me}
+                            /> 
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
                             : <h4>{__("Disable Register Link?", "authpress")}</h4>
                         }
                         {
@@ -137,7 +163,7 @@ const CustomizerRedesignOther = ({handleChange}) => {
                                 defaultValues={settingData?.customizer?.redesign?.other?.font}
                                 name='customizer.redesign.other.font' 
                                 handleChange={handleChange}
-                                options = {['color', 'font-size', 'font-weight', 'font-style', 'text-transform']}
+                                options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
                             />  
                         </div>
                     }

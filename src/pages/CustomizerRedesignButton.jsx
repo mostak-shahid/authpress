@@ -40,7 +40,7 @@ const CustomizerRedesignButton = ({handleChange}) => {
                                 defaultValues={settingData?.customizer?.redesign?.button?.font}
                                 name='customizer.redesign.button.font' 
                                 handleChange={handleChange}
-                                options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
+                                options = {["font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
                             /> 
                         </div>
                     }
@@ -210,7 +210,7 @@ const CustomizerRedesignButton = ({handleChange}) => {
                         <div className="col-lg-5">
                             <BoxShadowControl
                                 value={settingData?.customizer?.redesign?.button?.boxshadow}
-                                onChange={(value) => handleChange('customizer.redesign.button.boxshadow"', value)}
+                                onChange={(value) => handleChange('customizer.redesign.button.boxshadow', value)}
                                 // className="border-start border-end border-bottom"
                             />                        
                         </div>
@@ -262,12 +262,12 @@ const CustomizerRedesignButton = ({handleChange}) => {
                         <div className="col-lg-5">  
                             <SelectControl
                                 // label="Size"
-                                value={settingData?.customizer?.redesign?.button?.width}
+                                value={settingData?.customizer?.redesign?.button?.size}
                                 options={ [
                                     { label: __('Auto','authpress'), value: 'auto' },
                                     { label: __('Full Width','authpress'), value: 'full' },
                                 ] }
-                                onChange={ ( newValue ) => handleChange('customizer.redesign.button.width', newValue ) }
+                                onChange={ ( newValue ) => handleChange('customizer.redesign.button.size', newValue ) }
                                 __next40pxDefaultSize
                                 __nextHasNoMarginBottom
                             />                       

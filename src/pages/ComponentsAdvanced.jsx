@@ -242,17 +242,7 @@ const ComponentsAdvanced = ({handleChange}) => {
                                 defaultValues={settingData?.customizer?.redesign?.fields?.label_font}
                                 name='customizer.redesign.fields.label_font' 
                                 handleChange={handleChange}
-                                options = {[
-                                    "color", 
-                                    "font-size",
-                                    "font-weight",
-                                    "font-style",
-                                    "font-variant",
-                                    "font-stretch",
-                                    "text-align",
-                                    "text-decoration",
-                                    "text-transform",
-                                ]}
+                                options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
                             />                         
                         </div>
                     }

@@ -30,32 +30,6 @@ const CustomizerRedesignFields = ({handleChange}) => {
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Disable Remember Me?", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
-                        }
-                    </div>    
-                    {
-                        !settingLoading &&                               
-                        <div className="col-auto">
-                            <ToggleControl
-                                __nextHasNoMarginBottom
-                                onChange={(value) => handleChange('customizer.redesign.fields.disable_remember_me', value)}
-                                checked={settingData?.customizer?.redesign?.fields?.disable_remember_me} 
-                            /> 
-                        </div>
-                    }
-                </div>
-            </div>
-            <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
                             : <h4>{__("Width", "authpress")}</h4>
                         }
                         {
@@ -125,7 +99,7 @@ const CustomizerRedesignFields = ({handleChange}) => {
                                 defaultValues={settingData?.customizer?.redesign?.fields?.font}
                                 name='customizer.redesign.fields.font' 
                                 handleChange={handleChange}
-                                options = {['color', 'font-size', 'font-weight', 'font-style', 'text-transform']}
+                                options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
                             />  
                         </div>
                     }
@@ -295,7 +269,7 @@ const CustomizerRedesignFields = ({handleChange}) => {
                                 defaultValues={settingData?.customizer?.redesign?.fields?.label_font}
                                 name='customizer.redesign.fields.label_font' 
                                 handleChange={handleChange}
-                                options = {['color', 'font-size', 'font-weight', 'font-style', 'text-transform']}
+                                options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
                             />  
                         </div>
                     }

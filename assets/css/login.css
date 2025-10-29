@@ -1,0 +1,8 @@
+.loginpress-login-page #nav {
+  padding: 0;
+  display: flex;
+  justify-content: space-between;
+}
+.loginpress-login-page .authpress-seprator {
+  display: none;
+}/*# sourceMappingURL=login.css.map */

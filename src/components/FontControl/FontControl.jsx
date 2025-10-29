@@ -59,7 +59,7 @@ const FontControl = ({options, defaultValues = {}, name, handleChange, className
                                     {/* font-family → text input */}
                                     {
                                         option === "color" ? (
-                                            <>
+                                            <div className='mb-2'>
                                                 <label className="form-label">{__('color', 'authpress')}</label>
                                                 <ColorPickerControl
                                                     defaultValue={values[option] || "#000000"}
@@ -67,7 +67,7 @@ const FontControl = ({options, defaultValues = {}, name, handleChange, className
                                                     handleChange={(value) => updateValue(option, value)}
                                                     mode='color'
                                                 /> 
-                                            </>
+                                            </div>
                                         ) : option === "font-size" ? 
                                         (
                                             <FontSizePicker
@@ -138,17 +138,7 @@ export default FontControl;
     defaultValues={settingData?.customizer?.redesign?.fields?.label_font}
     name='customizer.redesign.fields.label_font' 
     handleChange={handleChange}
-    options = {[
-        "color", 
-        "font-size",
-        "font-weight",
-        "font-style",
-        "font-variant",
-        "font-stretch",
-        "text-align",
-        "text-decoration",
-        "text-transform",
-    ]}
+    options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
 /> 
 Core Font Attributes:
 font-family: Specifies the typeface to be used. Multiple font names can be provided as a fallback system, e.g., font-family: "Arial", sans-serif;.
