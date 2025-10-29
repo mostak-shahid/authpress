@@ -79,7 +79,7 @@ const CustomizerRedesignButton = ({handleChange}) => {
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Background", "authpress")}</h4>
+                            : <h4>{__("Text", "authpress")}</h4>
                         }
                         {
                             settingLoading 

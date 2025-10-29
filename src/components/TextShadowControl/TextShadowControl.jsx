@@ -74,27 +74,18 @@ const TextShadowControl = ({ value = {}, onChange, className='' }) => {
                             />
                         </div>
                         <div className="col-6">
-                            <UnitControl
-                                __next40pxDefaultSize 
-                                label={__('Spread (px)', 'authpress')}
-                                value={shadow.spread}
-                                onChange={(spread) => update('spread', spread)}
-                                min={-50}
-                                max={50}
-                                units={units}
-                                className='mb-2'
-                            />
+                            <div className="">
+                                <label className="form-label">{__('color', 'authpress')}</label>
+                                <ColorPickerControl
+                                    defaultValue={shadow.color || "#000000"}
+                                    handleChange={(color) => update('color', color)}
+                                    mode='color'
+                                    label={__('Shadow Color', 'authpress')}
+                                /> 
+                            </div>
                         </div>
                     </div>
-                    <div className="mt-2">
-                        <label className="form-label">{__('color', 'authpress')}</label>
-                        <ColorPickerControl
-                            defaultValue={shadow.color || "#000000"}
-                            handleChange={(color) => update('color', color)}
-                            mode='color'
-                            label={__('Shadow Color', 'authpress')}
-                        /> 
-                    </div>
+                    
                 </>
             )}
         </div>
