@@ -4,13 +4,18 @@ class Authpress_Customizer_Redesign {
 
 	public function __construct() {
 		$this->options = authpress_get_option();
+		$disable_remember_me       = isset($this->options['customizer']['redesign']['fields']['disable_remember_me']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['disable_remember_me'])) : false;
 
 		add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets'], 20);
-		add_action('login_enqueue_scripts', [$this, 'enqueue_login_assets'], 20);
+		add_filter('login_headerurl', [$this, 'authpress_login_headerurl']);
+		add_filter('login_headertitle', [$this, 'authpress_login_headertitle']);
+		if ($disable_remember_me) {
+			add_filter('login_form_defaults', [$this, 'authpress_login_remember_me_checked'], 10, 3);
+		}
 		add_filter('login_footer', function () {
-			// echo '<pre>';
-			// var_dump($this->options['customizer']['redesign']['form']['wrapper']['border']);
-			// echo '</pre>';
+			echo '<pre>';
+			var_dump($this->options['customizer']['redesign']['fields']);
+			echo '</pre>';
 		});
 	}
 
@@ -108,18 +113,9 @@ class Authpress_Customizer_Redesign {
 		if ($wrapper_height) {
 			$css .= "height: {$wrapper_height};";
 		}
-		if ($wrapper_margin && is_array($wrapper_margin)) {
-			isset($wrapper_margin['top'])? $css .= "margin-top: ".sanitize_text_field(wp_unslash($wrapper_margin['top'])).";":'';
-			isset($wrapper_margin['right'])? $css .= "margin-right: ".sanitize_text_field(wp_unslash($wrapper_margin['right'])).";":'';
-			isset($wrapper_margin['bottom'])? $css .= "margin-bottom: ".sanitize_text_field(wp_unslash($wrapper_margin['bottom'])).";":'';
-			isset($wrapper_margin['left'])? $css .= "margin-left: ".sanitize_text_field(wp_unslash($wrapper_margin['left'])).";":'';
-		}
-		if ($wrapper_padding && is_array($wrapper_padding)) {
-			isset($wrapper_padding['top'])? $css .= "padding-top: ".sanitize_text_field(wp_unslash($wrapper_padding['top'])).";":'';
-			isset($wrapper_padding['right'])? $css .= "padding-right: ".sanitize_text_field(wp_unslash($wrapper_padding['right'])).";":'';
-			isset($wrapper_padding['bottom'])? $css .= "padding-bottom: ".sanitize_text_field(wp_unslash($wrapper_padding['bottom'])).";":'';
-			isset($wrapper_padding['left'])? $css .= "padding-left: ".sanitize_text_field(wp_unslash($wrapper_padding['left'])).";":'';
-		}
+		$css .= $this->authpress_generate_padding_css($wrapper_padding);
+		$css .= $this->authpress_generate_margin_css($wrapper_margin);
+
 		if ($wrapper_position == 'left') {$css .= "margin-left: 0;";}
 		else if ($wrapper_position == 'right') {$css .= "margin-right: 0;";}
 		else {$css .= "margin: auto;";}
@@ -159,30 +155,7 @@ class Authpress_Customizer_Redesign {
 			}
 
 		}
-
-		if (sizeof($wrapper_border) == 3) {
-			$border_width = isset($wrapper_border['width']) ? sanitize_text_field(wp_unslash($wrapper_border['width'])) : '0px';
-			$border_style = isset($wrapper_border['style']) ? sanitize_text_field(wp_unslash($wrapper_border['style'])) : 'solid';
-			$border_color = isset($wrapper_border['color']) ? sanitize_text_field(wp_unslash($wrapper_border['color'])) : '#000000';
-			$css .= "border: {$border_width} {$border_style} {$border_color};";
-		} else if (sizeof($wrapper_border) == 4) {
-			$border_top_width = isset($wrapper_border['top']['width']) ? sanitize_text_field(wp_unslash($wrapper_border['top']['width'])) : '0px';
-			$border_top_style = isset($wrapper_border['top']['style']) ? sanitize_text_field(wp_unslash($wrapper_border['top']['style'])) : 'solid';
-			$border_top_color = isset($wrapper_border['top']['color']) ? sanitize_text_field(wp_unslash($wrapper_border['top']['color'])) : '#000000';
-			$css .= "border-top: {$border_top_width} {$border_top_style} {$border_top_color};";
-			$border_right_width = isset($wrapper_border['right']['width']) ? sanitize_text_field(wp_unslash($wrapper_border['right']['width'])) : '0px';
-			$border_right_style = isset($wrapper_border['right']['style']) ? sanitize_text_field(wp_unslash($wrapper_border['right']['style'])) : 'solid';
-			$border_right_color = isset($wrapper_border['right']['color']) ? sanitize_text_field(wp_unslash($wrapper_border['right']['color'])) : '#000000';
-			$css .= "border-right: {$border_right_width} {$border_right_style} {$border_right_color};";
-			$border_bottom_width = isset($wrapper_border['bottom']['width']) ? sanitize_text_field(wp_unslash($wrapper_border['bottom']['width'])) : '0px';
-			$border_bottom_style = isset($wrapper_border['bottom']['style']) ? sanitize_text_field(wp_unslash($wrapper_border['bottom']['style'])) : 'solid';
-			$border_bottom_color = isset($wrapper_border['bottom']['color']) ? sanitize_text_field(wp_unslash($wrapper_border['bottom']['color'])) : '#000000';
-			$css .= "border-bottom: {$border_bottom_width} {$border_bottom_style} {$border_bottom_color};";
-			$border_left_width = isset($wrapper_border['left']['width']) ? sanitize_text_field(wp_unslash($wrapper_border['left']['width'])) : '0px';
-			$border_left_style = isset($wrapper_border['left']['style']) ? sanitize_text_field(wp_unslash($wrapper_border['left']['style'])) : 'solid';
-			$border_left_color = isset($wrapper_border['left']['color']) ? sanitize_text_field(wp_unslash($wrapper_border['left']['color'])) : '#000000';
-			$css .= "border-left: {$border_left_width} {$border_left_style} {$border_left_color};";
-		}
+		$css .= $this->authpress_generate_border_css($wrapper_border);
 		if ($wrapper_border_radius) {
 			$css .= "border-radius: {$wrapper_border_radius};";
 		}
@@ -206,77 +179,12 @@ class Authpress_Customizer_Redesign {
 		$unit_glass_effect = isset($this->options['customizer']['redesign']['form']['unit']['glass_effect']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['form']['unit']['glass_effect'])) : false;
 		
 		$css .= ".login form {";
-		if ($unit_margin && is_array($unit_margin)) {
-			isset($unit_margin['top'])? $css .= "padding-top: ".sanitize_text_field(wp_unslash($unit_margin['top'])).";":'';
-			isset($unit_margin['right'])? $css .= "padding-right: ".sanitize_text_field(wp_unslash($unit_margin['right'])).";":'';
-			isset($unit_margin['bottom'])? $css .= "padding-bottom: ".sanitize_text_field(wp_unslash($unit_margin['bottom'])).";":'';
-			isset($unit_margin['left'])? $css .= "padding-left: ".sanitize_text_field(wp_unslash($unit_margin['left'])).";":'';
-		}
-		if ($unit_padding && is_array($unit_padding)) {
-			isset($unit_padding['top'])? $css .= "padding-top: ".sanitize_text_field(wp_unslash($unit_padding['top'])).";":'';
-			isset($unit_padding['right'])? $css .= "padding-right: ".sanitize_text_field(wp_unslash($unit_padding['right'])).";":'';
-			isset($unit_padding['bottom'])? $css .= "padding-bottom: ".sanitize_text_field(wp_unslash($unit_padding['bottom'])).";":'';
-			isset($unit_padding['left'])? $css .= "padding-left: ".sanitize_text_field(wp_unslash($unit_padding['left'])).";":'';
-		}
-		if ($unit_background && is_array($unit_background)) {
-			$unit_background_color      = isset($unit_background['color']) ? sanitize_text_field(wp_unslash($unit_background['color'])) : '';
-			$unit_background_image      = isset($unit_background['image']['url']) ? sanitize_text_field(wp_unslash($unit_background['image']['url'])) : '';
-			$unit_background_position   = isset($unit_background['position']) ? sanitize_text_field(wp_unslash($unit_background['position'])) : '';
-			$unit_background_size       = isset($unit_background['size']) ? sanitize_text_field(wp_unslash($unit_background['size'])) : '';
-			$unit_background_repeat     = isset($unit_background['repeat']) ? sanitize_text_field(wp_unslash($unit_background['repeat'])) : '';
-			$unit_background_origin     = isset($unit_background['origin']) ? sanitize_text_field(wp_unslash($unit_background['origin'])) : '';
-			$unit_background_clip       = isset($unit_background['clip']) ? sanitize_text_field(wp_unslash($unit_background['clip'])) : '';
-			$unit_background_attachment = isset($unit_background['attachment']) ? sanitize_text_field(wp_unslash($unit_background['attachment'])) : '';
+		
+		$css .= $this->authpress_generate_padding_css($unit_padding);
+		$css .= $this->authpress_generate_margin_css($unit_margin);
+		$css .= $this->authpress_generate_background_css($unit_background);
+		$css .= $this->authpress_generate_border_css($unit_border);
 
-			if ($unit_background_color) {
-				$css .= "background-color: {$unit_background_color};";
-			}
-			if ($unit_background_image) {
-				$css .= "background-image: url('{$unit_background_image}');";
-			}
-			if ($unit_background_position) {
-				$css .= "background-position: {$unit_background_position};";
-			}
-			if ($unit_background_size) {
-				$css .= "background-size: {$unit_background_size};";
-			}
-			if ($unit_background_repeat) {
-				$css .= "background-repeat: {$unit_background_repeat};";
-			}
-			if ($unit_background_origin) {
-				$css .= "background-origin: {$unit_background_origin};";
-			}
-			if ($unit_background_clip) {
-				$css .= "background-clip: {$unit_background_clip};";
-			}
-			if ($unit_glass_effect) {
-				$css .= "background-attachment: {$unit_glass_effect};";
-			}
-
-		}
-		if (sizeof($unit_border) == 3) {
-			$border_width = isset($unit_border['width']) ? sanitize_text_field(wp_unslash($unit_border['width'])) : '0px';
-			$border_style = isset($unit_border['style']) ? sanitize_text_field(wp_unslash($unit_border['style'])) : 'solid';
-			$border_color = isset($unit_border['color']) ? sanitize_text_field(wp_unslash($unit_border['color'])) : '#000000';
-			$css .= "border: {$border_width} {$border_style} {$border_color};";
-		} else if (sizeof($unit_border) == 4) {
-			$border_top_width = isset($unit_border['top']['width']) ? sanitize_text_field(wp_unslash($unit_border['top']['width'])) : '0px';
-			$border_top_style = isset($unit_border['top']['style']) ? sanitize_text_field(wp_unslash($unit_border['top']['style'])) : 'solid';
-			$border_top_color = isset($unit_border['top']['color']) ? sanitize_text_field(wp_unslash($unit_border['top']['color'])) : '#000000';
-			$css .= "border-top: {$border_top_width} {$border_top_style} {$border_top_color};";
-			$border_right_width = isset($unit_border['right']['width']) ? sanitize_text_field(wp_unslash($unit_border['right']['width'])) : '0px';
-			$border_right_style = isset($unit_border['right']['style']) ? sanitize_text_field(wp_unslash($unit_border['right']['style'])) : 'solid';
-			$border_right_color = isset($unit_border['right']['color']) ? sanitize_text_field(wp_unslash($unit_border['right']['color'])) : '#000000';
-			$css .= "border-right: {$border_right_width} {$border_right_style} {$border_right_color};";
-			$border_bottom_width = isset($unit_border['bottom']['width']) ? sanitize_text_field(wp_unslash($unit_border['bottom']['width'])) : '0px';
-			$border_bottom_style = isset($unit_border['bottom']['style']) ? sanitize_text_field(wp_unslash($unit_border['bottom']['style'])) : 'solid';
-			$border_bottom_color = isset($unit_border['bottom']['color']) ? sanitize_text_field(wp_unslash($unit_border['bottom']['color'])) : '#000000';
-			$css .= "border-bottom: {$border_bottom_width} {$border_bottom_style} {$border_bottom_color};";
-			$border_left_width = isset($unit_border['left']['width']) ? sanitize_text_field(wp_unslash($unit_border['left']['width'])) : '0px';
-			$border_left_style = isset($unit_border['left']['style']) ? sanitize_text_field(wp_unslash($unit_border['left']['style'])) : 'solid';
-			$border_left_color = isset($unit_border['left']['color']) ? sanitize_text_field(wp_unslash($unit_border['left']['color'])) : '#000000';
-			$css .= "border-left: {$border_left_width} {$border_left_style} {$border_left_color};";
-		}
 		if ($unit_border_radius) {
 			$css .= "border-radius: {$unit_border_radius};";
 		}
@@ -293,6 +201,53 @@ class Authpress_Customizer_Redesign {
 		
 
 		
+		$disable_remember_me       = isset($this->options['customizer']['redesign']['fields']['disable_remember_me']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['disable_remember_me'])) : false;
+		if ($disable_remember_me) {
+			$css .= ".login #loginform .forgetmenot { display: none; }";
+		}
+		$fields_width       = isset($this->options['customizer']['redesign']['fields']['width']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['width'])) : '100%';
+		$fields_height       = isset($this->options['customizer']['redesign']['fields']['height']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['height'])) : '40px';
+		$fields_font       = isset($this->options['customizer']['redesign']['fields']['font']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['fields']['font']), 'sanitize_text_field') : [];		
+		$fields_border = isset($this->options['customizer']['redesign']['fields']['border']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['fields']['border']), 'sanitize_text_field') : [];
+		$fields_border_radius = isset($this->options['customizer']['redesign']['fields']['border_radius']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['border_radius'])) : '4px';
+		$fields_boxshadow = isset($this->options['customizer']['redesign']['fields']['boxshadow']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['fields']['boxshadow']), 'sanitize_text_field') : [];	
+		$fields_padding = isset($this->options['customizer']['redesign']['fields']['padding']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['fields']['padding']), 'sanitize_text_field') : ['top' => '10px','right' => '10px','bottom' => '10px','left' => '10px',];
+		$fields_margin = isset($this->options['customizer']['redesign']['fields']['margin']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['fields']['margin']), 'sanitize_text_field') : ['top' => '0px','right' => '0px','bottom' => '10px','left' => '0px',];
+		$fields_background_color = isset($this->options['customizer']['redesign']['fields']['background_color']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['fields']['background_color'])) : '#ffffff';
+		$fields_label_font = isset($this->options['customizer']['redesign']['fields']['label_font']) ? map_deep(wp_unslash($this->options['customizer']['redesign']['fields']['label_font']), 'sanitize_text_field') : [];
+		$css .= '.login form input[type="text"], .login form input[type="password"], .login form input[type="color"], .login form input[type="date"], .login form input[type="datetime"], .login form input[type="datetime-local"], .login form input[type="email"], .login form input[type="month"], .login form input[type="number"], .login form input[type="search"], .login form input[type="tel"], .login form input[type="time"], .login form input[type="url"], .login form input[type="week"], .login form select, .login form textarea {';
+		if ($fields_width) {
+			$css .= "width: {$fields_width}; max-width: 100%;";
+		}
+		
+		$css .= $this->authpress_generate_font_css($fields_font);
+		$css .= $this->authpress_generate_border_css($fields_border);
+		if ($fields_border_radius) {
+			$css .= "border-radius: {$fields_border_radius};";
+		}
+		if ($fields_boxshadow && is_array($fields_boxshadow)) {
+			$h_offset = isset($fields_boxshadow['h_offset']) ? sanitize_text_field(wp_unslash($fields_boxshadow['h_offset'])) : '0px';
+			$v_offset = isset($fields_boxshadow['v_offset']) ? sanitize_text_field(wp_unslash($fields_boxshadow['v_offset'])) : '0px';
+			$blur = isset($fields_boxshadow['blur']) ? sanitize_text_field(wp_unslash($fields_boxshadow['blur'])) : '0px';
+			$spread = isset($fields_boxshadow['spread']) ? sanitize_text_field(wp_unslash($fields_boxshadow['spread'])) : '0px';
+			$color = isset($fields_boxshadow['color']) ? sanitize_text_field(wp_unslash($fields_boxshadow['color'])) : '#000000';
+			$css .= "box-shadow: {$h_offset} {$v_offset} {$blur} {$spread} {$color};";
+		}
+		$css .= $this->authpress_generate_padding_css($fields_padding);
+		$css .= $this->authpress_generate_margin_css($fields_margin);
+		if ($fields_background_color) {
+			$css .= "background-color: {$fields_background_color};";
+		}
+		$css .= "}";
+		$css .= '.login form input[type="text"], .login form input[type="password"], .login form input[type="color"], .login form input[type="date"], .login form input[type="datetime"], .login form input[type="datetime-local"], .login form input[type="email"], .login form input[type="month"], .login form input[type="number"], .login form input[type="search"], .login form input[type="tel"], .login form input[type="time"], .login form input[type="url"], .login form input[type="week"], .login form select {';
+		if ($fields_height) {
+			$css .= "height: {$fields_height};";
+		}
+		$css .= "}";
+		$css .= '.login form label {';
+		$css .= $this->authpress_generate_font_css($fields_label_font);
+		$css .= "}";
+
 
 		$type       = isset($this->options['customizer']['redesign']['background']['type']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['background']['type'])) : 'color';
 		$color      = isset($this->options['customizer']['redesign']['background']['background']['color']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['background']['background']['color'])) : '';
@@ -337,11 +292,131 @@ class Authpress_Customizer_Redesign {
 
 		wp_add_inline_style('authpress-login-style', $css);
 	}
+
+	// Always remember users when they log in
+	public function authpress_login_remember_me_checked( $defaults ) {
+		$defaults['remember'] = true;
+    	return $defaults;
+	}
 	public function authpress_login_headerurl() {
 		$url = isset($this->options['customizer']['redesign']['logo']['url']) ? sanitize_text_field(wp_unslash($this->options['customizer']['redesign']['logo']['url'])) : '';
 		return $url ? esc_url($url) : home_url();
 	}	
+	public function authpress_login_headertitle() {
+		$title = get_bloginfo( 'name' );
+		return $title;
+	}
+	public function authpress_generate_font_css($option){
+		$css = '';
+		if ($option && is_array($option) && $option['enabled']) {			
+			isset($option['color'])? $css .= "color: ".sanitize_text_field(wp_unslash($option['color'])).";":'';
+			isset($option['font-size'])? $css .= "font-size: ".sanitize_text_field(wp_unslash($option['font-size'])).";":'';
+			isset($option['font-weight'])? $css .= "font-weight: ".sanitize_text_field(wp_unslash($option['font-weight'])).";":'';
+			isset($option['font-style'])? $css .= "font-style: ".sanitize_text_field(wp_unslash($option['font-style'])).";":'';
+			isset($option['text-transform'])? $css .= "text-transform: ".sanitize_text_field(wp_unslash($option['text-transform'])).";":'';
+		}
+		return $css;
+	}
+	public function authpress_generate_border_css($option){
+		$css = '';
+		if ($option && is_array($option)) {
+			if (sizeof($option) == 3) {
+				$border_width = isset($option['width']) ? sanitize_text_field(wp_unslash($option['width'])) : '0px';
+				$border_style = isset($option['style']) ? sanitize_text_field(wp_unslash($option['style'])) : 'none';
+				$border_color = isset($option['color']) ? sanitize_text_field(wp_unslash($option['color'])) : '#000000';
+				$css .= "border: {$border_width} {$border_style} {$border_color};";
+			} else if (sizeof($option) == 4) {
+				$border_top_width = isset($option['top']['width']) ? sanitize_text_field(wp_unslash($option['top']['width'])) : '0px';
+				$border_top_style = isset($option['top']['style']) ? sanitize_text_field(wp_unslash($option['top']['style'])) : 'none';
+				$border_top_color = isset($option['top']['color']) ? sanitize_text_field(wp_unslash($option['top']['color'])) : '#000000';
+				$css .= "border-top: {$border_top_width} {$border_top_style} {$border_top_color};";
+				$border_right_width = isset($option['right']['width']) ? sanitize_text_field(wp_unslash($option['right']['width'])) : '0px';
+				$border_right_style = isset($option['right']['style']) ? sanitize_text_field(wp_unslash($option['right']['style'])) : 'none';
+				$border_right_color = isset($option['right']['color']) ? sanitize_text_field(wp_unslash($option['right']['color'])) : '#000000';
+				$css .= "border-right: {$border_right_width} {$border_right_style} {$border_right_color};";
+				$border_bottom_width = isset($option['bottom']['width']) ? sanitize_text_field(wp_unslash($option['bottom']['width'])) : '0px';
+				$border_bottom_style = isset($option['bottom']['style']) ? sanitize_text_field(wp_unslash($option['bottom']['style'])) : 'none';
+				$border_bottom_color = isset($option['bottom']['color']) ? sanitize_text_field(wp_unslash($option['bottom']['color'])) : '#000000';
+				$css .= "border-bottom: {$border_bottom_width} {$border_bottom_style} {$border_bottom_color};";
+				$border_left_width = isset($option['left']['width']) ? sanitize_text_field(wp_unslash($option['left']['width'])) : '0px';
+				$border_left_style = isset($option['left']['style']) ? sanitize_text_field(wp_unslash($option['left']['style'])) : 'none';
+				$border_left_color = isset($option['left']['color']) ? sanitize_text_field(wp_unslash($option['left']['color'])) : '#000000';
+				$css .= "border-left: {$border_left_width} {$border_left_style} {$border_left_color};";
+			}
+		}
+		return $css;
+	}
+	public function authpress_generate_boxshadow_css($option){
+		$css = '';
+		if ($option && is_array($option)) {
+			$h_offset = isset($option['h_offset']) ? sanitize_text_field(wp_unslash($option['h_offset'])) : '0px';
+			$v_offset = isset($option['v_offset']) ? sanitize_text_field(wp_unslash($option['v_offset'])) : '0px';
+			$blur = isset($option['blur']) ? sanitize_text_field(wp_unslash($option['blur'])) : '0px';
+			$spread = isset($option['spread']) ? sanitize_text_field(wp_unslash($option['spread'])) : '0px';
+			$color = isset($option['color']) ? sanitize_text_field(wp_unslash($option['color'])) : '#000000';
+			$css .= "box-shadow: {$h_offset} {$v_offset} {$blur} {$spread} {$color};";
+		}
+		return $css;
+	}
+	public function authpress_generate_padding_css($option){
+		$css = '';
+		if ($option && is_array($option)) {
+			isset($option['top'])? $css .= "padding-top: ".sanitize_text_field(wp_unslash($option['top'])).";":'';
+			isset($option['right'])? $css .= "padding-right: ".sanitize_text_field(wp_unslash($option['right'])).";":'';
+			isset($option['bottom'])? $css .= "padding-bottom: ".sanitize_text_field(wp_unslash($option['bottom'])).";":'';
+			isset($option['left'])? $css .= "padding-left: ".sanitize_text_field(wp_unslash($option['left'])).";":'';
+		}
+		return $css;
+	}
+	public function authpress_generate_margin_css($option){
+		$css = '';
+		if ($option && is_array($option)) {
+			isset($option['top'])? $css .= "margin-top: ".sanitize_text_field(wp_unslash($option['top'])).";":'';
+			isset($option['right'])? $css .= "margin-right: ".sanitize_text_field(wp_unslash($option['right'])).";":'';
+			isset($option['bottom'])? $css .= "margin-bottom: ".sanitize_text_field(wp_unslash($option['bottom'])).";":'';
+			isset($option['left'])? $css .= "margin-left: ".sanitize_text_field(wp_unslash($option['left'])).";":'';
+		}
+		return $css;
+	}
+	public function authpress_generate_background_css($option){
+		$css = '';
+		if ($option && is_array($option)) {
+			$background_color      = isset($option['color']) ? sanitize_text_field(wp_unslash($option['color'])) : '';
+			$background_image      = isset($option['image']['url']) ? sanitize_text_field(wp_unslash($option['image']['url'])) : '';
+			$background_position   = isset($option['position']) ? sanitize_text_field(wp_unslash($option['position'])) : '';
+			$background_size       = isset($option['size']) ? sanitize_text_field(wp_unslash($option['size'])) : '';
+			$background_repeat     = isset($option['repeat']) ? sanitize_text_field(wp_unslash($option['repeat'])) : '';
+			$background_origin     = isset($option['origin']) ? sanitize_text_field(wp_unslash($option['origin'])) : '';
+			$background_clip       = isset($option['clip']) ? sanitize_text_field(wp_unslash($option['clip'])) : '';
+			$background_attachment = isset($option['attachment']) ? sanitize_text_field(wp_unslash($option['attachment'])) : '';
 
+			if ($background_color) {
+				$css .= "background-color: {$background_color};";
+			}
+			if ($background_image) {
+				$css .= "background-image: url('{$background_image}');";
+			}
+			if ($background_position) {
+				$css .= "background-position: {$background_position};";
+			}
+			if ($background_size) {
+				$css .= "background-size: {$background_size};";
+			}
+			if ($background_repeat) {
+				$css .= "background-repeat: {$background_repeat};";
+			}
+			if ($background_origin) {
+				$css .= "background-origin: {$background_origin};";
+			}
+			if ($background_clip) {
+				$css .= "background-clip: {$background_clip};";
+			}
+			if ($background_attachment) {
+				$css .= "background-attachment: {$background_attachment};";
+			}	
+		}
+		return $css;
+	}
 }
 
 new Authpress_Customizer_Redesign();

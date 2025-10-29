@@ -3,6 +3,7 @@ import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import FontControl from "../components/FontControl/FontControl";
 import ColorPickerControl from '../components/ColorPickerControl/ColorPickerControl';
+import BoxShadowControl from '../components/BoxShadowControl/BoxShadowControl';
 import { 
     __experimentalUnitControl as UnitControl, 
     BoxControl,
@@ -253,7 +254,7 @@ const CustomizerRedesignFields = ({handleChange}) => {
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Disable Box Shadow?", "authpress")}</h4>
+                            : <h4>{__("Box Shadow", "authpress")}</h4>
                         }
                         {
                             settingLoading 
@@ -263,12 +264,12 @@ const CustomizerRedesignFields = ({handleChange}) => {
                     </div>    
                     {
                         !settingLoading &&                               
-                        <div className="col-auto">
-                            <ToggleControl
-                                __nextHasNoMarginBottom
-                                onChange={(value) => handleChange('customizer.redesign.fields.disable_box_shadow', value)}
-                                checked={settingData?.customizer?.redesign?.fields?.disable_box_shadow}
-                            /> 
+                        <div className="col-lg-5">
+                            <BoxShadowControl
+                                value={settingData?.customizer?.redesign?.fields?.boxshadow}
+                                onChange={(value) => handleChange('customizer.redesign.fields.boxshadow"', value)}
+                                // className="border-start border-end border-bottom"
+                            />                        
                         </div>
                     }
                 </div>

@@ -220,15 +220,9 @@ function authpress_get_default_options()
 						'font-style' => '', 
 						'text-transform' => '',
 					],
-					'border' => [
-						'top' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
-						'right' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
-						'bottom' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
-						'left' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '1px'],
-					],
+					'border' => ['color'=> '#8c8f94','style'=> 'solid','width'=> '0.0625rem'],
 					'border_radius' => '4px',
-					'disable_box_shadow' => 0,
-
+					'boxshadow' => [],
 					'padding' => [
 						'top' => '0.1875rem',
 						'right' => '0.3125rem',
