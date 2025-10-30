@@ -320,6 +320,9 @@ function authpress_get_default_options()
 				'login_by' => 'both', //username, email, both
 			],
 		],	
+		'hide_login' => [
+			'login_url' => '',
+		],
 		'components' => [
 			'basic' => [
 				'ip' => '',
