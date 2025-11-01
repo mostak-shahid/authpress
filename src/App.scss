@@ -51,3 +51,18 @@ $border-authpress: #dee2e6;
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }     
 }
+
+
+
+
+.myplugin-horizontal-menu .submenu {
+  display: none;
+}
+
+.myplugin-horizontal-menu div:hover > .submenu {
+  display: block;
+}
+
+.myplugin-vertical-menu .submenu {
+  display: block;
+}

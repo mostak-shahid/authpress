@@ -22,15 +22,17 @@ import CustomizerRedesignFields from "./pages/CustomizerRedesignFields";
 import CustomizerRedesignButton from "./pages/CustomizerRedesignButton";
 import CustomizerRedesignOther from "./pages/CustomizerRedesignOther";
 import CustomizerSettings from "./pages/CustomizerSettings";
-
+import { IllustrationIdle, Illustration404 } from './lib/Illustrations';
 import { useState } from "react";
 import Tools from "./pages/Tools";
+import HideLogin from "./pages/HideLogin";
+import Two_FA_Email from "./pages/Two_FA_Email";
+import Two_FA from "./pages/Two_FA";
 
 const NotFound = () => (
-  <div>
-    <h2>{__("404 - Page Not Found", "authpress")}</h2>
-    <p>{__("The page you are looking for does not exist.", "authpress")}</p>
-    <Link to="/">{__("Go back to Home", "authpress")}</Link>
+  <div style={{ textAlign: 'center', padding: '40px' }}>
+      <Illustration404 style={{ width: 250, height: 250 }} />
+      <h3>{__("404 - Page Not Found", "authpress")}</h3>
   </div>
 );
 function App() {
@@ -59,6 +61,10 @@ function App() {
         <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
         <Route path="/settings/customizer/redesign/other" element={<CustomizerRedesignOther/>} />
         <Route path="/settings/customizer/settings" element={<CustomizerSettings/>} />
+        <Route path="/settings/hide_login" element={<HideLogin/>} />
+        <Route path="/settings/two_fa_authentication" element={<Navigate to="/settings/two_fa_authentication/settings" />} />
+        <Route path="/settings/two_fa_authentication/email_otp" element={<Two_FA_Email/>} />
+        <Route path="/settings/two_fa_authentication/settings" element={<Two_FA/>} />
 
         <Route path="/settings/components" element={<Navigate to="/settings/components/basic" />} />
         <Route path="/settings/components/basic" element={<ComponentsBasic />} />

@@ -13,7 +13,7 @@ class Authpress_Hided_Login
 		$this->login_slug = (
 				isset($options['hide_login']['login_url']) &&
 				!empty($options['hide_login']['login_url'])
-			) ? sanitize_text_field(wp_unslash($options['hide_login']['login_url'])) : 'signin';
+			) ? sanitize_text_field(wp_unslash($options['hide_login']['login_url'])) : '';
 		
 		if ($this->login_slug) {
 			// Setup rewrite and blocking

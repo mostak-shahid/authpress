@@ -323,60 +323,68 @@ function authpress_get_default_options()
 		'hide_login' => [
 			'login_url' => '',
 		],
-		'components' => [
-			'basic' => [
-				'ip' => '',
-				'text_field' => 'this is a text field',
-				'textarea_field' => 'this is a textarea field',
-				'select_field' => 'select-1',
-				'radio_field' => 'radio-1',
-				'radio_field_2' => 'radio-2',
-				'checkbox_field' => ['checkbox-1', 'checkbox-3'],
-				'checkbox_field_2' => ['checkbox-2', 'checkbox-3'],
-				'checkbox_field_3' => ['checkbox-1', 'checkbox-3'],
-				'multiselect_field' => ['select-2', 'select-3'],
-				'multiselect_field_2' => ['select-3', 'select-4'],
-				'switch' => 0,				
-				'media_uploader' => [
-					'url' => '',
-					'id' => 0
-				],
-				'countries_list' => [
-					['value' => "Albania", 'code' => "AL"],
-					['value' => "Algeria", 'code' => "DZ"],
-				],
-				'ips' => ["111.111.111.111", "222.222.222.222"],
-				'emails' => ["asd@asd.asd", "abc@abc.abc"],
-				'repeatablesorter_group' => [
-					[
-						"enabler" => true,
-						"title" => "123 Main St",
-						"note" => "Leave at door",
-						"enable" => true,
-						"gender" => "male",
-						"country" => "us",
-						"languages" => ["en", "fr"],
-						"hobbies" => ["reading", "sports"],
-					]
-				],
-				'repeatablesorter' => [
-					'https://www.facebook.com/',
-					'https://web.whatsapp.com/',
-					'https://www.youtube.com/',
-					'https://web.skype.com/'
-				]
+		'two_fa_authentication' => [
+			'email' => [
+				'enabled' => true,
 			],
-			'advanced' => [
-				'wordpress' => [
-
-				],
-				'custom' => [
-					'color_picker' => '#ff00ff',
-					'gradient_picker' => 'linear-gradient(135deg,#f00,#ff0)',
-					'color_gradient_picker' => '',
-				],
-			]
+			'settings' => [
+				'enabled' => true,
+			],
 		],
+		// 'components' => [
+		// 	'basic' => [
+		// 		'ip' => '',
+		// 		'text_field' => 'this is a text field',
+		// 		'textarea_field' => 'this is a textarea field',
+		// 		'select_field' => 'select-1',
+		// 		'radio_field' => 'radio-1',
+		// 		'radio_field_2' => 'radio-2',
+		// 		'checkbox_field' => ['checkbox-1', 'checkbox-3'],
+		// 		'checkbox_field_2' => ['checkbox-2', 'checkbox-3'],
+		// 		'checkbox_field_3' => ['checkbox-1', 'checkbox-3'],
+		// 		'multiselect_field' => ['select-2', 'select-3'],
+		// 		'multiselect_field_2' => ['select-3', 'select-4'],
+		// 		'switch' => 0,				
+		// 		'media_uploader' => [
+		// 			'url' => '',
+		// 			'id' => 0
+		// 		],
+		// 		'countries_list' => [
+		// 			['value' => "Albania", 'code' => "AL"],
+		// 			['value' => "Algeria", 'code' => "DZ"],
+		// 		],
+		// 		'ips' => ["111.111.111.111", "222.222.222.222"],
+		// 		'emails' => ["asd@asd.asd", "abc@abc.abc"],
+		// 		'repeatablesorter_group' => [
+		// 			[
+		// 				"enabler" => true,
+		// 				"title" => "123 Main St",
+		// 				"note" => "Leave at door",
+		// 				"enable" => true,
+		// 				"gender" => "male",
+		// 				"country" => "us",
+		// 				"languages" => ["en", "fr"],
+		// 				"hobbies" => ["reading", "sports"],
+		// 			]
+		// 		],
+		// 		'repeatablesorter' => [
+		// 			'https://www.facebook.com/',
+		// 			'https://web.whatsapp.com/',
+		// 			'https://www.youtube.com/',
+		// 			'https://web.skype.com/'
+		// 		]
+		// 	],
+		// 	'advanced' => [
+		// 		'wordpress' => [
+
+		// 		],
+		// 		'custom' => [
+		// 			'color_picker' => '#ff00ff',
+		// 			'gradient_picker' => 'linear-gradient(135deg,#f00,#ff0)',
+		// 			'color_gradient_picker' => '',
+		// 		],
+		// 	]
+		// ],
 		// 'editor-input' => '<p>Lorem</p>',
 
 		'more' => [
