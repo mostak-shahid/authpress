@@ -331,6 +331,11 @@ function authpress_get_default_options()
 				'enabled' => true,
 			],
 		],
+		'captcha' => [
+			'settings' => [
+				'enabled' => true,
+			],
+		],
 		// 'components' => [
 		// 	'basic' => [
 		// 		'ip' => '',

@@ -1,3 +1,13 @@
+.loginpress-login-page .forgetmenot,
+.loginpress-login-page .submit {
+  float: none;
+  clear: both;
+}
+.loginpress-login-page form .submit .button-primary {
+  width: 100%;
+  float: none;
+  clear: both;
+}
 .loginpress-login-page #nav {
   padding: 0;
   display: flex;
@@ -5,4 +15,7 @@
 }
 .loginpress-login-page .authpress-seprator {
   display: none;
+}
+.loginpress-login-page #backtoblog {
+  padding: 0;
 }/*# sourceMappingURL=login.css.map */

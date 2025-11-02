@@ -124,6 +124,7 @@ class Authpress
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-import-export.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-more.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-two-fa.php';
+		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-math-captcha.php';
 
 		$this->loader = new Authpress_Loader();
 	}

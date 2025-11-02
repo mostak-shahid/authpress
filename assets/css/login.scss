@@ -1,4 +1,18 @@
 .loginpress-login-page {
+    .forgetmenot,
+    .submit {
+        float: none;
+        clear: both;
+    }
+    form {
+        .submit {
+            .button-primary{
+                width: 100%;
+                float: none;
+                clear: both;
+            }
+        }
+    }
     #nav {
         padding: 0;
         display: flex;
@@ -6,5 +20,8 @@
     }
     .authpress-seprator {
         display: none;
+    }
+    #backtoblog {
+        padding: 0;
     }
 }
