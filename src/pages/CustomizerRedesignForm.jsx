@@ -438,4 +438,4 @@ const CustomizerRedesignForm = ({handleChange}) => {
         </>
     )
 }
-export default withForm(CustomizerRedesignForm);
+export default withForm(CustomizerRedesignForm, 'customizer.redesign.form');

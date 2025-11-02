@@ -42,4 +42,4 @@ const Captcha = ({handleChange}) => {
         </>
     )
 }
-export default withForm(Captcha);
+export default withForm(Captcha, 'captcha');

@@ -185,4 +185,4 @@ const CustomizerRedesignLogo = ({handleChange}) => {
         </>
     )
 }
-export default withForm(CustomizerRedesignLogo);
+export default withForm(CustomizerRedesignLogo, 'customizer.redesign.logo');

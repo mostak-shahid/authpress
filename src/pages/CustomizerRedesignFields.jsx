@@ -278,4 +278,4 @@ const CustomizerRedesignFields = ({handleChange}) => {
         </>
     )
 }
-export default withForm(CustomizerRedesignFields);
+export default withForm(CustomizerRedesignFields, 'customizer.redesign.fields');

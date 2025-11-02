@@ -171,4 +171,4 @@ const More = ({handleChange}) => {
         </>
     )
 }
-export default withForm(More);
+export default withForm(More, 'more');

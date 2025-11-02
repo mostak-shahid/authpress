@@ -21,7 +21,6 @@ const HideLogin = ({handleChange}) => {
         settingLoading
     } = useMain();
     const [emails, setEmails] = useState('');
-    const [selected, setSelected] = useState([]);
     const [ processing, setProcessing ] = useState('normal');
     const handleButtonClick = () => {
         setProcessing('processing');

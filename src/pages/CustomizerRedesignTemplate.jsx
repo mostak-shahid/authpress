@@ -57,4 +57,4 @@ const CustomizerRedesignTemplate = ({handleChange}) => {
         </>
     )
 }
-export default withForm(CustomizerRedesignTemplate);
+export default withForm(CustomizerRedesignTemplate, 'customizer.redesign.templates');

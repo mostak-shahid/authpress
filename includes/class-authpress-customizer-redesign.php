@@ -39,6 +39,39 @@ class Authpress_Customizer_Redesign {
 			add_action( 'login_head', [$this, 'authpress_remove_lost_password_features'] );
 			add_action( 'init', [$this, 'authpress_block_lostpassword_page'] );
 		}
+		//customizer?.other?.login_by
+		$login_by = isset($this->options['customizer']['other']['login_by']) ? sanitize_text_field(wp_unslash($this->options['customizer']['other']['login_by'])) : 'both';
+		// var_dump($login_by);
+		if ($login_by != 'both'){
+			add_filter('authenticate', [$this, 'authpress_login_by'], 30, 3);
+			add_filter('gettext', [$this, 'authpress_login_by_text'], 20, 3);
+		}
+		//customizer.other.enable_registration_password
+		$registered_with_password = isset($this->options['customizer']['other']['registered_with_password']) ? sanitize_text_field(wp_unslash($this->options['customizer']['other']['registered_with_password'])) : false;
+		if ($registered_with_password){
+			// 1. Add the password fields to the registration form
+			add_action( 'register_form',[$this, 'authpress_add_password_fields_to_registration_form'] );
+			// 2. Validate the passwords before registration completes
+			add_filter( 'registration_errors', [$this, 'authpress_validate_registration_passwords'], 10, 3 );
+			// 3. Save the chosen password instead of generating one automatically
+			add_action( 'user_register', [$this, 'authpress_save_registration_password'], 10, 1 );
+
+			// // Disable the email sent to the user after registration
+			// add_filter( 'send_password_change_email', '__return_false' ); // covers some cases
+			// add_filter( 'send_email_change_email', '__return_false' ); // optional
+
+			// // Disable "set your password" link email for newly registered users
+			// remove_action( 'register_new_user', 'wp_send_new_user_notifications' );
+			// remove_action( 'edit_user_created_user', 'wp_send_new_user_notifications' );
+
+			// // Re-add a version that only notifies the admin (optional)
+			// add_action( 'register_new_user', function( $user_id ) {
+			// 	wp_send_new_user_notifications( $user_id, 'admin' ); // only admin notification
+			// });
+
+			// Customize the registration email content sent to new users.
+			add_filter( 'wp_new_user_notification_email', [$this, 'authpress_email_on_regiatration'], 10, 3 );
+		}
 
 		add_filter('login_footer', function () {
 			// echo '<pre>';
@@ -46,6 +79,7 @@ class Authpress_Customizer_Redesign {
 			// echo '</pre>';
 		});
 	}
+
 
 	public function enqueue_login_assets() {
 		// Enqueue a base style handle to attach inline CSS
@@ -293,7 +327,7 @@ class Authpress_Customizer_Redesign {
 		wp_add_inline_style('authpress-login-style', $css);
 	}
 	public function authpress_add_login_body_class( $classes ) {
-		$classes[] = 'loginpress-login-page'; // 👈 change this to your desired class name
+		$classes[] = 'authpress-login-page'; // 👈 change this to your desired class name
 		return $classes;
 	}
 
@@ -476,39 +510,101 @@ class Authpress_Customizer_Redesign {
 		// Hide via CSS (for older WP versions)
 		echo '<style>.privacy-policy-page-link { display:none !important; }</style>';
 	}
+	public function authpress_login_by($user, $username, $password) {
+		$method = isset($this->options['customizer']['other']['login_by']) ? sanitize_text_field(wp_unslash($this->options['customizer']['other']['login_by'])) : 'both';
+
+		if ($method === 'email') {
+			// Require email only
+			if (!is_email($username)) {
+				return new WP_Error('invalid_email', __('You must use your email address to log in.'));
+			}
+			$user_obj = get_user_by('email', $username);
+			if ($user_obj) {
+				return wp_authenticate_username_password(null, $user_obj->user_login, $password);
+			}
+
+		} elseif ($method === 'username') {
+			// Require username only
+			if (is_email($username)) {
+				return new WP_Error('invalid_username', __('You must use your username to log in.'));
+			}
+			$user_obj = get_user_by('login', $username);
+			if ($user_obj) {
+				return wp_authenticate_username_password(null, $username, $password);
+			}
+
+		} else {
+			// both (default WP behavior, fallback to core)
+			return wp_authenticate_username_password(null, $username, $password);
+		}
+	}
+	public function authpress_login_by_text($translated_text, $text, $domain) {
+		$method = isset($this->options['customizer']['other']['login_by']) ? sanitize_text_field(wp_unslash($this->options['customizer']['other']['login_by'])) : 'both';
+
+		if ($text === 'Username or Email Address') {
+			if ($method === 'username') {
+				return __('Username');
+			} elseif ($method === 'email') {
+				return __('Email');
+			}
+		}
+
+		return $translated_text;
+	}
+	public function authpress_add_password_fields_to_registration_form(){
+		?>
+		<p>
+			<label for="password"><?php _e( 'Password', 'authpress' ); ?><br />
+				<input type="password" name="password" id="password" class="input" value="" size="25" required />
+			</label>
+		</p>
+		<p>
+			<label for="password2"><?php _e( 'Confirm Password', 'authpress' ); ?><br />
+				<input type="password" name="password2" id="password2" class="input" value="" size="25" required />
+			</label>
+		</p>
+		<?php
+	}
+	public function authpress_validate_registration_passwords( $errors, $sanitized_user_login, $user_email ) {
+		if ( empty( $_POST['password'] ) || empty( $_POST['password2'] ) ) {
+			$errors->add( 'password_error', __( '<strong>Error</strong>: Please enter a password in both fields.', 'authpress' ) );
+		} elseif ( $_POST['password'] !== $_POST['password2'] ) {
+			$errors->add( 'password_mismatch', __( '<strong>Error</strong>: Passwords do not match.', 'authpress' ) );
+		} elseif ( strlen( $_POST['password'] ) < 6 ) {
+			$errors->add( 'password_short', __( '<strong>Error</strong>: Password must be at least 6 characters long.', 'authpress' ) );
+		}
+		return $errors;
+	}
+	public function authpress_save_registration_password( $user_id ) {
+		if ( ! empty( $_POST['password'] ) && $_POST['password'] === $_POST['password2'] ) {
+			wp_set_password( $_POST['password'], $user_id );
+		}
+	}
+	public function authpress_email_on_regiatration( $wp_new_user_notification_email, $user, $blogname ) {
+
+		// Create a password reset link (optional)
+		$reset_key = get_password_reset_key( $user );
+		$reset_link = network_site_url( "wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode( $user->user_login ), 'login' );
+
+		// Custom subject
+		$wp_new_user_notification_email['subject'] = sprintf( __( 'Welcome to %s!', 'textdomain' ), $blogname );
+
+		// Custom body message
+		$message  = "Hi " . $user->user_login . ",\n\n";
+		$message .= "Welcome to $blogname! Your account has been created successfully.\n\n";
+		$message .= "You can log in anytime here:\n";
+		$message .= wp_login_url() . "\n\n";
+		$message .= "If you'd like to reset your password, visit this link:\n";
+		$message .= $reset_link . "\n\n";
+		$message .= "If you didn’t request this account, you can safely ignore this email.\n\n";
+		$message .= "Thanks,\n$blogname Team";
+
+		$wp_new_user_notification_email['message'] = $message;
+		$wp_new_user_notification_email['headers'] = [ 'Content-Type: text/plain; charset=UTF-8' ];
+
+		return $wp_new_user_notification_email;
+
+	}
 }
 
 new Authpress_Customizer_Redesign();
-/*
-// Add custom body class on the login page
-function authpress_add_login_body_class( $classes ) {
-    $classes[] = 'my-custom-login'; // 👈 change this to your desired class name
-    return $classes;
-}
-add_filter( 'login_body_class', 'wpw_add_login_body_class' );
-function wpw_customize_lost_password() {
-    // 1. Hide the link via CSS
-    echo '<style>.login #nav a.wp-login-lost-password { display: none !important; }</style>';
-}
-add_action( 'login_head', 'wpw_customize_lost_password' );
-
-function wpw_custom_lost_password_text( $text ) {
-    if ( $text == 'Lost your password?' ) {
-        $text = 'Forgot your login info?';
-    }
-    return $text;
-}
-add_filter( 'gettext', 'wpw_custom_lost_password_text' );
-
-function wpw_custom_lost_password_url( $url, $redirect ) {
-    return home_url( '/custom-reset/' );
-}
-add_filter( 'lostpassword_url', 'wpw_custom_lost_password_url', 10, 2 );
-
-
-
-
-
-
-
-*/

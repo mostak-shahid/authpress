@@ -21,7 +21,7 @@ import {
     Button, 
 } from '@wordpress/components';
 import { Icon, more, file, envelope, rotateRight, check, arrowUp, arrowDown, trash, reset } from '@wordpress/icons'; // Example icon
-const withForm = (OriginalComponent) => {     
+const withForm = (OriginalComponent, sectionPath = null) => {     
     function NewComponent() {
         const {
             settingData, 
@@ -91,32 +91,13 @@ const withForm = (OriginalComponent) => {
                 console.error("Error saving settings:", error);
             }
         };
-       const handleReset = async (name) => {
-            // console.log(name)
-            const confirmation = window.confirm(__( "Are you sure you want to proceed?", "authpress" ));
-            let result;
-            if (confirmation) {       
-                setProcessing(true);     
-                setResetLoading(true);
-                setResetError(null);            
-                try {
-                    result = await formDataPost('authpress_reset_settings', {name:name}); 
-                    setSettingReload(Math.random);
-                } catch (error) {
-                    setResetError(error.message);
-                } finally {
-                    setResetLoading(false);
-                    setProcessing(false);
-                }
-            }
-        };
-        const handleResetAll = async () => {
+        const handleReset = async (name) => {
             const confirmation = window.confirm(__( "Are you sure you want to proceed?", "authpress" ));
             let result;
             if (confirmation) {       
                 setResetting('processing');        
                 try {
-                    result = await formDataPost('authpress_reset_all_settings', {});
+                    result = await formDataPost('authpress_reset_settings', {name:name});
                     console.log(result); 
                     if (result.success) {
                         setResetting('done');
@@ -183,7 +164,7 @@ const withForm = (OriginalComponent) => {
                                     </CardBody>
                                     {/* {console.log(location.pathname)} */}
                                     {
-                                        (location.pathname!='/settings/feedback' && location.pathname!='/settings/import_export') && 
+                                        sectionPath && 
                                             <CardFooter style={{position: 'absolute', bottom: 0, backgroundColor: '#ffffff'}}>
                                                 <Flex justify="start" align="center">
                                                     <FlexItem>
@@ -219,7 +200,9 @@ const withForm = (OriginalComponent) => {
                                                             // style={ { marginRight: '8px' } } // Custom styles
                                                             className={resetting=='processing'?'button-processing':'' } // Custom class name (button-processing)                  
                                                             variant="secondary"
-                                                            onClick={ handleResetAll }
+                                                            // onClick={ handleResetAll }
+                                                            onClick={ () => handleReset(sectionPath) }
+                                                            data-id={sectionPath}
                                                         >
                                                             {
                                                                 resetting == 'processing' ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )

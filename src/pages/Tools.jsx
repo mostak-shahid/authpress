@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { __ } from "@wordpress/i18n";
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+import apiFetch from "@wordpress/api-fetch";
+import { formDataPost, setNestedValue, urlToArr } from "../lib/Helpers"; // Import utility function
 import { 
     SelectControl,
     Button,
@@ -14,17 +16,46 @@ const Tools = ({handleChange}) => {
         settingLoading,
     } = useMain();
     const [processing, setProcessing] = useState('normal'); // normal, processing, done
-    const handleClick = () => {
-        console.log('Pressed');
-        setProcessing('processing');
-        setTimeout(() => {
-            setProcessing('done');
+    const handleClick = async () => {
+        const confirmation = window.confirm(__( "Are you sure you want to proceed?", "authpress" ));
+        let result;
+        if (confirmation) { 
+            setProcessing('processing');
+            try {
+                result = await formDataPost('authpress_reset_all_settings', {}); 
+            } catch (error) {
+                console.log(error.message);
+            } finally {
+                setTimeout(() => {
+                    setProcessing('done');
+                    setTimeout(() => {
+                        setProcessing('normal');
+                    }, 1000); // Simulate a 3-second processing time
+                }, 3000); // Simulate a 3-second processing time
+            }
 
-            setTimeout(() => {
-                setProcessing('normal');
-            }, 1000); // Simulate a 3-second processing time
-        }, 3000); // Simulate a 3-second processing time
+        }
     };
+
+    
+    // const handleResetAll = async () => {
+    //     const confirmation = window.confirm(__( "Are you sure you want to proceed?", "authpress" ));
+    //     let result;
+    //     if (confirmation) {       
+    //         setResetting(true);     
+    //         setResetLoading(true);
+    //         setResetError(null);            
+    //         try {
+    //             result = await formDataPost('authpress_reset_all_settings', {}); 
+    //             setSettingReload(Math.random);
+    //         } catch (error) {
+    //             setResetError(error.message);
+    //         } finally {
+    //             setResetLoading(false);
+    //             setResetting(false);
+    //         }
+    //     }
+    // };
     return (
         <>
             <div className="setting-unit border-bottom py-4">
@@ -104,4 +135,4 @@ const Tools = ({handleChange}) => {
         </>
     )
 }
-export default withForm(Tools);
+export default withForm(Tools, 'tools');

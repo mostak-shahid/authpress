@@ -47,14 +47,6 @@ const settingsMenu = {
                     },
                 }
             },
-            "additional_fields" : {
-                "title": __( "Additional Fields", "authpress" ),
-                "url":"/settings/customizer/additional_fields",
-            },
-            "settings" : {
-                "title": __( "Settings", "authpress" ),
-                "url":"/settings/customizer/settings",
-            }
         }
     },
 

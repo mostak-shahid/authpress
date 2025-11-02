@@ -301,23 +301,9 @@ function authpress_get_default_options()
 					'disable_lost_password' => false,
 					'disable_privacy_policy' => false,
 					'disable_back_to_website' => false,
+					'login_by' => 'both', //username, email, both
+					'registered_with_password' => false, //true, false
 				],
-			],
-			'additional_fields' => [
-				'login' => [
-					'remember_me_always_on' => false,
-
-				], // label, required, type, default, options
-				'registration' => [
-					
-				'enable_registration_password' => false,
-				]
-			],
-			'settings' => [
-				'login_url' => '',
-				'registration_url' => '',
-				'forgot_password_url' => '',
-				'login_by' => 'both', //username, email, both
 			],
 		],	
 		'hide_login' => [
@@ -514,75 +500,7 @@ function authpress_is_plugin_page()
 //     return home_url('/' . get_option('myplugin_lost_slug', 'my-lost-password') . '/');
 // }, 10, 2);
 
-/**
- * Step 1: Hook Into Authentication
- */
 
-// Override WordPress’s login behavior using authenticate filter:
-add_filter('authenticate', function ($user, $username, $password) {
-	if ($username == 'admin') {
-		return new WP_Error('restricted_email', esc_html__('Login is not allowed for this email address.', 'authpress'));
-	}
-	return $user;
-    // // Skip if user already authenticated or empty
-    // // if ($user instanceof WP_User || empty($username) || empty($password)) {
-    // //     return $user;
-    // // }
-
-    // // $method = get_option('myplugin_login_method', 'both'); // default to both
-    // // $method = get_option('myplugin_login_method', 'username'); // default to both
-    // $method = get_option('myplugin_login_method', 'email'); // default to both
-	// return new WP_Error('invalid_email', $method);
-
-    // if ($method === 'email') {
-    //     // Require email only
-    //     if (!is_email($username)) {
-    //         return new WP_Error('invalid_email', __('You must use your email address to log in.'));
-    //     }
-    //     $user_obj = get_user_by('email', $username);
-    //     if ($user_obj) {
-    //         return wp_authenticate_username_password(null, $user_obj->user_login, $password);
-    //     }
-
-    // } elseif ($method === 'username') {
-    //     // Require username only
-    //     if (is_email($username)) {
-    //         return new WP_Error('invalid_username', __('You must use your username to log in.'));
-    //     }
-    //     $user_obj = get_user_by('login', $username);
-    //     if ($user_obj) {
-    //         return wp_authenticate_username_password(null, $username, $password);
-    //     }
-
-    // } else {
-    //     // both (default WP behavior, fallback to core)
-    //     return wp_authenticate_username_password(null, $username, $password);
-    // }
-
-    // return new WP_Error('invalid_login', __('Invalid credentials.'));
-}, 30, 3);
-
-
-/**
- * Step 2: Adjust Login Form Label
- */
-
-// If you want the login form label (Username or Email Address) to match the setting, filter gettext:
-add_filter('gettext', function ($translated_text, $text, $domain) {
-    // $method = get_option('myplugin_login_method', 'both');
-    // $method = get_option('myplugin_login_method', 'username');
-    $method = get_option('myplugin_login_method', 'email');
-
-    if ($text === 'Username or Email Address') {
-        if ($method === 'username') {
-            return __('Username');
-        } elseif ($method === 'email') {
-            return __('Email');
-        }
-    }
-
-    return $translated_text;
-}, 20, 3);
 
 
 

@@ -21,7 +21,6 @@ import Footer from "./layouts/Footer/Footer";
 import CustomizerRedesignFields from "./pages/CustomizerRedesignFields";
 import CustomizerRedesignButton from "./pages/CustomizerRedesignButton";
 import CustomizerRedesignOther from "./pages/CustomizerRedesignOther";
-import CustomizerSettings from "./pages/CustomizerSettings";
 import { IllustrationIdle, Illustration404 } from './lib/Illustrations';
 import { useState } from "react";
 import Tools from "./pages/Tools";
@@ -61,7 +60,6 @@ function App() {
         <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />
         <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
         <Route path="/settings/customizer/redesign/other" element={<CustomizerRedesignOther/>} />
-        <Route path="/settings/customizer/settings" element={<CustomizerSettings/>} />
         <Route path="/settings/hide_login" element={<HideLogin/>} />
         <Route path="/settings/two_fa_authentication" element={<Navigate to="/settings/two_fa_authentication/settings" />} />
         <Route path="/settings/two_fa_authentication/email_otp" element={<Two_FA_Email/>} />

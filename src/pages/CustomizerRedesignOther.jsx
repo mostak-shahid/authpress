@@ -3,7 +3,8 @@ import FontControl from "../components/FontControl/FontControl";
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { 
-    ToggleControl
+    ToggleControl,
+    SelectControl,
 } from '@wordpress/components';
 const CustomizerRedesignOther = ({handleChange}) => {
     const {
@@ -148,7 +149,7 @@ const CustomizerRedesignOther = ({handleChange}) => {
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Font", "authpress")}</h4>
+                            : <h4>{__("Login By", "authpress")}</h4>
                         }
                         {
                             settingLoading 
@@ -158,13 +159,46 @@ const CustomizerRedesignOther = ({handleChange}) => {
                     </div>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-5">
-                            <FontControl 
-                                defaultValues={settingData?.customizer?.redesign?.other?.font}
-                                name='customizer.redesign.other.font' 
-                                handleChange={handleChange}
-                                options = {["color", "font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
-                            />  
+                        <div className="col-lg-5">  
+                            <SelectControl
+                                // label="Size"
+                                value={ settingData?.customizer?.other?.login_by }
+                                options={ [
+                                    { label: __("Both", "authpress"), value: 'both' },
+                                    { label: __("Username", "authpress"), value: 'username' },
+                                    { label: __("Email", "authpress"), value: 'email' },
+                                    { label: __("Phone Number (Pro)", "authpress"), value: 'phone',disabled: true },
+                                ] }
+                                onChange={ ( newSize ) => handleChange('customizer.other.login_by', newSize ) }
+                                __next40pxDefaultSize
+                                __nextHasNoMarginBottom
+                            />                       
+                        </div>
+                    }
+                </div>
+            </div>
+            <div className="setting-unit pt-4">
+                <div className="row justify-content-between">
+                    <div className="col-lg-7">
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            : <h4>{__("Password Fields on registration page", "authpress")}</h4>
+                        }
+                        {
+                            settingLoading 
+                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                        }
+                    </div>    
+                    {
+                        !settingLoading &&                               
+                        <div className="col-auto">
+                            <ToggleControl
+                                __nextHasNoMarginBottom
+                                onChange={(newValue) => handleChange('customizer.other.registered_with_password', newValue)}
+                                checked={settingData?.customizer?.other?.registered_with_password}
+                            /> 
                         </div>
                     }
                 </div>
@@ -172,4 +206,4 @@ const CustomizerRedesignOther = ({handleChange}) => {
         </>
     )
 }
-export default withForm(CustomizerRedesignOther);
+export default withForm(CustomizerRedesignOther, 'customizer.redesign.other');

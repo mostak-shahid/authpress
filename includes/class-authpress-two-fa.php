@@ -910,15 +910,7 @@ class Authpress_Two_FA {
 		}
 		?>
 		<style id="authpress-2fa-login-styles">
-			#loginform { display: none !important; }
-			.authpress-2fa-wrapper { background:#fff; padding:28px 32px; border-radius:8px; box-shadow:0 12px 32px rgba(15,23,42,0.08); max-width:420px; margin:0 auto; }
-			.authpress-2fa-wrapper h1 { font-size:20px; margin:0 0 8px; }
-			.authpress-2fa-wrapper p { margin:0 0 18px; color:#3c434a; }
-			.authpress-2fa-form input[type="text"] { width:100%; padding:12px 14px; font-size:18px; border:1px solid #dcdcde; border-radius:6px; text-align:center; letter-spacing:4px; }
-			.authpress-2fa-submit { display:flex; gap:12px; margin-top:18px; }
-			.authpress-2fa-submit .button { flex:1 0 auto; justify-content:center; }
-			.authpress-2fa-secondary { margin-top:12px; }
-			.authpress-2fa-help { font-size:13px; color:#50575e; margin-top:18px; }
+			#loginform { display: none !important; }			
 		</style>
 		<?php
 	}
@@ -956,23 +948,24 @@ class Authpress_Two_FA {
 		ob_start();
 		?>
 		<div class="authpress-2fa-wrapper" role="main">
-			<h1><?php echo esc_html__( 'Two-factor verification', 'authpress' ); ?></h1>
-			<p><?php echo esc_html__( 'We sent a verification code to the email address associated with your account. Enter the code below to finish signing in.', 'authpress' ); ?></p>
 			<form class="authpress-2fa-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="verify_email_2fa" />
 				<?php wp_nonce_field( 'verify_email_2fa' ); ?>
-				<label class="screen-reader-text" for="authpress-2fa-code">&nbsp;</label>
-				<input id="authpress-2fa-code" name="email_2fa_code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" placeholder="123456" required />
+				<p>
+					<label for="authpress-2fa-code"><?php echo esc_html__( 'Two-factor verification', 'authpress' ); ?></label>
+					<input id="authpress-2fa-code" name="email_2fa_code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" placeholder="123456" required />
+				</p>	
 				<div class="authpress-2fa-submit">
 					<button class="button button-primary button-large" type="submit"><?php echo esc_html__( 'Verify code', 'authpress' ); ?></button>
 				</div>
+				<p><?php echo esc_html__( 'We sent a verification code to the email address associated with your account. Enter the code below to finish signing in. This code will expire in 5 minutes.', 'authpress' ); ?></p>
 			</form>
 			<form class="authpress-2fa-secondary" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
 				<input type="hidden" name="action" value="resend_email_2fa" />
 				<?php wp_nonce_field( 'resend_email_2fa' ); ?>
 				<button class="button" type="submit"><?php echo esc_html__( 'Resend code', 'authpress' ); ?></button>
+				<p class="authpress-2fa-help"><?php echo esc_html__( 'Need to try again?', 'authpress' ); ?></p>
 			</form>
-			<p class="authpress-2fa-help"><?php echo esc_html__( 'Need to try again? Open a new window and log in once more to generate a new code.', 'authpress' ); ?></p>
 		</div>
 		<?php
 		return ob_get_clean();

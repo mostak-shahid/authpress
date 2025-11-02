@@ -1,4 +1,4 @@
-.loginpress-login-page {
+.authpress-login-page {
     .forgetmenot,
     .submit {
         float: none;
@@ -23,5 +23,22 @@
     }
     #backtoblog {
         padding: 0;
+        float: left;
+    }
+    .privacy-policy-page-link {
+        margin: 16px 0;
+        float: right;
+        width: auto;
+    }
+    .authpress-2fa-wrapper {
+        button.button { 
+            display: block; 
+            margin-bottom: 10px; 
+            float: none; 
+            clear: both; 
+            width: 100%;
+        }        
+        .authpress-2fa-secondary { margin-top:12px; }
+        .authpress-2fa-help { font-size:13px; color:#50575e; margin-top:18px; }
     }
 }

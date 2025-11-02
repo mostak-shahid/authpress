@@ -55,4 +55,4 @@ const Two_FA_Email = ({handleChange}) => {
         </>
     )
 }
-export default withForm(Two_FA_Email);
+export default withForm(Two_FA_Email, 'two_fa_authentication.email');

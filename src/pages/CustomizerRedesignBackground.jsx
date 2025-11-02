@@ -82,8 +82,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                         defaultValues={settingData?.customizer?.redesign?.background?.background}
                                         name="customizer.redesign.background.background"
                                         handleChange={handleChange}
-                                    /> 
-                                    {console.log(settingData?.customizer?.redesign?.background?.background)}                         
+                                    />                         
                                 </div>
                             }
                         </div>
@@ -177,4 +176,4 @@ const CustomizerRedesignBackground = ({handleChange}) => {
         </>
     )
 }
-export default withForm(CustomizerRedesignBackground);
+export default withForm(CustomizerRedesignBackground, 'customizer.redesign.background');

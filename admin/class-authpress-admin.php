@@ -309,6 +309,8 @@ class Authpress_Admin
 			$authpress_options = authpress_get_option();
 			$authpress_default_options = authpress_get_default_options();
 
+			// wp_send_json_success(['name' => $name]);
+
 			$success = $this->reset_option_by_path($authpress_options, $authpress_default_options, $name);
 
 			if ($success) {
