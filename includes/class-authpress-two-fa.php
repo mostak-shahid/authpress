@@ -783,6 +783,9 @@ class Authpress_Two_FA {
 	private $code_ttl = 300; // seconds (5 minutes)
 	private $max_attempts = 5;
 	private $bypass_admins = false; // set false to require 2FA for admins
+	private $pending_user_id = 0;
+	private $login_notice_message = '';
+	private $login_notice_is_error = false;
 
 	public function __construct() {
 		$this->options = authpress_get_option();
@@ -794,6 +797,9 @@ class Authpress_Two_FA {
 		if ($two_fa_authentication_settings_enabled) {		
 			add_action( 'wp_login', [ $this, 'on_wp_login' ], 10, 2 );
 			add_action( 'template_redirect', [ $this, 'maybe_show_2fa_form' ] );
+			add_action( 'login_init', [ $this, 'prepare_login_screen' ] );
+			add_action( 'login_enqueue_scripts', [ $this, 'enqueue_login_styles' ] );
+			add_filter( 'login_message', [ $this, 'filter_login_message' ] );
 			add_action( 'admin_post_nopriv_verify_email_2fa', [ $this, 'handle_verify' ] );
 			add_action( 'admin_post_nopriv_resend_email_2fa', [ $this, 'handle_resend' ] );
 			add_action( 'admin_post_verify_email_2fa', [ $this, 'handle_verify' ] );
@@ -839,8 +845,8 @@ class Authpress_Two_FA {
 		// log out the current session
 		wp_logout();
 
-		// redirect to form page (query param)
-		$redirect = add_query_arg( 'email_2fa', '1', site_url() );
+		// redirect to wp-login.php with query param
+		$redirect = add_query_arg( 'email_2fa', '1', wp_login_url() );
 		wp_safe_redirect( $redirect );
 		exit;
 	}
@@ -849,25 +855,127 @@ class Authpress_Two_FA {
 	 * Show the OTP entry form when ?email_2fa=1 is present and a pending cookie exists.
 	 */
 	public function maybe_show_2fa_form() {
+		$request_uri = isset( $_SERVER['REQUEST_URI'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : '';
+
+		if ( strpos( $request_uri, '/authpress-2fa-verification' ) === false ) {
+			return;
+		}
+
+		$args = [ 'email_2fa' => '1' ];
+		if ( isset( $_GET['authpress_2fa_notice_key'] ) ) {
+			$args['authpress_2fa_notice_key'] = sanitize_text_field( wp_unslash( $_GET['authpress_2fa_notice_key'] ) );
+		}
+
+		wp_safe_redirect( add_query_arg( $args, wp_login_url() ) );
+		exit;
+	}
+
+	public function prepare_login_screen() {
 		if ( empty( $_GET['email_2fa'] ) ) {
 			return;
 		}
 
-		// check cookie
+		if ( ! empty( $_GET['authpress_2fa_notice_key'] ) ) {
+			$key     = sanitize_text_field( wp_unslash( $_GET['authpress_2fa_notice_key'] ) );
+			$payload = get_transient( 'authpress_2fa_notice_' . $key );
+			if ( is_array( $payload ) ) {
+				$this->login_notice_message   = isset( $payload['message'] ) ? $payload['message'] : '';
+				$this->login_notice_is_error  = ! empty( $payload['is_error'] );
+				delete_transient( 'authpress_2fa_notice_' . $key );
+			}
+		}
+
 		if ( empty( $_COOKIE[ $this->cookie_name ] ) ) {
-			$this->render_message_page( 'No pending 2FA session found. Please log in again.' );
-			exit;
+			if ( empty( $this->login_notice_message ) ) {
+				$this->login_notice_message  = __( 'No pending 2FA session found. Please log in again.', 'authpress' );
+				$this->login_notice_is_error = true;
+			}
+			return;
 		}
 
 		$user_id = $this->user_id_from_cookie( $_COOKIE[ $this->cookie_name ] );
 		if ( ! $user_id || ! get_user_by( 'ID', $user_id ) ) {
-			$this->render_message_page( 'Invalid 2FA session. Please log in again.' );
-			exit;
+			$this->login_notice_message  = __( 'Invalid 2FA session. Please log in again.', 'authpress' );
+			$this->login_notice_is_error = true;
+			$this->clear_pending_cookie();
+			return;
 		}
 
-		// show form
-		$this->render_2fa_form();
-		exit;
+		$this->pending_user_id = $user_id;
+	}
+
+	public function enqueue_login_styles() {
+		if ( $this->pending_user_id <= 0 ) {
+			return;
+		}
+		?>
+		<style id="authpress-2fa-login-styles">
+			#loginform { display: none !important; }
+			.authpress-2fa-wrapper { background:#fff; padding:28px 32px; border-radius:8px; box-shadow:0 12px 32px rgba(15,23,42,0.08); max-width:420px; margin:0 auto; }
+			.authpress-2fa-wrapper h1 { font-size:20px; margin:0 0 8px; }
+			.authpress-2fa-wrapper p { margin:0 0 18px; color:#3c434a; }
+			.authpress-2fa-form input[type="text"] { width:100%; padding:12px 14px; font-size:18px; border:1px solid #dcdcde; border-radius:6px; text-align:center; letter-spacing:4px; }
+			.authpress-2fa-submit { display:flex; gap:12px; margin-top:18px; }
+			.authpress-2fa-submit .button { flex:1 0 auto; justify-content:center; }
+			.authpress-2fa-secondary { margin-top:12px; }
+			.authpress-2fa-help { font-size:13px; color:#50575e; margin-top:18px; }
+		</style>
+		<?php
+	}
+
+	public function filter_login_message( $message ) {
+		if ( empty( $_GET['email_2fa'] ) ) {
+			return $message;
+		}
+
+		if ( $this->pending_user_id <= 0 ) {
+			if ( empty( $this->login_notice_message ) ) {
+				return $message;
+			}
+			$notice_class = $this->login_notice_is_error ? 'message error' : 'message';
+			$notice_html  = sprintf( '<p class="%s">%s</p>', esc_attr( $notice_class ), esc_html( $this->login_notice_message ) );
+			return $notice_html . $message;
+		}
+
+		$notice_html = '';
+		if ( ! empty( $this->login_notice_message ) ) {
+			$notice_class = $this->login_notice_is_error ? 'message error' : 'message';
+			$notice_html   = sprintf( '<p class="%s">%s</p>', esc_attr( $notice_class ), esc_html( $this->login_notice_message ) );
+		}
+
+		$instruction_html = sprintf( '<p class="message">%s</p>', esc_html__( 'Enter the 6-digit verification code we sent to your email address.', 'authpress' ) );
+
+		return $notice_html . $instruction_html . $this->get_2fa_form_markup();
+	}
+
+	private function get_2fa_form_markup() {
+		if ( $this->pending_user_id <= 0 ) {
+			return '';
+		}
+
+		ob_start();
+		?>
+		<div class="authpress-2fa-wrapper" role="main">
+			<h1><?php echo esc_html__( 'Two-factor verification', 'authpress' ); ?></h1>
+			<p><?php echo esc_html__( 'We sent a verification code to the email address associated with your account. Enter the code below to finish signing in.', 'authpress' ); ?></p>
+			<form class="authpress-2fa-form" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<input type="hidden" name="action" value="verify_email_2fa" />
+				<?php wp_nonce_field( 'verify_email_2fa' ); ?>
+				<label class="screen-reader-text" for="authpress-2fa-code">&nbsp;</label>
+				<input id="authpress-2fa-code" name="email_2fa_code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" autocomplete="one-time-code" placeholder="123456" required />
+				<div class="authpress-2fa-submit">
+					<button class="button button-primary button-large" type="submit"><?php echo esc_html__( 'Verify code', 'authpress' ); ?></button>
+				</div>
+			</form>
+			<form class="authpress-2fa-secondary" method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+				<input type="hidden" name="action" value="resend_email_2fa" />
+				<?php wp_nonce_field( 'resend_email_2fa' ); ?>
+				<button class="button" type="submit"><?php echo esc_html__( 'Resend code', 'authpress' ); ?></button>
+			</form>
+			<p class="authpress-2fa-help"><?php echo esc_html__( 'Need to try again? Open a new window and log in once more to generate a new code.', 'authpress' ); ?></p>
+		</div>
+		<?php
+		return ob_get_clean();
 	}
 
 	/**
@@ -875,7 +983,7 @@ class Authpress_Two_FA {
 	 */
 	public function handle_verify() {
 		if ( ! isset( $_POST['email_2fa_code'] ) || ! isset( $_COOKIE[ $this->cookie_name ] ) ) {
-			wp_safe_redirect( add_query_arg( 'email_2fa', '1', site_url() ) );
+			wp_safe_redirect( add_query_arg( 'email_2fa', '1', wp_login_url() ) );
 			exit;
 		}
 
@@ -1017,55 +1125,6 @@ class Authpress_Two_FA {
 		wp_mail( $to, $subject, $body, $headers );
 	}
 
-	/**
-	 * Render the OTP form.
-	 */
-	private function render_2fa_form() {
-		$home_url = esc_url( add_query_arg( 'email_2fa', '1', site_url() ) );
-		$nonce_verify = wp_create_nonce( 'verify_email_2fa' );
-		$nonce_resend = wp_create_nonce( 'resend_email_2fa' );
-		?>
-		<!doctype html>
-		<html>
-		<head>
-			<meta charset="utf-8">
-			<title>Enter verification code</title>
-			<style>
-				body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;display:flex;align-items:center;justify-content:center;height:100vh;background:#f6f8fb}
-				.card{background:#fff;padding:28px;border-radius:10px;max-width:420px;width:90%;box-shadow:0 6px 20px rgba(25,30,50,.08)}
-				h1{font-size:18px;margin:0 0 10px}
-				p{color:#555;margin:0 0 18px}
-				input[type="text"]{width:100%;padding:12px;border-radius:6px;border:1px solid #ddd;margin-bottom:12px;font-size:16px}
-				.btn{display:inline-block;padding:10px 16px;border-radius:6px;background:#0073aa;color:#fff;text-decoration:none;border:none;cursor:pointer}
-				.btn.secondary{background:#eaeef6;color:#222;margin-left:8px}
-				.small{font-size:13px;color:#666;margin-top:10px}
-			</style>
-		</head>
-		<body>
-		<div class="card" role="main">
-			<h1>Verification code</h1>
-			<p>We've sent a 6-digit code to your account email. Enter it below to complete login.</p>
-
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-				<input type="hidden" name="action" value="verify_email_2fa">
-				<?php wp_nonce_field( 'verify_email_2fa' ); ?>
-				<label for="code" class="screen-reader-text">Code</label>
-				<input id="code" name="email_2fa_code" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="e.g. 123456" required autocomplete="one-time-code">
-				<button class="btn" type="submit">Verify</button>
-			</form>
-
-			<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" style="margin-top:12px;">
-				<input type="hidden" name="action" value="resend_email_2fa">
-				<?php wp_nonce_field( 'resend_email_2fa' ); ?>
-				<button class="btn secondary" type="submit">Resend code</button>
-			</form>
-
-			<div class="small">If you can't access your email, contact the site administrator.</div>
-		</div>
-		</body>
-		</html>
-		<?php
-	}
 
 	/**
 	 * Helper to render a small message page.
@@ -1074,23 +1133,22 @@ class Authpress_Two_FA {
 	 * @param bool   $is_error
 	 */
 	private function render_message_page( $message, $is_error = false ) {
-		$color = $is_error ? '#b00020' : '#111';
-		?>
-		<!doctype html>
-		<html>
-		<head>
-			<meta charset="utf-8">
-			<title>Email 2FA</title>
-			<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;background:#f6f8fb;color:<?php echo esc_attr( $color ); ?>;display:flex;align-items:center;justify-content:center;height:100vh} .box{background:#fff;padding:22px;border-radius:8px;box-shadow:0 8px 30px rgba(10,20,40,.06);max-width:700px;width:90%}</style>
-		</head>
-		<body>
-			<div class="box">
-				<p><?php echo esc_html( $message ); ?></p>
-				<p><a href="<?php echo esc_url( wp_login_url() ); ?>">Return to login</a></p>
-			</div>
-		</body>
-		</html>
-		<?php
+		$this->redirect_to_login_notice( $message, $is_error );
+	}
+
+	private function redirect_to_login_notice( $message, $is_error = false ) {
+		$payload = [
+			'message'  => sanitize_textarea_field( $message ),
+			'is_error' => $is_error ? 1 : 0,
+		];
+		$key = wp_generate_uuid4();
+		set_transient( 'authpress_2fa_notice_' . $key, $payload, MINUTE_IN_SECONDS );
+		$args = [
+			'email_2fa'             => '1',
+			'authpress_2fa_notice_key' => $key,
+		];
+		wp_safe_redirect( add_query_arg( $args, wp_login_url() ) );
+		exit;
 	}
 
 	/**
