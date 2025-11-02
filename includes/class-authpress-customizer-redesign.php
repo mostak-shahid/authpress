@@ -516,7 +516,7 @@ class Authpress_Customizer_Redesign {
 		if ($method === 'email') {
 			// Require email only
 			if (!is_email($username)) {
-				return new WP_Error('invalid_email', __('You must use your email address to log in.'));
+				return new WP_Error('invalid_email', __('You must use your email address to log in.', 'authpress'));
 			}
 			$user_obj = get_user_by('email', $username);
 			if ($user_obj) {
@@ -526,7 +526,7 @@ class Authpress_Customizer_Redesign {
 		} elseif ($method === 'username') {
 			// Require username only
 			if (is_email($username)) {
-				return new WP_Error('invalid_username', __('You must use your username to log in.'));
+				return new WP_Error('invalid_username', __('You must use your username to log in.', 'authpress'));
 			}
 			$user_obj = get_user_by('login', $username);
 			if ($user_obj) {
@@ -543,9 +543,9 @@ class Authpress_Customizer_Redesign {
 
 		if ($text === 'Username or Email Address') {
 			if ($method === 'username') {
-				return __('Username');
+				return __('Username', 'authpress');
 			} elseif ($method === 'email') {
-				return __('Email');
+				return __('Email', 'authpress');
 			}
 		}
 
@@ -587,7 +587,7 @@ class Authpress_Customizer_Redesign {
 		$reset_link = network_site_url( "wp-login.php?action=rp&key=$reset_key&login=" . rawurlencode( $user->user_login ), 'login' );
 
 		// Custom subject
-		$wp_new_user_notification_email['subject'] = sprintf( __( 'Welcome to %s!', 'textdomain' ), $blogname );
+		$wp_new_user_notification_email['subject'] = sprintf( __( 'Welcome to %s!', 'authpress' ), $blogname );
 
 		// Custom body message
 		$message  = "Hi " . $user->user_login . ",\n\n";
