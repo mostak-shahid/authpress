@@ -787,11 +787,11 @@ class Authpress_Two_FA {
 	public function __construct() {
 		$this->options = authpress_get_option();
 		$two_fa_authentication_settings_enabled = (
-				isset($options['two_fa_authentication']['settings']['enabled']) &&
-				!empty($options['two_fa_authentication']['settings']['enabled'])
-			) ? sanitize_text_field(wp_unslash($options['two_fa_authentication']['settings']['enabled'])) : false;
+				isset($this->options['two_fa_authentication']['settings']['enabled']) &&
+				!empty($this->options['two_fa_authentication']['settings']['enabled'])
+			) ? sanitize_text_field(wp_unslash($this->options['two_fa_authentication']['settings']['enabled'])) : false;
 		
-		if ($two_fa_authentication_settings_enabled) {
+		if ($two_fa_authentication_settings_enabled) {		
 			add_action( 'wp_login', [ $this, 'on_wp_login' ], 10, 2 );
 			add_action( 'template_redirect', [ $this, 'maybe_show_2fa_form' ] );
 			add_action( 'admin_post_nopriv_verify_email_2fa', [ $this, 'handle_verify' ] );

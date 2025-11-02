@@ -99,33 +99,33 @@ const settingsMenu = {
         "title": __( "2FA Authentication", "authpress" ), 
         "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
         "url":"/settings/two_fa_authentication",
-        "sub": {
-            "email_otp" : {
-                "title": __( "Email OTP", "authpress" ),                
-                "url":"/settings/two_fa_authentication/email_otp",
-                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-            },
-            // "totp" : {
-            //     "title": __( "TOTP", "authpress" ),                
-            //     "url":"/settings/two_fa_authentication/totp",
-            //     "description": __( "TOTP (time based - most common algorithm; used by Google Authenticator)", "authpress" ), 
-            // },
-            // "hotp" : {
-            //     "title": __( "HOTP", "authpress" ),                
-            //     "url":"/settings/two_fa_authentication/hotp",
-            //     "description": __( "TOTP (event based - most common algorithm; used by Google Authenticator)", "authpress" ), 
-            // },
-            // "fixed_otp" : {
-            //     "title": __( "Fixed OTP", "authpress" ),                
-            //     "url":"/settings/two_fa_authentication/fixed_otp",
-            //     "description": __( "Dynamically generated fixed OTP", "authpress" ), 
-            // },
-            "settings" : {
-                "title": __( "Settings", "authpress" ),                
-                "url":"/settings/two_fa_authentication/settings",
-                "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-            },
-        }
+        // "sub": {
+        //     "email_otp" : {
+        //         "title": __( "Email OTP", "authpress" ),                
+        //         "url":"/settings/two_fa_authentication/email_otp",
+        //         "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+        //     },
+        //     // "totp" : {
+        //     //     "title": __( "TOTP", "authpress" ),                
+        //     //     "url":"/settings/two_fa_authentication/totp",
+        //     //     "description": __( "TOTP (time based - most common algorithm; used by Google Authenticator)", "authpress" ), 
+        //     // },
+        //     // "hotp" : {
+        //     //     "title": __( "HOTP", "authpress" ),                
+        //     //     "url":"/settings/two_fa_authentication/hotp",
+        //     //     "description": __( "TOTP (event based - most common algorithm; used by Google Authenticator)", "authpress" ), 
+        //     // },
+        //     // "fixed_otp" : {
+        //     //     "title": __( "Fixed OTP", "authpress" ),                
+        //     //     "url":"/settings/two_fa_authentication/fixed_otp",
+        //     //     "description": __( "Dynamically generated fixed OTP", "authpress" ), 
+        //     // },
+        //     "settings" : {
+        //         "title": __( "Settings", "authpress" ),                
+        //         "url":"/settings/two_fa_authentication/settings",
+        //         "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
+        //     },
+        // }
     },
     // "password_less_authentication": { 
     //     "title": __( "Passwordless Authentication", "authpress" ), 
