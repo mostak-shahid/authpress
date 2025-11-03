@@ -322,6 +322,23 @@ function authpress_get_default_options()
 				'enabled' => true,
 			],
 		],
+		'auto_login' => [
+			'settings' => [
+				'enabled' => true,
+			],
+			'link_login' => [
+				'enabled' => true,
+			],
+			'social_login' => [
+				'enabled' => true,
+			],
+			'barcode_login' => [
+				'enabled' => true,
+			],
+			'google_login' => [
+				'enabled' => true,
+			]
+		],
 		// 'components' => [
 		// 	'basic' => [
 		// 		'ip' => '',

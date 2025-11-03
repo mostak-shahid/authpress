@@ -554,30 +554,40 @@ class Authpress_Customizer_Redesign {
 	public function authpress_add_password_fields_to_registration_form(){
 		?>
 		<p>
-			<label for="password"><?php _e( 'Password', 'authpress' ); ?><br />
+			<label for="password"><?php echo esc_html__( 'Password', 'authpress' ); ?><br />
 				<input type="password" name="password" id="password" class="input" value="" size="25" required />
 			</label>
 		</p>
 		<p>
-			<label for="password2"><?php _e( 'Confirm Password', 'authpress' ); ?><br />
+			<label for="password2"><?php echo esc_html__( 'Confirm Password', 'authpress' ); ?><br />
 				<input type="password" name="password2" id="password2" class="input" value="" size="25" required />
 			</label>
 		</p>
 		<?php
+		wp_nonce_field( 'authpress_register_password_action', 'authpress_register_password_field' );
 	}
 	public function authpress_validate_registration_passwords( $errors, $sanitized_user_login, $user_email ) {
-		if ( empty( $_POST['password'] ) || empty( $_POST['password2'] ) ) {
-			$errors->add( 'password_error', __( '<strong>Error</strong>: Please enter a password in both fields.', 'authpress' ) );
-		} elseif ( $_POST['password'] !== $_POST['password2'] ) {
-			$errors->add( 'password_mismatch', __( '<strong>Error</strong>: Passwords do not match.', 'authpress' ) );
-		} elseif ( strlen( $_POST['password'] ) < 6 ) {
-			$errors->add( 'password_short', __( '<strong>Error</strong>: Password must be at least 6 characters long.', 'authpress' ) );
+		if (isset( $_POST['authpress_register_password_field'] ) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['authpress_register_password_field'])), 'authpress_register_password_action' ) ) {	
+			$password = isset($_POST['password'])?sanitize_text_field(wp_unslash($_POST['password'])):'';
+			$password2 = isset($_POST['password2'])?sanitize_text_field(wp_unslash($_POST['password2'])):'';
+
+			if ( empty( $password ) || empty( $password2 ) ) {
+				$errors->add( 'password_error', __( '<strong>Error</strong>: Please enter a password in both fields.', 'authpress' ) );
+			} elseif ( $password !== $password2 ) {
+				$errors->add( 'password_mismatch', __( '<strong>Error</strong>: Passwords do not match.', 'authpress' ) );
+			} elseif ( strlen( $password ) < 6 ) {
+				$errors->add( 'password_short', __( '<strong>Error</strong>: Password must be at least 6 characters long.', 'authpress' ) );
+			}
 		}
 		return $errors;
 	}
 	public function authpress_save_registration_password( $user_id ) {
-		if ( ! empty( $_POST['password'] ) && $_POST['password'] === $_POST['password2'] ) {
-			wp_set_password( $_POST['password'], $user_id );
+		if (isset( $_POST['authpress_register_password_field'] ) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['authpress_register_password_field'])), 'authpress_register_password_action' ) ) {	
+			$password = isset($_POST['password'])?sanitize_text_field(wp_unslash($_POST['password'])):'';
+			$password2 = isset($_POST['password2'])?sanitize_text_field(wp_unslash($_POST['password2'])):'';
+			if ( ! empty( $password ) && $password === $password2 ) {
+				wp_set_password( $password, $user_id );
+			}
 		}
 	}
 	public function authpress_email_on_regiatration( $wp_new_user_notification_email, $user, $blogname ) {

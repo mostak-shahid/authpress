@@ -131,6 +131,23 @@ const settingsMenu = {
         //     },
         // }
     },
+    "auto_login": { 
+        "title": __( "Auto Login", "authpress" ), 
+        "description": __( "Auto Login", "authpress" ), 
+        "url":"/settings/auto_login",
+        "sub": {
+            "link_login" : {
+                "title": __( "Link Login", "authpress" ),                
+                "url":"/settings/auto_login/link_login",
+                "description": __( "Link Login", "authpress" ), 
+            },
+            "settings" : {
+                "title": __( "Settings", "authpress" ),                
+                "url":"/settings/auto_login/settings",
+                "description": __( "Auto Login Settings", "authpress" ), 
+            },
+        }
+    },
     // "password_less_authentication": { 
     //     "title": __( "Passwordless Authentication", "authpress" ), 
     //     "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 

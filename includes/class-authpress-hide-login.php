@@ -57,29 +57,29 @@ class Authpress_Hided_Login
     /**
      * Render the login form on the custom URL
      */
-    public function render_login_template( $template ) {
-        if ( get_query_var( 'authpress_login' ) ) {
-            status_header( 200 );
-            nocache_headers();
+    // public function render_login_template( $template ) {
+    //     if ( get_query_var( 'authpress_login' ) ) {
+    //         status_header( 200 );
+    //         nocache_headers();
 
-            // Simple HTML layout with WordPress login form
-            echo '<!DOCTYPE html><html ' . get_language_attributes() . '><head>';
-            wp_head();
-            echo '<title>' . get_bloginfo( 'name' ) . ' &rsaquo; Login</title>';
-            echo '<style>
-                body { font-family: sans-serif; background: #f9f9f9; }
-                .authpress-login-wrapper { max-width: 400px; margin: 80px auto; padding: 40px; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-            </style>';
-            echo '</head><body>';
-            echo '<div class="authpress-login-wrapper">';
-            wp_login_form();
-            echo '</div>';
-            wp_footer();
-            echo '</body></html>';
-            exit;
-        }
-        return $template;
-    }
+    //         // Simple HTML layout with WordPress login form
+    //         echo '<!DOCTYPE html><html ' . get_language_attributes() . '><head>';
+    //         wp_head();
+    //         echo '<title>' . get_bloginfo( 'name' ) . ' &rsaquo; Login</title>';
+    //         echo '<style>
+    //             body { font-family: sans-serif; background: #f9f9f9; }
+    //             .authpress-login-wrapper { max-width: 400px; margin: 80px auto; padding: 40px; background: #fff; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+    //         </style>';
+    //         echo '</head><body>';
+    //         echo '<div class="authpress-login-wrapper">';
+    //         wp_login_form();
+    //         echo '</div>';
+    //         wp_footer();
+    //         echo '</body></html>';
+    //         exit;
+    //     }
+    //     return $template;
+    // }
 
 
     /**

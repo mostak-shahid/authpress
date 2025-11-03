@@ -28,6 +28,8 @@ import HideLogin from "./pages/HideLogin";
 import Two_FA_Email from "./pages/Two_FA_Email";
 import Two_FA from "./pages/Two_FA";
 import Captcha from "./pages/Captcha";
+import AutoLogin from "./pages/AutoLogin";
+import AutoLoginLink from "./pages/AutoLoginLink";
 
 const NotFound = () => (
   <div style={{ textAlign: 'center', padding: '40px' }}>
@@ -66,6 +68,9 @@ function App() {
         <Route path="/settings/two_fa_authentication/settings" element={<Two_FA/>} />
         <Route path="/settings/captcha" element={<Navigate to="/settings/captcha/settings" />} />
         <Route path="/settings/captcha/settings" element={<Captcha/>} />
+        <Route path="/settings/auto_login" element={<Navigate to="/settings/auto_login/settings" />} />
+        <Route path="/settings/auto_login/settings" element={<AutoLogin/>} />
+        <Route path="/settings/auto_login/link_login" element={<AutoLoginLink/>} />
 
         <Route path="/settings/components" element={<Navigate to="/settings/components/basic" />} />
         <Route path="/settings/components/basic" element={<ComponentsBasic />} />
