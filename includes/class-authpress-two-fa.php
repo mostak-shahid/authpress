@@ -893,7 +893,7 @@ class Authpress_Two_FA {
 			return;
 		}
 
-		$user_id = $this->user_id_from_cookie( $_COOKIE[ $this->cookie_name ] );
+		$user_id = isset($_COOKIE[ $this->cookie_name ])?$this->user_id_from_cookie( sanitize_text_field(wp_unslash($_COOKIE[ $this->cookie_name ])) ):0;
 		if ( ! $user_id || ! get_user_by( 'ID', $user_id ) ) {
 			$this->login_notice_message  = __( 'Invalid 2FA session. Please log in again.', 'authpress' );
 			$this->login_notice_is_error = true;
@@ -975,74 +975,78 @@ class Authpress_Two_FA {
 	 * Handle verification POST (admin_post endpoint).
 	 */
 	public function handle_verify() {
-		if ( ! isset( $_POST['email_2fa_code'] ) || ! isset( $_COOKIE[ $this->cookie_name ] ) ) {
-			wp_safe_redirect( add_query_arg( 'email_2fa', '1', wp_login_url() ) );
-			exit;
-		}
+		if (isset( $_POST['_wpnonce'] ) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'verify_email_2fa' ) ) {
+			
+			$email_2fa_code = isset( $_POST['email_2fa_code'] ) ? sanitize_text_field( wp_unslash( $_POST['email_2fa_code'] ) ) : '';
 
-		// nonce check
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'verify_email_2fa' ) ) {
-			$this->render_message_page( 'Security check failed. Please try again.' );
-			exit;
-		}
+			if ( ! isset( $email_2fa_code ) || ! isset( $_COOKIE[ $this->cookie_name ] ) ) {
+				wp_safe_redirect( add_query_arg( 'email_2fa', '1', wp_login_url() ) );
+				exit;
+			}
+			$cookie_val = isset($_COOKIE[ $this->cookie_name ])?sanitize_text_field(wp_unslash($_COOKIE[ $this->cookie_name ])):'';
+			$user_id    = $this->user_id_from_cookie( $cookie_val );
+			if ( ! $user_id ) {
+				$this->render_message_page( 'Invalid 2FA session. Please log in again.' );
+				exit;
+			}
 
-		$cookie_val = $_COOKIE[ $this->cookie_name ];
-		$user_id    = $this->user_id_from_cookie( $cookie_val );
-		if ( ! $user_id ) {
-			$this->render_message_page( 'Invalid 2FA session. Please log in again.' );
-			exit;
-		}
+			$input_code = preg_replace( '/\D/', '', $email_2fa_code );
+			if ( empty( $input_code ) ) {
+				$this->render_message_page( 'Please enter the code you received by email.' );
+				exit;
+			}
 
-		$input_code = preg_replace( '/\D/', '', $_POST['email_2fa_code'] );
-		if ( empty( $input_code ) ) {
-			$this->render_message_page( 'Please enter the code you received by email.' );
-			exit;
-		}
+			$transient_key = $this->transient_prefix . $user_id;
+			$stored_hash   = get_transient( $transient_key );
 
-		$transient_key = $this->transient_prefix . $user_id;
-		$stored_hash   = get_transient( $transient_key );
+			if ( ! $stored_hash ) {
+				$this->render_message_page( 'Your code has expired. Please request a new code.' );
+				exit;
+			}
 
-		if ( ! $stored_hash ) {
-			$this->render_message_page( 'Your code has expired. Please request a new code.' );
-			exit;
-		}
-
-		// Protect against brute force: count attempts
-		$attempts = (int) get_user_meta( $user_id, $this->attempt_meta_key, true );
-		if ( $attempts >= $this->max_attempts ) {
-			// remove transient to force resend
-			delete_transient( $transient_key );
-			$this->render_message_page( 'Too many failed attempts. A new code is required. Please click "Resend".' );
-			exit;
-		}
-
-		// verify - wp_check_password works: first arg plaintext, second stored hash
-		$ok = wp_check_password( $input_code, $stored_hash );
-
-		if ( $ok ) {
-			// success: delete transient and attempts, clear cookie, log in user programmatically
-			delete_transient( $transient_key );
-			delete_user_meta( $user_id, $this->attempt_meta_key );
-			// clear cookie
-			$this->clear_pending_cookie();
-
-			wp_set_current_user( $user_id );
-			// honor "remember me"? we can't detect original remember easily; set session cookie (false for remember)
-			wp_set_auth_cookie( $user_id, true ); // choose true to keep user logged in; change as wanted
-
-			// redirect to originally requested page or dashboard
-			$redirect_to = admin_url();
-			wp_safe_redirect( $redirect_to );
-			exit;
-		} else {
-			$attempts++;
-			update_user_meta( $user_id, $this->attempt_meta_key, $attempts );
+			// Protect against brute force: count attempts
+			$attempts = (int) get_user_meta( $user_id, $this->attempt_meta_key, true );
 			if ( $attempts >= $this->max_attempts ) {
+				// remove transient to force resend
 				delete_transient( $transient_key );
 				$this->render_message_page( 'Too many failed attempts. A new code is required. Please click "Resend".' );
 				exit;
 			}
-			$this->render_message_page( 'Incorrect code. Attempts: '. $attempts . ' / ' . $this->max_attempts .'.', true );
+
+			// verify - wp_check_password works: first arg plaintext, second stored hash
+			$ok = wp_check_password( $input_code, $stored_hash );
+
+			if ( $ok ) {
+				// success: delete transient and attempts, clear cookie, log in user programmatically
+				delete_transient( $transient_key );
+				delete_user_meta( $user_id, $this->attempt_meta_key );
+				// clear cookie
+				$this->clear_pending_cookie();
+
+				wp_set_current_user( $user_id );
+				// honor "remember me"? we can't detect original remember easily; set session cookie (false for remember)
+				wp_set_auth_cookie( $user_id, true ); // choose true to keep user logged in; change as wanted
+
+				// redirect to originally requested page or dashboard
+				$redirect_to = admin_url();
+				wp_safe_redirect( $redirect_to );
+				exit;
+			} else {
+				$attempts++;
+				update_user_meta( $user_id, $this->attempt_meta_key, $attempts );
+				if ( $attempts >= $this->max_attempts ) {
+					delete_transient( $transient_key );
+					$this->render_message_page( 'Too many failed attempts. A new code is required. Please click "Resend".' );
+					exit;
+				}
+				$this->render_message_page( 'Incorrect code. Attempts: '. $attempts . ' / ' . $this->max_attempts .'.', true );
+				exit;
+			}
+
+		}
+		// nonce check
+		else {
+			$this->render_message_page( 'Security check failed. Please try again.' );
 			exit;
 		}
 	}
@@ -1052,40 +1056,42 @@ class Authpress_Two_FA {
 	 */
 	public function handle_resend() {
 		// nonce check
-		if ( ! isset( $_POST['_wpnonce'] ) || ! wp_verify_nonce( $_POST['_wpnonce'], 'resend_email_2fa' ) ) {
+		if (isset( $_POST['_wpnonce'] ) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'resend_email_2fa' ) ) {
+			
+			$cookie_name = isset($_COOKIE[ $this->cookie_name ])?sanitize_text_field(wp_unslash($_COOKIE[ $this->cookie_name ])):'';
+
+			if ( empty( $cookie_name ) ) {
+				$this->render_message_page( 'No pending 2FA session found. Please log in again.' );
+				exit;
+			}
+
+			$user_id = $this->user_id_from_cookie( $cookie_name );
+			if ( ! $user_id ) {
+				$this->render_message_page( 'Invalid 2FA session. Please log in again.' );
+				exit;
+			}
+
+			$user = get_user_by( 'ID', $user_id );
+			if ( ! $user ) {
+				$this->render_message_page( 'Invalid user. Please log in again.' );
+				exit;
+			}
+
+			// generate a fresh code
+			$code = $this->generate_code();
+			$hashed = wp_hash_password( $code );
+			set_transient( $this->transient_prefix . $user_id, $hashed, $this->code_ttl );
+
+			// reset attempts
+			delete_user_meta( $user_id, $this->attempt_meta_key );
+
+			// send email
+			$this->send_code_email( $user, $code );
+
+			$this->render_message_page( 'A new code was sent to your email address.' );
+		} else {
 			$this->render_message_page( 'Security check failed. Please try again.' );
-			exit;
 		}
-
-		if ( empty( $_COOKIE[ $this->cookie_name ] ) ) {
-			$this->render_message_page( 'No pending 2FA session found. Please log in again.' );
-			exit;
-		}
-
-		$user_id = $this->user_id_from_cookie( $_COOKIE[ $this->cookie_name ] );
-		if ( ! $user_id ) {
-			$this->render_message_page( 'Invalid 2FA session. Please log in again.' );
-			exit;
-		}
-
-		$user = get_user_by( 'ID', $user_id );
-		if ( ! $user ) {
-			$this->render_message_page( 'Invalid user. Please log in again.' );
-			exit;
-		}
-
-		// generate a fresh code
-		$code = $this->generate_code();
-		$hashed = wp_hash_password( $code );
-		set_transient( $this->transient_prefix . $user_id, $hashed, $this->code_ttl );
-
-		// reset attempts
-		delete_user_meta( $user_id, $this->attempt_meta_key );
-
-		// send email
-		$this->send_code_email( $user, $code );
-
-		$this->render_message_page( 'A new code was sent to your email address.' );
 		exit;
 	}
 

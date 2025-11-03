@@ -118,6 +118,7 @@ class Authpress
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
+		require_once plugin_dir_path(dirname(__FILE__)) . 'API/Ajax_API.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-authpress-public.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-customizer-redesign.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-hide-login.php';
@@ -158,17 +159,7 @@ class Authpress
 		$this->loader->add_action('admin_head', $plugin_admin, 'authpress_option_form_submit');
 
 		// Reset settings by ajax
-		$this->loader->add_action('wp_ajax_authpress_reset_settings', $plugin_admin, 'authpress_reset_settings');
-		$this->loader->add_action('wp_ajax_authpress_reset_all_settings', $plugin_admin, 'authpress_reset_all_settings');
-
-
-
-		$this->loader->add_action('wp_ajax_authpress_ajax_install_plugins', $plugin_admin, 'authpress_ajax_install_plugins');
-		$this->loader->add_action('wp_ajax_nopriv_authpress_ajax_install_plugins', $plugin_admin, 'authpress_ajax_install_plugins');
-
-		$this->loader->add_action('wp_ajax_authpress_ajax_plugins_status', $plugin_admin, 'authpress_ajax_plugins_status');
-		$this->loader->add_action('wp_ajax_nopriv_authpress_ajax_plugins_status', $plugin_admin, 'authpress_ajax_plugins_status');
-
+		
 		// add_action( 'upgrader_process_complete', 'authpress_update_completed', 10, 2 );
 		$this->loader->add_action('upgrader_process_complete', $plugin_admin, 'authpress_update_completed', 10, 2);
 

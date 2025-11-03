@@ -2,6 +2,7 @@ import { __ } from "@wordpress/i18n";
 import React, {useState, useMemo} from 'react';
 import { useMain } from '../contexts/MainContext';
 import withForm from './withForm';
+import { formDataPost, setNestedValue, urlToArr } from "../lib/Helpers"; // Import utility function
 import { 
     Flex, 
     FlexBlock, 
@@ -18,20 +19,32 @@ import MultiSelectControl from "../components/MultiSelectControl/MultiSelectCont
 const HideLogin = ({handleChange}) => {
     const {
         settingData,
-        settingLoading
+        settingLoading,
+        setSettingReload,
     } = useMain();
     const [emails, setEmails] = useState('');
     const [ processing, setProcessing ] = useState('normal');
-    const handleButtonClick = () => {
-        setProcessing('processing');
-        // Simulate an async operation (e.g., form submission)
-        setTimeout(() => {
-            setProcessing('done');
-            // Reset to normal state after a short delay
-            setTimeout(() => {
-                setProcessing('normal');
-            }, 2000);
-        }, 3000);
+    const handleButtonClick = async () => {
+        setProcessing('processing');        
+        try {
+            const result = await formDataPost('authpress_set_login_url', {login_url:settingData?.hide_login?.login_url});
+            console.log(result); 
+            if (result.success) {
+                setProcessing('done');
+                setTimeout(() => {
+                    setProcessing('done');
+                    // Reset to normal state after a short delay
+                    setTimeout(() => {
+                        setProcessing('normal');
+                    }, 2000);
+                }, 3000);
+                setSettingReload(Math.random);  
+            }
+        } catch (error) {
+            console.log(error.message);
+        } finally {
+            setProcessing('normal');    
+        }
     }
     return (
         <>
