@@ -38,14 +38,6 @@ const NotFound = () => (
   </div>
 );
 function App() {
-  const [openMenus, setOpenMenus] = useState({});
-
-  const toggleMenu = (key) => {
-    setOpenMenus((prev) => ({
-      ...prev,
-      [key]: !prev[key],
-    }));
-  };
   return (
     <div className="authpress-settings-container">
       <Header />

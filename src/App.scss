@@ -46,6 +46,9 @@ $border-authpress: #dee2e6;
             }
         }
     }
+    .toast-container {
+        position: fixed;
+    }
 }
 @keyframes spin {
     0% { transform: rotate(0deg); }

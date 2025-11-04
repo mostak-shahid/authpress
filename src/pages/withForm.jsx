@@ -129,15 +129,18 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                         delay={3000} 
                         autohide
                     >
-                        <Toast.Header>
-                            <strong className="me-auto">{__('Saved',"authpress")}</strong>
+                        <Toast.Body>
+                            <strong className="me-auto text-white">{__('Option Saved',"authpress")}</strong>
+                        </Toast.Body>
+                        {/* <Toast.Header>
+                            <strong className="me-auto">{__('Option Saved',"authpress")}</strong>
                         </Toast.Header>
                         <Toast.Body className="text-white">
                             {__(
                                 'All changes have been applied correctly, ensuring your preferences are now in effect.',                                                        
                                 "authpress"
                             )}
-                        </Toast.Body>
+                        </Toast.Body> */}
                     </Toast>
                 </ToastContainer>
                 <div className="authpress-settings">

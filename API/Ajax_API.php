@@ -7,6 +7,8 @@ class Ajax_API
 		add_action('wp_ajax_authpress_ajax_install_plugins', [$this, 'authpress_ajax_install_plugins']);		
 		add_action('wp_ajax_authpress_ajax_plugins_status', [$this, 'authpress_ajax_plugins_status']);
 		add_action('wp_ajax_authpress_set_login_url', [$this, 'authpress_set_login_url']);
+		add_action('wp_ajax_authpress_send_email_login_url', [$this, 'authpress_send_email_login_url']);
+		add_action('init', [$this, 'authpress_maybe_flush_rules'], 99);
 		
     }
 
@@ -18,10 +20,30 @@ class Ajax_API
 			$authpress_options = authpress_get_option();
 			$authpress_options['hide_login']['login_url'] = $login_url;
             update_option('authpress_options', $authpress_options);
-            flush_rewrite_rules();
-            wp_send_json_success(['message' => __('Settings reset successfully.', 'authpress')]);
-
-			
+            update_option('authpress_flush_rewrite', true);
+            wp_send_json_success(['message' => __('Login URL reset successfully.', 'authpress')]);			
+		} else {
+			wp_send_json_error(array('error_message' => esc_html__('Nonce verification failed. Please try again.', 'authpress')));
+			// wp_die(esc_html__('Nonce verification failed. Please try again.', 'authpress'));
+		}
+		wp_die();
+	}
+	public function authpress_send_email_login_url()
+	{
+		// wp_send_json_success($_POST['_admin_nonce']);
+		if (isset($_POST['_admin_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_admin_nonce'])), 'authpress_admin_nonce')) {
+			$options = authpress_get_option();
+			$login_url = (isset($options['hide_login']['login_url']) & !empty($options['hide_login']['login_url']))?sanitize_text_field(wp_unslash($options['hide_login']['login_url'])):home_url('/wp-login.php/');
+			$emails = isset($_POST['emails'])?sanitize_text_field(wp_unslash($_POST['emails'])):'';
+			if($emails) {
+				$emails_arr = explode(',',$emails);
+				$subject = 'New Login Link';
+				$body = 'Your New Login Link is '. home_url('/'.$login_url.'/');
+				$headers = array( 'Content-Type: text/html; charset=UTF-8' );
+				wp_mail( $emails_arr, $subject, $body, $headers, array( '' ) );
+				wp_send_json_success(['message' => __('Email successfully.', 'authpress')]);			
+			}
+			wp_send_json_error(array('error_message' => esc_html__('No email address found.', 'authpress')));
 		} else {
 			wp_send_json_error(array('error_message' => esc_html__('Nonce verification failed. Please try again.', 'authpress')));
 			// wp_die(esc_html__('Nonce verification failed. Please try again.', 'authpress'));
@@ -233,6 +255,12 @@ class Ajax_API
 
 		wp_die();
 	}
+	public function authpress_maybe_flush_rules() {
+		if (get_option('authpress_flush_rewrite', false)) {
+			flush_rewrite_rules();
+			delete_option('authpress_flush_rewrite');
+		}
+	}	
 }
 
 new Ajax_API();
