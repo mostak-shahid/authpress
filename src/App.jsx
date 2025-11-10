@@ -31,7 +31,7 @@ import Captcha from "./pages/Captcha";
 import AutoLogin from "./pages/AutoLogin";
 import AutoLoginLink from "./pages/AutoLoginLink";
 
-import { Layout, Spin, Typography, LocaleProvider } from '@douyinfe/semi-ui';
+import { LocaleProvider } from '@douyinfe/semi-ui';
 import local from "@douyinfe/semi-ui/lib/es/locale/source/en_US";
 
 
@@ -42,184 +42,58 @@ const NotFound = () => (
   </div>
 );
 import React, { useState, useEffect } from 'react';
-import { Nav, Avatar, Dropdown } from '@douyinfe/semi-ui';
-import {
-    IconStar,
-    IconUser,
-    IconUserGroup,
-    IconSetting,
-    IconEdit,
-} from '@douyinfe/semi-icons';
-const items = [
-        { itemKey: 'user', text: 'User Management', icon: <IconUser /> },
-        { itemKey: 'union', text: 'Union Center', icon: <IconStar /> },
-        {
-            itemKey: 'union-management',
-            text: 'Union Management',
-            icon: <IconUserGroup />,
-            items: ['Announcement Settings', 'Union Query', 'Entry Information'],
-        },
-        {
-            itemKey: 'approve-management',
-            text: 'Approval Management',
-            icon: <IconEdit />,
-            items: [
-                'Check-in Review',
-                {
-                    itemKey: 'operation-management',
-                    text: 'Operations Management',
-                    items: ['Personnel Management', 'Personnel Change'],
-                },
-            ],
-        },
-        {
-            text: 'Task Platform',
-            icon: <IconSetting />,
-            itemKey: 'job',
-            items: ['Task Management', 'User Task Query'],
-        },
-    ];
+import Semi from "./pages/Semi";
+
+
 function App() {
+    return (
+        <LocaleProvider locale={local}>
 
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
-    const [openKey, setOpenKey] = useState(null); // for accordion behavior
+        <div className="authpress-settings-container">
+            {/* <Header /> */}
+            <Routes>
+            {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
+            {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
+            <Route path="/" element={<Dashboard />} />
 
+            <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
+            <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
+            <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
+            <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
+            <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
+            <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />
+            <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
+            <Route path="/settings/customizer/redesign/other" element={<CustomizerRedesignOther/>} />
+            <Route path="/settings/hide_login" element={<HideLogin/>} />
+            <Route path="/settings/two_fa_authentication" element={<Navigate to="/settings/two_fa_authentication/settings" />} />
+            <Route path="/settings/two_fa_authentication/email_otp" element={<Two_FA_Email/>} />
+            <Route path="/settings/two_fa_authentication/settings" element={<Two_FA/>} />
+            <Route path="/settings/captcha" element={<Navigate to="/settings/captcha/settings" />} />
+            <Route path="/settings/captcha/settings" element={<Captcha/>} />
+            <Route path="/settings/auto_login" element={<Navigate to="/settings/auto_login/settings" />} />
+            <Route path="/settings/auto_login/settings" element={<AutoLogin/>} />
+            <Route path="/settings/auto_login/link_login" element={<AutoLoginLink/>} />
 
-    // Handle responsive change
-    useEffect(() => {
-        const handleResize = () => {
-            setIsMobile(window.innerWidth < 992);
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+            <Route path="/settings/components" element={<Navigate to="/settings/components/basic" />} />
+            <Route path="/settings/components/basic" element={<ComponentsBasic />} />
+            <Route path="/settings/components/advanced" element={<ComponentsAdvanced />} />
 
-    const handleSubNavClick = (itemKey) => {
-        // Accordion logic: toggle or close others
-        setOpenKey((prevKey) => (prevKey === itemKey ? null : itemKey));
-    };
-  const { Header, Footer, Sider, Content } = Layout;
-  const commonStyle = {
-        height: 64,
-        lineHeight: '64px',
-        background: 'var(--semi-color-fill-0)'
-    };
-  return (
-    <LocaleProvider locale={local}>
-      <Layout className="components-layout-demo">
-            <Header 
-            style={commonStyle}
-            >
-        <Nav
-            mode="horizontal"
-            items={items}
-            onSelect={(key) => console.log(key)}
-            header={{
-                logo: (
-                    <img
-                        src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/webcast_logo.svg"
-                        alt="logo"
-                    />
-                ),
-                text: 'Live Platform',
-            }}
-            footer={
-                <Dropdown
-                    position="bottomRight"
-                    render={
-                        <Dropdown.Menu>
-                            <Dropdown.Item>Detail</Dropdown.Item>
-                            <Dropdown.Item>Quit</Dropdown.Item>
-                        </Dropdown.Menu>
-                    }
-                >
-                    <Avatar
-                        size="small"
-                        color="light-blue"
-                        style={{ margin: 4 }}
-                    >
-                        BD
-                    </Avatar>
-                    <span>Bytedancer</span>
-                </Dropdown>
-            }
-        />
-            </Header>
-            <Layout>
-                <Sider>
+            <Route path="/settings/components/datatable" element={<Navigate to="/settings/components/datatable/basic_table" />} />
+            <Route path="/settings/components/datatable/basic_table" element={<BasicTable />} />
+            <Route path="/settings/components/datatable/ajax_table" element={<AjaxTable />} />
 
-            <Nav
-                items={items.map((item) => {
-                    if (item.items) {
-                        return {
-                            ...item,
-                            isOpen: openKey === item.itemKey, // control open state
-                            onClick: () => handleSubNavClick(item.itemKey),
-                        };
-                    }
-                    return item;
-                })}
-                onSelect={(key) => console.log(key)}
-                style={{ borderRight: '1px solid var(--semi-color-border)', height: '100%' }}
-                footer={{
-                    collapseButton: false, // we disable default collapse button
-                }}
-            />
-
-                </Sider>
-                <Content style={{ minHeight: 'calc(100vh - 32px)' }}>Content</Content>
-            </Layout>
-            <Footer 
-            style={commonStyle}
-            >
-              Footer
-              </Footer>
-        </Layout>
-
-      <div className="authpress-settings-container">
-        <Header />
-        <Routes>
-          {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
-          {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
-          <Route path="/" element={<Dashboard />} />
-
-          <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
-          <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
-          <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
-          <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
-          <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
-          <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />
-          <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
-          <Route path="/settings/customizer/redesign/other" element={<CustomizerRedesignOther/>} />
-          <Route path="/settings/hide_login" element={<HideLogin/>} />
-          <Route path="/settings/two_fa_authentication" element={<Navigate to="/settings/two_fa_authentication/settings" />} />
-          <Route path="/settings/two_fa_authentication/email_otp" element={<Two_FA_Email/>} />
-          <Route path="/settings/two_fa_authentication/settings" element={<Two_FA/>} />
-          <Route path="/settings/captcha" element={<Navigate to="/settings/captcha/settings" />} />
-          <Route path="/settings/captcha/settings" element={<Captcha/>} />
-          <Route path="/settings/auto_login" element={<Navigate to="/settings/auto_login/settings" />} />
-          <Route path="/settings/auto_login/settings" element={<AutoLogin/>} />
-          <Route path="/settings/auto_login/link_login" element={<AutoLoginLink/>} />
-
-          <Route path="/settings/components" element={<Navigate to="/settings/components/basic" />} />
-          <Route path="/settings/components/basic" element={<ComponentsBasic />} />
-          <Route path="/settings/components/advanced" element={<ComponentsAdvanced />} />
-
-          <Route path="/settings/components/datatable" element={<Navigate to="/settings/components/datatable/basic_table" />} />
-          <Route path="/settings/components/datatable/basic_table" element={<BasicTable />} />
-          <Route path="/settings/components/datatable/ajax_table" element={<AjaxTable />} />
-
-          <Route path="/page" element={<Page />} />
-          <Route path="/settings/import_export" element={<ImportExport />} />
-          <Route path="/settings/more" element={<More />} />
-          <Route path="/settings/tools" element={<Tools />} />
-          <Route path="/settings/feedback" element={<Feedback />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Footer/>      
-      </div>
-    </LocaleProvider>
-  );
+            <Route path="/page" element={<Page />} />
+            <Route path="/semi" element={<Semi />} />
+            <Route path="/settings/import_export" element={<ImportExport />} />
+            <Route path="/settings/more" element={<More />} />
+            <Route path="/settings/tools" element={<Tools />} />
+            <Route path="/settings/feedback" element={<Feedback />} />
+            <Route path="*" element={<NotFound />} />
+            </Routes>
+            {/* <Footer/>       */}
+        </div>
+        </LocaleProvider>
+    );
 }
 
 export default App;
