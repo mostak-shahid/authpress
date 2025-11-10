@@ -74,7 +74,8 @@ export default function Semi() {
         // background: 'var(--semi-color-fill-0)'
     };
 
-    const [isMobile, setIsMobile] = useState(window.innerWidth < 960);
+    const [isTab, setIsTab] = useState(window.innerWidth < 960);
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 782);
     const [menuVisible, setMenuVisible] = useState(false);
     
 
@@ -84,7 +85,9 @@ export default function Semi() {
     // Phone 782px
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 960);
+            setIsTab(window.innerWidth <= 961);
+            setIsMobile(window.innerWidth <= 783);
+            console.log(window.innerWidth)
         };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
@@ -117,6 +120,7 @@ export default function Semi() {
     );
     return ( 
         <>
+        {console.log('isMobile:', isMobile, 'isTab:', isTab)}
         <Layout className="components-layout-demo">
             <Header 
                 style={commonStyle}
@@ -177,7 +181,7 @@ export default function Semi() {
                         </Dropdown>
                     }
                 /> */}
-                {!isMobile ? (
+                {!isTab ? (
                     // Desktop view
                     <Nav
                         mode="horizontal"
@@ -218,6 +222,7 @@ export default function Semi() {
                 <Sider>
                     <Nav
                         // bodyStyle={{ height: 320 }}
+                        defaultIsCollapsed={isMobile}
                         items={items}
                         onSelect={(key) => console.log(key)}
                         footer={{
