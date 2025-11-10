@@ -22,7 +22,7 @@ import CustomizerRedesignFields from "./pages/CustomizerRedesignFields";
 import CustomizerRedesignButton from "./pages/CustomizerRedesignButton";
 import CustomizerRedesignOther from "./pages/CustomizerRedesignOther";
 import { IllustrationIdle, Illustration404 } from './lib/Illustrations';
-import { useState } from "react";
+
 import Tools from "./pages/Tools";
 import HideLogin from "./pages/HideLogin";
 import Two_FA_Email from "./pages/Two_FA_Email";
@@ -41,7 +41,63 @@ const NotFound = () => (
       <h3>{__("404 - Page Not Found", "authpress")}</h3>
   </div>
 );
+import React, { useState, useEffect } from 'react';
+import { Nav, Avatar, Dropdown } from '@douyinfe/semi-ui';
+import {
+    IconStar,
+    IconUser,
+    IconUserGroup,
+    IconSetting,
+    IconEdit,
+} from '@douyinfe/semi-icons';
+const items = [
+        { itemKey: 'user', text: 'User Management', icon: <IconUser /> },
+        { itemKey: 'union', text: 'Union Center', icon: <IconStar /> },
+        {
+            itemKey: 'union-management',
+            text: 'Union Management',
+            icon: <IconUserGroup />,
+            items: ['Announcement Settings', 'Union Query', 'Entry Information'],
+        },
+        {
+            itemKey: 'approve-management',
+            text: 'Approval Management',
+            icon: <IconEdit />,
+            items: [
+                'Check-in Review',
+                {
+                    itemKey: 'operation-management',
+                    text: 'Operations Management',
+                    items: ['Personnel Management', 'Personnel Change'],
+                },
+            ],
+        },
+        {
+            text: 'Task Platform',
+            icon: <IconSetting />,
+            itemKey: 'job',
+            items: ['Task Management', 'User Task Query'],
+        },
+    ];
 function App() {
+
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+    const [openKey, setOpenKey] = useState(null); // for accordion behavior
+
+
+    // Handle responsive change
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 992);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const handleSubNavClick = (itemKey) => {
+        // Accordion logic: toggle or close others
+        setOpenKey((prevKey) => (prevKey === itemKey ? null : itemKey));
+    };
   const { Header, Footer, Sider, Content } = Layout;
   const commonStyle = {
         height: 64,
@@ -54,11 +110,64 @@ function App() {
             <Header 
             style={commonStyle}
             >
-              Header
+        <Nav
+            mode="horizontal"
+            items={items}
+            onSelect={(key) => console.log(key)}
+            header={{
+                logo: (
+                    <img
+                        src="https://sf6-cdn-tos.douyinstatic.com/obj/eden-cn/ptlz_zlp/ljhwZthlaukjlkulzlp/root-web-sites/webcast_logo.svg"
+                        alt="logo"
+                    />
+                ),
+                text: 'Live Platform',
+            }}
+            footer={
+                <Dropdown
+                    position="bottomRight"
+                    render={
+                        <Dropdown.Menu>
+                            <Dropdown.Item>Detail</Dropdown.Item>
+                            <Dropdown.Item>Quit</Dropdown.Item>
+                        </Dropdown.Menu>
+                    }
+                >
+                    <Avatar
+                        size="small"
+                        color="light-blue"
+                        style={{ margin: 4 }}
+                    >
+                        BD
+                    </Avatar>
+                    <span>Bytedancer</span>
+                </Dropdown>
+            }
+        />
             </Header>
             <Layout>
-                <Sider style={{ width: '120px', background: 'var(--semi-color-fill-2)' }}>Sider</Sider>
-                <Content style={{ height: 300, lineHeight: '300px' }}>Content</Content>
+                <Sider>
+
+            <Nav
+                items={items.map((item) => {
+                    if (item.items) {
+                        return {
+                            ...item,
+                            isOpen: openKey === item.itemKey, // control open state
+                            onClick: () => handleSubNavClick(item.itemKey),
+                        };
+                    }
+                    return item;
+                })}
+                onSelect={(key) => console.log(key)}
+                style={{ borderRight: '1px solid var(--semi-color-border)', height: '100%' }}
+                footer={{
+                    collapseButton: false, // we disable default collapse button
+                }}
+            />
+
+                </Sider>
+                <Content style={{ minHeight: 'calc(100vh - 32px)' }}>Content</Content>
             </Layout>
             <Footer 
             style={commonStyle}
