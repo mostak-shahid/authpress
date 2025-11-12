@@ -1,9 +1,11 @@
+import { __ } from "@wordpress/i18n";
 import { 
     Layout,
     Space, 
     Typography,
+    Banner, 
 } from '@douyinfe/semi-ui';
-import { Card, Popover, Avatar } from '@douyinfe/semi-ui';
+import { Card } from '@douyinfe/semi-ui';
 import { Button } from '@douyinfe/semi-ui';
 import { IconInfoCircle } from '@douyinfe/semi-icons';
 import VerticalMenu from './VerticalMenu';
@@ -14,78 +16,21 @@ import {Logo} from '../../lib/Illustrations';
 
 export default function Semi() {
     const { Header, Footer, Sider, Content } = Layout;
-    const { Meta } = Card;
     const { Title, Text } = Typography;
 
     return ( 
         <>
-            <Space 
-                align='center'
-                style={{ 
-                    justifyContent: 'space-between',
-                    width: '100%',
-                    borderBottom: '1px solid var(--semi-color-border)',
-                }}
-            >
-                <Space align='center' style={{ opacity: '.5' }}>
-                    <Logo
-                        width={60}
-                        height={60}
-                        
-                    />
-                    <Title heading={3} style={{ margin: '0 8px' }} >AuthPress</Title>            
-                </Space>
-                
-                <Space spacing='medium'style={{paddingRight: 10}}>
-                    <Button
-                        theme="solid"
-                        type='primary'
-                    >
-                        Upgrade to Pro
-                    </Button>
-                    <Button
-                        theme="solid"
-                        type='secondary'
-                    >
-                        Documentation
-                    </Button>
-                </Space>
-            </Space>
-            <Card 
-                style={{ borderStyle: 'none', borderBottomStyle: 'solid', borderRadius: 0 }} 
-                // bodyStyle={{ 
-                //     display: 'flex',
-                //     alignItems: 'center',
-                //     justifyContent: 'space-between'
-                // }}
-            >
-                <Title heading={3} style={{ margin: '8px 0' }} >Leave A Review?</Title> 
-                <Text>We hope you've enjoyed using AuthPress! Would you consider leaving us a review on WordPress.org?</Text> 
-                <Space spacing='medium' style={{width: '100%', marginTop:8}}>         
-                    <Button
-                        icon={<IconInfoCircle />}
-                        theme="outline"
-                        type='primary'
-                    >
-                        Sure! I'd love to!
-                    </Button>
-                    <Button
-                        icon={<IconInfoCircle />}
-                        theme="outline"
-                        type='secondary'
-                    >
-                        Maybe Later
-                    </Button>
-                    <Button
-                        icon={<IconInfoCircle />}
-                        theme="outline"
-                        type='secondary'
-                    >
-                        Never show again
-                    </Button>
-                </Space>
-
-            </Card>
+            <Banner 
+                fullMode={false}
+                type="info"
+                description={
+                    <>
+                        <Text>{__('You\'re currently using the Free plan. ', 'authpress')}</Text>
+                        <Text>{__('Some settings and features are only available in ', 'authpress')}</Text>
+                        <b><Text link={{ href: 'https://semi.design', target: '_blank' }}>{__('Pro version.', 'authpress')}</Text></b>
+                    </>
+                }
+            />
             <Layout className="components-layout-demo">
                 <Header>                    
                     <HorizontalMenu/>

@@ -1,64 +1,67 @@
+import { __ } from "@wordpress/i18n";
 import  { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
     Nav, 
-    Avatar, 
-    Dropdown,
+    Space,
     SideSheet, 
     Button, 
 } from '@douyinfe/semi-ui';
 import {
     IconStar,
-    IconUser,
-    IconUserGroup,
     IconSetting,
-    IconEdit,
     IconMenu,
+    IconHome,
+    IconMember,
+    IconBookStroked,
+    IconHelpCircleStroked,
 } from '@douyinfe/semi-icons';
-import {Logo} from '../../lib/Illustrations';
+import {Logo, MegaphoneStroked} from '../../lib/Illustrations';
 
 const items = [
-    { itemKey: 'user', text: 'User Management', icon: <IconUser />, url: '/semi/user' },
-    { itemKey: 'union', text: 'Union Center', icon: <IconStar />, url: '/semi/union' },
-    {
-        itemKey: 'union-management',
-        text: 'Union Management',
-        icon: <IconUserGroup />,
-        url: '/semi/union-management',
-        items: [
-            { itemKey: 'announcement-settings', text: 'Announcement Settings', url: '/semi/union-management/announcement-settings' },
-            { itemKey: 'union-query', text: 'Union Query', url: '/semi/union-management/union-query' },
-            { itemKey: 'entry-information', text: 'Entry Information', url: '/semi/union-management/entry-information' },
-        ],
-    },
-    {
-        itemKey: 'approve-management',
-        text: 'Approval Management',
-        icon: <IconEdit />,
-        url: '/semi/approve-management',
-        items: [
-            { itemKey: 'check-in-review', text: 'Check-in Review', url: '/semi/approve-management/check-in-review' },
-            {
-                itemKey: 'operation-management',
-                text: 'Operations Management',
-                url: '/semi/approve-management/operation-management',
-                items: [
-                    { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/operation-management/personnel-management' },
-                    { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/operation-management/personnel-change' },
-                ],
-            },
-        ],
-    },
-    {
-        text: 'Task Platform',
-        icon: <IconSetting />,
-        itemKey: 'job',
-        url: '/semi/job',
-        items: [
-            { itemKey: 'task-management', text: 'Task Management', url: '/semi/job/task-management' },
-            { itemKey: 'user-task-query', text: 'User Task Query', url: '/semi/job/user-task-query' },
-        ],
-    },
+    { itemKey: 'welcome', text: 'Welcome', icon: <IconHome />, url: '/semi/welcome' },
+    { itemKey: 'settings', text: 'Settings', icon: <IconSetting />, url: '/semi/settings' },
+    { itemKey: 'feedback', text: 'Feedback', icon: <IconStar />, url: '/semi/feedback' },
+    { itemKey: 'free-vs-pro', text: 'Free vs Pro', icon: <IconMember />, url: '/semi/free-vs-pro' },
+    // {
+    //     itemKey: 'union-management',
+    //     text: 'Union Management',
+    //     icon: <IconUserGroup />,
+    //     url: '/semi/union-management',
+    //     items: [
+    //         { itemKey: 'announcement-settings', text: 'Announcement Settings', url: '/semi/union-management/announcement-settings' },
+    //         { itemKey: 'union-query', text: 'Union Query', url: '/semi/union-management/union-query' },
+    //         { itemKey: 'entry-information', text: 'Entry Information', url: '/semi/union-management/entry-information' },
+    //     ],
+    // },
+    // {
+    //     itemKey: 'approve-management',
+    //     text: 'Approval Management',
+    //     icon: <IconEdit />,
+    //     url: '/semi/approve-management',
+    //     items: [
+    //         { itemKey: 'check-in-review', text: 'Check-in Review', url: '/semi/approve-management/check-in-review' },
+    //         {
+    //             itemKey: 'operation-management',
+    //             text: 'Operations Management',
+    //             url: '/semi/approve-management/operation-management',
+    //             items: [
+    //                 { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/operation-management/personnel-management' },
+    //                 { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/operation-management/personnel-change' },
+    //             ],
+    //         },
+    //     ],
+    // },
+    // {
+    //     text: 'Task Platform',
+    //     icon: <IconSetting />,
+    //     itemKey: 'job',
+    //     url: '/semi/job',
+    //     items: [
+    //         { itemKey: 'task-management', text: 'Task Management', url: '/semi/job/task-management' },
+    //         { itemKey: 'user-task-query', text: 'User Task Query', url: '/semi/job/user-task-query' },
+    //     ],
+    // },
 ];
 
 export default function HorizontalMenu() {
@@ -68,6 +71,7 @@ export default function HorizontalMenu() {
     const BREAKPOINT = 960;
     const [isCollapse, setIsCollapse] = useState(window.innerWidth <= BREAKPOINT);
     const [menuVisible, setMenuVisible] = useState(false);
+    const [newsVisible, setNewsVisible] = useState(false);
     
     const [openKeys, setOpenKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
@@ -91,20 +95,11 @@ export default function HorizontalMenu() {
         text: 'AuthPress',
     };
     const footerContent = (
-        <Dropdown
-            position="bottomRight"
-            render={
-                <Dropdown.Menu>
-                    <Dropdown.Item>Detail</Dropdown.Item>
-                    <Dropdown.Item>Quit</Dropdown.Item>
-                </Dropdown.Menu>
-            }
-        >
-            <Avatar size="small" color="light-blue" style={{ margin: 4 }}>
-                BD
-            </Avatar>
-            <span>Bytedancer</span>
-        </Dropdown>
+        <Space align='center'>
+            <Button theme='outline' icon={<IconBookStroked />} aria-label="Screenshot" />
+            <Button theme='outline' icon={<IconHelpCircleStroked />} aria-label="Screenshot" />
+            <Button theme='outline' icon={<MegaphoneStroked width={16} height={16}/>}  onClick={() => setNewsVisible(true)} aria-label="Screenshot" />
+        </Space>
     );    
     
     // Find active keys based on route
@@ -204,13 +199,14 @@ export default function HorizontalMenu() {
                             {headerContent.text}
                         </span>
                     </div>
-
-                    {/* Hamburger button */}
-                    <Button
-                        icon={<IconMenu />}
-                        type="tertiary"
-                        onClick={() => setMenuVisible(true)}
-                    />
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                        {footerContent}
+                        <Button
+                            icon={<IconMenu />}
+                            type="tertiary"
+                            onClick={() => setMenuVisible(true)}
+                        />
+                    </div>
                 </div>
             )}
             
@@ -219,7 +215,7 @@ export default function HorizontalMenu() {
                 placement="right"
                 visible={menuVisible}
                 onCancel={() => setMenuVisible(false)}
-                title="Menu"
+                title={__("Menu", "authpress")}
                 closeOnEsc={true}
             >
                 <Nav
@@ -233,6 +229,15 @@ export default function HorizontalMenu() {
                     footer={{ collapseButton: false }}
                     style={{width: '100%', height: '100%', borderRight: 'none'}}
                 />
+            </SideSheet>
+            <SideSheet
+                placement="right"
+                visible={newsVisible}
+                onCancel={() => setNewsVisible(false)}
+                title={__("What's New?", "authpress")}
+                closeOnEsc={true}
+            >
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti perferendis nostrum quae sint aliquam quasi iure nulla assumenda tempore provident! Rem eos atque velit sunt numquam tempora deserunt, quis ipsum, optio fugiat quasi at natus. Asperiores distinctio, nam iste reiciendis eveniet molestias placeat, labore voluptates optio eos accusamus, dicta sapiente aperiam nobis. Odit ab ut, vero impedit aliquam dolorem dolor eaque. Quam deleniti assumenda dicta neque? Quaerat, atque consequuntur quibusdam sint officia quas quod ut unde dignissimos aut, adipisci minus pariatur assumenda magnam. Labore voluptas natus optio itaque reprehenderit? At molestias eos impedit ratione? Deserunt sed provident cumque corporis quasi nam aspernatur, aliquam, explicabo voluptate reprehenderit dolor itaque illum harum ex earum eos quas quisquam expedita. Doloremque provident architecto assumenda illo amet iste tempora hic accusantium adipisci officiis dolorem tempore distinctio, labore repellat, aliquid similique rem molestias cum? A ut debitis deserunt rem beatae quia iure ipsa eum libero praesentium?
             </SideSheet>
         </>       
     )

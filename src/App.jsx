@@ -50,7 +50,7 @@ function App() {
         <LocaleProvider locale={local}>
 
         <div className="authpress-settings-container">
-            {/* <Header /> */}
+            <Header />
             <Routes>
                 {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
                 {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
