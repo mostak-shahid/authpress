@@ -18,7 +18,6 @@ import Sidebar from "./Sidebar";
 export default function Semi() {
     const { Header, Footer, Sider, Content } = Layout;
     const { Title, Text } = Typography;
-
     return ( 
         <>
             <Banner 
@@ -40,7 +39,13 @@ export default function Semi() {
                     <Sider>
                         <VerticalMenu />
                     </Sider>
-                    <Content style={{ minHeight: 'calc(100vh - 32px)' }}>Content</Content>
+                    <Content style={{ minHeight: 'calc(100vh - 32px)' }}>
+                        
+                        <Button
+                        >
+                            Switch Mode
+                        </Button>
+                    </Content>
                 </Layout>
                 <Footer 
                     style={{borderTop: '1px solid var(--semi-color-border)', padding: '15px 0'}}

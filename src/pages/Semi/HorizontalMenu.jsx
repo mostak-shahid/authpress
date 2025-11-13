@@ -7,6 +7,7 @@ import {
     SideSheet,
     Button,
 } from '@douyinfe/semi-ui';
+import { Switch } from '@douyinfe/semi-ui';
 import {
     IconStar,
     IconSetting,
@@ -17,6 +18,10 @@ import {
     IconHelpCircleStroked,
     IconUserGroup,
     IconEdit,
+    IconHorn,
+    IconBellStroked,
+    IconSun,
+    IconMoon,
 } from '@douyinfe/semi-icons';
 import { Logo, MegaphoneStroked } from '../../lib/Illustrations';
 
@@ -83,6 +88,7 @@ export default function HorizontalMenu() {
     const [isCollapse, setIsCollapse] = useState(window.innerWidth <= BREAKPOINT);
     const [menuVisible, setMenuVisible] = useState(false);
     const [newsVisible, setNewsVisible] = useState(false);
+    const [darkmode, setDarkmode] = useState(false);
 
     const [openKeys, setOpenKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
@@ -95,16 +101,28 @@ export default function HorizontalMenu() {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    
+    const switchMode = () => {
+        const body = document.body;
+        if (body.hasAttribute('theme-mode')) {
+            body.removeAttribute('theme-mode');
+        } else {
+            body.setAttribute('theme-mode', 'dark');
+        }
+        setDarkmode(!darkmode);
+    };
+
     const headerContent = {
         logo: <Logo width={36} height={36} />,
         text: 'AuthPress',
     };
 
     const footerContent = (
-        <Space align='center'>
+        <Space align='center'>      
+            <Button theme='outline' icon={darkmode?<IconSun />:<IconMoon />} aria-label="Mode" onClick={switchMode} />
             <Button theme='outline' icon={<IconBookStroked />} aria-label="Screenshot" />
             <Button theme='outline' icon={<IconHelpCircleStroked />} aria-label="Screenshot" />
-            <Button theme='outline' icon={<MegaphoneStroked width={16} height={16} />} onClick={() => setNewsVisible(true)} aria-label="Screenshot" />
+            <Button theme='outline' icon={<IconBellStroked />} onClick={() => setNewsVisible(true)} aria-label="Screenshot" />
         </Space>
     );
 

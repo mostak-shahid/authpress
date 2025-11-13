@@ -2,7 +2,7 @@ import { __ } from "@wordpress/i18n";
 import "./App.scss";
 import Header from "./layouts/Header/Header";
 // import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ImportExport from "./pages/ImportExport";

@@ -3,6 +3,7 @@ import withForm from '../pages/withForm';
 import apiFetch from "@wordpress/api-fetch";
 import { useEffect, useState } from 'react';
 import { TextControl, TextareaControl, Button } from '@wordpress/components';
+import {OnlineSurvey} from '../lib/Illustrations';
 
 import { envelope, rotateRight, check } from '@wordpress/icons'; // Example icon
 const Feedback = () => {
@@ -47,7 +48,7 @@ const Feedback = () => {
             <div className="setting-unit">
                 <div className="row align-items-center">
                     <div className="col-lg-6">
-                        <img className="img-fluid" src={`${authpress_ajax_obj.image_url}feedback.jpg`} alt="" />
+                        <OnlineSurvey/>
                     </div> 
                     <div className="col-lg-6">
                         <div className="mb-3">
