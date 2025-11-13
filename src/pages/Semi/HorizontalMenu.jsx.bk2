@@ -1,11 +1,11 @@
 import { __ } from "@wordpress/i18n";
-import { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import {
-    Nav,
+import { 
+    Nav, 
     Space,
-    SideSheet,
-    Button,
+    SideSheet, 
+    Button, 
 } from '@douyinfe/semi-ui';
 import {
     IconStar,
@@ -15,10 +15,8 @@ import {
     IconMember,
     IconBookStroked,
     IconHelpCircleStroked,
-    IconUserGroup,
-    IconEdit,
 } from '@douyinfe/semi-icons';
-import { Logo, MegaphoneStroked } from '../../lib/Illustrations';
+import {Logo, MegaphoneStroked} from '../../lib/Illustrations';
 
 const items = [
     { itemKey: 'welcome', text: 'Welcome', icon: <IconHome />, url: '/semi/welcome' },
@@ -52,15 +50,6 @@ const items = [
                     { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/operation-management/personnel-change' },
                 ],
             },
-            {
-                itemKey: 'product-management',
-                text: 'Product Management',
-                url: '/semi/approve-management/product-management',
-                items: [
-                    { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/product-management/personnel-management' },
-                    { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/product-management/personnel-change' },
-                ],
-            },
         ],
     },
     {
@@ -83,10 +72,11 @@ export default function HorizontalMenu() {
     const [isCollapse, setIsCollapse] = useState(window.innerWidth <= BREAKPOINT);
     const [menuVisible, setMenuVisible] = useState(false);
     const [newsVisible, setNewsVisible] = useState(false);
-
+    
     const [openKeys, setOpenKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
 
+    // Handle responsive
     useEffect(() => {
         const handleResize = () => {
             setIsCollapse(window.innerWidth <= BREAKPOINT);
@@ -96,18 +86,23 @@ export default function HorizontalMenu() {
     }, []);
 
     const headerContent = {
-        logo: <Logo width={36} height={36} />,
+        logo: (
+            <Logo
+                width={36}
+                height={36}
+            />
+        ),
         text: 'AuthPress',
     };
-
     const footerContent = (
         <Space align='center'>
             <Button theme='outline' icon={<IconBookStroked />} aria-label="Screenshot" />
             <Button theme='outline' icon={<IconHelpCircleStroked />} aria-label="Screenshot" />
-            <Button theme='outline' icon={<MegaphoneStroked width={16} height={16} />} onClick={() => setNewsVisible(true)} aria-label="Screenshot" />
+            <Button theme='outline' icon={<MegaphoneStroked width={16} height={16}/>}  onClick={() => setNewsVisible(true)} aria-label="Screenshot" />
         </Space>
-    );
-
+    );    
+    
+    // Find active keys based on route
     useEffect(() => {
         const path = location.pathname;
         const active = findActiveKeys(items, path);
@@ -115,6 +110,7 @@ export default function HorizontalMenu() {
         setOpenKeys(active.openKeys);
     }, [location.pathname]);
 
+    // Find active keys recursively
     const findActiveKeys = (menuItems, path, parents = []) => {
         for (const item of menuItems) {
             if (item.url === path) {
@@ -128,6 +124,7 @@ export default function HorizontalMenu() {
         return { selected: '', openKeys: [] };
     };
 
+    // Find item by key
     const findItemByKey = (menuItems, key) => {
         for (const item of menuItems) {
             if (item.itemKey === key) return item;
@@ -139,87 +136,53 @@ export default function HorizontalMenu() {
         return null;
     };
 
-    // --- Accordion utilities ---
-    const findParentKeys = (menuItems, targetKey, parents = []) => {
-        for (const item of menuItems) {
-            if (item.itemKey === targetKey) return parents;
-            if (item.items) {
-                const found = findParentKeys(item.items, targetKey, [...parents, item.itemKey]);
-                if (found.length > 0) return found;
-            }
-        }
-        return [];
+    // Handle open/close (submenu toggle)
+    const handleOpenChange = (data) => {
+        // Ensure we always work with an array
+        const keys = Array.isArray(data) ? data : (data?.openKeys || []);
+        setOpenKeys(keys);
     };
 
-    const isSameLevel = (a, b) => {
-        if (a.length !== b.length) return false;
-        return a.every((v, i) => v === b[i]);
-    };
-
-    // --- Shared handlers (horizontal stays as-is, vertical gets accordion) ---
-    const handleOpenChange = (data, mode = 'horizontal') => {
-        const keys = Array.isArray(data) ? data : data?.openKeys || [];
-
-        if (mode === 'vertical') {
-            // Accordion per level
-            if (keys.length > openKeys.length) {
-                const newlyOpenedKey = keys.find((k) => !openKeys.includes(k));
-                const parentKeys = findParentKeys(items, newlyOpenedKey);
-                const filteredKeys = openKeys.filter((k) => {
-                    const parentOfK = findParentKeys(items, k);
-                    return !isSameLevel(parentOfK, parentKeys);
-                });
-                setOpenKeys([...filteredKeys, newlyOpenedKey]);
-            } else {
-                setOpenKeys(keys);
-            }
-        } else {
-            // Normal horizontal menu
-            setOpenKeys(keys);
-        }
-    };
-
-    const handleSelect = (data, mode = 'horizontal') => {
+    // Handle click/select
+    const handleSelect = (data) => {
         const itemKey = data?.itemKey;
         if (!itemKey) return;
 
         const found = findItemByKey(items, itemKey);
-
-        if (mode === 'vertical' && found?.items?.length) {
-            const isOpen = openKeys.includes(itemKey);
-            const parentKeys = findParentKeys(items, itemKey);
-
+        
+        if (found?.items && found.items.length > 0) {
+            // It's a parent with submenu: toggle open state
             setOpenKeys((prev) => {
-                const filtered = prev.filter((k) => {
-                    const parentOfK = findParentKeys(items, k);
-                    return !isSameLevel(parentOfK, parentKeys);
-                });
-                return isOpen ? filtered : [...filtered, itemKey];
+                // Ensure prev is always an array
+                const prevKeys = Array.isArray(prev) ? prev : [];
+                return prevKeys.includes(itemKey)
+                    ? prevKeys.filter((k) => k !== itemKey)
+                    : [...prevKeys, itemKey];
             });
         } else if (found?.url) {
+            // It's a leaf: navigate
             navigate(found.url);
         }
-
         setSelectedKeys([itemKey]);
         setMenuVisible(false);
     };
-
-    return (
+    
+    return ( 
         <>
             {!isCollapse ? (
-                // --- Desktop (Horizontal) ---
+                // Desktop view
                 <Nav
                     mode="horizontal"
-                    items={items}
-                    selectedKeys={selectedKeys}
-                    openKeys={openKeys}
-                    onOpenChange={(data) => handleOpenChange(data, 'horizontal')}
-                    onSelect={(data) => handleSelect(data, 'horizontal')}
+                    items={items}     
+                    selectedKeys={selectedKeys}  // FIXED: Changed from openKeys to selectedKeys
+                    openKeys={openKeys}          // ADDED: Also pass openKeys for proper submenu state
+                    onOpenChange={handleOpenChange} // ADDED: Handle submenu toggling
+                    onSelect={handleSelect}                    
                     header={headerContent}
                     footer={footerContent}
                 />
             ) : (
-                // --- Mobile Header ---
+                // Mobile view
                 <div
                     style={{
                         display: 'flex',
@@ -246,8 +209,8 @@ export default function HorizontalMenu() {
                     </div>
                 </div>
             )}
-
-            {/* --- SideSheet (Vertical / Accordion Menu on Mobile) --- */}
+            
+            {/* SideSheet (mobile menu) */}
             <SideSheet
                 placement="right"
                 visible={menuVisible}
@@ -259,15 +222,14 @@ export default function HorizontalMenu() {
                     mode="vertical"
                     items={items}
                     selectedKeys={selectedKeys}
-                    openKeys={openKeys}
-                    onOpenChange={(data) => handleOpenChange(data, 'vertical')}
-                    onSelect={(data) => handleSelect(data, 'vertical')}
+                    openKeys={Array.isArray(openKeys) ? openKeys : []}
+                    onOpenChange={handleOpenChange}
+                    onSelect={handleSelect}
+                    onCollapseChange={(collapsed) => setIsCollapse(collapsed)}
                     footer={{ collapseButton: false }}
-                    style={{ width: '100%', height: '100%', borderRight: 'none' }}
+                    style={{width: '100%', height: '100%', borderRight: 'none'}}
                 />
             </SideSheet>
-
-            {/* --- What's New SideSheet --- */}
             <SideSheet
                 placement="right"
                 visible={newsVisible}
@@ -275,8 +237,8 @@ export default function HorizontalMenu() {
                 title={__("What's New?", "authpress")}
                 closeOnEsc={true}
             >
-                <p>Feature updates and news content go here...</p>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti perferendis nostrum quae sint aliquam quasi iure nulla assumenda tempore provident! Rem eos atque velit sunt numquam tempora deserunt, quis ipsum, optio fugiat quasi at natus. Asperiores distinctio, nam iste reiciendis eveniet molestias placeat, labore voluptates optio eos accusamus, dicta sapiente aperiam nobis. Odit ab ut, vero impedit aliquam dolorem dolor eaque. Quam deleniti assumenda dicta neque? Quaerat, atque consequuntur quibusdam sint officia quas quod ut unde dignissimos aut, adipisci minus pariatur assumenda magnam. Labore voluptas natus optio itaque reprehenderit? At molestias eos impedit ratione? Deserunt sed provident cumque corporis quasi nam aspernatur, aliquam, explicabo voluptate reprehenderit dolor itaque illum harum ex earum eos quas quisquam expedita. Doloremque provident architecto assumenda illo amet iste tempora hic accusantium adipisci officiis dolorem tempore distinctio, labore repellat, aliquid similique rem molestias cum? A ut debitis deserunt rem beatae quia iure ipsa eum libero praesentium?
             </SideSheet>
-        </>
-    );
+        </>       
+    )
 }
