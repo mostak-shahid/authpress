@@ -13,6 +13,7 @@ import HorizontalMenu from './HorizontalMenu';
 import './Semi.scss';
 
 import {Logo} from '../../lib/Illustrations';
+import Sidebar from "./Sidebar";
 
 export default function Semi() {
     const { Header, Footer, Sider, Content } = Layout;

@@ -39,15 +39,6 @@ const items = [
                     { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/operation-management/personnel-change' },
                 ],
             },
-            {
-                itemKey: 'product-management',
-                text: 'Product Management',
-                url: '/semi/approve-management/product-management',
-                items: [
-                    { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/product-management/personnel-management' },
-                    { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/product-management/personnel-change' },
-                ],
-            },
         ],
     },
     {
@@ -68,15 +59,20 @@ export default function VerticalMenu() {
 
     const BREAKPOINT = 960;
     const [isCollapse, setIsCollapse] = useState(window.innerWidth <= BREAKPOINT);
+    
     const [openKeys, setOpenKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
 
+    // Handle responsive
     useEffect(() => {
-        const handleResize = () => setIsCollapse(window.innerWidth <= BREAKPOINT);
+        const handleResize = () => {
+            setIsCollapse(window.innerWidth <= BREAKPOINT);
+        };
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    // Find active keys based on route
     useEffect(() => {
         const path = location.pathname;
         const active = findActiveKeys(items, path);
@@ -84,6 +80,7 @@ export default function VerticalMenu() {
         setOpenKeys(active.openKeys);
     }, [location.pathname]);
 
+    // Find active keys recursively
     const findActiveKeys = (menuItems, path, parents = []) => {
         for (const item of menuItems) {
             if (item.url === path) {
@@ -97,6 +94,7 @@ export default function VerticalMenu() {
         return { selected: '', openKeys: [] };
     };
 
+    // Find item by key
     const findItemByKey = (menuItems, key) => {
         for (const item of menuItems) {
             if (item.itemKey === key) return item;
@@ -108,63 +106,31 @@ export default function VerticalMenu() {
         return null;
     };
 
-    // ✅ Accordion behavior per level
+    // Handle open/close (submenu toggle)
     const handleOpenChange = (data) => {
-        const keys = Array.isArray(data) ? data : data?.openKeys || [];
-
-        // Determine which menu level changed
-        if (keys.length > openKeys.length) {
-            // A new key was opened
-            const newlyOpenedKey = keys.find((k) => !openKeys.includes(k));
-            const parentKeys = findParentKeys(items, newlyOpenedKey);
-
-            // Remove siblings at the same level as the newly opened key
-            const filteredKeys = openKeys.filter((k) => {
-                const parentOfK = findParentKeys(items, k);
-                return !isSameLevel(parentOfK, parentKeys);
-            });
-
-            setOpenKeys([...filteredKeys, newlyOpenedKey]);
-        } else {
-            // A key was closed
-            setOpenKeys(keys);
-        }
+        // Ensure we always work with an array
+        const keys = Array.isArray(data) ? data : (data?.openKeys || []);
+        setOpenKeys(keys);
     };
 
-    const findParentKeys = (menuItems, targetKey, parents = []) => {
-        for (const item of menuItems) {
-            if (item.itemKey === targetKey) return parents;
-            if (item.items) {
-                const found = findParentKeys(item.items, targetKey, [...parents, item.itemKey]);
-                if (found.length > 0) return found;
-            }
-        }
-        return [];
-    };
-
-    const isSameLevel = (a, b) => {
-        if (a.length !== b.length) return false;
-        return a.every((v, i) => v === b[i]);
-    };
-
+    // Handle click/select
     const handleSelect = (data) => {
         const itemKey = data?.itemKey;
         if (!itemKey) return;
+
         const found = findItemByKey(items, itemKey);
-
-        if (found?.items?.length) {
-            const isOpen = openKeys.includes(itemKey);
-            const parentKeys = findParentKeys(items, itemKey);
-
-            // Close siblings and toggle the selected one
+        
+        if (found?.items && found.items.length > 0) {
+            // It's a parent with submenu: toggle open state
             setOpenKeys((prev) => {
-                const filtered = prev.filter((k) => {
-                    const parentOfK = findParentKeys(items, k);
-                    return !isSameLevel(parentOfK, parentKeys);
-                });
-                return isOpen ? filtered : [...filtered, itemKey];
+                // Ensure prev is always an array
+                const prevKeys = Array.isArray(prev) ? prev : [];
+                return prevKeys.includes(itemKey)
+                    ? prevKeys.filter((k) => k !== itemKey)
+                    : [...prevKeys, itemKey];
             });
         } else if (found?.url) {
+            // It's a leaf: navigate
             navigate(found.url);
         }
         setSelectedKeys([itemKey]);
@@ -175,12 +141,12 @@ export default function VerticalMenu() {
             isCollapsed={isCollapse}
             items={items}
             selectedKeys={selectedKeys}
-            openKeys={openKeys}
+            openKeys={Array.isArray(openKeys) ? openKeys : []}
             onOpenChange={handleOpenChange}
             onSelect={handleSelect}
-            onCollapseChange={setIsCollapse}
+            onCollapseChange={(collapsed) => setIsCollapse(collapsed)}
             footer={{ collapseButton: true }}
-            style={{ height: '100%' }}
+            style={{height: '100%'}}
         />
     );
 }
