@@ -4,8 +4,11 @@ import {
     Space, 
     Typography,
     Banner, 
+    Badge,
+    Avatar,
+    Breadcrumb,
+    Card,
 } from '@douyinfe/semi-ui';
-import { Card } from '@douyinfe/semi-ui';
 import { Button } from '@douyinfe/semi-ui';
 import { IconInfoCircle } from '@douyinfe/semi-icons';
 import VerticalMenu from './VerticalMenu';
@@ -14,10 +17,15 @@ import './Semi.scss';
 
 import {Logo} from '../../lib/Illustrations';
 import Sidebar from "./Sidebar";
+import BasicDemoWithInit from "./BasicDemoWithInit";
+
+import Details from '../../data/details.json';
 
 export default function Semi() {
     const { Header, Footer, Sider, Content } = Layout;
     const { Title, Text } = Typography;
+    const routes = ['Home', 'The is a very very very very long title', 'Detail'];
+    
     return ( 
         <>
             <Banner 
@@ -39,16 +47,31 @@ export default function Semi() {
                     <Sider>
                         <VerticalMenu />
                     </Sider>
-                    <Content style={{ minHeight: 'calc(100vh - 32px)' }}>
-                        
-                        <Button
+                    <Content style={{ padding: 24, minHeight: 280, backgroundColor: 'var(--semi-color-bg-4)'}}>                        
+                        <Breadcrumb
+                            routes={routes}
+                            style={{ padding: 10, backgroundColor: 'var(--semi-color-bg-3)', border: '1px solid var(--semi-color-border)', marginBottom: 24 }}
+                        />
+                        <Card 
+                            title={
+                                <>
+                                <Title heading={6} style={{ margin: '8px 0' }} >h6. Semi Design</Title>
+                                <Text>Welcome to Semi Design</Text>
+                                </>
+                            }
+                            style={{ borderRadius: 0 }}
+                            headerExtraContent={
+                                <Text link>
+                                    More
+                                </Text>
+                            }
                         >
-                            Switch Mode
-                        </Button>
+                            <BasicDemoWithInit />
+                        </Card>
                     </Content>
                 </Layout>
                 <Footer 
-                    style={{borderTop: '1px solid var(--semi-color-border)', padding: '15px 0'}}
+                    style={{borderTop: '1px solid var(--semi-color-border)', padding: '15px 0', backgroundColor: 'var(--semi-color-fill-0)'}}
                 >
                     Footer
                 </Footer>

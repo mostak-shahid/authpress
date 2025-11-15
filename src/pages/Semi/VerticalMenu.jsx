@@ -9,6 +9,8 @@ import {
 } from '@douyinfe/semi-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import Details from '../../data/details.json';
+
 const items = [
     { itemKey: 'user', text: 'User Management', icon: <IconUser />, url: '/semi/user' },
     { itemKey: 'union', text: 'Union Center', icon: <IconStar />, url: '/semi/union' },
