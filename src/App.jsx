@@ -3,6 +3,13 @@ import "./App.scss";
 import Header from "./layouts/Header/Header";
 // import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 // import "bootstrap/dist/css/bootstrap.min.css";
+import { 
+    Layout,
+    Typography,
+    Banner, 
+    Breadcrumb,
+    Card,
+} from '@douyinfe/semi-ui';
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import ImportExport from "./pages/ImportExport";
@@ -46,59 +53,84 @@ import Semi from "./pages/Semi/Semi";
 
 
 function App() {
+    const { Header, Footer, Sider, Content } = Layout;
+    const { Title, Text } = Typography;
     return (
         <LocaleProvider locale={local}>
 
         <div className="authpress-settings-container">
-            {/* <Header /> */}
-            <Routes>
-                {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
-                {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
-                <Route path="/" element={<Dashboard />} />
 
-                <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
-                <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
-                <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
-                <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
-                <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
-                <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />
-                <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
-                <Route path="/settings/customizer/redesign/other" element={<CustomizerRedesignOther/>} />
-                <Route path="/settings/hide_login" element={<HideLogin/>} />
-                <Route path="/settings/two_fa_authentication" element={<Navigate to="/settings/two_fa_authentication/settings" />} />
-                <Route path="/settings/two_fa_authentication/email_otp" element={<Two_FA_Email/>} />
-                <Route path="/settings/two_fa_authentication/settings" element={<Two_FA/>} />
-                <Route path="/settings/captcha" element={<Navigate to="/settings/captcha/settings" />} />
-                <Route path="/settings/captcha/settings" element={<Captcha/>} />
-                <Route path="/settings/auto_login" element={<Navigate to="/settings/auto_login/settings" />} />
-                <Route path="/settings/auto_login/settings" element={<AutoLogin/>} />
-                <Route path="/settings/auto_login/link_login" element={<AutoLoginLink/>} />
+            <Banner 
+                fullMode={false}
+                type="info"
+                description={
+                    <>
+                        <Text>{__('You\'re currently using the Free plan. ', 'authpress')}</Text>
+                        <Text>{__('Some settings and features are only available in ', 'authpress')}</Text>
+                        <b><Text link={{ href: 'https://semi.design', target: '_blank' }}>{__('Pro version.', 'authpress')}</Text></b>
+                    </>
+                }
+            />
 
-                <Route path="/settings/components" element={<Navigate to="/settings/components/basic" />} />
-                <Route path="/settings/components/basic" element={<ComponentsBasic />} />
-                <Route path="/settings/components/advanced" element={<ComponentsAdvanced />} />
+            <Layout className="components-layout-demo">
+                <Header>                    
+                    Header
+                </Header>
+                    {/* <Header /> */}
+                    <Routes>
+                        {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
+                        {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
+                        <Route path="/" element={<Dashboard />} />
 
-                <Route path="/settings/components/datatable" element={<Navigate to="/settings/components/datatable/basic_table" />} />
-                <Route path="/settings/components/datatable/basic_table" element={<BasicTable />} />
-                <Route path="/settings/components/datatable/ajax_table" element={<AjaxTable />} />
+                        <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
+                        <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
+                        <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
+                        <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
+                        <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
+                        <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />
+                        <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
+                        <Route path="/settings/customizer/redesign/other" element={<CustomizerRedesignOther/>} />
+                        <Route path="/settings/hide_login" element={<HideLogin/>} />
+                        <Route path="/settings/two_fa_authentication" element={<Navigate to="/settings/two_fa_authentication/settings" />} />
+                        <Route path="/settings/two_fa_authentication/email_otp" element={<Two_FA_Email/>} />
+                        <Route path="/settings/two_fa_authentication/settings" element={<Two_FA/>} />
+                        <Route path="/settings/captcha" element={<Navigate to="/settings/captcha/settings" />} />
+                        <Route path="/settings/captcha/settings" element={<Captcha/>} />
+                        <Route path="/settings/auto_login" element={<Navigate to="/settings/auto_login/settings" />} />
+                        <Route path="/settings/auto_login/settings" element={<AutoLogin/>} />
+                        <Route path="/settings/auto_login/link_login" element={<AutoLoginLink/>} />
 
-                <Route path="/page" element={<Page />} />
-                <Route path="/semi" element={<Semi />} />
+                        <Route path="/settings/components" element={<Navigate to="/settings/components/basic" />} />
+                        <Route path="/settings/components/basic" element={<ComponentsBasic />} />
+                        <Route path="/settings/components/advanced" element={<ComponentsAdvanced />} />
 
-                <Route path="/semi" element={<Semi />}>
-                    <Route index element={<Semi />} />
-                    {/* <Route path="profile" element={<ProfilePage />} />
-                    <Route path="settings" element={<SettingsPage />} /> */}
-                    <Route path="*" element={<Semi />} />
-                </Route>
+                        <Route path="/settings/components/datatable" element={<Navigate to="/settings/components/datatable/basic_table" />} />
+                        <Route path="/settings/components/datatable/basic_table" element={<BasicTable />} />
+                        <Route path="/settings/components/datatable/ajax_table" element={<AjaxTable />} />
 
-                <Route path="/settings/import_export" element={<ImportExport />} />
-                <Route path="/settings/more" element={<More />} />
-                <Route path="/settings/tools" element={<Tools />} />
-                <Route path="/settings/feedback" element={<Feedback />} />
-                <Route path="*" element={<NotFound />} />
-            </Routes>
-            <Footer/>      
+                        <Route path="/page" element={<Page />} />
+                        <Route path="/semi" element={<Semi />} />
+
+                        <Route path="/semi" element={<Semi />}>
+                            <Route index element={<Semi />} />
+                            {/* <Route path="profile" element={<ProfilePage />} />
+                            <Route path="settings" element={<SettingsPage />} /> */}
+                            <Route path="*" element={<Semi />} />
+                        </Route>
+
+                        <Route path="/settings/import_export" element={<ImportExport />} />
+                        <Route path="/settings/more" element={<More />} />
+                        <Route path="/settings/tools" element={<Tools />} />
+                        <Route path="/settings/feedback" element={<Feedback />} />
+                        <Route path="*" element={<NotFound />} />
+                    </Routes>
+                    {/* <Footer/>       */}
+                <Footer 
+                    style={{borderTop: '1px solid var(--semi-color-border)', padding: '15px 0', backgroundColor: 'var(--semi-color-fill-0)'}}
+                >
+                    Footer
+                </Footer>
+            </Layout>
         </div>
         </LocaleProvider>
     );

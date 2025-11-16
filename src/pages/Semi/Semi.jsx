@@ -1,15 +1,11 @@
 import { __ } from "@wordpress/i18n";
 import { 
     Layout,
-    Space, 
     Typography,
     Banner, 
-    Badge,
-    Avatar,
     Breadcrumb,
     Card,
 } from '@douyinfe/semi-ui';
-import { Button } from '@douyinfe/semi-ui';
 import { IconInfoCircle } from '@douyinfe/semi-icons';
 import VerticalMenu from './VerticalMenu';
 import HorizontalMenu from './HorizontalMenu';
