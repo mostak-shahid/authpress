@@ -142,6 +142,6 @@ class Authpress_Hided_Login
 	
 }
 
-new Authpress_Hided_Login();
+// new Authpress_Hided_Login();
 
 

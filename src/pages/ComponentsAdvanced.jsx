@@ -1,4 +1,4 @@
-import '@coreui/icons/css/all.css';
+// import '@coreui/icons/css/all.css';
 import { __ } from "@wordpress/i18n";
 import React from 'react';
 import MediaUploaderControl from '../components/MediaUploaderControl/MediaUploaderControl';

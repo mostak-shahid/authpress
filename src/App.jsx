@@ -1,5 +1,6 @@
 import { __ } from "@wordpress/i18n";
 import "./App.scss";
+import "./tailwind.css"
 import Header from "./layouts/Header/Header";
 // import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 // import "bootstrap/dist/css/bootstrap.min.css";
@@ -78,7 +79,13 @@ function App() {
                         </>
                     }
                 />
-
+                <button
+                    className="wsts-btn ml-3"
+                    type="button"
+                    onClick={() => Toast.info("Tailwind custom button works!")}
+                >
+                    Tailwind Button
+                </button>
                 <Layout className="components-layout-demo">
                     <Header>                    
                         <HorizontalMenuControl

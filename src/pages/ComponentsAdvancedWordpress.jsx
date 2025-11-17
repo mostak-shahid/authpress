@@ -1,4 +1,4 @@
-import '@coreui/icons/css/all.css';
+// import '@coreui/icons/css/all.css';
 // import '@wordpress/components/build-style/style.css';
 import { __ } from "@wordpress/i18n";
 import React, {useState} from 'react';
