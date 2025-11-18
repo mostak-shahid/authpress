@@ -119,6 +119,7 @@ function App() {
                             {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
                             <Route path="/" element={<Dashboard />} />
 
+                            {/* 
                             <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
                             <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
                             <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
@@ -145,7 +146,14 @@ function App() {
                             <Route path="/settings/components/datatable/basic_table" element={<BasicTable />} />
                             <Route path="/settings/components/datatable/ajax_table" element={<AjaxTable />} />
 
-                            <Route path="/page" element={<Page />} />
+                            <Route path="/page" element={<Page />} /> 
+
+                            <Route path="/settings/import_export" element={<ImportExport />} />
+                            <Route path="/settings/more" element={<More />} />
+                            <Route path="/settings/tools" element={<Tools />} />
+                            <Route path="/settings/feedback" element={<Feedback />} />
+                            
+                            */}
                             <Route path="/semi" element={<Semi />} />
 
                             <Route path="/semi" element={<Semi />}>
@@ -154,11 +162,6 @@ function App() {
                                 <Route path="settings" element={<SettingsPage />} /> */}
                                 <Route path="*" element={<Semi />} />
                             </Route>
-
-                            <Route path="/settings/import_export" element={<ImportExport />} />
-                            <Route path="/settings/more" element={<More />} />
-                            <Route path="/settings/tools" element={<Tools />} />
-                            <Route path="/settings/feedback" element={<Feedback />} />
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                         {/* <Footer/>       */}

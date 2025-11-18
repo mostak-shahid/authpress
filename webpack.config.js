@@ -49,5 +49,11 @@ module.exports = {
         new SemiPlugin({
             cssLayer: true,
         })
-    ]
+    ],
+    externals: {
+        react: 'React',
+        'react-dom': 'ReactDOM',
+        '@wordpress/element': 'wp.element'
+    }
+
 };
