@@ -77,6 +77,7 @@ class Authpress_Admin
 		$current_screen = get_current_screen();
 		if ($current_screen->id == 'toplevel_page_authpress') {
 			wp_enqueue_style($this->plugin_name . '-google-font', 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap', array(), $this->version, 'all');
+			wp_enqueue_style($this->plugin_name . '-react', AUTHPRESS_URL . 'build/index.css', [], filemtime(__DIR__ . '/build/index.css'));
 		}
 		wp_enqueue_style($this->plugin_name . 'hint.min', AUTHPRESS_URL . 'assets/plugins/cool-hint-css/src/hint.min.css', array(), $this->version, 'all');
 		wp_enqueue_style($this->plugin_name . 'jquery-ui', AUTHPRESS_URL . 'assets/css/jquery-ui.css', array(), $this->version, 'all');

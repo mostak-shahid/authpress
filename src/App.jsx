@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import "./App.scss";
 import "./tailwind.css"
-import Header from "./layouts/Header/Header";
+// import Header from "./layouts/Header/Header";
 // import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 // import "bootstrap/dist/css/bootstrap.min.css";
 import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row  } from '@douyinfe/semi-ui';
@@ -9,29 +9,29 @@ import { IconStar, IconSetting, IconMenu, IconHome, IconMember, IconBookStroked,
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 //Route Pages
 import Dashboard from "./pages/Dashboard/Dashboard";
-import ImportExport from "./pages/ImportExport";
-import More from "./pages/More";
-import ComponentsBasic from "./pages/ComponentsBasic";
-import CustomizerRedesignTemplate from "./pages/CustomizerRedesignTemplate";
-import CustomizerRedesignBackground from "./pages/CustomizerRedesignBackground";
-import CustomizerRedesignLogo from "./pages/CustomizerRedesignLogo";
-import CustomizerRedesignForm from "./pages/CustomizerRedesignForm";
-import ComponentsAdvanced from "./pages/ComponentsAdvanced";
-import BasicTable from "./pages/BasicTable";
-import AjaxTable from "./pages/AjaxTable";
-import Page from "./pages/Page";
-import Feedback from "./pages/Feedback";
-import Footer from "./layouts/Footer/Footer";
-import CustomizerRedesignFields from "./pages/CustomizerRedesignFields";
-import CustomizerRedesignButton from "./pages/CustomizerRedesignButton";
-import CustomizerRedesignOther from "./pages/CustomizerRedesignOther";
-import Tools from "./pages/Tools";
-import HideLogin from "./pages/HideLogin";
-import Two_FA_Email from "./pages/Two_FA_Email";
-import Two_FA from "./pages/Two_FA";
-import Captcha from "./pages/Captcha";
-import AutoLogin from "./pages/AutoLogin";
-import AutoLoginLink from "./pages/AutoLoginLink";
+// import ImportExport from "./pages/ImportExport";
+// import More from "./pages/More";
+// import ComponentsBasic from "./pages/ComponentsBasic";
+// import CustomizerRedesignTemplate from "./pages/CustomizerRedesignTemplate";
+// import CustomizerRedesignBackground from "./pages/CustomizerRedesignBackground";
+// import CustomizerRedesignLogo from "./pages/CustomizerRedesignLogo";
+// import CustomizerRedesignForm from "./pages/CustomizerRedesignForm";
+// import ComponentsAdvanced from "./pages/ComponentsAdvanced";
+// import BasicTable from "./pages/BasicTable";
+// import AjaxTable from "./pages/AjaxTable";
+// import Page from "./pages/Page";
+// import Feedback from "./pages/Feedback";
+// import Footer from "./layouts/Footer/Footer";
+// import CustomizerRedesignFields from "./pages/CustomizerRedesignFields";
+// import CustomizerRedesignButton from "./pages/CustomizerRedesignButton";
+// import CustomizerRedesignOther from "./pages/CustomizerRedesignOther";
+// import Tools from "./pages/Tools";
+// import HideLogin from "./pages/HideLogin";
+// import Two_FA_Email from "./pages/Two_FA_Email";
+// import Two_FA from "./pages/Two_FA";
+// import Captcha from "./pages/Captcha";
+// import AutoLogin from "./pages/AutoLogin";
+// import AutoLoginLink from "./pages/AutoLoginLink";
 
 import { LocaleProvider } from '@douyinfe/semi-ui';
 import local from "@douyinfe/semi-ui/lib/es/locale/source/en_US";
@@ -80,7 +80,7 @@ function App() {
                     }
                 />
                 <button
-                    className="wsts-btn ml-3"
+                    className="mx-[30px] mt-5 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
                     type="button"
                     onClick={() => Toast.info("Tailwind custom button works!")}
                 >

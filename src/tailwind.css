@@ -1,21 +1,21 @@
 @layer tailwind-base, semi, tailwind-components, tailwind-utilities;
 
-/* Tailwind base (Preflight) */
+/* Tailwind base (preflight) */
 @layer tailwind-base {
   @tailwind base;
 }
 
-/* Tailwind components */
+/* Components */
 @layer tailwind-components {
   @tailwind components;
 }
 
-/* Tailwind utilities */
+/* Utilities */
 @layer tailwind-utilities {
   @tailwind utilities;
 }
 
-/* Example custom utility */
+/* Custom utilities */
 @layer tailwind-utilities {
   .wsts-btn {
     @apply px-4 py-2 rounded text-white;
