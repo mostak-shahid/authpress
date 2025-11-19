@@ -23,7 +23,7 @@ export default function Dashboard() {
         const fetchPlugins = async () => {
         try {
             // const response = await apiFetch({ path: 'https://raw.githubusercontent.com/mostak-shahid/update/refs/heads/master/plugin-details.json' });
-            const response = await apiFetch({ path: `/authpress/v1/plugins` });
+            const response = await apiFetch({ path: `/wp-json/authpress/v1/plugins` });
             // 
             setPlugins(response.plugins);
         } catch (error) {

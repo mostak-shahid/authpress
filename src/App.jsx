@@ -47,6 +47,7 @@ const NotFound = () => (
 import React, { useState, useEffect } from 'react';
 import Semi from "./pages/Semi/Semi";
 import HorizontalMenuControl from "./components/HorizontalMenuControl/HorizontalMenuControl";
+import apiFetch from "@wordpress/api-fetch";
 
 
 function App() {
@@ -55,19 +56,87 @@ function App() {
     const [newsVisible, setNewsVisible] = useState(false);
     const [darkmode, setDarkmode] = useState(false);
 
-    const switchMode = () => {
-        const body = document.body;
-        if (body.hasAttribute('theme-mode')) {
-            body.removeAttribute('theme-mode');
-        } else {
-            body.setAttribute('theme-mode', 'dark');
+    // const [darkMode, setDarkmode] = useState(0);
+    useEffect(() => {
+        const fetchSettingTheme = async () => {
+            try {
+                const params = new URLSearchParams({
+                    id: authpress_ajax_obj.get_current_user_id,
+                });
+                const theme = await apiFetch({
+                    path: `/wp-json/authpress/v1/get-settings-theme?${params.toString()}`,
+                    method: 'GET'
+                });      
+
+                // console.log('Theme received:', theme);
+                document.body.setAttribute('theme-mode', theme);
+
+                const isDark = theme === 'dark' || theme.value === 'dark';
+                setDarkmode(isDark);
+            } catch (err) {
+                console.error('API error:', err);
+            }
+        };
+
+        fetchSettingTheme();
+    }, []); 
+
+    // const switchMode = () => {
+    //     const body = document.body;
+    //     if (body.hasAttribute('theme-mode')) {
+    //         body.removeAttribute('theme-mode');
+    //     } else {
+    //         body.setAttribute('theme-mode', 'dark');
+    //     }
+    //     setDarkmode(!darkmode);
+    // };
+    const switchingMode = async () => {
+        const switchMode = !darkmode;
+        setDarkmode(switchMode);
+        try {
+            const params = new URLSearchParams({
+                id: authpress_ajax_obj.get_current_user_id,
+                settings_theme: switchMode ? 'dark' : 'light',
+            });
+
+            const response = await apiFetch({
+                path: `/wp-json/authpress/v1/set-settings-theme?${params.toString()}`,
+                // method: 'GET'
+            });
+            if (response.success) {
+                document.body.setAttribute('theme-mode', switchMode?'dark':'light');
+            }
+            console.log(response);
+        } catch (error) {
+            console.error("Error fetching settings data:", error);
         }
-        setDarkmode(!darkmode);
     };
+        
+    const [settingsBodyHeight, setSettingsBodyHeight] = useState();
+    useEffect(() => {
+        function updateVH() {
+            const ussbh = document.body.scrollHeight
+            ? document.body.scrollHeight
+            : window.innerHeight; // fallback
+            // const appliedHeight = vh - 69;
+            setSettingsBodyHeight(ussbh - 130);
+            // console.log("document.body.scrollHeight:", document.body.scrollHeight);
+        }
+
+        updateVH();
+
+        // Listen to resize & viewport changes
+        window.visualViewport?.addEventListener("resize", updateVH);
+        window.visualViewport?.addEventListener("scroll", updateVH);
+
+        return () => {
+            window.visualViewport?.removeEventListener("resize", updateVH);
+            window.visualViewport?.removeEventListener("scroll", updateVH);
+        };
+    }, []);
     return (
         <LocaleProvider locale={local}>
-            <div className="authpress-settings-container">
-
+            <div className="authpress-settings-container semi-scope">
                 <Banner 
                     fullMode={false}
                     type="info"
@@ -79,13 +148,6 @@ function App() {
                         </>
                     }
                 />
-                <button
-                    className="mx-[30px] mt-5 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-                    type="button"
-                    onClick={() => Toast.info("Tailwind custom button works!")}
-                >
-                    Tailwind Button
-                </button>
                 <Layout className="components-layout-demo">
                     <Header>                    
                         <HorizontalMenuControl
@@ -103,7 +165,7 @@ function App() {
                             footerContent = {(
                                 <Space align='center'>  
                                     <Badge count={Details?.version} theme='light' countStyle={{padding: 8, height: 'auto'}} />    
-                                    <Button theme='outline' icon={darkmode?<IconSun />:<IconMoon />} aria-label="Mode" onClick={switchMode} />
+                                    <Button theme='outline' icon={darkmode?<IconSun />:<IconMoon />} aria-label="Mode" onClick={switchingMode} />
                                     <Button theme='outline' icon={<IconBookStroked />} aria-label="Screenshot" />
                                     <Button theme='outline' icon={<IconHelpCircleStroked />} aria-label="Screenshot" />
                                     <Badge count={5}>
@@ -113,7 +175,10 @@ function App() {
                             )}
                         />
                     </Header>
-                    <div className="authpress-settings p-6">
+                    <div 
+                        className="authpress-settings p-6"
+                        style={{minHeight:settingsBodyHeight, backgroundColor: 'var(--semi-color-bg-4)'}}
+                    >
                         <Routes>
                             {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
                             {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
@@ -165,20 +230,21 @@ function App() {
                             <Route path="*" element={<NotFound />} />
                         </Routes>
                     </div>
-                    <Footer 
-                        style={{borderTop: '1px solid var(--semi-color-border)', padding: '15px 0', backgroundColor: 'var(--semi-color-fill-0)'}}
+                    <Footer
+                        className="p-[15px]" 
+                        style={{borderTop: '1px solid var(--semi-color-border)', backgroundColor: 'var(--semi-color-fill-0)'}}
                     >
                         <Row type="flex">
-                            <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-                                <Space align='center' spacing='medium' className="col-content">
+                            <Col lg={12} xl={12} className="text-center lg:text-left">
+                                <Space align='center' spacing='medium'>
                                     <img src={`${authpress_ajax_obj.image_url}logo.svg`} alt="" width="30" height="30" />
                                     <span>{Details?.name}</span>
                                 </Space>
                             </Col>
-                            <Col xs={2} sm={4} md={6} lg={8} xl={10}>
-                                <div className="col-content text-center sm:text-right">
+                            <Col lg={12} xl={12} className="text-center lg:text-right">
+                                <Space align='center' spacing='medium'>
                                     {Details?.version} {__( 'Core', "authpress" )}
-                                </div>
+                                </Space>
                             </Col>
                         </Row>
                     </Footer>

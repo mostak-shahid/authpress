@@ -77,7 +77,7 @@ class Authpress_Admin
 		$current_screen = get_current_screen();
 		if ($current_screen->id == 'toplevel_page_authpress') {
 			wp_enqueue_style($this->plugin_name . '-google-font', 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap', array(), $this->version, 'all');
-			wp_enqueue_style($this->plugin_name . '-react', AUTHPRESS_URL . 'build/index.css', [], filemtime(__DIR__ . '/build/index.css'));
+			wp_enqueue_style($this->plugin_name . '-react', AUTHPRESS_URL . 'build/index.css');
 		}
 		wp_enqueue_style($this->plugin_name . 'hint.min', AUTHPRESS_URL . 'assets/plugins/cool-hint-css/src/hint.min.css', array(), $this->version, 'all');
 		wp_enqueue_style($this->plugin_name . 'jquery-ui', AUTHPRESS_URL . 'assets/css/jquery-ui.css', array(), $this->version, 'all');
@@ -134,6 +134,9 @@ class Authpress_Admin
 			'image_url' => AUTHPRESS_URL . 'assets/images/',
 			'_admin_nonce' => esc_attr(wp_create_nonce('authpress_admin_nonce')),
 			'api_nonce' => esc_attr(wp_create_nonce('wp_rest')),
+			'get_current_user_id' => get_current_user_id(),
+			'root'  => esc_url_raw( rest_url() ),
+    		'nonce' => wp_create_nonce('wp_rest')
 			// 'install_plugin_wpnonce' => esc_attr(wp_create_nonce('updates')),
 		);
 		wp_localize_script($this->plugin_name . '-admin-ajax', 'authpress_ajax_obj', $ajax_params);
@@ -324,161 +327,11 @@ class Authpress_Admin
 	//add_action('rest_api_init', 'authpress_rest_api_init');
 	public function authpress_rest_api_init()
 	{
-		register_rest_route(
-			'authpress/v1',
-			'/options',
-			array(
-				'methods'  => 'GET',
-				'callback' => [$this, 'rest_authpress_get_options'],
-				// 'permission_callback' => '__return_true', // Allow public access
-				'permission_callback' => function () {
-                    return current_user_can('manage_options');
-                },
-			)
-		);
-
-		//Add the POST 'authpress/v1/options' endpoint to the Rest API
-		register_rest_route(
-			'authpress/v1',
-			'/options',
-			array(
-				'methods'             => 'POST',
-				'callback'            => [$this, 'rest_authpress_update_options'],
-				// 'permission_callback' => '__return_true'
-				'permission_callback' => function () {
-                    return current_user_can('manage_options');
-                },
-			)
-		);
-		register_rest_route(
-            'authpress/v1',
-            '/feedback',
-            array(
-                'methods' => 'POST',
-                'callback' => [$this, 'rest_authpress_feedback'],
-				// 'permission_callback' => '__return_true'
-                'permission_callback' => function () {
-                    return current_user_can('manage_options');
-                },
-            )
-        );
 	}
-	public function rest_authpress_get_options(WP_REST_Request $request)
-	{
-		// if (!current_user_can('manage_options')) {
-		// 	return new WP_Error(
-		// 		'rest_update_error',
-		// 		'Sorry, you are not allowed to update the DAEXT UI Test options.',
-		// 		array('status' => 403)
-		// 	);
-		// }
-		$authpress_options = authpress_get_option();
-		return new WP_REST_Response($authpress_options, 200);
-	}
-	public function rest_authpress_update_options(WP_REST_Request $request) //WP_REST_Request $request
-	{
-		if (!current_user_can('manage_options')) {
-			return new WP_Error(
-				'rest_update_error',
-				'Sorry, you are not allowed to update options.'.get_current_user_id(),
-				array('status' => 403)
-			);
-		}
-		$authpress_options_old = authpress_get_option();
-
-		$authpress_options = map_deep(wp_unslash($request->get_param('authpress_options')), 'wp_kses_post');
-
-		$authpress_options ? update_option('authpress_options', $authpress_options) : '';
-		$response = [
-			'success' => true,
-			'msg'	=> esc_html__('Data successfully added.', 'authpress')
-		];
-
-		// return $response;
-		return new WP_REST_Response($response, 200);
-
-		/*
-		
-		return new WP_REST_Response([
-			'success' => true,
-			'message' => 'Plugin installed successfully.'
-		], 200);
-		
-
-		return new WP_REST_Response([
-			'success' => false,
-			'message' => 'Installed plugin could not be identified'
-		], 404);
-		*/
-	}
-	
-    public static function rest_authpress_feedback($request)
-    {
-        $subject = sanitize_text_field(wp_unslash($request->get_param('subject')));
-        $message = sanitize_textarea_field(wp_unslash($request->get_param('message')));
-
-        if (empty($message)) {
-            return new WP_Error('empty_message', __('Message cannot be empty.', 'authpress'), array('status' => 400));
-        }
-
-        if (empty($subject)) {
-            return new WP_Error('empty_subject', __('Subject cannot be empty.', 'authpress'), array('status' => 400));
-        }
-
-        $email = 'mostak.shahid@gmail.com';
-        // $subject = sprintf(
-        //     /* translators: %s = site URL */
-        //     esc_html__('Error notification for %s', 'authpress'),
-        //     get_home_url()
-        // );
-        $output = '<strong>Subject:</strong> ' . $subject . '<br/><strong>Message:</strong> ' . $message;
-        $headers = array(
-            'From: ' . get_bloginfo('name') . ' <' . get_option('admin_email') . '>',
-            'Content-Type: text/html; charset=UTF-8'
-        );
-
-        wp_mail($email, 'Feedback from AuthPress', $output, $headers);
-        $response = [
-            'success' => true,
-            'msg' => esc_html__('Email Send successfully.', 'authpress'),
-            'subject' => $subject,
-            'message' => $message
-        ];
-        return new WP_REST_Response($response, 200);
-    }
 
 
 
 	// 	add_action('wp_ajax_mos_plugin_manage', function () {
 	//   check_ajax_referer('mos_plugin_nonce', 'security');
 	// });
-	public function authpress_ajax_plugins_status()
-	{
-
-		if (!current_user_can('install_plugins')) {
-			wp_send_json_error(array('error_message' => esc_html__('Permission denied', 'authpress')));
-		}
-		if (isset($_POST['_admin_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_admin_nonce'])), 'authpress_admin_nonce')) {
-			// $slug = isset($_POST['slug']) ? sanitize_text_field(wp_unslash($_POST['slug'])) : '';
-			$file = isset($_POST['file']) ? sanitize_text_field(wp_unslash($_POST['file'])) : '';
-			$status = 'not_installed';
-			if (!is_plugin_active($file) && !file_exists(WP_PLUGIN_DIR . '/' . $file)) {
-				$status = 'not_installed';
-			} elseif (!is_plugin_active($file) && file_exists(WP_PLUGIN_DIR . '/' . $file)) {
-				$status = 'installed';
-			} elseif (is_plugin_active($file)) {
-				$status = 'activated';
-			}
-			wp_send_json_success(
-				array(
-					'file' => $file,
-					'success_message' => esc_html($status)
-				)
-			);
-		} else {
-			wp_send_json_error(array('error_message' => esc_html__('Nonce verification failed. Please try again.', 'authpress')));
-			// wp_die(esc_html__('Nonce verification failed. Please try again.', 'authpress'));
-		}
-		wp_die();
-	}
 }

@@ -11,6 +11,38 @@ class Ajax_API
 		add_action('init', [$this, 'authpress_maybe_flush_rules'], 99);
 		
     }
+	
+
+    
+	public function authpress_ajax_plugins_status()
+	{
+
+		if (!current_user_can('install_plugins')) {
+			wp_send_json_error(array('error_message' => esc_html__('Permission denied', 'authpress')));
+		}
+		if (isset($_POST['_admin_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_admin_nonce'])), 'authpress_admin_nonce')) {
+			// $slug = isset($_POST['slug']) ? sanitize_text_field(wp_unslash($_POST['slug'])) : '';
+			$file = isset($_POST['file']) ? sanitize_text_field(wp_unslash($_POST['file'])) : '';
+			$status = 'not_installed';
+			if (!is_plugin_active($file) && !file_exists(WP_PLUGIN_DIR . '/' . $file)) {
+				$status = 'not_installed';
+			} elseif (!is_plugin_active($file) && file_exists(WP_PLUGIN_DIR . '/' . $file)) {
+				$status = 'installed';
+			} elseif (is_plugin_active($file)) {
+				$status = 'activated';
+			}
+			wp_send_json_success(
+				array(
+					'file' => $file,
+					'success_message' => esc_html($status)
+				)
+			);
+		} else {
+			wp_send_json_error(array('error_message' => esc_html__('Nonce verification failed. Please try again.', 'authpress')));
+			// wp_die(esc_html__('Nonce verification failed. Please try again.', 'authpress'));
+		}
+		wp_die();
+	}
 
 	public function authpress_set_login_url()
 	{
