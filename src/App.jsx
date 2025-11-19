@@ -113,7 +113,7 @@ function App() {
                             )}
                         />
                     </Header>
-                        {/* <Header /> */}
+                    <div className="authpress-settings p-6">
                         <Routes>
                             {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
                             {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
@@ -164,7 +164,7 @@ function App() {
                             </Route>
                             <Route path="*" element={<NotFound />} />
                         </Routes>
-                        {/* <Footer/>       */}
+                    </div>
                     <Footer 
                         style={{borderTop: '1px solid var(--semi-color-border)', padding: '15px 0', backgroundColor: 'var(--semi-color-fill-0)'}}
                     >

@@ -1,0 +1,156 @@
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  content: [
+    './src/**/*.{js,jsx,ts,tsx}',
+    // './php/src/Presentation/**/*.php',
+  ],
+
+  // Prevent conflicts with Semi Design - scope to plugin container
+  // important: '#ultimate-security-settings', // Disabled to allow Tailwind in modals/portals
+
+  theme: {
+    extend: {
+      // Standardized brand color scale (removed duplicate 'purple')
+      colors: {
+        'brand': {
+          50: '#f3f0ff',
+          100: '#d1c1ff',   // Lightest accent (was purple-10)
+          200: '#b59dff',
+          300: '#9879ff',
+          400: '#873eff',   // PRIMARY brand color (was purple-40)
+          500: '#720eec',   // Medium (was purple-50)
+          600: '#5007aa',   // Dark (was purple-70)
+          700: '#3c0580',
+          800: '#2c045d',   // Very dark (was purple-90)
+          900: '#1d0240',   // Darkest
+        },
+        'green': {
+          'deep': '#588157',
+          'lite': '#f1faee',
+        },
+        'text': '#3c434a',
+        'background': {
+          DEFAULT: '#ffffff',
+          'secondary': '#f5f5f5',
+        },
+        'notice': '#fffdee',
+        'notice-light': '#fff1bc',
+      },
+
+      // Typography: Font sizes with line heights
+      fontSize: {
+        'xs': ['12px', { lineHeight: '16px' }],
+        'sm': ['14px', { lineHeight: '20px' }],
+        'base': ['16px', { lineHeight: '24px' }],
+        'lg': ['18px', { lineHeight: '28px' }],
+        'xl': ['20px', { lineHeight: '30px' }],
+        '2xl': ['24px', { lineHeight: '32px' }],
+        '3xl': ['30px', { lineHeight: '36px' }],
+      },
+
+      // Match Bootstrap breakpoints for easier migration
+      screens: {
+        'sm': '576px',
+        'md': '768px',
+        'lg': '992px',
+        'xl': '1200px',
+        '2xl': '1400px',
+      },
+
+      // Custom spacing
+      spacing: {
+        '18': '4.5rem',
+        '22': '5.5rem',
+        '30': '30px',
+      },
+
+      // Borders & Shadows
+      borderRadius: {
+        'DEFAULT': '3px',
+        'card': '8px',
+        'input': '3px',
+      },
+
+      boxShadow: {
+        'card': '0 1px 3px 0 rgba(0, 0, 0, 0.1)',
+        'card-hover': '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+        'focus': '0 0 0 3px rgba(135, 62, 255, 0.4)',
+      },
+
+      // Transitions
+      transitionDuration: {
+        '250': '250ms',
+        '400': '400ms',
+      },
+
+      transitionTimingFunction: {
+        'smooth': 'cubic-bezier(0.4, 0, 0.2, 1)',
+      },
+
+      // Z-Index
+      zIndex: {
+        'dropdown': '1000',
+        'sticky': '1020',
+        'fixed': '1030',
+        'modal-backdrop': '1040',
+        'modal': '1050',
+        'popover': '1060',
+        'tooltip': '1070',
+      },
+
+      // Constraints
+      maxWidth: {
+        'input': '375px',
+        'input-sm': '130px',
+        'card': '600px',
+        'container': '1400px',
+      },
+
+      letterSpacing: {
+        'tighter': '-0.05em',
+        'tight': '-0.025em',
+        'wide': '0.025em',
+        'wider': '0.05em',
+      },
+
+      // Custom keyframes and animations
+      keyframes: {
+        slideIn: {
+          from: {
+            opacity: '0',
+            transform: 'translateY(20px)',
+          },
+          to: {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
+        },
+      },
+      animation: {
+        slideIn: 'slideIn 0.3s ease-out',
+      },
+    },
+  },
+
+  plugins: [
+    require('@tailwindcss/forms'),
+    require('@tailwindcss/typography'),
+    require('./tailwind-plugins/ultimate-security-plugin'),
+  ],
+
+  // Prevent conflicts with Semi Design classes
+  corePlugins: {
+    preflight: false, // Disable Tailwind's base reset to avoid conflicts
+  },
+
+  // Safelist for dynamically generated classes
+  safelist: [
+    {
+      pattern: /bg-(brand|green|red|yellow)-(50|100|400|600|800)/,
+      variants: ['hover', 'focus'],
+    },
+    {
+      pattern: /text-(brand|green|red|yellow)-(400|600|800)/,
+    },
+  ],
+};

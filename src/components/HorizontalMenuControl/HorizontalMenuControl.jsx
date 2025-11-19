@@ -8,6 +8,21 @@ import {
     Button,
     Badge,
 } from '@douyinfe/semi-ui';
+import {
+    IconStar,
+    IconSetting,
+    IconMenu,
+    IconHome,
+    IconMember,
+    IconBookStroked,
+    IconHelpCircleStroked,
+    IconUserGroup,
+    IconEdit,
+    IconHorn,
+    IconBellStroked,
+    IconSun,
+    IconMoon,
+} from '@douyinfe/semi-icons';
 import { Logo, MegaphoneStroked } from '../../lib/Illustrations';
 
 // const items = [

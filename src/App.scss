@@ -18,4 +18,49 @@
         background-color: transparent;
         border-color: transparent;
     }
+
+    h1.semi-typography, 
+    .semi-typography-h1.semi-typography,
+    h2.semi-typography, 
+    .semi-typography-h2.semi-typography,
+    h3.semi-typography, 
+    .semi-typography-h3.semi-typography,
+    h4.semi-typography, 
+    .semi-typography-h4.semi-typography,
+    h5.semi-typography, 
+    .semi-typography-h5.semi-typography,
+    h6.semi-typography,
+    .semi-typography-h6.semi-typography {
+        margin: 0;
+    }
+    h1.semi-typography, 
+    .semi-typography-h1.semi-typography {
+        font-size: 32px;
+        line-height: 44px;
+    }
+    h2.semi-typography, 
+    .semi-typography-h2.semi-typography {
+        font-size: 28px;
+        line-height: 40px;
+    }
+    h3.semi-typography, 
+    .semi-typography-h3.semi-typography {
+        font-size: 24px;
+        line-height: 32px;
+    }
+    h4.semi-typography, 
+    .semi-typography-h4.semi-typography {
+        font-size: 20px;
+        line-height: 28px;
+    }
+    h5.semi-typography, 
+    .semi-typography-h5.semi-typography {
+        font-size: 18px;
+        line-height: 24px;
+    }
+    h6.semi-typography,
+    .semi-typography-h6.semi-typography {
+        font-size: 16px;
+        line-height: 22px;
+    }
 }
