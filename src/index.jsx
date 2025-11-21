@@ -5,6 +5,22 @@ import {
 } from 'react-router-dom';
 import App from './App';
 import { MainProvider } from "./contexts/MainContext";
+import apiFetch from '@wordpress/api-fetch';
+// Configure apiFetch with REST API settings
+// WordPress automatically uses window.wpApiSettings if available
+// Fallback to manual configuration if needed
+if (typeof window.wpApiSettings === 'undefined' && typeof authpress_ajax_obj !== 'undefined') {
+  window.wpApiSettings = {
+    root: authpress_ajax_obj.root,
+    nonce: authpress_ajax_obj.nonce
+  };
+}
+
+// Ensure apiFetch uses the configured settings
+if (typeof window.wpApiSettings !== 'undefined') {
+  apiFetch.use(apiFetch.createRootURLMiddleware(window.wpApiSettings.root));
+  apiFetch.use(apiFetch.createNonceMiddleware(window.wpApiSettings.nonce));
+}
 // Get the container element
 const rootElement = document.getElementById('authpress-settings-react-app');
 

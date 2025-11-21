@@ -29,7 +29,7 @@ const ImportExport = ({handleChange}) => {
         setProcessingExport(true);
         try {
             const parsed = JSON.parse(importData);
-            const response = await fetch('/wp-json/authpress/v1/settings', {
+            const response = await fetch('/authpress/v1/settings', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(parsed)

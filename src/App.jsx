@@ -1,4 +1,5 @@
 import { __ } from "@wordpress/i18n";
+
 import "./App.scss";
 import "./tailwind.css"
 // import Header from "./layouts/Header/Header";
@@ -64,7 +65,7 @@ function App() {
                     id: authpress_ajax_obj.get_current_user_id,
                 });
                 const theme = await apiFetch({
-                    path: `/wp-json/authpress/v1/get-settings-theme?${params.toString()}`,
+                    path: `/authpress/v1/get-settings-theme?${params.toString()}`,
                     method: 'GET'
                 });      
 
@@ -100,7 +101,7 @@ function App() {
             });
 
             const response = await apiFetch({
-                path: `/wp-json/authpress/v1/set-settings-theme?${params.toString()}`,
+                path: `/authpress/v1/set-settings-theme?${params.toString()}`,
                 // method: 'GET'
             });
             if (response.success) {

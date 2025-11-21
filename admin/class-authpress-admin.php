@@ -123,6 +123,17 @@ class Authpress_Admin
 				$this->version,
 				true
 			);
+			
+			// Configure wp-api-fetch with proper settings before React loads
+			wp_add_inline_script(
+				$this->plugin_name . '-react',
+				sprintf(
+					'window.wpApiSettings = { root: "%s", nonce: "%s" };',
+					esc_url_raw( rest_url() ),
+					wp_create_nonce( 'wp_rest' )
+				),
+				'before'
+			);
 		}
 
 		wp_enqueue_script($this->plugin_name . '-admin-ajax', plugin_dir_url(__FILE__) . 'js/admin-ajax.js', array('jquery'), $this->version, false);
