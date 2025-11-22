@@ -1,0 +1,67 @@
+.authpress-settings-template input[type=text],
+.authpress-settings-template input[type=password],
+.authpress-settings-template input[type=color],
+.authpress-settings-template input[type=date],
+.authpress-settings-template input[type=datetime],
+.authpress-settings-template input[type=datetime-local],
+.authpress-settings-template input[type=email],
+.authpress-settings-template input[type=month],
+.authpress-settings-template input[type=number],
+.authpress-settings-template input[type=search],
+.authpress-settings-template input[type=tel],
+.authpress-settings-template input[type=time],
+.authpress-settings-template input[type=url],
+.authpress-settings-template input[type=week],
+.authpress-settings-template select,
+.authpress-settings-template textarea {
+  background-color: transparent;
+  border-color: transparent;
+}
+.authpress-settings-template .semi-typography {
+  color: var(--semi-color-text-0);
+}
+.authpress-settings-template h1.semi-typography,
+.authpress-settings-template .semi-typography-h1.semi-typography,
+.authpress-settings-template h2.semi-typography,
+.authpress-settings-template .semi-typography-h2.semi-typography,
+.authpress-settings-template h3.semi-typography,
+.authpress-settings-template .semi-typography-h3.semi-typography,
+.authpress-settings-template h4.semi-typography,
+.authpress-settings-template .semi-typography-h4.semi-typography,
+.authpress-settings-template h5.semi-typography,
+.authpress-settings-template .semi-typography-h5.semi-typography,
+.authpress-settings-template h6.semi-typography,
+.authpress-settings-template .semi-typography-h6.semi-typography,
+.authpress-settings-template p, .authpress-settings-template .wp-die-message {
+  margin: 0;
+}
+.authpress-settings-template h1.semi-typography,
+.authpress-settings-template .semi-typography-h1.semi-typography {
+  font-size: 32px;
+  line-height: 44px;
+}
+.authpress-settings-template h2.semi-typography,
+.authpress-settings-template .semi-typography-h2.semi-typography {
+  font-size: 28px;
+  line-height: 40px;
+}
+.authpress-settings-template h3.semi-typography,
+.authpress-settings-template .semi-typography-h3.semi-typography {
+  font-size: 24px;
+  line-height: 32px;
+}
+.authpress-settings-template h4.semi-typography,
+.authpress-settings-template .semi-typography-h4.semi-typography {
+  font-size: 20px;
+  line-height: 28px;
+}
+.authpress-settings-template h5.semi-typography,
+.authpress-settings-template .semi-typography-h5.semi-typography {
+  font-size: 18px;
+  line-height: 24px;
+}
+.authpress-settings-template h6.semi-typography,
+.authpress-settings-template .semi-typography-h6.semi-typography {
+  font-size: 16px;
+  line-height: 22px;
+}/*# sourceMappingURL=App.css.map */

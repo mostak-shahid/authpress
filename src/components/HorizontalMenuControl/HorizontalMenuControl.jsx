@@ -3,86 +3,14 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
     Nav,
-    Space,
     SideSheet,
     Button,
-    Badge,
 } from '@douyinfe/semi-ui';
 import {
-    IconStar,
-    IconSetting,
     IconMenu,
-    IconHome,
-    IconMember,
-    IconBookStroked,
-    IconHelpCircleStroked,
-    IconUserGroup,
-    IconEdit,
-    IconHorn,
-    IconBellStroked,
-    IconSun,
-    IconMoon,
 } from '@douyinfe/semi-icons';
-import { Logo, MegaphoneStroked } from '../../lib/Illustrations';
 
-// const items = [
-//     { itemKey: 'welcome', text: 'Welcome', icon: <IconHome />, url: '/semi/welcome' },
-//     { itemKey: 'settings', text: 'Settings', icon: <IconSetting />, url: '/semi/settings' },
-//     { itemKey: 'feedback', text: 'Feedback', icon: <IconStar />, url: '/semi/feedback' },
-//     { itemKey: 'free-vs-pro', text: 'Free vs Pro', icon: <IconMember />, url: '/semi/free-vs-pro' },
-//     {
-//         itemKey: 'union-management',
-//         text: 'Union Management',
-//         icon: <IconUserGroup />,
-//         url: '/semi/union-management',
-//         items: [
-//             { itemKey: 'announcement-settings', text: 'Announcement Settings', url: '/semi/union-management/announcement-settings' },
-//             { itemKey: 'union-query', text: 'Union Query', url: '/semi/union-management/union-query' },
-//             { itemKey: 'entry-information', text: 'Entry Information', url: '/semi/union-management/entry-information' },
-//         ],
-//     },
-//     {
-//         itemKey: 'approve-management',
-//         text: 'Approval Management',
-//         icon: <IconEdit />,
-//         url: '/semi/approve-management',
-//         items: [
-//             { itemKey: 'check-in-review', text: 'Check-in Review', url: '/semi/approve-management/check-in-review' },
-//             {
-//                 itemKey: 'operation-management',
-//                 text: 'Operations Management',
-//                 url: '/semi/approve-management/operation-management',
-//                 items: [
-//                     { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/operation-management/personnel-management' },
-//                     { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/operation-management/personnel-change' },
-//                 ],
-//             },
-//             {
-//                 itemKey: 'product-management',
-//                 text: 'Product Management',
-//                 url: '/semi/approve-management/product-management',
-//                 items: [
-//                     { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/product-management/personnel-management' },
-//                     { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/product-management/personnel-change' },
-//                 ],
-//             },
-//         ],
-//     },
-//     {
-//         text: 'Task Platform',
-//         icon: <IconSetting />,
-//         itemKey: 'job',
-//         url: '/semi/job',
-//         items: [
-//             { itemKey: 'task-management', text: 'Task Management', url: '/semi/job/task-management' },
-//             { itemKey: 'user-task-query', text: 'User Task Query', url: '/semi/job/user-task-query' },
-//         ],
-//     },
-// ];
-
-import Details from '../../data/details.json';
-
-export default function HorizontalMenuControl({items, responsive = false, breakpoint = 960, headerContent={}, footerContent={}}) {
+export default function HorizontalMenuControl({items, breakpoint, headerContent={}, footerContent={}}) {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -99,26 +27,6 @@ export default function HorizontalMenuControl({items, responsive = false, breakp
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
-    
-
-
-    // const headerContent = {
-    //     logo: <Logo width={36} height={36} />,
-    //     text: Details?.name,
-    // };
-
-    // const footerContent = (
-    //     <Space align='center'>  
-    //         <Badge count={Details?.version} theme='light' countStyle={{padding: 8, height: 'auto'}} />    
-    //         <Button theme='outline' icon={darkmode?<IconSun />:<IconMoon />} aria-label="Mode" onClick={switchMode} />
-    //         <Button theme='outline' icon={<IconBookStroked />} aria-label="Screenshot" />
-    //         <Button theme='outline' icon={<IconHelpCircleStroked />} aria-label="Screenshot" />
-    //         <Badge count={5}>
-    //             <Button theme='outline' icon={<IconBellStroked />} onClick={() => setNewsVisible(true)} aria-label="Screenshot" />
-    //         </Badge>
-    //     </Space>
-    // );
 
     useEffect(() => {
         const path = location.pathname;
@@ -218,19 +126,7 @@ export default function HorizontalMenuControl({items, responsive = false, breakp
 
     return (
         <>
-            {!isCollapse ? (
-                // --- Desktop (Horizontal) ---
-                <Nav
-                    mode="horizontal"
-                    items={items}
-                    selectedKeys={selectedKeys}
-                    openKeys={openKeys}
-                    onOpenChange={(data) => handleOpenChange(data, 'horizontal')}
-                    onSelect={(data) => handleSelect(data, 'horizontal')}
-                    header={headerContent}
-                    footer={footerContent}
-                />
-            ) : (
+            {isCollapse && breakpoint ? (
                 // --- Mobile Header ---
                 <div
                     style={{
@@ -257,27 +153,41 @@ export default function HorizontalMenuControl({items, responsive = false, breakp
                         />
                     </div>
                 </div>
-            )}
-
-            {/* --- SideSheet (Vertical / Accordion Menu on Mobile) --- */}
-            <SideSheet
-                placement="right"
-                visible={menuVisible}
-                onCancel={() => setMenuVisible(false)}
-                title={__("Menu", "authpress")}
-                closeOnEsc={true}
-            >
+            ) : (
+                // --- Desktop (Horizontal) ---
                 <Nav
-                    mode="vertical"
+                    mode="horizontal"
                     items={items}
                     selectedKeys={selectedKeys}
                     openKeys={openKeys}
-                    onOpenChange={(data) => handleOpenChange(data, 'vertical')}
-                    onSelect={(data) => handleSelect(data, 'vertical')}
-                    footer={{ collapseButton: false }}
-                    style={{ width: '100%', height: '100%', borderRight: 'none' }}
+                    onOpenChange={(data) => handleOpenChange(data, 'horizontal')}
+                    onSelect={(data) => handleSelect(data, 'horizontal')}
+                    header={headerContent}
+                    footer={footerContent}
+                    style={{backgroundColor:'var(--semi-color-bg-2)'}}
                 />
-            </SideSheet>
+            )}
+            { breakpoint &&
+                <SideSheet
+                    placement="right"
+                    visible={menuVisible}
+                    onCancel={() => setMenuVisible(false)}
+                    title={__("Menu", "authpress")}
+                    closeOnEsc={true}
+                >
+                    <Nav
+                        mode="vertical"
+                        items={items}
+                        selectedKeys={selectedKeys}
+                        openKeys={openKeys}
+                        onOpenChange={(data) => handleOpenChange(data, 'vertical')}
+                        onSelect={(data) => handleSelect(data, 'vertical')}
+                        footer={{ collapseButton: false }}
+                        style={{ width: '100%', height: '100%', borderRight: 'none' }}
+                    />
+                </SideSheet>
+            }
+            
         </>
     );
 }

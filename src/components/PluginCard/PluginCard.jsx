@@ -2,7 +2,10 @@ import { __ } from "@wordpress/i18n";
 import { useCallback, useEffect, useState } from 'react';
 import { formDataPost } from "../../lib/Helpers"; // Import utility function
 import './PluginCard.scss';
+import { Space, Button, Tag, Typography, Avatar } from '@douyinfe/semi-ui';
 export default function PluginCard({image, name, intro, plugin_source='internal', plugin_slug='', plugin_file='', download_url=''}) {
+    
+    const { Text, Paragraph, Title } = Typography;
     /*
     data-sub_action="install_activate" 
     data-plugin_source="external" 
@@ -138,25 +141,19 @@ export default function PluginCard({image, name, intro, plugin_source='internal'
 		pluginStatus,
 	);
     return (
-        <div className="row g-2 safq-plugin-card align-items-center"> 
-            <div className="col-auto">
-                <div style={{width:'60px', height:'60px'}}>
-                    <img className="img-fluid" src={image} alt="" />
-                </div>
-            </div>
-            <div className="col">
-                <h4 className="title m-0" dangerouslySetInnerHTML={{ __html: name }}/>
-                {/* <p className="intro m-0" dangerouslySetInnerHTML={{ __html: intro }}/> */}
-                <div className="action">
-                    <button 
-                        onClick={handleButtonClick}
-                        className={`link install-button ${pluginStatus}`}
-                        disabled={isButtonDisabled}
-                    >                            
-                        {getButtonLabel()}
-                    </button>
-                </div>
-            </div>
-        </div>
+        <Space align='center'>
+            <Avatar
+                alt={name}
+                src={image}
+                size="large"
+                shape="square"
+                style={{flex: '0 0 72px'}}
+            />
+            <Space vertical align='start'>
+                <Title heading={6}>{name}</Title>
+                {/* <Paragraph>{intro}</Paragraph> */}
+                <Tag color='green' size='large'> tag </Tag>
+            </Space>
+        </Space>
     )
 }

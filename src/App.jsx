@@ -5,7 +5,7 @@ import "./tailwind.css"
 // import Header from "./layouts/Header/Header";
 // import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 // import "bootstrap/dist/css/bootstrap.min.css";
-import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row  } from '@douyinfe/semi-ui';
+import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row, Avatar  } from '@douyinfe/semi-ui';
 import { IconStar, IconSetting, IconMenu, IconHome, IconMember, IconBookStroked, IconHelpCircleStroked, IconUserGroup, IconEdit, IconHorn, IconBellStroked, IconSun, IconMoon, } from '@douyinfe/semi-icons';
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 //Route Pages
@@ -113,32 +113,33 @@ function App() {
         }
     };
         
-    const [settingsBodyHeight, setSettingsBodyHeight] = useState();
-    useEffect(() => {
-        function updateVH() {
-            const ussbh = document.body.scrollHeight
-            ? document.body.scrollHeight
-            : window.innerHeight; // fallback
-            // const appliedHeight = vh - 69;
-            setSettingsBodyHeight(ussbh - 130);
-            // console.log("document.body.scrollHeight:", document.body.scrollHeight);
-        }
+    // const [settingsBodyHeight, setSettingsBodyHeight] = useState();
+    // useEffect(() => {
+    //     function updateVH() {
+    //         const ussbh = document.body.scrollHeight
+    //         ? document.body.scrollHeight
+    //         : window.innerHeight; // fallback
+    //         // const appliedHeight = vh - 69;
+    //         setSettingsBodyHeight(ussbh - 130);
+    //         // console.log("document.body.scrollHeight:", document.body.scrollHeight);
+    //     }
 
-        updateVH();
+    //     updateVH();
 
-        // Listen to resize & viewport changes
-        window.visualViewport?.addEventListener("resize", updateVH);
-        window.visualViewport?.addEventListener("scroll", updateVH);
+    //     // Listen to resize & viewport changes
+    //     window.visualViewport?.addEventListener("resize", updateVH);
+    //     window.visualViewport?.addEventListener("scroll", updateVH);
 
-        return () => {
-            window.visualViewport?.removeEventListener("resize", updateVH);
-            window.visualViewport?.removeEventListener("scroll", updateVH);
-        };
-    }, []);
+    //     return () => {
+    //         window.visualViewport?.removeEventListener("resize", updateVH);
+    //         window.visualViewport?.removeEventListener("scroll", updateVH);
+    //     };
+    // }, []);
     return (
         <LocaleProvider locale={local}>
-            <div className="authpress-settings-container semi-scope">
+            <div className="authpress-settings-container semi-scope" style={{backgroundColor: 'var(--semi-color-bg-1)'}}>
                 <Banner 
+                    // className="semi-always-light"
                     fullMode={false}
                     type="info"
                     description={
@@ -150,7 +151,9 @@ function App() {
                     }
                 />
                 <Layout className="components-layout-demo">
-                    <Header>                    
+                    <Header
+                        style={{backgroundColor:'var(--semi-color-bg-3)'}}
+                    >                    
                         <HorizontalMenuControl
                             items = {[
                                 { itemKey: 'welcome', text: 'Welcome', icon: <IconHome />, url: '/semi/welcome' },
@@ -158,7 +161,7 @@ function App() {
                                 { itemKey: 'feedback', text: 'Feedback', icon: <IconStar />, url: '/semi/feedback' },
                                 { itemKey: 'free-vs-pro', text: 'Free vs Pro', icon: <IconMember />, url: '/semi/free-vs-pro' },
                             ]}
-                            responsive="true"
+                            breakpoint = "960"
                             headerContent = {{
                                 logo: <Logo width={36} height={36} />,
                                 text: Details?.name,
@@ -178,7 +181,7 @@ function App() {
                     </Header>
                     <div 
                         className="authpress-settings p-6"
-                        style={{minHeight:settingsBodyHeight, backgroundColor: 'var(--semi-color-bg-4)'}}
+                        // style={{minHeight:settingsBodyHeight, }}
                     >
                         <Routes>
                             {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
@@ -232,19 +235,20 @@ function App() {
                         </Routes>
                     </div>
                     <Footer
-                        className="p-[15px]" 
-                        style={{borderTop: '1px solid var(--semi-color-border)', backgroundColor: 'var(--semi-color-fill-0)'}}
+                        className="p-[15px] w-full" 
+                        style={{borderTop: '1px solid var(--semi-color-border)', backgroundColor:'var(--semi-color-bg-2)'}}
                     >
-                        <Row type="flex">
-                            <Col lg={12} xl={12} className="text-center lg:text-left">
+                        <Row type="flex" gutter={24} align="middle" justify="space-between">
+                            <Col xs={24} lg={12} className="text-center lg:text-left mb-2 lg:mb-0">
                                 <Space align='center' spacing='medium'>
                                     <img src={`${authpress_ajax_obj.image_url}logo.svg`} alt="" width="30" height="30" />
-                                    <span>{Details?.name}</span>
+                                    <Text>{Details?.name}</Text>
                                 </Space>
                             </Col>
-                            <Col lg={12} xl={12} className="text-center lg:text-right">
+                            <Col xs={24} lg={12} className="text-center lg:text-right">
                                 <Space align='center' spacing='medium'>
-                                    {Details?.version} {__( 'Core', "authpress" )}
+                                    <Text>{Details?.version}</Text> 
+                                    <Badge count={__( 'Free', "authpress" )} theme='light' />
                                 </Space>
                             </Col>
                         </Row>

@@ -56,16 +56,19 @@ export default function Dashboard() {
                     >
                         {Object.values(settingsMenu).map((feature, index) => (
                             <div className="feature" key={index}>
-                                <h4 className="feature-title">{feature?.title}</h4>
-                                <div className="feature-intro">{feature?.description}</div>
+                                <Title heading={4}>{feature?.title}</Title>
+                                <Paragraph>{feature?.description}</Paragraph>
                             </div>
                         ))}
+                        <Paragraph>login details, as a time line</Paragraph>
+                        <Paragraph>Traffic Log</Paragraph>
+                        <Paragraph>LLM Bot Tracker</Paragraph>
                     </Card>
                     <Card 
                         title={__("Extend Your Website", "authpress")}
                         className=""
                     >
-                        <Row type="flex">
+                        <Row type="flex" gutter={[16, 24]}>
                             {
                                 pluginsLoading 
                                 ? 
