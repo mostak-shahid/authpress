@@ -1,5 +1,8 @@
 import { useLocation } from 'react-router-dom';
 import { useMain } from '../../contexts/MainContext';
+import { Layout, Typography,  Banner, Breadcrumb, Card, Button, Space,} from '@douyinfe/semi-ui';
+
+const { Title, Text, Paragraph } = Typography;  
 const findPageInfo = (menu, path) => {
     for (const key in menu) {
         const item = menu[key];
@@ -26,9 +29,9 @@ const PageInfo = ({ url }) => {
 
     return (
         <div className="page-info">
-            <h3 className="page-title">{pageInfo.title}</h3>
+            <Title heading={3} className="page-title">{pageInfo.title}</Title>
             {pageInfo.description && (
-                <p className="page-description">{pageInfo.description}</p>
+                <Paragraph className="page-description">{pageInfo.description}</Paragraph>
             )}
         </div>
     );

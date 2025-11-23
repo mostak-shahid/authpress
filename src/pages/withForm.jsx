@@ -6,23 +6,17 @@ import { useLocation } from 'react-router-dom';
 import MultiLevelListGroup from "../components/MultiLevelListGroup/MultiLevelListGroup";
 import PageInfo from "../components/PageInfo/PageInfo";
 import { useMain } from "../contexts/MainContext";
-import { formDataPost, setNestedValue, urlToArr } from "../lib/Helpers"; // Import utility function
+import { formDataPost, setNestedValue, urlToArr,  } from "../lib/Helpers"; // Import utility function
 import Details from '../data/details.json';
 
-import { 
-    Layout,
-    Typography,
-    Banner, 
-    Breadcrumb,
-    Card,
-    Button,
-    Space,
-} from '@douyinfe/semi-ui';
+import { Layout, Typography,  Banner, Breadcrumb, Card, Button, Space,} from '@douyinfe/semi-ui';
 import VerticalMenuControl from "../components/VerticalMenuControl/VerticalMenuControl";
+
 const withForm = (OriginalComponent, sectionPath = null) => {   
     const { Header, Footer, Sider, Content } = Layout;
     const { Title, Text, Paragraph } = Typography;  
     const routes = ['Home', 'The is a very very very very long title', 'Detail'];
+
     function NewComponent() {
         const {
             settingData, 
@@ -111,31 +105,44 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                 }
             }
         };
+        const [settingsBodyHeight, setHeight] = useState();
         useEffect(() => {
-        }, [])
+            function updateVH() {
+                const authpress_height = document.body.scrollHeight
+                ? document.body.scrollHeight
+                : window.innerHeight; // fallback
+                // const appliedHeight = vh - 69;
+                setHeight(authpress_height - 130);
+                // console.log("document.body.scrollHeight:", document.body.scrollHeight);
+            }
+
+            updateVH();
+
+            // Listen to resize & viewport changes
+            window.visualViewport?.addEventListener("resize", updateVH);
+            window.visualViewport?.addEventListener("scroll", updateVH);
+
+            return () => {
+                window.visualViewport?.removeEventListener("resize", updateVH);
+                window.visualViewport?.removeEventListener("scroll", updateVH);
+            };
+        }, []);
         return (
             <>
                 <div className="authpress-settings container mx-auto px-4">
                     <Layout>
                         <Sider>
-                            <div className="plugin-info d-flex flex-column align-items-center gap-2 p-3 border-bottom">
-                                <img src={`${authpress_ajax_obj.image_url}logo.svg`} alt="" width="100" height="100" />
-                                <span className="fw-bold">{Details?.name}</span>
-                                <span>{Details?.version}</span>
-                            </div> 
                             <VerticalMenuControl/>
                         </Sider>
-                        <Content style={{ padding: 24, minHeight: 280, backgroundColor: 'var(--semi-color-bg-4)'}}>                        
+                        <Content style={{ padding: 24, minHeight: settingsBodyHeight, backgroundColor: 'var(--semi-color-bg-4)'}}>    
+                            {console.log(settingsBodyHeight)}                    
                             <Breadcrumb
                                 routes={routes}
                                 style={{ padding: 10, backgroundColor: 'var(--semi-color-bg-3)', border: '1px solid var(--semi-color-border)', marginBottom: 24 }}
                             />
                             <Card 
                                 title={
-                                    <>
-                                    <Title heading={6} style={{ margin: '8px 0' }} >h6. Semi Design</Title>
-                                    <Text>Welcome to Semi Design</Text>
-                                    </>
+                                    <PageInfo url={location.pathname} />
                                 }
                                 style={{ borderRadius: 0 }}
                                 headerExtraContent={
@@ -160,8 +167,6 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                                     </Space> : ''
                                 }
                             >
-                                <PageInfo url={location.pathname} />
-                                <hr />
                                 <OriginalComponent handleChange={handleChange} />
                                 
                 

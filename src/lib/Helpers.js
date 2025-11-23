@@ -98,3 +98,28 @@ export const urlToArr = () => {
     }, [location]);
     return activePathArr;
 }
+export const settingsBodyHeight = (() => {
+    const [height, setHeight] = useState();
+    useEffect(() => {
+        function updateVH() {
+            const authpress_height = document.body.scrollHeight
+            ? document.body.scrollHeight
+            : window.innerHeight; // fallback
+            // const appliedHeight = vh - 69;
+            setHeight(authpress_height - 130);
+            // console.log("document.body.scrollHeight:", document.body.scrollHeight);
+        }
+
+        updateVH();
+
+        // Listen to resize & viewport changes
+        window.visualViewport?.addEventListener("resize", updateVH);
+        window.visualViewport?.addEventListener("scroll", updateVH);
+
+        return () => {
+            window.visualViewport?.removeEventListener("resize", updateVH);
+            window.visualViewport?.removeEventListener("scroll", updateVH);
+        };
+    }, []);
+    return height;
+});

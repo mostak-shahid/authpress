@@ -36,7 +36,7 @@ export default function Dashboard() {
     }, []);
     
     return (
-        <div className="authpress-settings container mx-auto px-4">
+        <div className="authpress-settings container mx-auto p-6">
             <Card
                 className="mb-6"
             >

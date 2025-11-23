@@ -37,7 +37,7 @@ ul#adminmenu {
   li.toplevel_page_authpress {
     .wp-menu-image {
       img {
-        padding-left: 7px;
+      display: inline-block;
       }
     }
     &.current {

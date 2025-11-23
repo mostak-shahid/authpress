@@ -34,7 +34,7 @@ body[theme-mode=dark], body .semi-always-dark, :host([theme-mode=dark]), :host .
 }
 
 ul#adminmenu li.toplevel_page_authpress .wp-menu-image img {
-  padding-left: 7px;
+  display: inline-block;
 }
 ul#adminmenu li.toplevel_page_authpress.current > a::after {
   border-right-color: var(--semi-color-bg-1);

@@ -63,7 +63,7 @@ const items = [
     },
 ];
 import Details from '../../data/details.json';
-export default function VerticalMenuControl() {
+export default function VerticalMenuControl({minHeight}) {
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -180,12 +180,12 @@ export default function VerticalMenuControl() {
             onOpenChange={handleOpenChange}
             onSelect={handleSelect}
             onCollapseChange={setIsCollapse}
-            headerContent = {{
+            header = {{
                 logo: <Logo width={36} height={36} />,
                 text: Details?.name,
             }}
             footer={{ collapseButton: true }}
-            style={{ height: '100%' }}
+            style={{height: '100%'}}
         />
     );
 }

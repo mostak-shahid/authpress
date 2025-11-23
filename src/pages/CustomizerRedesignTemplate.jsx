@@ -5,6 +5,7 @@ import withForm from '../pages/withForm';
 const layouts = [
     'default-login', 'default-login-left', 'default-login-right'
 ];
+import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row  } from '@douyinfe/semi-ui';
 const CustomizerRedesignTemplate = ({handleChange}) => {
     const {
         settingData,
@@ -17,42 +18,30 @@ const CustomizerRedesignTemplate = ({handleChange}) => {
     return (
         <>
             {/* {console.log(settingData)} */}
-            <div className="setting-unit pt-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-12">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("This will be a image selector field, default will be none", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
-                        }
-                    </div>    
-                    {
-                        !settingLoading &&                               
-                        <div className="col-lg-12 mt-4">
-                            <div className="row">
-                                {layouts.map((template) => (
-                                    <div
-                                        key={template}
-                                        className="col-lg-4 mb-4"                                        
-                                    >
-                                        <img 
-                                            style={{ cursor: "pointer" }} 
-                                            className={`img-fluid border border-5 ${settingData?.customizer?.redesign?.templates == template ?'border-primary':''}`}
-                                            src={`${authpress_ajax_obj.image_url}${template}.png`} alt=""
-                                            data-src={template}
-                                            onClick={ () => onClick(template) }
-                                        />
-                                    </div>
-                                ))}
-                            </div>                 
-                        </div>
-                    }
-                </div>
+            <div className="setting-unit pt-4">   
+                {
+                    !settingLoading &&                               
+                    <div xs={24} lg={12} xl={8}>
+                        <Row type="flex" gutter={[24, 24]}>
+                            {layouts.map((template) => (
+                                <Col
+                                    key={template}
+                                    xs={24} 
+                                    lg={12}
+                                    xl={8}                                       
+                                >
+                                    <img 
+                                        style={{ cursor: "pointer", border: '5px solid transparent',borderColor: `${settingData?.customizer?.redesign?.templates == template ?'var(--semi-color-success)':'var(--semi-color-info)'}` }} 
+                                        className={`w-full border-solid border-4 ${settingData?.customizer?.redesign?.templates == template ?'border-primary':''}`}
+                                        src={`${authpress_ajax_obj.image_url}${template}.png`} alt=""
+                                        data-src={template}
+                                        onClick={ () => onClick(template) }
+                                    />
+                                </Col>
+                            ))}
+                        </Row>                 
+                    </div>
+                }
             </div>
         </>
     )

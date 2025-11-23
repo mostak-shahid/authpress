@@ -37,6 +37,7 @@ import CustomizerRedesignTemplate from "./pages/CustomizerRedesignTemplate";
 import { LocaleProvider } from '@douyinfe/semi-ui';
 import local from "@douyinfe/semi-ui/lib/es/locale/source/en_US";
 import { IllustrationIdle, Illustration404, Logo } from './lib/Illustrations';
+import {settingsBodyHeight} from './lib/Helpers';
 import Details from './data/details.json';
 
 const NotFound = () => (
@@ -112,29 +113,6 @@ function App() {
             console.error("Error fetching settings data:", error);
         }
     };
-        
-    const [settingsBodyHeight, setSettingsBodyHeight] = useState();
-    useEffect(() => {
-        function updateVH() {
-            const ussbh = document.body.scrollHeight
-            ? document.body.scrollHeight
-            : window.innerHeight; // fallback
-            // const appliedHeight = vh - 69;
-            setSettingsBodyHeight(ussbh - 130);
-            // console.log("document.body.scrollHeight:", document.body.scrollHeight);
-        }
-
-        updateVH();
-
-        // Listen to resize & viewport changes
-        window.visualViewport?.addEventListener("resize", updateVH);
-        window.visualViewport?.addEventListener("scroll", updateVH);
-
-        return () => {
-            window.visualViewport?.removeEventListener("resize", updateVH);
-            window.visualViewport?.removeEventListener("scroll", updateVH);
-        };
-    }, []);
     return (
         <LocaleProvider locale={local}>
             <div className="authpress-settings-container semi-scope" style={{backgroundColor: 'var(--semi-color-bg-1)'}}>
@@ -180,7 +158,7 @@ function App() {
                         />
                     </Header>
                     <div 
-                        className="authpress-settings p-6"
+                        className="authpress-settings"
                         style={{minHeight:settingsBodyHeight, }}
                     >
                         <Routes>
