@@ -16,6 +16,7 @@ import {
     Breadcrumb,
     Card,
     Button,
+    Space,
 } from '@douyinfe/semi-ui';
 import VerticalMenuControl from "../components/VerticalMenuControl/VerticalMenuControl";
 const withForm = (OriginalComponent, sectionPath = null) => {   
@@ -142,20 +143,27 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                                         More
                                     </Text>
                                 }
+                                footerLine={ sectionPath?true:false }
+                                // footerStyle={{ display: 'flex', justifyContent: 'flex-end' }}
+                                footer={ sectionPath ?
+                                    <Space>
+                                        <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
+                                            {
+                                                saving == 'processing' ? __( "Saving...", "authpress" ) : __( "Save", "authpress" )
+                                            }
+                                        </Button>
+                                        <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
+                                            {
+                                                resetting == 'processing' ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )
+                                            }
+                                        </Button>
+                                    </Space> : ''
+                                }
                             >
                                 <PageInfo url={location.pathname} />
                                 <hr />
                                 <OriginalComponent handleChange={handleChange} />
-                                <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
-                                    {
-                                        saving == 'processing' ? __( "Saving...", "authpress" ) : __( "Save", "authpress" )
-                                    }
-                                </Button>
-                                <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
-                                    {
-                                        resetting == 'processing' ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )
-                                    }
-                                </Button>
+                                
                 
                             </Card>
                         </Content>

@@ -9,6 +9,7 @@ import {
 } from '@douyinfe/semi-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import { IllustrationIdle, Illustration404, Logo } from '../../lib/Illustrations';
 const items = [
     { itemKey: 'user', text: 'User Management', icon: <IconUser />, url: '/semi/user' },
     { itemKey: 'union', text: 'Union Center', icon: <IconStar />, url: '/semi/union' },
@@ -61,7 +62,7 @@ const items = [
         ],
     },
 ];
-
+import Details from '../../data/details.json';
 export default function VerticalMenuControl() {
     const navigate = useNavigate();
     const location = useLocation();
@@ -179,6 +180,10 @@ export default function VerticalMenuControl() {
             onOpenChange={handleOpenChange}
             onSelect={handleSelect}
             onCollapseChange={setIsCollapse}
+            headerContent = {{
+                logo: <Logo width={36} height={36} />,
+                text: Details?.name,
+            }}
             footer={{ collapseButton: true }}
             style={{ height: '100%' }}
         />
