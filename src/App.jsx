@@ -13,7 +13,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 // import ImportExport from "./pages/ImportExport";
 // import More from "./pages/More";
 // import ComponentsBasic from "./pages/ComponentsBasic";
-// import CustomizerRedesignTemplate from "./pages/CustomizerRedesignTemplate";
+import CustomizerRedesignTemplate from "./pages/CustomizerRedesignTemplate";
 // import CustomizerRedesignBackground from "./pages/CustomizerRedesignBackground";
 // import CustomizerRedesignLogo from "./pages/CustomizerRedesignLogo";
 // import CustomizerRedesignForm from "./pages/CustomizerRedesignForm";
@@ -113,28 +113,28 @@ function App() {
         }
     };
         
-    // const [settingsBodyHeight, setSettingsBodyHeight] = useState();
-    // useEffect(() => {
-    //     function updateVH() {
-    //         const ussbh = document.body.scrollHeight
-    //         ? document.body.scrollHeight
-    //         : window.innerHeight; // fallback
-    //         // const appliedHeight = vh - 69;
-    //         setSettingsBodyHeight(ussbh - 130);
-    //         // console.log("document.body.scrollHeight:", document.body.scrollHeight);
-    //     }
+    const [settingsBodyHeight, setSettingsBodyHeight] = useState();
+    useEffect(() => {
+        function updateVH() {
+            const ussbh = document.body.scrollHeight
+            ? document.body.scrollHeight
+            : window.innerHeight; // fallback
+            // const appliedHeight = vh - 69;
+            setSettingsBodyHeight(ussbh - 130);
+            // console.log("document.body.scrollHeight:", document.body.scrollHeight);
+        }
 
-    //     updateVH();
+        updateVH();
 
-    //     // Listen to resize & viewport changes
-    //     window.visualViewport?.addEventListener("resize", updateVH);
-    //     window.visualViewport?.addEventListener("scroll", updateVH);
+        // Listen to resize & viewport changes
+        window.visualViewport?.addEventListener("resize", updateVH);
+        window.visualViewport?.addEventListener("scroll", updateVH);
 
-    //     return () => {
-    //         window.visualViewport?.removeEventListener("resize", updateVH);
-    //         window.visualViewport?.removeEventListener("scroll", updateVH);
-    //     };
-    // }, []);
+        return () => {
+            window.visualViewport?.removeEventListener("resize", updateVH);
+            window.visualViewport?.removeEventListener("scroll", updateVH);
+        };
+    }, []);
     return (
         <LocaleProvider locale={local}>
             <div className="authpress-settings-container semi-scope" style={{backgroundColor: 'var(--semi-color-bg-1)'}}>
@@ -156,8 +156,8 @@ function App() {
                     >                    
                         <HorizontalMenuControl
                             items = {[
-                                { itemKey: 'welcome', text: 'Welcome', icon: <IconHome />, url: '/semi/welcome' },
-                                { itemKey: 'settings', text: 'Settings', icon: <IconSetting />, url: '/semi/settings' },
+                                { itemKey: 'welcome', text: 'Welcome', icon: <IconHome />, url: '/' },
+                                { itemKey: 'settings', text: 'Settings', icon: <IconSetting />, url: '/settings' },
                                 { itemKey: 'feedback', text: 'Feedback', icon: <IconStar />, url: '/semi/feedback' },
                                 { itemKey: 'free-vs-pro', text: 'Free vs Pro', icon: <IconMember />, url: '/semi/free-vs-pro' },
                             ]}
@@ -181,16 +181,16 @@ function App() {
                     </Header>
                     <div 
                         className="authpress-settings p-6"
-                        // style={{minHeight:settingsBodyHeight, }}
+                        style={{minHeight:settingsBodyHeight, }}
                     >
                         <Routes>
                             {/* <Route path="/" element={<RestrictionsSettings handleChange={handleChange} />} /> */}
                             {/* <Route path="/"  element={<Navigate to="/restrictions/settings" />} /> */}
                             <Route path="/" element={<Dashboard />} />
-
-                            {/* 
                             <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
                             <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
+
+                            {/* 
                             <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
                             <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
                             <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />

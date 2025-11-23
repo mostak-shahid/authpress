@@ -7,21 +7,21 @@ import MultiLevelListGroup from "../components/MultiLevelListGroup/MultiLevelLis
 import PageInfo from "../components/PageInfo/PageInfo";
 import { useMain } from "../contexts/MainContext";
 import { formDataPost, setNestedValue, urlToArr } from "../lib/Helpers"; // Import utility function
-import Toast from 'react-bootstrap/Toast';
-import ToastContainer from 'react-bootstrap/ToastContainer';
 import Details from '../data/details.json';
-import {
+
+import { 
+    Layout,
+    Typography,
+    Banner, 
+    Breadcrumb,
     Card,
-    CardHeader,
-    CardBody,
-    CardFooter,
-    Flex, 
-    FlexBlock, 
-    FlexItem,
-    Button, 
-} from '@wordpress/components';
-import { Icon, more, file, envelope, rotateRight, check, arrowUp, arrowDown, trash, reset } from '@wordpress/icons'; // Example icon
-const withForm = (OriginalComponent, sectionPath = null) => {     
+    Button,
+} from '@douyinfe/semi-ui';
+import VerticalMenuControl from "../components/VerticalMenuControl/VerticalMenuControl";
+const withForm = (OriginalComponent, sectionPath = null) => {   
+    const { Header, Footer, Sider, Content } = Layout;
+    const { Title, Text, Paragraph } = Typography;  
+    const routes = ['Home', 'The is a very very very very long title', 'Detail'];
     function NewComponent() {
         const {
             settingData, 
@@ -32,8 +32,6 @@ const withForm = (OriginalComponent, sectionPath = null) => {
             settingReload,
             setSettingReload
         } = useMain();
-        
-        const [showToast, setShowToast] = useState(false)
         const [ saving, setSaving ] = useState('normal');
         const [ resetting, setResetting ] = useState('normal');
 
@@ -86,7 +84,6 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                 setTimeout(() => {
                     setSaving('normal');
                 }, 1000);
-                setShowToast(true);
             } catch (error) {
                 console.error("Error saving settings:", error);
             }
@@ -117,109 +114,54 @@ const withForm = (OriginalComponent, sectionPath = null) => {
         }, [])
         return (
             <>
-                <ToastContainer
-                    className="p-3"
-                    // position="end"
-                    style={{ zIndex: 9999, top:'43px', right:0 }}
-                >
-                    <Toast 
-                        bg="success"
-                        onClose={() => setShowToast(false)} 
-                        show={showToast} 
-                        delay={3000} 
-                        autohide
-                    >
-                        <Toast.Body>
-                            <strong className="me-auto text-white">{__('Option Saved',"authpress")}</strong>
-                        </Toast.Body>
-                        {/* <Toast.Header>
-                            <strong className="me-auto">{__('Option Saved',"authpress")}</strong>
-                        </Toast.Header>
-                        <Toast.Body className="text-white">
-                            {__(
-                                'All changes have been applied correctly, ensuring your preferences are now in effect.',                                                        
-                                "authpress"
-                            )}
-                        </Toast.Body> */}
-                    </Toast>
-                </ToastContainer>
-                <div className="authpress-settings">
-                    <div className="container">                        
-                        <div className="row g-0">
-                            <div className="col-lg-3 d-none d-lg-block">
-                                <Card className="authpress-sidebar py-3 rounded-0" style={{marginRight:'-1px', height: "100%"}}> 
-                                    <div className="plugin-info d-flex flex-column align-items-center gap-2 p-3 border-bottom">
-                                        <img src={`${authpress_ajax_obj.image_url}logo.svg`} alt="" width="100" height="100" />
-                                        <span className="fw-bold">{Details?.name}</span>
-                                        <span>{Details?.version}</span>
-                                    </div>                           
-                                    <MultiLevelListGroup data={settingsMenu}/>
-                                    {/* <VerticalMenu menuData={settingsMenu} /> */}
-                                </Card>
-                            </div>
-                            <div className="col-lg-9">
-                                <Card className="rounded-0" style={{height: "100%"}}>
-                                    <CardHeader>
-                                        <PageInfo url={location.pathname} />
-                                    </CardHeader>
-                                    <CardBody className="p-4" style={{marginBottom: '80px'}}>        
-                                        <OriginalComponent handleChange={handleChange} />
-                                    </CardBody>
-                                    {/* {console.log(location.pathname)} */}
+                <div className="authpress-settings container mx-auto px-4">
+                    <Layout>
+                        <Sider>
+                            <div className="plugin-info d-flex flex-column align-items-center gap-2 p-3 border-bottom">
+                                <img src={`${authpress_ajax_obj.image_url}logo.svg`} alt="" width="100" height="100" />
+                                <span className="fw-bold">{Details?.name}</span>
+                                <span>{Details?.version}</span>
+                            </div> 
+                            <VerticalMenuControl/>
+                        </Sider>
+                        <Content style={{ padding: 24, minHeight: 280, backgroundColor: 'var(--semi-color-bg-4)'}}>                        
+                            <Breadcrumb
+                                routes={routes}
+                                style={{ padding: 10, backgroundColor: 'var(--semi-color-bg-3)', border: '1px solid var(--semi-color-border)', marginBottom: 24 }}
+                            />
+                            <Card 
+                                title={
+                                    <>
+                                    <Title heading={6} style={{ margin: '8px 0' }} >h6. Semi Design</Title>
+                                    <Text>Welcome to Semi Design</Text>
+                                    </>
+                                }
+                                style={{ borderRadius: 0 }}
+                                headerExtraContent={
+                                    <Text link>
+                                        More
+                                    </Text>
+                                }
+                            >
+                                <PageInfo url={location.pathname} />
+                                <hr />
+                                <OriginalComponent handleChange={handleChange} />
+                                <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
                                     {
-                                        sectionPath && 
-                                            <CardFooter style={{position: 'absolute', bottom: 0, backgroundColor: '#ffffff'}}>
-                                                <Flex justify="start" align="center">
-                                                    <FlexItem>
-                                                        <Button
-                                                            isDestructive={ saving=='processing'?true:false } // Red button
-                                                            isBusy={ saving!='normal'?true:false  } // Show loading indicator
-                                                            disabled={ saving!='normal'?true:false } // Disable the button
-                                                            isPressed={ false } // Appear pressed, Become black  
-                                                            icon={ saving=='processing'?rotateRight:saving=='done'?check:file} // Button icon
-                                                            iconPosition="left" // Icon position (left, right)
-                                                            iconSize={ 20 } // Icon size
-                                                            size="medium" // Button size (small, medium, large)
-                                                            // style={ { marginRight: '8px' } } // Custom styles
-                                                            className={saving=='processing'?'button-processing':'' } // Custom class name (button-processing)                  
-                                                            variant="primary"
-                                                            onClick={ handleSave }
-                                                        >
-                                                            {
-                                                                saving == 'processing' ? __( "Saving...", "authpress" ) : __( "Save", "authpress" )
-                                                            }
-                                                        </Button> 
-                                                    </FlexItem>
-                                                    <FlexItem>
-                                                        <Button
-                                                            isDestructive={ resetting=='processing'?true:false } // Red button
-                                                            isBusy={ resetting!='normal'?true:false  } // Show loading indicator
-                                                            disabled={ resetting!='normal'?true:false } // Disable the button
-                                                            isPressed={ false } // Appear pressed, Become black  
-                                                            icon={ resetting=='processing'?rotateRight:resetting=='done'?check:trash} // Button icon
-                                                            iconPosition="left" // Icon position (left, right)
-                                                            iconSize={ 20 } // Icon size
-                                                            size="medium" // Button size (small, medium, large)
-                                                            // style={ { marginRight: '8px' } } // Custom styles
-                                                            className={resetting=='processing'?'button-processing':'' } // Custom class name (button-processing)                  
-                                                            variant="secondary"
-                                                            // onClick={ handleResetAll }
-                                                            onClick={ () => handleReset(sectionPath) }
-                                                            data-id={sectionPath}
-                                                        >
-                                                            {
-                                                                resetting == 'processing' ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )
-                                                            }
-                                                        </Button> 
-                                                    </FlexItem>
-                                                </Flex> 
-                                            </CardFooter>
+                                        saving == 'processing' ? __( "Saving...", "authpress" ) : __( "Save", "authpress" )
                                     }
-                                    
-                                </Card>
-                            </div>
-                        </div>
-                    </div>
+                                </Button>
+                                <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
+                                    {
+                                        resetting == 'processing' ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )
+                                    }
+                                </Button>
+                
+                            </Card>
+                        </Content>
+                    </Layout>
+                
+                    
                 </div>
             </>
         )

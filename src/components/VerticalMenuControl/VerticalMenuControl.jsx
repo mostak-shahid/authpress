@@ -62,7 +62,7 @@ const items = [
     },
 ];
 
-export default function VerticalMenu() {
+export default function VerticalMenuControl() {
     const navigate = useNavigate();
     const location = useLocation();
 
