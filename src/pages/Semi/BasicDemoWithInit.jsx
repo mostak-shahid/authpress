@@ -4,33 +4,33 @@ import { IconUpload } from '@douyinfe/semi-icons';
 import { useMain } from '../../contexts/MainContext';
 import apiFetch from "@wordpress/api-fetch";
 const BasicDemoWithInit = () => {
-    // const {
-    //     settingData,
-    //     setSettingData,
-    //     settingLoading
-    // } = useMain();
+    const [formApi, setFormApi] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [settingData, setSettingData] = useState({});
-    const [settingLoading, setSettingLoading] = useState(true);
-    //
-    const OPTIONS_API_URL = "/authpress/v1/options";
     
     useEffect(() => {
-        const basePath = '/authpress/v1';        
         const fetchSettingData = async () => {
             try {
                 const response = await apiFetch({
-                    path: `${basePath}/options`,
-                    headers: { 'X-WP-Nonce': authpress_ajax_obj.api_nonce }
+                    path: `/authpress/v1/options`,
                 });
+
                 setSettingData(response);
-                setSettingLoading(false);
+                setLoading(false);
+
+                // re-fill form after fetch
+                if (formApi) {
+                    formApi.setValues(response);
+                }
+
             } catch (error) {
                 console.log(error);
             }
         };
-    
+
         fetchSettingData();
-    }, []);
+    }, [formApi]);
+
     const [initValues, setInitValues] = useState({
         name: 'semi',
         business: ['ulikeCam'],
@@ -107,21 +107,23 @@ const BasicDemoWithInit = () => {
 
     return (
         <>
-            <Form
-                initValues={initValues}
-                style={{ padding: 10, width: '100%' }}
-                onValueChange={(v) => {
-                    // console.log(v);
-                    setInitValues({ ...initValues, ...v });
-                }}
-            >
-                {
-                    !settingLoading &&  
-                    <>
-                    <Switch field="captcha.settings.enabled" label="Switch(Switch)" />
-                    </>
-                }
-            </Form>
+            {console.log(settingData)}
+            {!loading && (
+                <Form
+                    value={settingData}                // ← controlled form
+                    onValueChange={(v) => {
+                        setSettingData(v);             // ← keep state updated
+                    }}
+                    style={{ padding: 10, width: '100%' }}
+                >
+
+                    <Form.Switch
+                        field="captcha.settings.enabled"
+                        label="Enable Captcha"
+                    />
+
+                </Form>
+            )}
             <Form
                 initValues={initValues}
                 style={{ padding: 10, width: '100%' }}
@@ -132,7 +134,7 @@ const BasicDemoWithInit = () => {
             >
                 {console.log(initValues)}
                 {
-                    console.log(settingLoading, settingData)
+                    // console.log(settingLoading, settingData)
                 }
                 <Section text="Basic Info">
                     <Row>

@@ -1,49 +1,114 @@
 import { __ } from "@wordpress/i18n";
-import React from 'react';
-import { useMain } from '../contexts/MainContext';
-import withForm from '../pages/withForm';
-const layouts = [
-    'default-login', 'default-login-left', 'default-login-right'
-];
-import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row  } from '@douyinfe/semi-ui';
-const CustomizerRedesignTemplate = ({handleChange}) => {
-    const {
-        settingData,
-        settingLoading
-    } = useMain();
-    const onClick = (template) => {
-        handleChange('customizer.redesign.templates',template);
-        // Do some more task with template variable
+import React from "react";
+import { useMain } from "../contexts/MainContext";
+import withForm from "../pages/withForm";
+import { Col, Row } from "@douyinfe/semi-ui";
+
+const layouts = ["default-login", "default-login-left", "default-login-right"];
+
+// -------------------------
+// PRESETS
+// -------------------------
+const preset1 = {
+    customizer: {
+        redesign: { templates: "default-login" },
+        form: { wrapper: { position: "center" } },
+    },
+};
+
+const preset2 = {
+    customizer: {
+        redesign: { templates: "default-login-left" },
+        form: { wrapper: { position: "left" } },
+    },
+};
+
+const preset3 = {
+    customizer: {
+        redesign: { templates: "default-login-right" },
+        form: { wrapper: { position: "right" } },
+    },
+};
+
+// -------------------------
+// SAFE DEEP MERGE
+// Prevents strings from becoming objects of characters
+// -------------------------
+const deepMerge = (target, source) => {
+    // If the new value is primitive → replace directly
+    if (typeof source !== "object" || source === null) {
+        return source;
     }
+
+    if (typeof target !== "object" || target === null) {
+        return source;
+    }
+
+    const output = { ...target };
+
+    Object.keys(source).forEach((key) => {
+        output[key] =
+            key in target
+                ? deepMerge(target[key], source[key])
+                : source[key];
+    });
+
+    return output;
+};
+
+const CustomizerRedesignTemplate = ({ handleChange }) => {
+    const { settingData, setSettingData, settingLoading } = useMain();
+
+    // -------------------------
+    // Handle template click
+    // -------------------------
+    const onClick = (template) => {
+        let preset = null;
+
+        if (template === "default-login") preset = preset1;
+        if (template === "default-login-left") preset = preset2;
+        if (template === "default-login-right") preset = preset3;
+
+        if (preset) {
+            const updated = deepMerge(settingData, preset);
+            setSettingData(updated);
+            handleChange("customizer.redesign.templates", template);
+        }
+    };
+
     return (
-        <>
-            {/* {console.log(settingData)} */}
-            <div className="setting-unit pt-4">   
-                {
-                    !settingLoading &&                               
-                    <div xs={24} lg={12} xl={8}>
-                        <Row type="flex" gutter={[24, 24]}>
-                            {layouts.map((template) => (
-                                <Col
-                                    key={template}
-                                    xs={24} 
-                                    lg={12}
-                                    xl={8}                                       
-                                >
-                                    <img 
-                                        style={{ cursor: "pointer", border: '5px solid transparent',borderColor: `${settingData?.customizer?.redesign?.templates == template ?'var(--semi-color-success)':'var(--semi-color-info)'}` }} 
-                                        className={`w-full border-solid border-4 ${settingData?.customizer?.redesign?.templates == template ?'border-primary':''}`}
-                                        src={`${authpress_ajax_obj.image_url}${template}.png`} alt=""
-                                        data-src={template}
-                                        onClick={ () => onClick(template) }
+        <div className="setting-unit pt-4">
+            {console.log(settingData?.customizer?.redesign)}
+            {!settingLoading && (
+                <div xs={24} lg={12} xl={8}>
+                    <Row type="flex" gutter={[24, 24]}>
+                        {layouts.map((template) => {
+                            const active =
+                                settingData?.customizer?.redesign?.templates === template;
+
+                            return (
+                                <Col key={template} xs={24} lg={12} xl={8}>
+                                    <img
+                                        src={`${authpress_ajax_obj.image_url}${template}.png`}
+                                        alt={template}
+                                        onClick={() => onClick(template)}
+                                        style={{
+                                            cursor: "pointer",
+                                            width: "100%",
+                                            border: "5px solid",
+                                            borderColor: active
+                                                ? "var(--semi-color-success)"
+                                                : "var(--semi-color-info)",
+                                        }}
                                     />
                                 </Col>
-                            ))}
-                        </Row>                 
-                    </div>
-                }
-            </div>
-        </>
-    )
-}
-export default withForm(CustomizerRedesignTemplate, 'customizer.redesign.templates');
+                            );
+                        })}
+                    </Row>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export default withForm(CustomizerRedesignTemplate, "customizer.redesign.templates");
