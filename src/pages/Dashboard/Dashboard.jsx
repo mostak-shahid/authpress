@@ -54,10 +54,18 @@ export default function Dashboard() {
                         title={__("Features", "authpress")}
                         className="dashboard-features-card mb-6"
                     >
-                        {Object.values(settingsMenu).map((feature, index) => (
+                        {/* {Object.values(settingsMenu).map((feature, index) => (
                             <div className="feature" key={index}>
                                 <Title heading={4}>{feature?.title}</Title>
                                 <Paragraph>{feature?.description}</Paragraph>
+                            </div>
+                        ))} */}
+                        {settingsMenu.map((feature) => (
+                            <div className="feature" key={feature.itemKey}>
+                                <Title heading={4}>{feature.text}</Title>
+                                {feature.description && (
+                                    <Paragraph>{feature.description}</Paragraph>
+                                )}
                             </div>
                         ))}
                         <Paragraph>login details, as a time line</Paragraph>

@@ -12,6 +12,10 @@ import Details from '../data/details.json';
 import { Layout, Typography,  Banner, Breadcrumb, Card, Button, Space,} from '@douyinfe/semi-ui';
 import VerticalMenuControl from "../components/VerticalMenuControl/VerticalMenuControl";
 
+import { IllustrationIdle, Illustration404, Logo } from '../lib/Illustrations';
+import BreadcrumbControl from "../components/BreadcrumbControl/BreadcrumbControl";
+
+
 const withForm = (OriginalComponent, sectionPath = null) => {   
     const { Header, Footer, Sider, Content } = Layout;
     const { Title, Text, Paragraph } = Typography;  
@@ -90,7 +94,7 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                 setResetting('processing');        
                 try {
                     result = await formDataPost('authpress_reset_settings', {name:name});
-                    console.log(result); 
+                    // console.log(result); 
                     if (result.success) {
                         setResetting('done');
                         setTimeout(() => {
@@ -127,19 +131,31 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                 window.visualViewport?.removeEventListener("scroll", updateVH);
             };
         }, []);
+        
+        const headerContent = {
+                logo: <Logo width={36} height={36} />,
+                text: Details?.name,
+        };
         return (
             <>
                 <div className="authpress-settings container mx-auto px-4">
                     <Layout>
                         <Sider>
-                            <VerticalMenuControl/>
+                            <VerticalMenuControl 
+                                items={settingsMenu}
+                                breakpoint={960}
+                                headerContent={headerContent}
+                            />
                         </Sider>
                         <Content style={{ padding: 24, minHeight: settingsBodyHeight, backgroundColor: 'var(--semi-color-bg-4)'}}>    
-                            {console.log(settingsBodyHeight)}                    
+                                             
                             <Breadcrumb
                                 routes={routes}
                                 style={{ padding: 10, backgroundColor: 'var(--semi-color-bg-3)', border: '1px solid var(--semi-color-border)', marginBottom: 24 }}
                             />
+                            xxx
+                            <BreadcrumbControl />
+                            xxx
                             <Card 
                                 title={
                                     <PageInfo url={location.pathname} />

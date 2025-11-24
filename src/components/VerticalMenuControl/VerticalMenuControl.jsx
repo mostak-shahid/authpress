@@ -1,79 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Nav } from '@douyinfe/semi-ui';
-import {
-    IconStar,
-    IconUser,
-    IconUserGroup,
-    IconSetting,
-    IconEdit,
-} from '@douyinfe/semi-icons';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { IllustrationIdle, Illustration404, Logo } from '../../lib/Illustrations';
-const items = [
-    { itemKey: 'user', text: 'User Management', icon: <IconUser />, url: '/semi/user' },
-    { itemKey: 'union', text: 'Union Center', icon: <IconStar />, url: '/semi/union' },
-    {
-        itemKey: 'union-management',
-        text: 'Union Management',
-        icon: <IconUserGroup />,
-        url: '/semi/union-management',
-        items: [
-            { itemKey: 'announcement-settings', text: 'Announcement Settings', url: '/semi/union-management/announcement-settings' },
-            { itemKey: 'union-query', text: 'Union Query', url: '/semi/union-management/union-query' },
-            { itemKey: 'entry-information', text: 'Entry Information', url: '/semi/union-management/entry-information' },
-        ],
-    },
-    {
-        itemKey: 'approve-management',
-        text: 'Approval Management',
-        icon: <IconEdit />,
-        url: '/semi/approve-management',
-        items: [
-            { itemKey: 'check-in-review', text: 'Check-in Review', url: '/semi/approve-management/check-in-review' },
-            {
-                itemKey: 'operation-management',
-                text: 'Operations Management',
-                url: '/semi/approve-management/operation-management',
-                items: [
-                    { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/operation-management/personnel-management' },
-                    { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/operation-management/personnel-change' },
-                ],
-            },
-            {
-                itemKey: 'product-management',
-                text: 'Product Management',
-                url: '/semi/approve-management/product-management',
-                items: [
-                    { itemKey: 'personnel-management', text: 'Personnel Management', url: '/semi/approve-management/product-management/personnel-management' },
-                    { itemKey: 'personnel-change', text: 'Personnel Change', url: '/semi/approve-management/product-management/personnel-change' },
-                ],
-            },
-        ],
-    },
-    {
-        text: 'Task Platform',
-        icon: <IconSetting />,
-        itemKey: 'job',
-        url: '/semi/job',
-        items: [
-            { itemKey: 'task-management', text: 'Task Management', url: '/semi/job/task-management' },
-            { itemKey: 'user-task-query', text: 'User Task Query', url: '/semi/job/user-task-query' },
-        ],
-    },
-];
+
 import Details from '../../data/details.json';
-export default function VerticalMenuControl({minHeight}) {
+export default function VerticalMenuControl({items=[], breakpoint, headerContent}) {
     const navigate = useNavigate();
     const location = useLocation();
-
-    const BREAKPOINT = 960;
-    const [isCollapse, setIsCollapse] = useState(window.innerWidth <= BREAKPOINT);
+    
+    const [isCollapse, setIsCollapse] = useState(window.innerWidth <= breakpoint);
     const [openKeys, setOpenKeys] = useState([]);
     const [selectedKeys, setSelectedKeys] = useState([]);
 
     useEffect(() => {
-        const handleResize = () => setIsCollapse(window.innerWidth <= BREAKPOINT);
+        const handleResize = () => setIsCollapse(window.innerWidth <= breakpoint);
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -180,11 +121,8 @@ export default function VerticalMenuControl({minHeight}) {
             onOpenChange={handleOpenChange}
             onSelect={handleSelect}
             onCollapseChange={setIsCollapse}
-            header = {{
-                logo: <Logo width={36} height={36} />,
-                text: Details?.name,
-            }}
-            footer={{ collapseButton: true }}
+            header = {headerContent}
+            footer={{ collapseButton: breakpoint?true:false }}
             style={{height: '100%'}}
         />
     );

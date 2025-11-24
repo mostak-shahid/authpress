@@ -7,50 +7,53 @@ import { Col, Row } from "@douyinfe/semi-ui";
 const layouts = ["default-login", "default-login-left", "default-login-right"];
 
 // -------------------------
-// PRESETS
+// CORRECT PRESETS (FORM MOVED INSIDE redesign)
 // -------------------------
 const preset1 = {
     customizer: {
-        redesign: { templates: "default-login" },
-        form: { wrapper: { position: "center" } },
+        redesign: {
+            templates: "default-login",
+            form: {
+                wrapper: { position: "center" },
+            },
+        },
     },
 };
 
 const preset2 = {
     customizer: {
-        redesign: { templates: "default-login-left" },
-        form: { wrapper: { position: "left" } },
+        redesign: {
+            templates: "default-login-left",
+            form: {
+                wrapper: { position: "left" },
+            },
+        },
     },
 };
 
 const preset3 = {
     customizer: {
-        redesign: { templates: "default-login-right" },
-        form: { wrapper: { position: "right" } },
+        redesign: {
+            templates: "default-login-right",
+            form: {
+                wrapper: { position: "right" },
+            },
+        },
     },
 };
 
 // -------------------------
 // SAFE DEEP MERGE
-// Prevents strings from becoming objects of characters
 // -------------------------
 const deepMerge = (target, source) => {
-    // If the new value is primitive → replace directly
-    if (typeof source !== "object" || source === null) {
-        return source;
-    }
-
-    if (typeof target !== "object" || target === null) {
-        return source;
-    }
+    if (typeof source !== "object" || source === null) return source;
+    if (typeof target !== "object" || target === null) return source;
 
     const output = { ...target };
 
     Object.keys(source).forEach((key) => {
         output[key] =
-            key in target
-                ? deepMerge(target[key], source[key])
-                : source[key];
+            key in target ? deepMerge(target[key], source[key]) : source[key];
     });
 
     return output;
@@ -59,9 +62,6 @@ const deepMerge = (target, source) => {
 const CustomizerRedesignTemplate = ({ handleChange }) => {
     const { settingData, setSettingData, settingLoading } = useMain();
 
-    // -------------------------
-    // Handle template click
-    // -------------------------
     const onClick = (template) => {
         let preset = null;
 
@@ -80,7 +80,7 @@ const CustomizerRedesignTemplate = ({ handleChange }) => {
         <div className="setting-unit pt-4">
             {console.log(settingData?.customizer?.redesign)}
             {!settingLoading && (
-                <div xs={24} lg={12} xl={8}>
+                <div>
                     <Row type="flex" gutter={[24, 24]}>
                         {layouts.map((template) => {
                             const active =
@@ -111,4 +111,7 @@ const CustomizerRedesignTemplate = ({ handleChange }) => {
     );
 };
 
-export default withForm(CustomizerRedesignTemplate, "customizer.redesign.templates");
+export default withForm(
+    CustomizerRedesignTemplate,
+    "customizer.redesign.templates"
+);

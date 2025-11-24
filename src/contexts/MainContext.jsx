@@ -1,233 +1,167 @@
 import { __ } from '@wordpress/i18n';
 // import apiFetch from "@wordpress/api-fetch";
 import { createContext, useContext, useState } from "react";
-// import { extractJSONFromHTML } from "../lib/Helpers";
-// import menuData from "../data/pages.json"; // Load menu JSON
+import {
+  IconWrench,
+  IconEyeClosedSolid,
+  IconKey,
+  IconSetting,
+  IconLikeThumb,
+  IconCloud,
+  IconPlusCircle,
+  IconUser,
+  IconUserSetting,
+} from '@douyinfe/semi-icons';
 const MainContext = createContext();
-const settingsMenu = {
-    "customizer": { 
-        "title": __( "Customizer", "authpress" ), 
-        "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
-        "url":"/settings/customizer",
+const settingsMenu = [
+  {
+    itemKey: "customizer",
+    text: __("Customizer", "authpress"),
+    description: __(
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.",
+      "authpress"
+    ),
+    url: "/settings/customizer",
+    icon: <IconWrench />,
+    items: [
+      {
+        itemKey: "redesign",
+        text: __("Redesign", "authpress"),
+        description: null,
+        url: "/settings/customizer/redesign",
+        icon: null,
+        items: [
+          {
+            itemKey: "templates",
+            text: __("Default Templates", "authpress"),
+            description: __("Choose Theme", "authpress"),
+            url: "/settings/customizer/redesign/templates",
+          },
+          {
+            itemKey: "background",
+            text: __("Background", "authpress"),
+            description: null,
+            url: "/settings/customizer/redesign/background",
+          },
+          {
+            itemKey: "logo",
+            text: __("Logo", "authpress"),
+            description: __("Customize Your Logo Section", "authpress"),
+            url: "/settings/customizer/redesign/logo",
+          },
+          {
+            itemKey: "form",
+            text: __("Form", "authpress"),
+            description: null,
+            url: "/settings/customizer/redesign/form",
+          },
+          {
+            itemKey: "fields",
+            text: __("Fields", "authpress"),
+            description: null,
+            url: "/settings/customizer/redesign/fields",
+          },
+          {
+            itemKey: "button",
+            text: __("Button", "authpress"),
+            description: null,
+            url: "/settings/customizer/redesign/button",
+          },
+          {
+            itemKey: "other",
+            text: __("Other", "authpress"),
+            description: null,
+            url: "/settings/customizer/redesign/other",
+          },
+        ],
+      },
+    ],
+  },
 
-        "sub": {
-            "redesign" : {
-                "title": __( "Redesign", "authpress" ),                
-                "url":"/settings/customizer/redesign",
-                "sub": {
-                    "templates" : {
-                        "title": __( "Default Templates", "authpress" ),                
-                        "url":"/settings/customizer/redesign/templates",
-                        "description": __( "Choose Theme", "authpress" ), 
-                    },
-                    "background" : {
-                        "title": __( "Background", "authpress" ),
-                        "url":"/settings/customizer/redesign/background",
-                    },
-                    "logo" : {
-                        "title": __( "Logo", "authpress" ),
-                        "url":"/settings/customizer/redesign/logo",
-                        "description": __( "Customize Your Logo Section", "authpress" ),
-                    },
-                    "form" : {
-                        "title": __( "Form", "authpress" ),
-                        "url":"/settings/customizer/redesign/form",
-                    },
-                    "fields" : {
-                        "title": __( "Fields", "authpress" ),
-                        "url":"/settings/customizer/redesign/fields",
-                    },
-                    "button" : {
-                        "title": __( "Button", "authpress" ),
-                        "url":"/settings/customizer/redesign/button",
-                    },
-                    "other" : {
-                        "title": __( "Other", "authpress" ),
-                        "url":"/settings/customizer/redesign/other",
-                    },
-                }
-            },
-        }
-    },
+  {
+    itemKey: "hide_login",
+    text: __("Hide Login", "authpress"),
+    description: __("Hide your login page", "authpress"),
+    url: "/settings/hide_login",
+    icon: <IconEyeClosedSolid />,
+  },
 
-    "hide_login": { 
-        "title": __( "Hide Login", "authpress" ), 
-        "description": __( "Hide your login page", "authpress" ), 
-        "url":"/settings/hide_login"
-    },
-    // "security": { 
-    //     "title": __( "Security", "authpress" ), 
-    //     "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
-    //     "url":"/settings/security",
-    //     "sub": {
-    //         "password_policy" : {
-    //             "title": __( "Password policy", "authpress" ),                
-    //             "url":"/settings/security/password_policy",
-    //             "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-    //         },
-    //         "active_logins" : {
-    //             "title": __( "Active Logins", "authpress" ),
-    //             "url":"/settings/security/active_logins",
-    //             "description": __( "Easily manage and monitor login sessions for your users with advanced controls to enhance security and prevent unauthorized access.", "authpress" ), 
-    //         },
-    //         "anti_bot" : {
-    //             "title": __( "Anti Bot", "authpress" ),
-    //             "url":"/settings/security/anti_bot",
-    //             "description": __( "Protect your sensitive information with cutting-edge security measures designed to safeguard your website. Implement robust encryption, prevent unauthorized access, and block potential threats before they arise. Whether it's user data, transaction details, or confidential content, ensure your information remains private, secure, and uncompromised at all times.", "authpress" ), 
-    //         },
-    //         "brute_force" : {
-    //             "title": __( "Brute Force", "authpress" ),
-    //             "url":"/settings/security/brute_force",
-    //             "description": __( "Limit the number of login attempts to prevent brute-force attacks and ensure the security of your login process.", "authpress" ),             
-    //         },
-    //         "blacklist_manager" : {
-    //             "title": __( "Blacklist Manager", "authpress" ),
-    //             "url":"/settings/security/blacklist_manager",
-    //             "description": __( "Limit the number of login attempts to prevent brute-force attacks and ensure the security of your login process.", "authpress" ), 
-    //         }
-    //     }
-    // },
-    "two_fa_authentication": { 
-        "title": __( "2FA Authentication", "authpress" ), 
-        "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
-        "url":"/settings/two_fa_authentication",
-        // "sub": {
-        //     "email_otp" : {
-        //         "title": __( "Email OTP", "authpress" ),                
-        //         "url":"/settings/two_fa_authentication/email_otp",
-        //         "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-        //     },
-        //     // "totp" : {
-        //     //     "title": __( "TOTP", "authpress" ),                
-        //     //     "url":"/settings/two_fa_authentication/totp",
-        //     //     "description": __( "TOTP (time based - most common algorithm; used by Google Authenticator)", "authpress" ), 
-        //     // },
-        //     // "hotp" : {
-        //     //     "title": __( "HOTP", "authpress" ),                
-        //     //     "url":"/settings/two_fa_authentication/hotp",
-        //     //     "description": __( "TOTP (event based - most common algorithm; used by Google Authenticator)", "authpress" ), 
-        //     // },
-        //     // "fixed_otp" : {
-        //     //     "title": __( "Fixed OTP", "authpress" ),                
-        //     //     "url":"/settings/two_fa_authentication/fixed_otp",
-        //     //     "description": __( "Dynamically generated fixed OTP", "authpress" ), 
-        //     // },
-        //     "settings" : {
-        //         "title": __( "Settings", "authpress" ),                
-        //         "url":"/settings/two_fa_authentication/settings",
-        //         "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-        //     },
-        // }
-    },
-    "captcha": { 
-        "title": __( "Captcha", "authpress" ), 
-        "description": __( "Captcha Settings", "authpress" ), 
-        "url":"/settings/captcha",
-        // "sub": {
-        //     "settings" : {
-        //         "title": __( "Settings", "authpress" ),                
-        //         "url":"/settings/captcha/settings",
-        //         "description": __( "Captcha Settings", "authpress" ), 
-        //     },
-        // }
-    },
-    "auto_login": { 
-        "title": __( "Auto Login", "authpress" ), 
-        "description": __( "Auto Login", "authpress" ), 
-        "url":"/settings/auto_login",
-        "sub": {
-            "link_login" : {
-                "title": __( "Link Login", "authpress" ),                
-                "url":"/settings/auto_login/link_login",
-                "description": __( "Link Login", "authpress" ), 
-            },
-            "settings" : {
-                "title": __( "Settings", "authpress" ),                
-                "url":"/settings/auto_login/settings",
-                "description": __( "Auto Login Settings", "authpress" ), 
-            },
-        }
-    },
-    // "password_less_authentication": { 
-    //     "title": __( "Passwordless Authentication", "authpress" ), 
-    //     "description": __( "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.", "authpress" ), 
-    //     "url":"/settings/password_less_authentication",
-    //     "sub": {
-    //         "otl" : {
-    //             "title": __( "OTL", "authpress" ),                
-    //             "url":"/settings/password_less_authentication/otl",
-    //             "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-    //         },
-    //         "social_login" : {
-    //             "title": __( "Social Login", "authpress" ),                
-    //             "url":"/settings/password_less_authentication/social_login",
-    //             "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-    //         },
-    //         "qr_code" : {
-    //             "title": __( "QR Code", "authpress" ),                
-    //             "url":"/settings/password_less_authentication/qr_code",
-    //             "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-    //         },
-    //         "puzzel" : {
-    //             "title": __( "Puzzel Login", "authpress" ),                
-    //             "url":"/settings/password_less_authentication/puzzel",
-    //             "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-    //         },
-    //     }
-    // },
-    // "components": { 
-    //     "title": __( "Components", "authpress" ), 
-    //     "url":"/settings/components",      
-    //     "sub": {
-    //         "basic" : {
-    //             "title": __( "Basic", "authpress" ),                
-    //             "url":"/settings/components/basic",
-    //             "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-            
-    //         },
-    //         "advanced" : {
-    //             "title": __( "Advanced", "authpress" ),
-    //             "url":"/settings/components/advanced",
-    //             "description": __( "Below you will find a list of advance security options related to login of your WordPress site that reinforces the integrity of your site. All the features add common security implementation and can easily be implemented via easy to understand customization options.", "authpress" ), 
-            
-    //         },
-    //         "datatable": { 
-    //             "title": __( "Datatable", "authpress" ), 
-    //             "url":"/settings/datatable",      
-    //             "sub": {
-    //                 "basic_table" : {
-    //                     "title": __( "Basic Table", "authpress" ),                
-    //                     "url":"/settings/components/datatable/basic_table",
-    //                 },
-    //                 "ajax_table" : {
-    //                     "title": __( "Ajax table", "authpress" ),
-    //                     "url":"/settings/components/datatable/ajax_table",
-    //                 }
-    //             }
-    //         },
-    //     }
-    // },
-    "import_export": { 
-        "title": __( "Import & Expport", "authpress" ), 
-        "description": __( "Import and Export your settings.", "authpress" ), 
-        "url":"/settings/import_export"
-    },
-    "more": { 
-        "title": __( "More", "authpress" ), 
-        "description": __( "Adding more features to your Store.", "authpress" ), 
-        "url":"/settings/more"
-    },
-    "tools": { 
-        "title": __( "Tools", "authpress" ), 
-        "description": __( "Adding more features to your Store.", "authpress" ), 
-        "url":"/settings/tools"
-    },
-    "feedback": { 
-        "title": __( "Feedback", "authpress" ), 
-        "description": __( "We\'re constantly enhancing our product, and your feedback is key to staying ahead of the curve and delivering a stronger, more reliable security solution for you.", "authpress" ), 
-        "url":"/settings/feedback"
-    },
-};
+  {
+    itemKey: "two_fa_authentication",
+    text: __("2FA Authentication", "authpress"),
+    description: __(
+      "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam quisquam non velit recusandae maxime, soluta labore id dignissimos tenetur, vitae nesciunt? Aspernatur nemo velit veniam adipisci obcaecati impedit alias, officiis hic ratione perspiciatis, quo molestiae expedita? Aliquam, quam dolorem? Similique enim minus error tempore necessitatibus dolorum quidem modi maiores suscipit.",
+      "authpress"
+    ),
+    url: "/settings/two_fa_authentication",
+    icon: <IconKey />,
+  },
+
+  {
+    itemKey: "captcha",
+    text: __("Captcha", "authpress"),
+    description: __("Captcha Settings", "authpress"),
+    url: "/settings/captcha",
+    icon: <IconUserSetting />,
+  },
+
+  {
+    itemKey: "auto_login",
+    text: __("Auto Login", "authpress"),
+    description: __("Auto Login", "authpress"),
+    url: "/settings/auto_login",
+    icon: <IconUser />,
+    items: [
+      {
+        itemKey: "link_login",
+        text: __("Link Login", "authpress"),
+        description: __("Link Login", "authpress"),
+        url: "/settings/auto_login/link_login",
+      },
+      {
+        itemKey: "settings",
+        text: __("Settings", "authpress"),
+        description: __("Auto Login Settings", "authpress"),
+        url: "/settings/auto_login/settings",
+      },
+    ],
+  },
+
+  {
+    itemKey: "import_export",
+    text: __("Import & Expport", "authpress"),
+    description: __("Import and Export your settings.", "authpress"),
+    url: "/settings/import_export",
+    icon: <IconCloud />,
+  },
+
+  {
+    itemKey: "more",
+    text: __("More", "authpress"),
+    description: __("Adding more features to your Store.", "authpress"),
+    url: "/settings/more",
+    icon: <IconPlusCircle />,
+  },
+
+  {
+    itemKey: "tools",
+    text: __("Tools", "authpress"),
+    description: __("Adding more features to your Store.", "authpress"),
+    url: "/settings/tools",
+    icon: <IconSetting />,
+  },
+
+  {
+    itemKey: "feedback",
+    text: __("Feedback", "authpress"),
+    description: __(
+      "We're constantly enhancing our product, and your feedback is key to staying ahead of the curve and delivering a stronger, more reliable security solution for you.",
+      "authpress"
+    ),
+    url: "/settings/feedback",
+    icon: <IconLikeThumb />,
+  },
+];
 
 
 export const MainProvider = ({ children }) => {
