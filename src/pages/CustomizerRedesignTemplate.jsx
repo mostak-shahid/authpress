@@ -78,7 +78,6 @@ const CustomizerRedesignTemplate = ({ handleChange }) => {
 
     return (
         <div className="setting-unit pt-4">
-            {console.log(settingData?.customizer?.redesign)}
             {!settingLoading && (
                 <div>
                     <Row type="flex" gutter={[24, 24]}>

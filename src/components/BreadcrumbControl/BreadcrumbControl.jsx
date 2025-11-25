@@ -1,48 +1,104 @@
-import { Breadcrumb } from "@douyinfe/semi-ui";
-import { useLocation } from "react-router-dom";
+import React, { useMemo, useEffect, useState } from 'react';
+import { Breadcrumb } from '@douyinfe/semi-ui';
 import { useMain } from "../../contexts/MainContext";
 
-/** Safe recursive search */
-const findBreadcrumbPath = (items = [], currentUrl, path = []) => {
-    if (!Array.isArray(items)) return null;
-
-    for (const item of items) {
-        const newPath = [...path, item];
-
-        if (item.url === currentUrl) return newPath;
-
-        if (item.items && Array.isArray(item.items)) {
-            const res = findBreadcrumbPath(item.items, currentUrl, newPath);
-            if (res) return res;
-        }
-    }
-    return null;
-};
-
-/** Convert menu → breadcrumb */
-const convertToBreadcrumbItems = (pathArray = []) => {
-    if (!Array.isArray(pathArray)) return [];
-
-    return pathArray.map((item) => ({
-        path: item.url,
-        name: item.text,
-    }));
-};
-
 const BreadcrumbControl = () => {
-    const { items: settingsMenu = [] } = useMain(); // ensure fallback to []
-    const location = useLocation();
+    const { settingsMenu } = useMain();
+    
+    // Get current path from window.location.hash
+    const getCurrentPath = () => {
+        const hash = window.location.hash;
+        return hash.replace(/^#?\/?/, '');
+    };
 
-    const currentUrl =
-        location.hash?.replace("#", "") || location.pathname;
+    const [currentPath, setCurrentPath] = useState(getCurrentPath());
 
-    const breadcrumbPath = findBreadcrumbPath(settingsMenu, currentUrl);
+    // Listen to hash changes
+    useEffect(() => {
+        const handleHashChange = () => {
+            setCurrentPath(getCurrentPath());
+        };
 
-    if (!breadcrumbPath) return null;
+        window.addEventListener('hashchange', handleHashChange);
+        return () => window.removeEventListener('hashchange', handleHashChange);
+    }, []);
 
-    const breadcrumbItems = convertToBreadcrumbItems(breadcrumbPath);
+    const routes = useMemo(() => {
+        const path = currentPath;
+        const segments = path.split('/').filter(Boolean);
 
-    return <Breadcrumb routes={breadcrumbItems} />;
+        if (segments.length === 0) {
+            return [
+                {
+                    name: 'Home',
+                    href: '#/',
+                    path: '/'
+                }
+            ];
+        }
+
+        const items = [
+            {
+                name: 'Home',
+                href: '#/',
+                path: '/'
+            }
+        ];
+        
+        let buildPath = '';
+        let currentMenu = settingsMenu;
+
+        for (let i = 0; i < segments.length; i++) {
+            buildPath += `/${segments[i]}`;
+            
+            // Find matching item in current menu level
+            const menuItem = currentMenu?.find(item => {
+                const itemPath = item.url.replace(/^#?\/?/, '');
+                return itemPath === buildPath.replace(/^\//, '') || 
+                       itemPath.endsWith(segments[i]);
+            });
+
+            if (menuItem) {
+                items.push({
+                    name: menuItem.text,
+                    href: `#${menuItem.url}`,
+                    path: menuItem.url,
+                    // icon: menuItem.icon
+                });
+
+                // Update current menu to nested items if they exist
+                currentMenu = menuItem.items;
+            } else {
+                // If no menu item found, use segment as fallback
+                items.push({
+                    name: segments[i].split(/[-_]/).map(word => 
+                        word.charAt(0).toUpperCase() + word.slice(1)
+                    ).join(' '),
+                    href: `#${buildPath}`,
+                    path: buildPath
+                });
+            }
+        }
+
+        return items;
+    }, [currentPath, settingsMenu]);
+
+    const handleClick = (item, e) => {
+        e.preventDefault();
+        if (item.href && item.href !== '#/') {
+            window.location.hash = item.href.replace(/^#/, '');
+        } else {
+            window.location.hash = '/';
+        }
+    };
+
+    return (
+        <Breadcrumb 
+            routes={routes}
+            onClick={handleClick}
+            style={{ marginBottom: '20px' }}
+        />
+    );
 };
 
 export default BreadcrumbControl;

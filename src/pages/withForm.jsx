@@ -19,7 +19,6 @@ import BreadcrumbControl from "../components/BreadcrumbControl/BreadcrumbControl
 const withForm = (OriginalComponent, sectionPath = null) => {   
     const { Header, Footer, Sider, Content } = Layout;
     const { Title, Text, Paragraph } = Typography;  
-    const routes = ['Home', 'The is a very very very very long title', 'Detail'];
 
     function NewComponent() {
         const {
@@ -148,14 +147,7 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                             />
                         </Sider>
                         <Content style={{ padding: 24, minHeight: settingsBodyHeight, backgroundColor: 'var(--semi-color-bg-4)'}}>    
-                                             
-                            <Breadcrumb
-                                routes={routes}
-                                style={{ padding: 10, backgroundColor: 'var(--semi-color-bg-3)', border: '1px solid var(--semi-color-border)', marginBottom: 24 }}
-                            />
-                            xxx
                             <BreadcrumbControl />
-                            xxx
                             <Card 
                                 title={
                                     <PageInfo url={location.pathname} />
