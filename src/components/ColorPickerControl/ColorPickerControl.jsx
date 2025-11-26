@@ -6,8 +6,8 @@ import {
     GradientPicker,
     Popover,
     TabPanel,
-    Button,
 } from '@wordpress/components';
+import { Button } from '@douyinfe/semi-ui';
 import './ColorPickerControl.scss';
 
 export default function ColorPickerControl({ defaultValue, handleChange, mode = 'both', label='', className='' }) {
@@ -25,14 +25,15 @@ export default function ColorPickerControl({ defaultValue, handleChange, mode = 
     return (
         <div className={`color-picker-control ${className}`}>
             <Button
-                variant="secondary"
-                className="color-picker-button border-authpress"
-                aria-label="Select Color or Gradient"
+                block
+                type="secondary"
+                // className="color-picker-button border-authpress"
+                // aria-label="Select Color or Gradient"
                 onClick={ () => setIsOpen(!isOpen) }
-                style={ { border: '1px solid #ccc', color: '#ccc', gap: '10px', boxShadow: 'none', width: '100%' } }
+                // style={ { border: '1px solid #ccc', color: '#ccc', gap: '10px', boxShadow: 'none', width: '100%' } }
             >                                   
                 <ColorIndicator colorValue={ defaultValue } /> 
-                <span className="color-picker-label">
+                <span className="color-picker-label ml-2">
                     { label? label : mode === 'color' ? 'Select Color' : mode === 'gradient' ? 'Select Gradient' : 'Select Color or Gradient' }
                 </span>
             </Button>   

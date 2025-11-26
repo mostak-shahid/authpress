@@ -61,8 +61,8 @@ export default function MediaUploaderControl({ data={}, name, handleChange, opti
         <>
             {/* {console.log(data)} */}
             <div className={`authpress-media-uploader-unit ${className}`}>
-                <div className="media-uploader row align-items-center">
-                    <div className="col-6">
+                <Row type="flex" gutter={[16, 16]} align='middle' className="media-uploader">
+                    <Col xs={12}>
                         { media?.url && media?.id ?                     
                             <div className="file-name background-primary with-close-button">
                                 <img className="uploaded-image" src={media?.thumbnail} onClick={runUploader} />                                
@@ -81,15 +81,14 @@ export default function MediaUploaderControl({ data={}, name, handleChange, opti
                                 </div>
                             </div>
                         }
-                    </div>
-                    <div className="col-6">
+                    </Col>
+                    <Col xs={12}>
                         <div className="file-detail">
                             <InputGroup>
                                 <Button
                                     theme="solid"
                                     type="primary"
                                     onClick={ runUploader }
-                                    className='justify-content-center'
                                 >
                                     {options?.buttons?.upload || __("Upload Image", "authpress")}
                                 </Button>    
@@ -97,12 +96,12 @@ export default function MediaUploaderControl({ data={}, name, handleChange, opti
                                     theme="solid"
                                     type="secondary"
                                     onClick={ removeImage }
-                                    className='justify-content-center'
+                                    className='ml-2'
                                 >
                                     {options?.buttons?.remove || __("Remove Image", "authpress")}
                                 </Button>                                           
                             </InputGroup>    
-                            <div className="file-link">                                                                     
+                            <div className="file-link mt-2">                                                                     
                                 <Input
                                     value={ media?.url? media.url:'' }
                                     readonly={true}
@@ -115,8 +114,8 @@ export default function MediaUploaderControl({ data={}, name, handleChange, opti
                                 }                                    
                             </div>         
                         </div> 
-                    </div>                   
-                </div>
+                    </Col>                   
+                </Row>
             </div>
         </>        
     )
