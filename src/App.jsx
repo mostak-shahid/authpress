@@ -5,7 +5,7 @@ import "./tailwind.css"
 // import Header from "./layouts/Header/Header";
 // import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 // import "bootstrap/dist/css/bootstrap.min.css";
-import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row, Avatar  } from '@douyinfe/semi-ui';
+import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row, Avatar, Skeleton  } from '@douyinfe/semi-ui';
 import { IconStar, IconSetting, IconMenu, IconHome, IconMember, IconBookStroked, IconHelpCircleStroked, IconUserGroup, IconEdit, IconHorn, IconBellStroked, IconSun, IconMoon, } from '@douyinfe/semi-icons';
 import { Link, Navigate, Route, Routes } from "react-router-dom";
 //Route Pages

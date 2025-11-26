@@ -176,8 +176,6 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                                 }
                             >
                                 <OriginalComponent handleChange={handleChange} />
-                                
-                
                             </Card>
                         </Content>
                     </Layout>

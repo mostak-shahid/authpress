@@ -2,7 +2,7 @@ import { __ } from "@wordpress/i18n";
 import React from "react";
 import { useMain } from "../contexts/MainContext";
 import withForm from "../pages/withForm";
-import { Col, Row } from "@douyinfe/semi-ui";
+import { Col, Row, Skeleton } from "@douyinfe/semi-ui";
 
 const layouts = ["default-login", "default-login-left", "default-login-right"];
 
@@ -78,34 +78,42 @@ const CustomizerRedesignTemplate = ({ handleChange }) => {
 
     return (
         <div className="setting-unit pt-4">
-            {!settingLoading && (
-                <div>
-                    <Row type="flex" gutter={[24, 24]}>
-                        {layouts.map((template) => {
-                            const active =
-                                settingData?.customizer?.redesign?.templates === template;
+            {!settingLoading ? (                
+                <Row type="flex" gutter={[24, 24]}>
+                    {layouts.map((template) => {
+                        const active =
+                            settingData?.customizer?.redesign?.templates === template;
 
-                            return (
-                                <Col xs={24} lg={12} xl={8} key={template}>
-                                    <img
-                                        src={`${authpress_ajax_obj.image_url}${template}.png`}
-                                        alt={template}
-                                        onClick={() => onClick(template)}
-                                        style={{
-                                            cursor: "pointer",
-                                            width: "100%",
-                                            border: "5px solid",
-                                            borderColor: active
-                                                ? "var(--semi-color-success)"
-                                                : "var(--semi-color-info)",
-                                        }}
-                                    />
-                                </Col>
-                            );
-                        })}
-                    </Row>
-                </div>
-            )}
+                        return (
+                            <Col xs={24} lg={12} xl={8} key={template}>
+                                <img
+                                    src={`${authpress_ajax_obj.image_url}${template}.png`}
+                                    alt={template}
+                                    onClick={() => onClick(template)}
+                                    style={{
+                                        cursor: "pointer",
+                                        width: "100%",
+                                        border: "5px solid",
+                                        borderColor: active
+                                            ? "var(--semi-color-success)"
+                                            : "var(--semi-color-info)",
+                                    }}
+                                />
+                            </Col>
+                        );
+                    })}
+                </Row>
+                
+            ) : (
+                <Row type="flex" gutter={[24, 24]}>
+                    {[...Array(3)].map((_, i) => (
+                        <Col xs={24} lg={12} xl={8} key={i}>
+                            <Skeleton.Image style={{ width: "100%", height: 130 }} active />
+                        </Col>
+                    ))}
+                </Row>
+            )
+            }
         </div>
     );
 };

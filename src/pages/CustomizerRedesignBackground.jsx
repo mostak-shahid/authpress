@@ -17,49 +17,16 @@ const CustomizerRedesignBackground = ({handleChange}) => {
         <>
             {/* {console.log(settingData)} */}
             <div className="setting-unit border-bottom py-4">
-                <Skeleton 
-                    placeholder={(
-                        <div style={{
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                        }}>
-                            <Skeleton.Avatar style={{ marginRight: 12 }} />
-                            <div>
-                                <Skeleton.Title style={{ width: 120, marginBottom: 12, marginTop: 12 }} />
-                                <Skeleton.Paragraph style={{ width: 240 }} rows={3} />
-                            </div>
-                        </div>
-                    )} 
-                    loading={true} 
-                    active
-                >
-                    <div style={{
-                        display: 'flex',
-                        alignItems: 'flex-start',
-                    }}>
-                        <Avatar color="blue" style={{ marginRight: 12 }}>
-                            UI
-                        </Avatar>
-                        <div>
-                            <h3>Semi UI</h3>
-                            <p>Hi, Bytedance dance dance.</p>
-                            <p>Hi, Bytedance dance dance.</p>
-                            <p>Hi, Bytedance dance dance.</p>
-                        </div>
-                    </div>
-                </Skeleton>
-            </div>
-            <div className="setting-unit border-bottom py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         {
                             settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
+                            ? <Skeleton.Title style={{ width: '60%' }} />
                             : <Title heading={4}>{__("Background type", "authpress")}</Title>
                         }
                         {
                             settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
+                            ? <><Skeleton.Paragraph style={{ width: '70%' }} rows={1} /><div className="loading-skeleton p" style={{width: '70%'}}></div></>
                             : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         }
                     </Col>    
