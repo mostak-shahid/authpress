@@ -7,7 +7,10 @@ import {
     Popover,
     TabPanel,
 } from '@wordpress/components';
-import { Button } from '@douyinfe/semi-ui';
+import { 
+    Button, 
+    // Popover 
+} from '@douyinfe/semi-ui';
 import './ColorPickerControl.scss';
 
 export default function ColorPickerControl({ defaultValue, handleChange, mode = 'both', label='', className='' }) {
@@ -22,6 +25,34 @@ export default function ColorPickerControl({ defaultValue, handleChange, mode = 
         availableTabs.push({ name: 'gradient', title: 'Gradient', className: 'tab-gradient' });
     }
 
+    const PopoverContent = (
+        <TabPanel
+            className="color-gradient-tabs p-2"
+            activeClass="active-tab"
+            tabs={ availableTabs }
+        >
+            { ( tab ) => (
+                <>
+                    { tab.name === 'color' && (
+                        <ColorPalette
+                            colors={ COLORS }
+                            value={ defaultValue }
+                            onChange={ ( color ) => handleChange(color) }
+                            enableAlpha={ true }
+                            asButtons={ true }
+                        /> 
+                    ) }
+                    { tab.name === 'gradient' && (
+                        <GradientPicker
+                            value={ defaultValue }
+                            onChange={ ( newGradient ) => handleChange(newGradient) }
+                            gradients={ GRADIENTS }
+                        />
+                    ) }
+                </>
+            ) }
+        </TabPanel>
+    );
     return (
         <div className={`color-picker-control ${className}`}>
             <Button
@@ -37,6 +68,7 @@ export default function ColorPickerControl({ defaultValue, handleChange, mode = 
                     { label? label : mode === 'color' ? 'Select Color' : mode === 'gradient' ? 'Select Gradient' : 'Select Color or Gradient' }
                 </span>
             </Button>   
+            {/* <Popover visible={isOpen} content={PopoverContent} trigger="custom"/> */}
 
             { isOpen && (
                 <Popover className="color-picker-popover" onClose={ () => setIsOpen(false) }>
