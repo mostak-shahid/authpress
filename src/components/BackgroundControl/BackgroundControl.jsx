@@ -2,8 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { useCallback, useEffect, useState } from 'react';
 import ColorPickerControl from '../ColorPickerControl/ColorPickerControl'
 import MediaUploaderControl from '../MediaUploaderControl/MediaUploaderControl'
-import { SelectControl } from '@wordpress/components';
-
+import { Select, } from '@douyinfe/semi-ui';
 const SELECT_OPTIONS = {
     position: ["left top", "left center", "left bottom", "center top", "center", "center bottom", "right top", "right center", "right bottom"],
     size: ["auto", "cover", "contain"],
@@ -81,14 +80,14 @@ const BackgroundControl = ({options, defaultValues = {}, name, handleChange, cla
                         )}
                             {/* rest → select dropdown */}
                             {option !== "color" && option !== "image" && (                                
-                                <SelectControl
+                                
+                                <Select
                                     label={option}
                                     value={ values[option] || "" }
                                     options={SELECT_OPTIONS[option]?.map((val) => ({ label: val, value: val })) || []}
                                     onChange={(value) => updateValue(option, value)}
-                                    __next40pxDefaultSize
-                                    __nextHasNoMarginBottom
-                                />                                 
+                                    style={{width: '100%'}}
+                                />                               
                             )} 
                     </div>
                 ))}

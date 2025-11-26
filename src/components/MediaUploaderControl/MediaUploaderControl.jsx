@@ -1,7 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { useEffect, useState } from 'react';
 import './MediaUploaderControl.scss';
-import { Button, TextControl, Dashicon } from '@wordpress/components';
+import { Dashicon } from '@wordpress/components';
+
+import { Row, Col, Typography, Select, Input, InputGroup, Skeleton, Avatar, Button } from '@douyinfe/semi-ui';
 export default function MediaUploaderControl({ data={}, name, handleChange, options={}, className='' }) {    
     const [media, setMedia] = useState({});
 
@@ -82,37 +84,36 @@ export default function MediaUploaderControl({ data={}, name, handleChange, opti
                     </div>
                     <div className="col-6">
                         <div className="file-detail">
-                            <div className="button-wrapper d-flex flex-column gap-2">
+                            <InputGroup>
                                 <Button
-                                    variant="primary"
+                                    theme="solid"
+                                    type="primary"
                                     onClick={ runUploader }
                                     className='justify-content-center'
                                 >
                                     {options?.buttons?.upload || __("Upload Image", "authpress")}
                                 </Button>    
                                 <Button
-                                    variant="secondary"
+                                    theme="solid"
+                                    type="secondary"
                                     onClick={ removeImage }
                                     className='justify-content-center'
                                 >
                                     {options?.buttons?.remove || __("Remove Image", "authpress")}
-                                </Button>      
-                                <div className="file-link">                                                                     
-                                    <TextControl
-                                        __nextHasNoMarginBottom
-                                        __next40pxDefaultSize
-                                        // label="Additional CSS Class"
-                                        value={ media?.url? media.url:'' }
-                                        readOnly
-                                        // onChange={ ( value ) => setClassName( value ) }
-                                    />
-                                    <input type="hidden" value={media?.id? media.id:''} readOnly/>
-                                    {
-                                        options?.message?.info && 
-                                        <div className="input-help mt-small"  dangerouslySetInnerHTML={{__html: options.message.info}} />
-                                    }                                    
-                                </div>                                                  
-                            </div>
+                                </Button>                                           
+                            </InputGroup>    
+                            <div className="file-link">                                                                     
+                                <Input
+                                    value={ media?.url? media.url:'' }
+                                    readonly={true}
+                                    // onChange={ ( value ) => setClassName( value ) }
+                                />
+                                <input type="hidden" value={media?.id? media.id:''} readOnly/>
+                                {
+                                    options?.message?.info && 
+                                    <div className="input-help mt-small"  dangerouslySetInnerHTML={{__html: options.message.info}} />
+                                }                                    
+                            </div>         
                         </div> 
                     </div>                   
                 </div>

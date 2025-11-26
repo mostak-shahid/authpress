@@ -86,7 +86,7 @@ const CustomizerRedesignTemplate = ({ handleChange }) => {
                                 settingData?.customizer?.redesign?.templates === template;
 
                             return (
-                                <Col key={template} xs={24} lg={12} xl={8}>
+                                <Col xs={24} lg={12} xl={8} key={template}>
                                     <img
                                         src={`${authpress_ajax_obj.image_url}${template}.png`}
                                         alt={template}

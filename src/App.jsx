@@ -13,8 +13,7 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 // import ImportExport from "./pages/ImportExport";
 // import More from "./pages/More";
 // import ComponentsBasic from "./pages/ComponentsBasic";
-import CustomizerRedesignTemplate from "./pages/CustomizerRedesignTemplate";
-// import CustomizerRedesignBackground from "./pages/CustomizerRedesignBackground";
+import {CustomizerRedesignTemplate, CustomizerRedesignBackground} from "./pages";
 // import CustomizerRedesignLogo from "./pages/CustomizerRedesignLogo";
 // import CustomizerRedesignForm from "./pages/CustomizerRedesignForm";
 // import ComponentsAdvanced from "./pages/ComponentsAdvanced";
@@ -54,7 +53,7 @@ import apiFetch from "@wordpress/api-fetch";
 
 function App() {
     const { Header, Footer, Sider, Content } = Layout;
-    const { Title, Text } = Typography;
+    const { Title, Text, Paragraph } = Typography;
     const [newsVisible, setNewsVisible] = useState(false);
     const [darkmode, setDarkmode] = useState(false);
 
@@ -167,9 +166,9 @@ function App() {
                             <Route path="/" element={<Dashboard />} />
                             <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
                             <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
+                            <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
 
                             {/* 
-                            <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
                             <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
                             <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
                             <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />

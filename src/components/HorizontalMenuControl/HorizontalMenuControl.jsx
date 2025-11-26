@@ -36,7 +36,7 @@ export default function HorizontalMenuControl({items, breakpoint, headerContent=
     }, [location.pathname]);
 
     const findActiveKeys = (menuItems, path, parents = []) => {
-        console.log(menuItems, path, parents);
+        // console.log(menuItems, path, parents);
         for (const item of menuItems) {
             if (item.url === path) {
                 return { selected: item.itemKey, openKeys: parents };

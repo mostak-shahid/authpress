@@ -5,69 +5,105 @@ import withForm from '../pages/withForm';
 import { SelectControl } from '@wordpress/components';
 import ColorPickerControl from '../components/ColorPickerControl/ColorPickerControl';
 import { TextControl } from '@wordpress/components';
+import { Row, Col, Typography, Select, Input, Skeleton, Avatar } from '@douyinfe/semi-ui';
 const CustomizerRedesignBackground = ({handleChange}) => {
     const {
         settingData,
         settingLoading
     } = useMain();
+    const { Title, Text, Paragraph } = Typography;
     return (
+
         <>
             {/* {console.log(settingData)} */}
             <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
+                <Skeleton 
+                    placeholder={(
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'flex-start',
+                        }}>
+                            <Skeleton.Avatar style={{ marginRight: 12 }} />
+                            <div>
+                                <Skeleton.Title style={{ width: 120, marginBottom: 12, marginTop: 12 }} />
+                                <Skeleton.Paragraph style={{ width: 240 }} rows={3} />
+                            </div>
+                        </div>
+                    )} 
+                    loading={true} 
+                    active
+                >
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                    }}>
+                        <Avatar color="blue" style={{ marginRight: 12 }}>
+                            UI
+                        </Avatar>
+                        <div>
+                            <h3>Semi UI</h3>
+                            <p>Hi, Bytedance dance dance.</p>
+                            <p>Hi, Bytedance dance dance.</p>
+                            <p>Hi, Bytedance dance dance.</p>
+                        </div>
+                    </div>
+                </Skeleton>
+            </div>
+            <div className="setting-unit border-bottom py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Background type", "authpress")}</h4>
+                            : <Title heading={4}>{__("Background type", "authpress")}</Title>
                         }
                         {
                             settingLoading 
                             ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                            : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         }
-                    </div>    
+                    </Col>    
                     {
                         // color, gradient, image, video
                         !settingLoading &&                               
-                        <div className="col-lg-5">    
-                            <SelectControl
-                                // label="Size"
-                                value={ settingData?.customizer?.redesign?.background?.type }
-                                options={ [
+                        <Col xs={24} lg={12} xl={10}>    
+                            <Select 
+                                placeholder={__("Background type", "authpress")} 
+                                optionList={[
                                     { label: 'Image', value: 'image' },
                                     { label: 'Gradient', value: 'gradient' },
                                     { label: 'Video', value: 'video' },
-                                ] }
-                                onChange={ ( newSize ) => handleChange('customizer.redesign.background.type', newSize ) }
-                                __next40pxDefaultSize
-                                __nextHasNoMarginBottom
-                            />                         
-                        </div>
+                                ]}
+                                onChange={ ( changedValue ) => handleChange('customizer.redesign.background.type', changedValue ) }
+                                value={ settingData?.customizer?.redesign?.background?.type }
+                            >
+                            </Select>
+                        
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
 
 {
                 settingData?.customizer?.redesign?.background?.type === 'image' &&
             
                     <div className="setting-unit border-bottom py-4">
-                        <div className="row justify-content-between">
-                            <div className="col-lg-7">
+                        <Row type="flex" gutter={[24, 24]}>
+                            <Col xs={24} lg={12} xl={14}>
                                 {
                                     settingLoading 
                                     ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                    : <h4>{__("Background Image", "authpress")}</h4>
+                                    : <Title heading={4}>{__("Background Image", "authpress")}</Title>
                                 }
                                 {
                                     settingLoading 
                                     ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                    : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                                 }
-                            </div>    
+                            </Col>    
                             {
                                 !settingLoading &&                               
-                                <div className="col-lg-5">
+                                <Col xs={24} lg={12} xl={10}>
                                     <BackgroundControl
                                         options={[
                                             "image",
@@ -83,95 +119,97 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                         name="customizer.redesign.background.background"
                                         handleChange={handleChange}
                                     />                         
-                                </div>
+                                </Col>
                             }
-                        </div>
+                        </Row>
                     </div>
             }
             {
                 settingData?.customizer?.redesign?.background?.type === 'gradient' &&
                     <div className="setting-unit border-bottom py-4">
-                        <div className="row justify-content-between">
-                            <div className="col-lg-7">
+                        <Row type="flex" gutter={[24, 24]}>
+                            <Col xs={24} lg={12} xl={14}>
                                 {
                                     settingLoading 
                                     ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                    : <h4>{__("Background Gradient", "authpress")}</h4>
+                                    : <Title heading={4}>{__("Background Gradient", "authpress")}</Title>
                                 }
                                 {
                                     settingLoading 
                                     ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                    : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                                 }
-                            </div>    
+                            </Col>    
                             {
                                 !settingLoading &&                               
-                                <div className="col-lg-5">
+                                <Col xs={24} lg={12} xl={10}>
                                     <ColorPickerControl
                                         defaultValue={settingData?.customizer?.redesign?.background?.background?.color}
                                         handleChange={(value) => handleChange('customizer.redesign.background.background.color', value)}
                                         mode='gradient'
                                     />                        
-                                </div>
+                                </Col>
                             }
-                        </div>
+                        </Row>
                     </div>
             }
             {
                 settingData?.customizer?.redesign?.background?.type === 'video' &&                
                     <div className="setting-unit border-bottom py-4">
-                        <div className="row justify-content-between">
-                            <div className="col-lg-7">
+                        <Row type="flex" gutter={[24, 24]}>
+                            <Col xs={24} lg={12} xl={14}>
                                 {
                                     settingLoading 
                                     ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                    : <h4>{__("Background Video", "authpress")}</h4>
+                                    : <Title heading={4}>{__("Background Video", "authpress")}</Title>
                                 }
                                 {
                                     settingLoading 
                                     ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                                    : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                                    : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                                 }
-                            </div>    
+                            </Col>    
                             {
                                 !settingLoading &&                               
-                                <div className="col-lg-5">
-                                    <TextControl
-                                        placeholder="Youtube or Vimeo video URL"
+                                <Col xs={24} lg={12} xl={10}>
+                                    <Input 
+                                        placeholder={__("Youtube or Vimeo video URL", "authpress")}
                                         type="url"
+                                        showClear 
+                                        defaultValue='click to clear'
                                         value={settingData?.customizer?.redesign?.background?.video}
                                         onChange={(value) => handleChange('customizer.redesign.background.video', value)}
-                                    />                           
-                                </div>
+                                    />                         
+                                </Col>
                             }
-                        </div>
+                        </Row>
                     </div>                    
             }
             <div className="setting-unit pt-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
+                <Row type="flex" gutter={[24, 24]}>                    
+                    <Col xs={24} lg={12} xl={14}>
                         {
                             settingLoading 
                             ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Background Overlay", "authpress")}</h4>
+                            : <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
                         }
                         {
                             settingLoading 
                             ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</p>
+                            : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         }
-                    </div>    
+                    </Col>    
                     {
-                        !settingLoading &&                               
-                        <div className="col-lg-5">
+                        !settingLoading &&                                                       
+                        <Col xs={24} lg={12} xl={10}>
                             <ColorPickerControl
                                 defaultValue={settingData?.customizer?.redesign?.background?.overlay}
                                 handleChange={(value) => handleChange('customizer.redesign.background.overlay', value)}
                                 mode='color'
                             />                           
-                        </div>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
         </>
     )
