@@ -5,7 +5,7 @@ import {
 } from '@wordpress/components';
 import {useState} from 'react';
 import ColorPickerControl from '../ColorPickerControl/ColorPickerControl';
-
+import { Switch } from '@douyinfe/semi-ui';
 const units = [
     { value: 'px', label: 'px' },
     // { value: '%', label: '%' },
@@ -25,7 +25,12 @@ const BoxShadowControl = ({ value = {}, onChange, className='' }) => {
     return (
         <div className={`box-shadow-wrapper ${className}`}>
             <div className="d-flex justify-content-end mb-2">
-                
+                <Switch 
+                    aria-label={__('Enable Box Shadow', 'authpress')}
+                    checked={!!shadow.enabled}
+                    onChange={(enabled) => update('enabled', enabled)}
+                />
+        
                 <ToggleControl
                     label={__('Enable Box Shadow', 'authpress')}
                     checked={!!shadow.enabled}
@@ -95,6 +100,11 @@ const BoxShadowControl = ({ value = {}, onChange, className='' }) => {
                             /> 
                         </div>
                         <div className="col-6">
+                            <Switch 
+                                aria-label={__('Inset', 'authpress')}
+                                checked={!!shadow.inset}
+                                onChange={(enabled) => update('inset', enabled)}
+                            />
                             <ToggleControl
                                 label={__('Inset', 'authpress')}
                                 checked={!!shadow.inset}

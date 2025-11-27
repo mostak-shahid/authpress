@@ -11,7 +11,14 @@ const CustomizerRedesignBackground = ({handleChange}) => {
         settingData,
         settingLoading
     } = useMain();
+    // const settingLoading = true;
     const { Title, Text, Paragraph } = Typography;
+    const placeholder = (
+        <>
+            <Skeleton.Title style={{ width: '60%', marginBottom: 5 }} />
+            <Skeleton.Paragraph rows={1} style={{ width: '70%' }}/>
+        </>
+    );
     return (
 
         <>
@@ -19,22 +26,17 @@ const CustomizerRedesignBackground = ({handleChange}) => {
             <div className="setting-unit border-bottom py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
-                        {
-                            settingLoading 
-                            ? <Skeleton.Title style={{ width: '60%' }} />
-                            : <Title heading={4}>{__("Background type", "authpress")}</Title>
-                        }
-                        {
-                            settingLoading 
-                            ? <><Skeleton.Paragraph style={{ width: '70%' }} rows={1} /><div className="loading-skeleton p" style={{width: '70%'}}></div></>
-                            : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                        }
+                        <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                            <Title heading={4}>{__("Background type", "authpress")}</Title>
+                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                        </Skeleton>
                     </Col>    
                     {
                         // color, gradient, image, video
                         !settingLoading &&                               
                         <Col xs={24} lg={12} xl={10}>    
                             <Select 
+                                className="w-full"
                                 placeholder={__("Background type", "authpress")} 
                                 optionList={[
                                     { label: 'Image', value: 'image' },
@@ -43,8 +45,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                                 ]}
                                 onChange={ ( changedValue ) => handleChange('customizer.redesign.background.type', changedValue ) }
                                 value={ settingData?.customizer?.redesign?.background?.type }
-                            >
-                            </Select>
+                            />
                         
                         </Col>
                     }
@@ -57,16 +58,10 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     <div className="setting-unit border-bottom py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
-                                {
-                                    settingLoading 
-                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                    : <Title heading={4}>{__("Background Image", "authpress")}</Title>
-                                }
-                                {
-                                    settingLoading 
-                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                                    : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                                }
+                                <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                                    <Title heading={4}>{__("Background Image", "authpress")}</Title>
+                                    <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                                </Skeleton>
                             </Col>    
                             {
                                 !settingLoading &&                               
@@ -96,16 +91,10 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     <div className="setting-unit border-bottom py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
-                                {
-                                    settingLoading 
-                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                    : <Title heading={4}>{__("Background Gradient", "authpress")}</Title>
-                                }
-                                {
-                                    settingLoading 
-                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                                    : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                                }
+                                <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                                    <Title heading={4}>{__("Background Gradient", "authpress")}</Title>
+                                    <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                                </Skeleton>
                             </Col>    
                             {
                                 !settingLoading &&                               
@@ -125,16 +114,10 @@ const CustomizerRedesignBackground = ({handleChange}) => {
                     <div className="setting-unit border-bottom py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
-                                {
-                                    settingLoading 
-                                    ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                                    : <Title heading={4}>{__("Background Video", "authpress")}</Title>
-                                }
-                                {
-                                    settingLoading 
-                                    ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                                    : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                                }
+                                <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                                    <Title heading={4}>{__("Background Video", "authpress")}</Title>
+                                    <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                                </Skeleton>
                             </Col>    
                             {
                                 !settingLoading &&                               
@@ -155,16 +138,10 @@ const CustomizerRedesignBackground = ({handleChange}) => {
             <div className="setting-unit pt-4">
                 <Row type="flex" gutter={[24, 24]}>                    
                     <Col xs={24} lg={12} xl={14}>
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                        }
+                        <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                            <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
+                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                        </Skeleton>
                     </Col>    
                     {
                         !settingLoading &&                                                       

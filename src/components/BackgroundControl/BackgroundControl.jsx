@@ -50,11 +50,11 @@ const BackgroundControl = ({options, defaultValues = {}, name, handleChange, cla
                         {/* color → color picker */}
                         {option === "color" && (
                             <>
-                            <label className="form-label">{option}</label>
-                            <ColorPickerControl
-                                defaultValue={values[option]}
-                                handleChange={(value) => updateValue(option, value)}
-                                mode='color'
+                                {/* <label className="form-label">{option}</label> */}
+                                <ColorPickerControl
+                                    defaultValue={values[option]}
+                                    handleChange={(value) => updateValue(option, value)}
+                                    mode='color'
                                 />
                             </>
                         )}

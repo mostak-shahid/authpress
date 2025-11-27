@@ -10,6 +10,9 @@ import { formDataPost, setNestedValue, urlToArr,  } from "../lib/Helpers"; // Im
 import Details from '../data/details.json';
 
 import { Layout, Typography,  Banner, Breadcrumb, Card, Button, Space,} from '@douyinfe/semi-ui';
+import { IconSave, IconRefresh } from '@douyinfe/semi-icons';
+
+
 import VerticalMenuControl from "../components/VerticalMenuControl/VerticalMenuControl";
 
 import { IllustrationIdle, Illustration404, Logo } from '../lib/Illustrations';
@@ -162,12 +165,25 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                                 // footerStyle={{ display: 'flex', justifyContent: 'flex-end' }}
                                 footer={ sectionPath ?
                                     <Space>
-                                        <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
+                                        <Button 
+                                            theme="solid"
+                                            type="primary"
+                                            icon={<IconSave />}
+                                            loading={saving!='normal'?true:false } 
+                                            onClick={handleSave} 
+                                            style={{ marginRight: 14 }}
+                                        >                                
                                             {
                                                 saving == 'processing' ? __( "Saving...", "authpress" ) : __( "Save", "authpress" )
                                             }
                                         </Button>
-                                        <Button loading={saving!='normal'?true:false } onClick={handleSave} style={{ marginRight: 14 }}>                                
+                                        <Button 
+                                            theme="solid"
+                                            type="danger"
+                                            icon={<IconRefresh />}
+                                            loading={resetting!='normal'?true:false } 
+                                            onClick={handleReset} style={{ marginRight: 14 }}
+                                        >                                
                                             {
                                                 resetting == 'processing' ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )
                                             }
