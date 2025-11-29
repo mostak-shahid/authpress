@@ -64,7 +64,7 @@ export default function ColorPickerControl({ defaultValue, handleChange, mode = 
                 // style={ { border: '1px solid #ccc', color: '#ccc', gap: '10px', boxShadow: 'none', width: '100%' } }
             >                                   
                 <ColorIndicator colorValue={ defaultValue } /> 
-                <span className="color-picker-label ml-2">
+                <span className="color-picker-label ml-2 font-bold">
                     { label? label : mode === 'color' ? 'Select Color' : mode === 'gradient' ? 'Select Gradient' : 'Select Color or Gradient' }
                 </span>
             </Button>   

@@ -160,7 +160,7 @@ const settingsMenu = [
         "We're constantly enhancing our product, and your feedback is key to staying ahead of the curve and delivering a stronger, more reliable security solution for you.",
         "authpress"
         ),
-        url: "/settings/feedback",
+        url: "/feedback",
         icon: <IconLikeThumb />,
     },
 ];

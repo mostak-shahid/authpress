@@ -1,7 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import apiFetch from '@wordpress/api-fetch';
 import { useEffect, useState } from 'react';
-import PluginCard from "../../components/PluginCard/PluginCard";
+import {PluginCard} from "../../components";
 import { useMain } from '../../contexts/MainContext';
 import Details from '../../data/details.json';
 import './Dashboard.scss';
@@ -10,7 +10,7 @@ import './Dashboard.scss';
 //     CardHeader,
 //     CardBody,
 // } from '@wordpress/components';
-import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row  } from '@douyinfe/semi-ui';
+import { Typography, Card, Col, Row  } from '@douyinfe/semi-ui';
 export default function Dashboard() {
     const {
         settingsMenu,
@@ -48,7 +48,7 @@ export default function Dashboard() {
                     {__("AuthPress is an all-in-one toolkit to enhance your WooCommerce store. This is a highly effective plugin developed for assisting online businesses in improving sales and profits.", "authpress")}
                 </Paragraph>
             </Card>
-            <Row type="flex" gutter={24}>
+            <Row type="flex" gutter={[24,24]}>
                 <Col lg={16}>
                     <Card 
                         title={__("Features", "authpress")}

@@ -6,34 +6,32 @@ import apiFetch from "@wordpress/api-fetch";
 import { formDataPost, setNestedValue, urlToArr } from "../lib/Helpers"; // Import utility function
 import { 
     SelectControl,
-    Button,
+    // Button,
     Tooltip
 } from '@wordpress/components';
 import { backup, rotateRight, check } from '@wordpress/icons'; // Example icon
+import { Row, Col, Select, Typography,  Input, Skeleton, Switch, Button } from '@douyinfe/semi-ui';
+import { IconRefresh } from '@douyinfe/semi-icons';
+import { SkeletonPlaceholder } from '../components';
 const Tools = ({handleChange}) => {
     const {
         settingData,
         settingLoading,
     } = useMain();
-    const [processing, setProcessing] = useState('normal'); // normal, processing, done
+    const { Title, Text, Paragraph } = Typography;
+    const [processing, setProcessing] = useState(false); // normal, processing, done
     const handleClick = async () => {
         const confirmation = window.confirm(__( "Are you sure you want to proceed?", "authpress" ));
         let result;
         if (confirmation) { 
-            setProcessing('processing');
+            setProcessing(true);
             try {
                 result = await formDataPost('authpress_reset_all_settings', {}); 
             } catch (error) {
                 console.log(error.message);
             } finally {
-                setTimeout(() => {
-                    setProcessing('done');
-                    setTimeout(() => {
-                        setProcessing('normal');
-                    }, 1000); // Simulate a 3-second processing time
-                }, 3000); // Simulate a 3-second processing time
+                setProcessing('false');
             }
-
         }
     };
 
@@ -59,78 +57,57 @@ const Tools = ({handleChange}) => {
     return (
         <>
             <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Delete all the plugin data upon", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Enable/Disable \"Scripts\" functionalities", "authpress")}</p>
-                        }
-                    </div>    
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("Delete all the plugin data upon", "authpress")}</Title>
+                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-5">
-                            <SelectControl
-                                // label="Size"
+                        <Col xs={24} lg={12} xl={10}>
+                            <Select 
+                                className="w-full"
+                                placeholder={__("Action type", "authpress")} 
                                 value={ settingData?.tools.delete_data_on }
                                 //delete, unstall, none
-                                options={ [
+                                optionList={ [
                                     { label: 'None', value: 'none' },
                                     { label: 'Delete', value: 'delete' },
                                     { label: 'Unstall', value: 'unstall' },
                                 ] }
-                                onChange={ ( newSize ) => handleChange('tools.delete_data_on', newSize ) }
-                                __next40pxDefaultSize
-                                __nextHasNoMarginBottom
-                            /> 
-                        </div>
+                                onChange={ ( changedValue ) => handleChange('tools.delete_data_on', changedValue ) }
+                            />
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
             <div className="setting-unit pt-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Reset Plugin", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Enable/Disable \"Scripts\" functionalities", "authpress")}</p>
-                        }
-                    </div>    
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("Reset Plugin", "authpress")}</Title>
+                            <Paragraph>{__("Enable/Disable \"Scripts\" functionalities", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-auto">
-                            <Tooltip text={__("Reset all the settings to default", "authpress")} position="top">
-
-                                <Button
-                                    isDestructive={ processing=='processing'?true:false } // Red button
-                                    isBusy={ processing!='normal'?true:false  } // Show loading indicator
-                                    disabled={ processing!='normal'?true:false } // Disable the button
-                                    isPressed={ false } // Appear pressed, Become black  
-                                    icon={ processing=='processing'?rotateRight:processing=='done'?check:backup} // Button icon
-                                    iconPosition="left" // Icon position (left, right)
-                                    iconSize={ 20 } // Icon size
-                                    size="medium" // Button size (small, medium, large)
-                                    style={ { marginRight: '8px' } } // Custom styles
-                                    className={processing=='processing'?'button-processing':'' } // Custom class name (button-processing)                  
-                                    variant="primary"
-                                    onClick={ handleClick }
-                                >
-                                    {__("Reset", "authpress")}
-                                </Button>
-                            </Tooltip>
-                        </div>
+                        <Col xs={24} lg={12} xl={10}>
+                            <Button 
+                                theme="solid"
+                                type="danger"
+                                icon={<IconRefresh />}
+                                loading={processing} 
+                                onClick={handleClick} 
+                            >                                
+                                {
+                                    processing ? __( "Reseting...", "authpress" ) : __( "Reset", "authpress" )
+                                }
+                            </Button>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
         </>
     )

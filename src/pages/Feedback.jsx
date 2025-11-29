@@ -2,17 +2,17 @@ import { __ } from "@wordpress/i18n";
 import withForm from '../pages/withForm';
 import apiFetch from "@wordpress/api-fetch";
 import { useEffect, useState } from 'react';
-import { TextControl, TextareaControl, Button } from '@wordpress/components';
 import {OnlineSurvey} from '../lib/Illustrations';
+import { Button, Col, Row, Input, TextArea, Typography, Toast } from '@douyinfe/semi-ui';
 
-import { envelope, rotateRight, check } from '@wordpress/icons'; // Example icon
+import { IconSend } from '@douyinfe/semi-icons';
 const Feedback = () => {
     const [subject, setSubject] = useState('')
     const [message, setMessage] = useState('')
-    const [processing, setProcessing] = useState('normal'); // normal, processing, done
+    const [processing, setProcessing] = useState(false); // normal, processing, done
     const handleForm = async () => {
         if (subject && message) {
-            setProcessing('processing');
+            setProcessing(true);
             try {
                 const result = await apiFetch({
                     path: "/authpress/v1/feedback",
@@ -27,69 +27,73 @@ const Feedback = () => {
                 });
                 // You might want to handle success here
                 console.log(result);
-
-                setProcessing('done');
                 if (result.success) {
                     setSubject('');
                     setMessage('');
+                    Toast.success({
+						content: __("Feedback send successfully!", "authpress"),
+						duration: 3,
+                        theme: 'light',
+                        left,
+					});
                 }
 
             } catch (error) {
                 console.error("Mail Sending Error:", error);
+                Toast.error({
+                    content: __("Please try again!", "authpress"),
+                    duration: 3,
+                    theme: 'light',
+                    left,
+                });
             } finally {
-                setProcessing('normal');
+                setProcessing(false);
             }
         } else {
             alert('Subject or Message can\'t be Empty')
         }
     };
+    
+    const { Title } = Typography; 
     return (
         <>
-            <div className="setting-unit">
-                <div className="row align-items-center">
-                    <div className="col-lg-6">
+            <div className="setting-unit mx-[3%]">
+                <Row type="flex" gutter={[24,24]} align="middle">
+                    <Col sx={24} lg={12}>
                         <OnlineSurvey/>
-                    </div> 
-                    <div className="col-lg-6">
+                    </Col> 
+                    <Col sx={24} lg={12}>
                         <div className="mb-3">
-                            <TextControl
-                                __nextHasNoMarginBottom
-                                __next40pxDefaultSize
-                                label={__("Subject", "authpress")}
+                            <Title heading={6}>{__("Subject", "authpress")}</Title>
+                            <Input                                
                                 value={ subject }
                                 onChange={ ( value ) => setSubject( value ) }
+                                className="mt-2"
                             />
                         </div>
                         <div className="mb-3">
-                            <TextareaControl
-                                __nextHasNoMarginBottom
-                                label={__("Message", "authpress")}
-                                // help="Enter some text"
+                            <Title heading={6}>{__("Message", "authpress")}</Title>
+                            <TextArea
                                 value={ message }
                                 onChange={ ( value ) => setMessage( value ) }
+                                className="mt-2"
                             />
                         </div>
-                        <Button
-                            isDestructive={ processing=='processing'?true:false } // Red button
-                            isBusy={ processing!='normal'?true:false  } // Show loading indicator
-                            disabled={ processing!='normal'?true:false } // Disable the button
-                            isPressed={ false } // Appear pressed, Become black  
-                            icon={ processing=='processing'?rotateRight:processing=='done'?check:envelope} // Button icon
-                            iconPosition="left" // Icon position (left, right)
-                            iconSize={ 20 } // Icon size
-                            size="medium" // Button size (small, medium, large)
-                            style={ { marginRight: '8px' } } // Custom styles
-                            className={processing=='processing'?'button-processing':'' } // Custom class name (button-processing)                  
-                            variant="primary"
-                            onClick={ handleForm }
-                        >
+                        <Button 
+                            theme="solid"
+                            type="primary"
+                            icon={<IconSend />}
+                            loading={processing} 
+                            onClick={handleForm} 
+                            style={{ marginRight: 14 }}
+                        >                                
                             {
-                                processing == 'processing' ? __( "Sending...", "authpress" ) : __( "Send", "authpress" )
+                                processing ? __( "Sending...", "authpress" ) : __( "Send", "authpress" )
                             }
                         </Button>
                         
-                    </div>  
-                </div>
+                    </Col>  
+                </Row>
             </div>
         </>
     )

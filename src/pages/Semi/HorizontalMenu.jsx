@@ -8,7 +8,6 @@ import {
     Button,
     Badge,
 } from '@douyinfe/semi-ui';
-import { Switch } from '@douyinfe/semi-ui';
 import {
     IconStar,
     IconSetting,

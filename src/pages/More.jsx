@@ -1,9 +1,8 @@
 import { __ } from "@wordpress/i18n";
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
-import { 
-    ToggleControl
-} from '@wordpress/components';
+import { Row, Col, Typography, Skeleton, Switch, } from '@douyinfe/semi-ui';
+import { SkeletonPlaceholder } from '../components';
 
 import AceEditor from "react-ace";
 // Load modes and theme
@@ -16,51 +15,39 @@ const More = ({handleChange}) => {
         settingData,
         settingLoading,
     } = useMain();
+    const { Title, Text, Paragraph } = Typography;
     return (
         <>
-            <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Enable Scripts", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Enable/Disable \"Scripts\" functionalities", "authpress")}</p>
-                        }
-                    </div>    
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("Enable Scripts", "authpress")}</Title>
+                            <Paragraph>{__("Enable/Disable \"Scripts\" functionalities", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-auto">
-                            <ToggleControl
-                                __nextHasNoMarginBottom
-                                onChange={(value) => handleChange('more.enable_scripts', value)}
-                                checked={ settingData?.more.enable_scripts }
-                            />  
-                        </div>
+                        <Col xs={24} lg={12} xl={10}>
+                            <Switch 
+                                onChange={(value, element) => handleChange('more.enable_scripts', value)}
+                                checked={ Boolean(settingData?.more.enable_scripts) }
+                            />   
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
-            <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("CSS Editor", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Add any custom CSS code if necessary", "authpress")}</p>
-                        }
-                    </div>    
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("CSS Editor", "authpress")}</Title>
+                            <Paragraph>{__("Add any custom CSS code if necessary", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-12 mt-2">
+                        <Col xs={24}>
                             <AceEditor
                                 mode="css"
                                 theme="monokai"
@@ -71,27 +58,21 @@ const More = ({handleChange}) => {
                                 height="200px"
                                 editorProps={{ $blockScrolling: true }}
                             />
-                        </div>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
-            <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("JavaScript Editor", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Add any custom JS code if necessary", "authpress")}</p>
-                        }
-                    </div>    
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("JavaScript Editor", "authpress")}</Title>
+                            <Paragraph>{__("Add any custom JS code if necessary", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-12 mt-2">
+                        <Col xs={24}>
                             <AceEditor
                                 mode="javascript"
                                 theme="monokai"
@@ -102,27 +83,21 @@ const More = ({handleChange}) => {
                                 height="200px"
                                 editorProps={{ $blockScrolling: true }}
                             />
-                        </div>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
-            <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Header Code", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("This code will be placed inside <head> tag", "authpress")}</p>
-                        }
-                    </div>    
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("Header Code", "authpress")}</Title>
+                            <Paragraph>{__("This code will be placed inside <head> tag", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-12 mt-2">
+                        <Col xs={24}>
                             <AceEditor
                                 mode="html"
                                 theme="monokai"
@@ -133,27 +108,21 @@ const More = ({handleChange}) => {
                                 height="200px"
                                 editorProps={{ $blockScrolling: true }}
                             />
-                        </div>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
             <div className="setting-unit pt-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Footer Code", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("This code will be placed inside <body> tag", "authpress")}</p>
-                        }
-                    </div>    
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("Footer Code", "authpress")}</Title>
+                            <Paragraph>{__("This code will be placed inside <body> tag", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-12 mt-2">
+                        <Col xs={24}>
                             <AceEditor
                                 mode="html"
                                 theme="monokai"
@@ -164,9 +133,9 @@ const More = ({handleChange}) => {
                                 height="200px"
                                 editorProps={{ $blockScrolling: true }}
                             />
-                        </div>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
         </>
     )

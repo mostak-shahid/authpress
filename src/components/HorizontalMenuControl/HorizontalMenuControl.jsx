@@ -9,6 +9,7 @@ import {
 import {
     IconMenu,
 } from '@douyinfe/semi-icons';
+import './HorizontalMenuControl.scss';
 
 export default function HorizontalMenuControl({items, breakpoint, headerContent={}, footerContent={}}) {
     const navigate = useNavigate();
@@ -35,12 +36,28 @@ export default function HorizontalMenuControl({items, breakpoint, headerContent=
         setOpenKeys(active.openKeys);
     }, [location.pathname]);
 
+    // const findActiveKeys = (menuItems, path, parents = []) => {
+    //     // console.log(menuItems, path, parents);
+    //     for (const item of menuItems) {
+    //         if (item.url === path) {
+    //             return { selected: item.itemKey, openKeys: parents };
+    //         }
+    //         if (item.items) {
+    //             const result = findActiveKeys(item.items, path, [...parents, item.itemKey]);
+    //             if (result.selected) return result;
+    //         }
+    //     }
+    //     return { selected: '', openKeys: [] };
+    // };
+
     const findActiveKeys = (menuItems, path, parents = []) => {
-        // console.log(menuItems, path, parents);
         for (const item of menuItems) {
-            if (item.url === path) {
+
+            // Match exact OR prefix
+            if (item.url && (item.url === path || path.startsWith(item.url + '/'))) {
                 return { selected: item.itemKey, openKeys: parents };
             }
+
             if (item.items) {
                 const result = findActiveKeys(item.items, path, [...parents, item.itemKey]);
                 if (result.selected) return result;
@@ -48,6 +65,7 @@ export default function HorizontalMenuControl({items, breakpoint, headerContent=
         }
         return { selected: '', openKeys: [] };
     };
+
 
     const findItemByKey = (menuItems, key) => {
         for (const item of menuItems) {
@@ -157,6 +175,7 @@ export default function HorizontalMenuControl({items, breakpoint, headerContent=
             ) : (
                 // --- Desktop (Horizontal) ---
                 <Nav
+                    className="authpress-desktop-horizontal-menu"
                     mode="horizontal"
                     items={items}
                     selectedKeys={selectedKeys}
@@ -175,8 +194,10 @@ export default function HorizontalMenuControl({items, breakpoint, headerContent=
                     onCancel={() => setMenuVisible(false)}
                     title={__("Menu", "authpress")}
                     closeOnEsc={true}
+                    className="authpress-phone-horizontal-sidesheet"
                 >
                     <Nav
+                        className="authpress-phone-horizontal-menu"
                         mode="vertical"
                         items={items}
                         selectedKeys={selectedKeys}

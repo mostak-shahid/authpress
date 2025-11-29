@@ -1,32 +1,22 @@
 import { __ } from "@wordpress/i18n";
-import BackgroundControl from '../components/BackgroundControl/BackgroundControl';
+import {BackgroundControl, ColorPickerControl, SkeletonPlaceholder} from '../components';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
-import { SelectControl } from '@wordpress/components';
-import ColorPickerControl from '../components/ColorPickerControl/ColorPickerControl';
-import { TextControl } from '@wordpress/components';
-import { Row, Col, Typography, Select, Input, Skeleton, Avatar } from '@douyinfe/semi-ui';
+import { Row, Col, Typography, Select, Input, Skeleton, } from '@douyinfe/semi-ui';
 const CustomizerRedesignBackground = ({handleChange}) => {
     const {
         settingData,
         settingLoading
     } = useMain();
-    // const settingLoading = true;
     const { Title, Text, Paragraph } = Typography;
-    const placeholder = (
-        <>
-            <Skeleton.Title style={{ width: '60%', marginBottom: 5 }} />
-            <Skeleton.Paragraph rows={1} style={{ width: '70%' }}/>
-        </>
-    );
     return (
 
         <>
             {/* {console.log(settingData)} */}
-            <div className="setting-unit border-bottom py-4">
+            <div className="setting-unit py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
-                        <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
                             <Title heading={4}>{__("Background type", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
@@ -55,10 +45,10 @@ const CustomizerRedesignBackground = ({handleChange}) => {
 {
                 settingData?.customizer?.redesign?.background?.type === 'image' &&
             
-                    <div className="setting-unit border-bottom py-4">
+                    <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
-                                <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                                <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
                                     <Title heading={4}>{__("Background Image", "authpress")}</Title>
                                     <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                                 </Skeleton>
@@ -88,10 +78,10 @@ const CustomizerRedesignBackground = ({handleChange}) => {
             }
             {
                 settingData?.customizer?.redesign?.background?.type === 'gradient' &&
-                    <div className="setting-unit border-bottom py-4">
+                    <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
-                                <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                                <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
                                     <Title heading={4}>{__("Background Gradient", "authpress")}</Title>
                                     <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                                 </Skeleton>
@@ -111,10 +101,10 @@ const CustomizerRedesignBackground = ({handleChange}) => {
             }
             {
                 settingData?.customizer?.redesign?.background?.type === 'video' &&                
-                    <div className="setting-unit border-bottom py-4">
+                    <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
-                                <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                                <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
                                     <Title heading={4}>{__("Background Video", "authpress")}</Title>
                                     <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                                 </Skeleton>
@@ -138,7 +128,7 @@ const CustomizerRedesignBackground = ({handleChange}) => {
             <div className="setting-unit pt-4">
                 <Row type="flex" gutter={[24, 24]}>                    
                     <Col xs={24} lg={12} xl={14}>
-                        <Skeleton placeholder={placeholder} loading={settingLoading} active>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
                             <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>

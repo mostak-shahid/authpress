@@ -3,19 +3,18 @@ import { __ } from "@wordpress/i18n";
 import apiFetch from "@wordpress/api-fetch";
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import MultiLevelListGroup from "../components/MultiLevelListGroup/MultiLevelListGroup";
 import PageInfo from "../components/PageInfo/PageInfo";
 import { useMain } from "../contexts/MainContext";
 import { formDataPost, setNestedValue, urlToArr,  } from "../lib/Helpers"; // Import utility function
 import Details from '../data/details.json';
 
-import { Layout, Typography,  Banner, Breadcrumb, Card, Button, Space,} from '@douyinfe/semi-ui';
+import { Layout, Typography,  Toast, Card, Button, Space,} from '@douyinfe/semi-ui';
 import { IconSave, IconRefresh } from '@douyinfe/semi-icons';
 
 
 import VerticalMenuControl from "../components/VerticalMenuControl/VerticalMenuControl";
 
-import { IllustrationIdle, Illustration404, Logo } from '../lib/Illustrations';
+import { Logo } from '../lib/Illustrations';
 import BreadcrumbControl from "../components/BreadcrumbControl/BreadcrumbControl";
 
 
@@ -33,8 +32,8 @@ const withForm = (OriginalComponent, sectionPath = null) => {
             settingReload,
             setSettingReload
         } = useMain();
-        const [ saving, setSaving ] = useState('normal');
-        const [ resetting, setResetting ] = useState('normal');
+        const [ saving, setSaving ] = useState(false);
+        const [ resetting, setResetting ] = useState(false);
 
         const urlArr = urlToArr();
 
@@ -69,9 +68,9 @@ const withForm = (OriginalComponent, sectionPath = null) => {
             });
         };
         const handleSave = async () => {
-            setSaving('processing');
+            setSaving(true);
             try {
-                await apiFetch({
+                const result = await apiFetch({
                     path: OPTIONS_API_URL,
                     method: 'POST',
                     data: { authpress_options: settingData },
@@ -79,35 +78,50 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                         'X-WP-Nonce': authpress_ajax_obj.api_nonce
                     }
                 });
-                window.scrollTo(0, 0);
-                setSettingReload(Math.random);
-                setSaving('done');
-                setTimeout(() => {
-                    setSaving('normal');
-                }, 1000);
+                console.log(result);
+                if (result.success) {
+                    // window.scrollTo(0, 0);
+                    setSettingReload(Math.random);
+                    Toast.success({
+						content: __("Settings saved successfully!!!", "authpress"),
+						duration: 3,
+                        theme: 'light',
+                        right: 15,
+					});
+                } else {
+                    Toast.error({
+						content: __("Error saving settings. Please try again.", "authpress"),
+						duration: 3,
+                        theme: 'light',
+					});
+                }
+                
             } catch (error) {
                 console.error("Error saving settings:", error);
+                Toast.error({
+                    content: __("Error saving settings. Please try again.", "authpress"),
+                    duration: 3,
+                    theme: 'light',
+                });
+            } finally {
+                setSaving(false);
             }
         };
         const handleReset = async (name) => {
             const confirmation = window.confirm(__( "Are you sure you want to proceed?", "authpress" ));
             let result;
             if (confirmation) {       
-                setResetting('processing');        
+                setResetting(true);        
                 try {
                     result = await formDataPost('authpress_reset_settings', {name:name});
                     // console.log(result); 
                     if (result.success) {
-                        setResetting('done');
-                        setTimeout(() => {
-                            setResetting('normal');
-                        }, 2000);
                         setSettingReload(Math.random);   
                     }
                 } catch (error) {
                     setResetError(error.message);
                 } finally {
-                    setResetting('normal');    
+                    setResetting(false);    
                 }
             }
         };
@@ -169,23 +183,23 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                                             theme="solid"
                                             type="primary"
                                             icon={<IconSave />}
-                                            loading={saving!='normal'?true:false } 
+                                            loading={saving} 
                                             onClick={handleSave} 
                                             style={{ marginRight: 14 }}
                                         >                                
                                             {
-                                                saving == 'processing' ? __( "Saving...", "authpress" ) : __( "Save", "authpress" )
+                                                saving ? __( "Saving...", "authpress" ) : __( "Save", "authpress" )
                                             }
                                         </Button>
                                         <Button 
                                             theme="solid"
                                             type="danger"
                                             icon={<IconRefresh />}
-                                            loading={resetting!='normal'?true:false } 
+                                            loading={resetting} 
                                             onClick={handleReset} style={{ marginRight: 14 }}
                                         >                                
                                             {
-                                                resetting == 'processing' ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )
+                                                resetting ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )
                                             }
                                         </Button>
                                     </Space> : ''

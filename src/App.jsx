@@ -5,15 +5,16 @@ import "./tailwind.css"
 // import Header from "./layouts/Header/Header";
 // import { Link, Navigate, Route, Routes, useLocation } from 'react-router-dom';
 // import "bootstrap/dist/css/bootstrap.min.css";
-import { Layout, Typography, Banner, Breadcrumb, Card, Space, Badge, Button, SideSheet, Col, Row, Avatar, Skeleton  } from '@douyinfe/semi-ui';
-import { IconStar, IconSetting, IconMenu, IconHome, IconMember, IconBookStroked, IconHelpCircleStroked, IconUserGroup, IconEdit, IconHorn, IconBellStroked, IconSun, IconMoon, } from '@douyinfe/semi-icons';
-import { Link, Navigate, Route, Routes } from "react-router-dom";
+import { Layout, Typography, Banner, Space, Badge, Button, SideSheet, Col, Row,  } from '@douyinfe/semi-ui';
+import { IconStar, IconSetting, IconHome, IconMember, IconBookStroked, IconHelpCircleStroked, IconBellStroked, IconSun, IconMoon, } from '@douyinfe/semi-icons';
+import {  Navigate, Route, Routes } from "react-router-dom";
 //Route Pages
-import Dashboard from "./pages/Dashboard/Dashboard";
+// import Dashboard from "./pages/Dashboard/Dashboard";
 // import ImportExport from "./pages/ImportExport";
 // import More from "./pages/More";
 // import ComponentsBasic from "./pages/ComponentsBasic";
-import {CustomizerRedesignTemplate, CustomizerRedesignBackground} from "./pages";
+import {Dashboard, CustomizerRedesignTemplate, CustomizerRedesignBackground, CustomizerRedesignLogo, ImportExport, More, Tools, Feedback} from "./pages";
+import {NotFound} from "./components";
 // import CustomizerRedesignLogo from "./pages/CustomizerRedesignLogo";
 // import CustomizerRedesignForm from "./pages/CustomizerRedesignForm";
 // import ComponentsAdvanced from "./pages/ComponentsAdvanced";
@@ -35,16 +36,11 @@ import {CustomizerRedesignTemplate, CustomizerRedesignBackground} from "./pages"
 
 import { LocaleProvider } from '@douyinfe/semi-ui';
 import local from "@douyinfe/semi-ui/lib/es/locale/source/en_US";
-import { IllustrationIdle, Illustration404, Logo } from './lib/Illustrations';
+import { Logo } from './lib/Illustrations';
 import {settingsBodyHeight} from './lib/Helpers';
 import Details from './data/details.json';
 
-const NotFound = () => (
-  <div style={{ textAlign: 'center', padding: '40px' }}>
-      <Illustration404 style={{ width: 250, height: 250 }} />
-      <h3>{__("404 - Page Not Found", "authpress")}</h3>
-  </div>
-);
+
 import React, { useState, useEffect } from 'react';
 import Semi from "./pages/Semi/Semi";
 import HorizontalMenuControl from "./components/HorizontalMenuControl/HorizontalMenuControl";
@@ -52,12 +48,10 @@ import apiFetch from "@wordpress/api-fetch";
 
 
 function App() {
-    const { Header, Footer, Sider, Content } = Layout;
-    const { Title, Text, Paragraph } = Typography;
+    const { Header, Footer } = Layout;
+    const { Text } = Typography;
     const [newsVisible, setNewsVisible] = useState(false);
     const [darkmode, setDarkmode] = useState(false);
-
-    // const [darkMode, setDarkmode] = useState(0);
     useEffect(() => {
         const fetchSettingTheme = async () => {
             try {
@@ -81,16 +75,6 @@ function App() {
 
         fetchSettingTheme();
     }, []); 
-
-    // const switchMode = () => {
-    //     const body = document.body;
-    //     if (body.hasAttribute('theme-mode')) {
-    //         body.removeAttribute('theme-mode');
-    //     } else {
-    //         body.setAttribute('theme-mode', 'dark');
-    //     }
-    //     setDarkmode(!darkmode);
-    // };
     const switchingMode = async () => {
         const switchMode = !darkmode;
         setDarkmode(switchMode);
@@ -135,7 +119,7 @@ function App() {
                             items = {[
                                 { itemKey: 'welcome', text: 'Welcome', icon: <IconHome />, url: '/' },
                                 { itemKey: 'settings', text: 'Settings', icon: <IconSetting />, url: '/settings' },
-                                { itemKey: 'feedback', text: 'Feedback', icon: <IconStar />, url: '/semi/feedback' },
+                                { itemKey: 'feedback', text: 'Feedback', icon: <IconStar />, url: '/feedback' },
                                 { itemKey: 'free-vs-pro', text: 'Free vs Pro', icon: <IconMember />, url: '/semi/free-vs-pro' },
                             ]}
                             breakpoint = "960"
@@ -167,9 +151,15 @@ function App() {
                             <Route path="/settings" element={<Navigate to="/settings/customizer/redesign/templates" />} />
                             <Route path="/settings/customizer/redesign/templates" element={<CustomizerRedesignTemplate />} />
                             <Route path="/settings/customizer/redesign/background" element={<CustomizerRedesignBackground />} />
+                            <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
+                            
+
+                            <Route path="/settings/import_export" element={<ImportExport />} />
+                            <Route path="/settings/more" element={<More />} />
+                            <Route path="/settings/tools" element={<Tools />} />
+                            <Route path="/feedback" element={<Feedback />} />
 
                             {/* 
-                            <Route path="/settings/customizer/redesign/logo" element={<CustomizerRedesignLogo />} />
                             <Route path="/settings/customizer/redesign/form" element={<CustomizerRedesignForm />} />
                             <Route path="/settings/customizer/redesign/fields" element={<CustomizerRedesignFields/>} />
                             <Route path="/settings/customizer/redesign/button" element={<CustomizerRedesignButton/>} />
@@ -195,9 +185,7 @@ function App() {
                             <Route path="/page" element={<Page />} /> 
 
                             <Route path="/settings/import_export" element={<ImportExport />} />
-                            <Route path="/settings/more" element={<More />} />
                             <Route path="/settings/tools" element={<Tools />} />
-                            <Route path="/settings/feedback" element={<Feedback />} />
                             
                             */}
                             <Route path="/semi" element={<Semi />} />

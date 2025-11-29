@@ -1,148 +1,175 @@
 import { __ } from "@wordpress/i18n";
+import apiFetch from '@wordpress/api-fetch';
 import { useState } from 'react';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
+import { Row, Col, Typography, Skeleton, Button, Upload, Space, Toast, } from '@douyinfe/semi-ui';
+import { IconExport, IconUpload, IconTickCircle } from '@douyinfe/semi-icons';
+import { SkeletonPlaceholder } from '../components';
 const ImportExport = ({handleChange}) => {
     const {
         settingData,
         settingLoading,
         setSettingReload
     } = useMain();
+    const { Title, Text, Paragraph } = Typography;
     const [importData, setImportData] = useState('');
-    
+    const [processingImport, setProcessingImport] = useState(false);
+    const [processingExport, setProcessingExport] = useState(false);
+    const [fileList, setFileList] = useState([]);
 
-    const [processingExport, setProcessingExport] = useState(false)
-
-    // Export settings as a downloadable JSON file
     const handleExport = () => {
-        const blob = new Blob([JSON.stringify(settingData, null, 2)], { type: 'application/json' });
+        const blob = new Blob([JSON.stringify(settingData, null, 2)], {
+            type: 'application/json',
+        });
         const url = URL.createObjectURL(blob);
-
         const link = document.createElement('a');
         link.href = url;
         link.download = 'authpress-settings.json';
         link.click();
+        // toast.success(__('Settings exported successfully', 'authpress'));
     };
 
-    // Import settings from uploaded JSON
+    // Handle file upload with Semi Design Upload
+    const handleFileChange = ({ fileList, currentFile }) => {
+        setFileList(fileList);
+        
+        if (currentFile && currentFile.fileInstance) {
+            const reader = new FileReader();
+            reader.onload = (event) => {
+                try {
+                    const content = event.target.result;
+                    JSON.parse(content); // Validate JSON
+                    setImportData(content);
+                    // toast.success(__('File loaded successfully', 'authpress'));
+                } catch (err) {
+                    // toast.error(__('Invalid JSON file', 'authpress'));
+                    setFileList([]);
+                    setImportData('');
+                }
+            };
+            reader.readAsText(currentFile.fileInstance);
+        }
+    };
+
+    // Handle file removal
+    const handleRemove = () => {
+        setImportData('');
+        setFileList([]);
+    };
+
+    // Submit imported JSON
     const handleImport = async () => {
-        setProcessingExport(true);
+        setProcessingImport(true);
+        console.log(importData);
         try {
             const parsed = JSON.parse(importData);
-            const response = await fetch('/authpress/v1/settings', {
+            const response = await apiFetch({
+                path: '/authpress/v1/settings',
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(parsed)
+                data: parsed,
             });
 
-            const result = await response.json();
-            if (result.success) {
-                // alert('Settings imported successfully!');
-                setSettingReload(Math.random());
+            if (response.success) {
+                // toast.success(__('Settings imported successfully!', 'authpress'));
+                Toast.success({
+                    content: __("Settings imported successfully!", "authpress"),
+                    duration: 3,
+                    theme: 'light',
+                    right: 15,
+                });
+                setTimeout(() => {
+                    setProcessingImport(false);
+                    setSettingReload(Math.random()); // Trigger reload
+                    setFileList([]);
+                    setImportData('');
+                }, 1000);
             } else {
-                // console.log('Import failed.');
+                // toast.error(__('Import failed', 'authpress'));
+                setProcessingImport(false);
             }
         } catch (e) {
-            // console.log('Invalid JSON.');
+            // toast.error(__('Invalid JSON content', 'authpress'));
+            console.log(e);
+            setProcessingImport(false);
         }
-        setProcessingExport(false);
-    };
-
-
-    // Read file content and put it in hidden textarea
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = (event) => {
-            try {
-                const content = event.target.result;
-                JSON.parse(content); // Validate JSON
-                setImportData(content);
-            } catch (err) {
-                alert('Invalid JSON file.');
-            }
-        };
-        reader.readAsText(file);
     };
     return (
         <>
             <div className="setting-unit border-bottom py-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Export Settings", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Export your current settings", "authpress")}</p>
-                        }
-                    </div>    
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("Export Settings", "authpress")}</Title>
+                            <Paragraph>{__("Export your current settings", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-5">
-                            <button                                 
-                                type="button" 
-                                className="button button-link" 
+                        <Col xs={24} lg={12} xl={10}>
+                            <Button     
+                                type="primary" 
+                                icon={<IconExport />}                  
                                 onClick={handleExport}
                             >
                                 {__( "Export Settings", "authpress" )}
-                            </button>
-                        </div>
+                            </Button>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
             <div className="setting-unit pt-4">
-                <div className="row justify-content-between">
-                    <div className="col-lg-7">
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton h4" style={{width: '60%'}}></div>
-                            : <h4>{__("Import Settings", "authpress")}</h4>
-                        }
-                        {
-                            settingLoading 
-                            ? <div className="loading-skeleton p" style={{width: '70%'}}></div>
-                            : <p>{__("Copy and paste here", "authpress")}</p>
-                        }
-                    </div>    
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingLoading} active>
+                            <Title heading={4}>{__("Import Settings", "authpress")}</Title>
+                            <Paragraph>{__("Description", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>    
                     {
                         !settingLoading &&                               
-                        <div className="col-lg-5">
-                            <div>
-                                <input
-                                    type="file"
-                                    accept="application/json"
-                                    onChange={handleFileChange}
-                                />
-                                <div className="d-flex align-items-center">                                            
-                                    <button 
-                                        type="button" 
-                                        className="button button-link" 
-                                        onClick={handleImport} 
-                                        disabled={!importData}
-                                    >
-                                        {
-                                            processingExport ? __( "Processing...", "authpress" ) : __( "Import Settings", "authpress" )
-                                        }
-                                    </button>
+                        <Col xs={24} lg={12} xl={10}>
+                            <Upload
+                                accept="application/json,.json"
+                                action=""
+                                fileList={fileList}
+                                onChange={handleFileChange}
+                                onRemove={handleRemove}
+                                beforeUpload={() => false}
+                                maxSize={5120}
+                                limit={1}
+                            >
+                                <Button icon={<IconUpload />}>
+                                    {__("Select JSON File", "authpress")}
+                                </Button>
+                            </Upload>
 
-                                </div>
+                            <Button
+                                icon={importData && !processingImport ? <IconTickCircle /> : null}
+                                onClick={handleImport}
+                                disabled={!importData}
+                                loading={processingImport}
+                                type="primary"
+                            >
+                                {processingImport
+                                    ? __("Processing...", "authpress")
+                                    : __("Import Settings", "authpress")
+                                }
+                            </Button>
+
+
+                            <div>
 
                                 {/* Hidden textarea with the JSON content */}
                                 <textarea
-                                    style={{ display: 'none' }}
+                                    // style={{ display: 'none' }}
                                     value={importData}
                                     readOnly
                                 ></textarea>
                             </div>
-                        </div>
+                        </Col>
                     }
-                </div>
+                </Row>
             </div>
         </>
     )
