@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMain } from '../contexts/MainContext';
 import withForm from '../pages/withForm';
 import { Row, Col, Typography, Skeleton, Button, Upload, Space, Toast, } from '@douyinfe/semi-ui';
-import { IconExport, IconUpload, IconTickCircle } from '@douyinfe/semi-icons';
+import { IconDownload, IconUpload, IconTickCircle } from '@douyinfe/semi-icons';
 import { SkeletonPlaceholder } from '../components';
 const ImportExport = ({handleChange}) => {
     const {
@@ -109,7 +109,7 @@ const ImportExport = ({handleChange}) => {
                         <Col xs={24} lg={12} xl={10}>
                             <Button     
                                 type="primary" 
-                                icon={<IconExport />}                  
+                                icon={<IconDownload />}                  
                                 onClick={handleExport}
                             >
                                 {__( "Export Settings", "authpress" )}
@@ -129,40 +129,41 @@ const ImportExport = ({handleChange}) => {
                     {
                         !settingLoading &&                               
                         <Col xs={24} lg={12} xl={10}>
-                            <Upload
-                                accept="application/json,.json"
-                                action=""
-                                fileList={fileList}
-                                onChange={handleFileChange}
-                                onRemove={handleRemove}
-                                beforeUpload={() => false}
-                                maxSize={5120}
-                                limit={1}
-                            >
-                                <Button icon={<IconUpload />}>
-                                    {__("Select JSON File", "authpress")}
-                                </Button>
-                            </Upload>
-
-                            <Button
-                                icon={importData && !processingImport ? <IconTickCircle /> : null}
-                                onClick={handleImport}
-                                disabled={!importData}
-                                loading={processingImport}
-                                type="primary"
-                            >
-                                {processingImport
-                                    ? __("Processing...", "authpress")
-                                    : __("Import Settings", "authpress")
+                            <Space vertical spacing='tight' align='start'>
+                                <Upload
+                                    accept="application/json,.json"
+                                    action=""
+                                    fileList={fileList}
+                                    onChange={handleFileChange}
+                                    onRemove={handleRemove}
+                                    beforeUpload={() => false}
+                                    maxSize={5120}
+                                    limit={1}
+                                >
+                                    <Button icon={<IconUpload />}>
+                                        {__("Select JSON File", "authpress")}
+                                    </Button>
+                                </Upload>
+                                {importData &&
+                                    <Button
+                                        icon={ !processingImport ? <IconTickCircle /> : null}
+                                        onClick={handleImport}
+                                        disabled={!processingImport}
+                                        loading={processingImport}
+                                        type="primary"
+                                    >
+                                        {processingImport
+                                            ? __("Processing...", "authpress")
+                                            : __("Import Settings", "authpress")
+                                        }
+                                    </Button>
                                 }
-                            </Button>
-
-
+                            </Space>
                             <div>
 
                                 {/* Hidden textarea with the JSON content */}
                                 <textarea
-                                    // style={{ display: 'none' }}
+                                    style={{ display: 'none' }}
                                     value={importData}
                                     readOnly
                                 ></textarea>

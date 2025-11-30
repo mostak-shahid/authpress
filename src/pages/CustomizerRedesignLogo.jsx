@@ -22,7 +22,7 @@ const CustomizerRedesignLogo = ({handleChange}) => {
     const { Title, Text, Paragraph } = Typography;
     return (
         <>
-            {console.log(settingData?.customizer?.redesign?.logo)}
+            {/* {console.log(settingData?.customizer?.redesign?.logo)} */}
             <div className="setting-unit pt-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>

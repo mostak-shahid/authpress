@@ -78,7 +78,7 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                         'X-WP-Nonce': authpress_ajax_obj.api_nonce
                     }
                 });
-                console.log(result);
+                // console.log(result);
                 if (result.success) {
                     // window.scrollTo(0, 0);
                     setSettingReload(Math.random);
@@ -107,13 +107,13 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                 setSaving(false);
             }
         };
-        const handleReset = async (name) => {
+        const handleReset = async () => {
             const confirmation = window.confirm(__( "Are you sure you want to proceed?", "authpress" ));
             let result;
             if (confirmation) {       
                 setResetting(true);        
                 try {
-                    result = await formDataPost('authpress_reset_settings', {name:name});
+                    result = await formDataPost('authpress_reset_settings', {name:sectionPath});
                     // console.log(result); 
                     if (result.success) {
                         setSettingReload(Math.random);   
@@ -170,11 +170,11 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                                     <PageInfo url={location.pathname} />
                                 }
                                 style={{ borderRadius: 0 }}
-                                headerExtraContent={
-                                    <Text link>
-                                        More
-                                    </Text>
-                                }
+                                // headerExtraContent={
+                                //     <Text link>
+                                //         More
+                                //     </Text>
+                                // }
                                 footerLine={ sectionPath?true:false }
                                 // footerStyle={{ display: 'flex', justifyContent: 'flex-end' }}
                                 footer={ sectionPath ?
@@ -196,7 +196,8 @@ const withForm = (OriginalComponent, sectionPath = null) => {
                                             type="danger"
                                             icon={<IconRefresh />}
                                             loading={resetting} 
-                                            onClick={handleReset} style={{ marginRight: 14 }}
+                                            onClick={handleReset} 
+                                            style={{ marginRight: 14 }}
                                         >                                
                                             {
                                                 resetting ? __( "Resetting...", "authpress" ) : __( "Reset", "authpress" )

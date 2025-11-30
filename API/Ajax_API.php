@@ -4,6 +4,7 @@ class Ajax_API
     public function __construct()
 	{
         add_action('wp_ajax_authpress_reset_settings', [$this, 'authpress_reset_settings']);		
+        add_action('wp_ajax_authpress_reset_all_settings', [$this, 'authpress_reset_all_settings']);		
 		add_action('wp_ajax_authpress_ajax_install_plugins', [$this, 'authpress_ajax_install_plugins']);		
 		add_action('wp_ajax_authpress_ajax_plugins_status', [$this, 'authpress_ajax_plugins_status']);
 		add_action('wp_ajax_authpress_set_login_url', [$this, 'authpress_set_login_url']);
@@ -76,6 +77,29 @@ class Ajax_API
 				wp_send_json_success(['message' => __('Email successfully.', 'authpress')]);			
 			}
 			wp_send_json_error(array('error_message' => esc_html__('No email address found.', 'authpress')));
+		} else {
+			wp_send_json_error(array('error_message' => esc_html__('Nonce verification failed. Please try again.', 'authpress')));
+			// wp_die(esc_html__('Nonce verification failed. Please try again.', 'authpress'));
+		}
+		wp_die();
+	}
+	public function authpress_reset_all_settings()
+	{
+		// wp_send_json_success($_POST['_admin_nonce']);
+		if (isset($_POST['_admin_nonce']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_admin_nonce'])), 'authpress_admin_nonce')) {
+			$name = isset($_POST['name'])?sanitize_text_field(wp_unslash($_POST['name'])):'';
+			$authpress_options = authpress_get_option();
+			$authpress_default_options = authpress_get_default_options();
+
+			// wp_send_json_success(['name' => $name]);
+
+			$success = update_option('authpress_options', $authpress_default_options);
+
+			if ($success) {
+				wp_send_json_success(['message' => __('Settings reset successfully.', 'authpress')]);
+			} else {
+				wp_send_json_error(['error_message' => __('Invalid settings path.', 'authpress')]);
+			}
 		} else {
 			wp_send_json_error(array('error_message' => esc_html__('Nonce verification failed. Please try again.', 'authpress')));
 			// wp_die(esc_html__('Nonce verification failed. Please try again.', 'authpress'));

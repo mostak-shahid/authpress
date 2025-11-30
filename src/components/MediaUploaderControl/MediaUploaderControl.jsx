@@ -43,7 +43,7 @@ export default function MediaUploaderControl({ data={}, name, handleChange, opti
 		});
         frame.on("select", function(){
             var media = frame.state().get("selection").first().toJSON();
-            console.log(media);
+            // console.log(media);
             var thumbnail = (media?.sizes?.thumbnail?.url)?media.sizes.thumbnail.url:(media?.sizes?.full?.url)?media.sizes.full.url:media.thumb.src;
             setMedia({id:media.id, url:media.url, thumbnail:thumbnail});
             handleChange(name, {id:media.id, url:media.url, thumbnail:thumbnail});

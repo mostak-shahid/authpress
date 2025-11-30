@@ -17,6 +17,7 @@ const Tools = ({handleChange}) => {
     const {
         settingData,
         settingLoading,
+        setSettingReload,
     } = useMain();
     const { Title, Text, Paragraph } = Typography;
     const [processing, setProcessing] = useState(false); // normal, processing, done
@@ -27,10 +28,13 @@ const Tools = ({handleChange}) => {
             setProcessing(true);
             try {
                 result = await formDataPost('authpress_reset_all_settings', {}); 
+                if (result.success) {
+                    setSettingReload(Math.random);   
+                }
             } catch (error) {
                 console.log(error.message);
             } finally {
-                setProcessing('false');
+                setProcessing(false);
             }
         }
     };
@@ -102,7 +106,7 @@ const Tools = ({handleChange}) => {
                                 onClick={handleClick} 
                             >                                
                                 {
-                                    processing ? __( "Reseting...", "authpress" ) : __( "Reset", "authpress" )
+                                    processing ? __( "Reseting...", "authpress" ) : __( "Reset All", "authpress" )
                                 }
                             </Button>
                         </Col>
