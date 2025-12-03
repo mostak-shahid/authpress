@@ -1,6 +1,18 @@
 <?php
+namespace MosPress\AuthPress\API;
+if ( ! defined( 'ABSPATH' ) ) exit;
+use Plugin_Upgrader;
+use WP_Ajax_Upgrader_Skin;
 class Ajax_API
 {
+    private static $instance = null;
+    public static function get_instance()
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+        return self::$instance;
+    }
     public function __construct()
 	{
         add_action('wp_ajax_authpress_reset_settings', [$this, 'authpress_reset_settings']);		
@@ -11,10 +23,7 @@ class Ajax_API
 		add_action('wp_ajax_authpress_send_email_login_url', [$this, 'authpress_send_email_login_url']);
 		add_action('init', [$this, 'authpress_maybe_flush_rules'], 99);
 		
-    }
-	
-
-    
+    }    
 	public function authpress_ajax_plugins_status()
 	{
 
@@ -319,4 +328,4 @@ class Ajax_API
 	}	
 }
 
-new Ajax_API();
+// new Ajax_API();

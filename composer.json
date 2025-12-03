@@ -1,11 +1,11 @@
 {
-  "name": "mos/authpress",
+  "name": "mospress/authpress",
   "description": "Authpress boilerplate for WordPress",
   "type": "wordpress-plugin",
   "license": "GPLv2",
   "autoload": {
     "psr-4": {
-      "Mos\\Authpress\\": "src/"
+      "MosPress\\AuthPress\\": "php/"
     }
   },
   "authors": [

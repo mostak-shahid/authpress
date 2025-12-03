@@ -66,15 +66,23 @@ function authpress_deactivate()
 register_activation_hook(__FILE__, 'authpress_activate');
 register_deactivation_hook(__FILE__, 'authpress_deactivate');
 
-if (file_exists(AUTHPRESS_PATH . '/vendor/autoload.php')) {
-	require_once AUTHPRESS_PATH . '/vendor/autoload.php';
-}
+// if (file_exists(AUTHPRESS_PATH . '/vendor/autoload.php')) {
+// 	require_once AUTHPRESS_PATH . '/vendor/autoload.php';
+// }
+require_once AUTHPRESS_PATH . '/vendor/autoload.php';
+
+use MosPress\AuthPress\API\Ajax_API;
+use MosPress\AuthPress\API\Rest_API;
+
+Rest_API::get_instance();
+Ajax_API::get_instance();
 /**
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require AUTHPRESS_PATH . 'includes/class-authpress.php';
-require AUTHPRESS_PATH . 'API/Rest_API.php';
+require_once AUTHPRESS_PATH . 'includes/class-authpress.php';
+// require_once AUTHPRESS_PATH . 'PHP/API/Rest_API.php';
+// require_once AUTHPRESS_PATH . 'PHP/API/Ajax_API.php';
 
 /**
  * Begins execution of the plugin.

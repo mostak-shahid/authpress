@@ -37,7 +37,7 @@ import {NotFound} from "./components";
 import { LocaleProvider } from '@douyinfe/semi-ui';
 import local from "@douyinfe/semi-ui/lib/es/locale/source/en_US";
 import { Logo } from './lib/Illustrations';
-import {settingsBodyHeight} from './lib/Helpers';
+import {useSettingsBodyHeight} from './lib/Helpers';
 import Details from './data/details.json';
 
 
@@ -96,11 +96,12 @@ function App() {
             console.error("Error fetching settings data:", error);
         }
     };
+    const settingsBodyHeight = useSettingsBodyHeight();
     return (
         <LocaleProvider locale={local}>
             <div className="authpress-settings-container semi-scope" style={{backgroundColor: 'var(--semi-color-bg-1)'}}>
                 <Banner 
-                    // className="semi-always-light"
+                    className="authpress-promote-banner"
                     fullMode={false}
                     type="info"
                     description={
@@ -114,6 +115,7 @@ function App() {
                 <Layout className="components-layout-demo">
                     <Header
                         style={{backgroundColor:'var(--semi-color-bg-3)'}}
+                        className="authpress-header"
                     >                    
                         <HorizontalMenuControl
                             items = {[
@@ -200,7 +202,7 @@ function App() {
                         </Routes>
                     </div>
                     <Footer
-                        className="p-[15px] w-full" 
+                        className="p-[15px] w-full authpress-footer" 
                         style={{borderTop: '1px solid var(--semi-color-border)', backgroundColor:'var(--semi-color-bg-2)'}}
                     >
                         <Row type="flex" gutter={24} align="middle" justify="space-between">

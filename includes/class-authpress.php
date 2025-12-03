@@ -118,7 +118,6 @@ class Authpress
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path(dirname(__FILE__)) . 'API/Ajax_API.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'public/class-authpress-public.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-customizer-redesign.php';
 		require_once plugin_dir_path(dirname(__FILE__)) . 'includes/class-authpress-hide-login.php';
