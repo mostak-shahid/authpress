@@ -147,7 +147,8 @@ class Authpress_Admin
 			'api_nonce' => esc_attr(wp_create_nonce('wp_rest')),
 			'get_current_user_id' => get_current_user_id(),
 			'root'  => esc_url_raw( rest_url() ),
-    		'nonce' => wp_create_nonce('wp_rest')
+    		'nonce' => wp_create_nonce('wp_rest'),
+			'isPro' => is_plugin_active( 'authpress-pro/authpress-pro.php' ) ? true : false,
 			// 'install_plugin_wpnonce' => esc_attr(wp_create_nonce('updates')),
 		);
 		wp_localize_script($this->plugin_name . '-admin-ajax', 'authpress_ajax_obj', $ajax_params);

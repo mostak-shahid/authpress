@@ -1,3 +1,4 @@
+import React, { useState, useEffect, Suspense  } from 'react';
 import { __ } from "@wordpress/i18n";
 
 import "./App.scss";
@@ -41,12 +42,11 @@ import {useSettingsBodyHeight} from './lib/Helpers';
 import Details from './data/details.json';
 
 
-import React, { useState, useEffect } from 'react';
 import Semi from "./pages/Semi/Semi";
 import HorizontalMenuControl from "./components/HorizontalMenuControl/HorizontalMenuControl";
 import apiFetch from "@wordpress/api-fetch";
 
-
+const RemoteLoginForm = React.lazy(() => import("authpresspro/LoginForm"));
 function App() {
     const { Header, Footer } = Layout;
     const { Text } = Typography;
@@ -112,6 +112,11 @@ function App() {
                         </>
                     }
                 />
+                {authpress_ajax_obj.isPro ?
+                    <Suspense fallback={<div>Loading remote component...</div>}>
+                        <RemoteLoginForm />
+                    </Suspense>:''
+                }
                 <Layout className="components-layout-demo">
                     <Header
                         style={{backgroundColor:'var(--semi-color-bg-3)'}}

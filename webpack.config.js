@@ -1,6 +1,7 @@
 const defaultConfig = require('@wordpress/scripts/config/webpack.config');
 const SemiPlugin = require("@douyinfe/semi-webpack-plugin").default;
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { ModuleFederationPlugin } = require("webpack").container;
 
 module.exports = {
     ...defaultConfig,
@@ -12,6 +13,7 @@ module.exports = {
     output: {
         filename: '[name].js',
         path: __dirname + '/build',
+        publicPath: "auto",
     },
 
     module: {
@@ -27,24 +29,14 @@ module.exports = {
                 }
             },
 
-            // Tailwind + CSS build output
             {
                 test: /\.css$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'postcss-loader'
-                ]
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'postcss-loader']
             },
 
-            // SCSS support
             {
                 test: /\.scss$/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'sass-loader'
-                ]
+                use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
             },
 
             {
@@ -53,8 +45,7 @@ module.exports = {
             },
             {
                 test: /\.(png|jpe?g|gif)$/i,
-                type: 'asset/resource',
-                use: ["file-loader"]
+                type: 'asset/resource'
             }
         ]
     },
@@ -73,8 +64,26 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "[name].css"
         }),
+
         new SemiPlugin({
             cssLayer: true
+        }),
+
+        // ⭐ FIXED MODULE FEDERATION ⭐
+        new ModuleFederationPlugin({
+            name: "authpress",
+            filename: "remoteEntry.js",
+
+            // ⬇ REMOTES MUST BE DEFINED HERE
+            remotes: {
+                authpresspro: `authpresspro@../../wp-content/plugins/authpress-pro/build/remoteEntry.js"}`
+            },
+
+            // Shared deps
+            shared: {
+                react: { singleton: true, requiredVersion: false },
+                "react-dom": { singleton: true, requiredVersion: false }
+            }
         })
     ]
 };
