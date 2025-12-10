@@ -8,17 +8,17 @@
  * registers the activation and deactivation functions, and defines a function
  * that starts the plugin.
  *
- * @link              https://www.mdmostakshahid.com/
+ * @link              https://mostak-shahid.github.io/
  * @since             1.0.0
  * @package           Authpress
  *
  * @wordpress-plugin
  * Plugin Name:       AuthPress
- * Plugin URI:        https://www.mdmostakshahid.com/authpress/
+ * Plugin URI:        https://mostak-shahid.github.io/authpress.html
  * Description:       Authpress boilerplate for WordPress
  * Version:           1.0.0
  * Author:            Md. Mostak Shahid
- * Author URI:        https://www.mdmostakshahid.com/
+ * Author URI:        https://mostak-shahid.github.io/
  * License:           GPL-2.0+
  * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain:       authpress
@@ -81,8 +81,6 @@ Ajax_API::get_instance();
  * admin-specific hooks, and public-facing site hooks.
  */
 require_once AUTHPRESS_PATH . 'includes/class-authpress.php';
-// require_once AUTHPRESS_PATH . 'PHP/API/Rest_API.php';
-// require_once AUTHPRESS_PATH . 'PHP/API/Ajax_API.php';
 
 /**
  * Begins execution of the plugin.
