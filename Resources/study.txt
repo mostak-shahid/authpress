@@ -1,0 +1,371 @@
+Header Menu
+1. Dashboard
+2. Settings
+3. Analytics
+Type a
+T: General
+I: Login page Settings
+O: {
+    {
+        T: Force Password Reset
+        F: Switch
+        H: Enable to enforce password reset after certain duration.
+        I: force-password-reset
+    },
+    {
+        T: Password Reset Duration
+        F: Number
+        H: Set the duration in days after which the user will be forced to change password again. e.g 10.
+        D: force-password-reset
+    },
+    {
+        T: Password Reset For
+        F: Group Switch (User role)
+        H: Choose the roles for password reset forcefully to secure the site's security.
+        D: force-password-reset
+    },
+    {
+        T: Session Expire
+        F: Number
+        H: Set the session expiration time in minutes. e.g: 10
+    },
+    {
+        T: Auto Remember Me
+        F: Switch
+        H: Enable to keep the Remember Me option always checked on the Login Page.
+    },
+    {
+        T: Custom Password Fields
+        F: Switch
+        H: Enable to add Custom Password Fields to the Registration Form.
+        I: custom-password-field
+    },
+    {
+        T: Enable Password Strength
+        F: Switch
+        H: To Enable password strength setting on password field.
+        D: custom-password-field
+        I: enable-password-strength
+    },
+    {
+        T: Minimum Password Strength
+        F: Number
+        H: Set the minimum password length. e.g: 8
+        D: enable-password-strength
+    },
+    {
+        T: Password Strength Options
+        F: Group Switch
+        H: lorem.
+        D: enable-password-strength
+    },
+    {
+        T: Password Strength Meter
+        F: Switch
+        H: Enable to show password strength meter.
+        D: enable-password-strength
+    },
+    {
+        T: Enable Password Strength On
+        F: Group Switch
+        H: lorem.
+        D: enable-password-strength
+    },
+
+    {
+        T: Login Order
+        F: Radio
+        H: lorem.
+    },
+    {
+        T: Registration from Specific Domains (need to move)
+        F: Radio
+        H: lorem.
+        I: disallow-specific-domains
+    },
+    {
+        T: Restrict Domains (need to move)
+        F: Tag Input
+        H: Enter each domain in the format @domain.com and press Enter (e.g., @gmail.com, @yahoo.com).
+        D: disallow-specific-domains
+    },
+    {
+        T: Enable PCI Compliance
+        F: Switch
+        H: Enable to add PCI Compliance to WordPress Login Forms.
+    },
+    {
+        T: Reset Customizer Settings (need to move)
+        F: Switch
+        H: Enable to reset customizer settings. Note: All your customization will be reverted back to the LoginPress default theme.
+    },
+    {
+        T: Remove Settings On Uninstall (need to move)
+        F: Switch
+        H: Enable to remove all custom settings made by LoginPress upon uninstall.
+    },
+}
+
+T: Captchas
+I: CAPTCHA Protection Settings
+The LoginPress CAPTCHA feature lets you easily integrate different types of CAPTCHA services into your login and registration forms. CAPTCHA types offered include Google reCAPTCHA, hCAPTCHA, and other widely used CAPTCHA services. This feature helps prevent spam, bot attacks, and authorized access, ensuring a more secure user experience.
+
+T: Auto Login
+I: No More Manual Login
+This LoginPress add-on lets you (Adminstrator) generates a unique URL for your certain users who you don't want to provide a password to login into your site. This Pro add-on gives you a list of all the users who you have given auto generated login links. You can disable someones access and delete certain users.
+
+T: Login Redirects
+I: Automatically redirects the login
+Redirect users based on their roles and specific usernames. This is helpful, If you have an editor and want to redirect him to his editor stats page. Restrict your subscribers, guests or even customers to certain pages instead of wp-admin. This add-on has a cool UX/UI to manage all the login redirects you have created on your site.
+
+T: Hide Login
+I: Hide your login page
+This LoginPress add-on lets you change the login page URL to anything you want. It will give a hard time to spammers who keep hitting to your login page. This is helpful for Brute force attacks. One caution to use this add-on is you need to remember the custom login url after you change it. We have an option to email your custom login url so you remember it.
+
+T: Social Login
+I: Third Party login access
+Social login from LoginPress is an add-on which provides facility your users to login and Register via Facebook, Google and Twitter. This add-on will eliminate the Spam and Bot registrations. This add-on will help your users to hassle free registrations/logins on your site.
+----------------------------------------------------------------------------
+Type B
+1. Login & Authentication
+    1.1. Two-Factor Authentication
+        1.1.1. Overview
+        1.1.2. Email OTP
+        1.1.3. Authenticator Apps
+        1.1.4. SMS Authentication
+        1.1.5. Backup Codes
+        1.1.6. Audit Logs
+        1.1.7. 2FA Users & Sessions
+    1.2. Login Hardening
+        1.2.1. Hide Login
+        1.2.2. Password Policies
+        1.2.3. Master Password
+        1.2.4. Login Redirects
+    1.3. Auto Login
+        1.3.1. URL Based Login
+        1.3.2. QR Code based Login
+        1.3.3. Spcial Media Login
+        1.3.4. Passkeys
+    1.3. User Management
+        1.3.1. Session Logs
+        1.3.2. User Logs
+2. Threat Protection
+    2.1. Bot Protection 
+        2.1.1. Settings
+        2.1.2. Logs   
+
+        2.1.1. Google reCAPTCHA
+        2.1.2. Cloudflare Turnstile
+        2.1.3. Math Capthcha
+        2.1.4. Question Capthcha
+        2.1.5. Image Capthcha
+    2.2. Brute Force Protection
+        2.2.1. Settings
+        2.2.2. Logs
+    2.3.1. Access Restrictions
+        2.3.1. Domail Restrictions
+        2.3.2. Email Restrictions
+        2.3.3. IP Restrictions
+        2.3.4. GEO Restrictions
+        2.3.5. Bot Restrictions
+        2.3.6. Username Restrictions
+        2.3.7. Sessions Restrictions
+3. Monitoring & Diagnostics        
+    3.1. Security Keys
+    3.2. Site Health
+4. Maintenance & Tools
+    4.1. Backup & Restore
+    4.2. Custom Scripts
+    4.3. Tools
+5. Feedback
+
+
+
+
+
+Settings Menu
+
+Customizer
+    Redesign
+    Redirect
+
+Login URL
+
+Two-Factor Authentication
+    Email OTP
+    Authenticator Apps
+    Backup Codes
+    User list
+    Logs (pro)
+
+Login Security
+    Password Policies
+    Brute Force 
+    Use Master Password
+
+Threat Protection
+    reCAPTCHA
+    Cloudflare Turnstile
+    Math Capthcha
+    Question Capthcha
+    Image Capthcha
+
+Passwordless Login
+    URL Based Login
+    QR Code based Login
+    Spcial Media Login
+    Passkeys
+
+Access Restrictions
+    IP Restrictions
+    GEO Restrictions
+    Bot Restrictions
+    Email Restrictions
+    Username Restrictions
+    Sessions Restrictions
+
+
+Auth Log
+
+Alerts & Notifications (pro)
+    Settings
+    History
+
+=================================================================================
+Here’s a list of **passwordless login methods** that are commonly used today:
+
+---
+
+### 🔑 **Biometric Authentication**
+
+* **Fingerprint** (Touch ID, Android fingerprint scanner)
+* **Face recognition** (Face ID, Windows Hello, Android Face Unlock)
+* **Iris/retina scan**
+* **Voice recognition**
+
+---
+
+### 📧 **Magic Links**
+
+* User enters email → system sends a one-time secure link → clicking logs them in.
+
+---
+
+### 🔢 **One-Time Codes (OTP)**
+
+* **Email OTP** – temporary code sent via email.
+* **SMS OTP** – temporary code sent via SMS.
+* **App-generated OTP** – code from an authenticator app (e.g., Google Authenticator, Authy).
+* **Push notification approval** – approve login directly from an app.
+
+---
+
+### 🔐 **Security Keys & Hardware Tokens**
+
+* **FIDO2 / WebAuthn keys** (YubiKey, Feitian, SoloKey).
+* **Smart cards**.
+* **Bluetooth/NFC tokens**.
+
+---
+
+### 📲 **Device-based Authentication**
+
+* **Trusted device recognition** (login only from pre-verified devices).
+* **Mobile app confirmation** (approve login request inside an official app).
+
+---
+
+### 🌍 **Social & Identity Providers (Passwordless Mode)**
+
+* **Sign in with Google / Apple / Microsoft / Facebook**, etc., without a password (using OAuth + biometrics or device trust).
+
+---
+
+### 🖥️ **OS-Level Authentication**
+
+* **Windows Hello** (biometrics, PIN tied to device TPM).
+* **macOS Keychain / Touch ID**.
+* **Android passkeys** (Google passkeys, synced across devices).
+* **Apple Passkeys (iCloud Keychain)**.
+
+---
+
+### 🆕 **Passkeys (FIDO2/WebAuthn)**
+
+* Public–private key cryptography replaces passwords.
+* Synced across devices (via iCloud, Google Password Manager, 1Password, etc.).
+* Works on web + apps (supported by Apple, Google, Microsoft).
+
+---
+
+👉 Do you want me to also make a **comparison table** (pros/cons, security level, usability) for these methods?
+
+===============================================================================================================
+Here’s a list of **popularly used CAPTCHA systems** (still active and widely adopted):
+
+---
+
+### 🔹 **Google reCAPTCHA**
+
+* **reCAPTCHA v2**: “I’m not a robot” checkbox + image challenges.
+* **reCAPTCHA v3**: Invisible, risk-based scoring without user interaction.
+* **reCAPTCHA Enterprise**: Advanced bot protection for businesses.
+
+---
+
+### 🔹 **hCaptcha**
+
+* Privacy-focused alternative to reCAPTCHA.
+* Offers both free and enterprise versions.
+* Can pay site owners for solving CAPTCHAs (used by Cloudflare).
+
+---
+
+### 🔹 **FunCaptcha (Arkose Labs)**
+
+* Replaces text/image puzzles with **interactive mini-games** (e.g., rotate objects upright).
+* Focuses on usability and bot resistance.
+
+---
+
+### 🔹 **Geetest CAPTCHA**
+
+* **Slide-based** CAPTCHA (drag puzzle piece into place).
+* Popular in Asia; widely used in banking, gaming, and e-commerce sites.
+
+---
+
+### 🔹 **Confident CAPTCHA**
+
+* Image-based challenge that requires selecting correct objects.
+* Accessibility support with audio alternatives.
+
+---
+
+### 🔹 **Are You a Human (PlayThru)**
+
+* Replaced by other services, but pioneered **game-based CAPTCHAs**.
+* Example: “Drag the cookie into the cookie jar.”
+
+---
+
+### 🔹 **Custom/Native CAPTCHA**
+
+* **Math CAPTCHAs** (e.g., “What is 3 + 7?”).
+* **Text distortion CAPTCHAs** (traditional distorted letters/numbers).
+* **Logic-based CAPTCHAs** (simple question/answer).
+
+---
+
+✅ Today, the most **commonly used** are:
+
+* **Google reCAPTCHA** (most popular, but privacy concerns).
+* **hCaptcha** (privacy-friendly, often used by companies avoiding Google).
+* **Geetest** (especially in Asia).
+* **FunCaptcha (Arkose Labs)** (used by gaming and fintech).
+
+---
+
+Do you want me to also make a **comparison table** (ease of use, security, privacy, adoption level) between these CAPTCHA systems?
+
+
