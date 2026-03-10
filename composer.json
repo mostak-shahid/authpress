@@ -1,11 +1,11 @@
 {
-  "name": "mos/authpress",
-  "description": "Authpress boilerplate for WordPress",
+  "name": "mospress/authpress",
+  "description": "AuthPress is a powerful WordPress Login Page Customizer that lets you fully redesign the wp-login page, register form, and forgot password screen while enhancing security and user experience.",
   "type": "wordpress-plugin",
   "license": "GPLv2",
   "autoload": {
     "psr-4": {
-      "Mos\\Authpress\\": "src/"
+      "MosPress\\Authpress\\": "includes/"
     }
   },
   "authors": [
@@ -16,12 +16,19 @@
   ],
   "minimum-stability": "stable",
   "require-dev": {
-    "wp-coding-standards/wpcs": "^3.1"
+    "wp-cli/wp-cli": "^2.0",
+    "dealerdirect/phpcodesniffer-composer-installer": "^0.7.1",
+    "wp-coding-standards/wpcs": "^3.1",
+    "wp-cli/i18n-command": "^2"
   },
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true
     }
   },
-  "require": {}
+
+  "require": {},
+  "scripts": {
+    "makepot": "wp i18n make-pot ."
+  }
 }

@@ -1,0 +1,141 @@
+[
+    {
+        "itemKey": "customizer",
+        "text": "Customizer",
+        "description": "Customizer settings",
+        "url": "/settings/customizer",
+        "items": [
+            {
+                "itemKey": "presets",
+                "text": "Presets",
+                "description": "Browse detailed logs in a searchable table view.",
+                "url": "/settings/customizer/presets"
+            },
+            {
+                "itemKey": "personalize",
+                "text": "Personalize",
+                "description": "Analyze log data with charts and usage insights.",
+                "url": "/settings/customizer/personalize"
+            }
+        ]
+    },
+    {
+        "itemKey": "captchas",
+        "text": "Captchas",
+        "description": "CAPTCHA Protection Settings",
+        "url": "/settings/captchas",        
+        "items": [
+            {
+                "itemKey": "math-captcha",
+                "text": "Math Captcha",
+                "description": "Browse detailed logs in a searchable table view.",
+                "url": "/settings/captchas/math-captcha"                
+            },
+            {
+                "itemKey": "icon-captcha",
+                "text": "Icon Captcha",
+                "description": "Browse detailed logs in a searchable table view.",
+                "url": "/settings/captchas/icon-captcha"
+            },
+            {
+                "itemKey": "alphanumeric-captcha",
+                "text": "Alphanumeric Captcha",
+                "description": "Analyze log data with charts and usage insights.",
+                "url": "/settings/captchas/alphanumeric-captcha"
+            },
+            {
+                "itemKey": "puzzle-captcha",
+                "text": "Puzzle Captcha",
+                "description": "Analyze log data with charts and usage insights.",
+                "url": "/settings/captchas/puzzle-captcha"
+            },
+            {
+                "itemKey": "settings",
+                "text": "Settings",
+                "description": "Analyze log data with charts and usage insights.",
+                "url": "/settings/captchas/settings"
+            }
+        ]
+    },
+    {
+        "itemKey": "auto-login",
+        "text": "Auto Login",
+        "description": "This LoginPress add-on lets you (Adminstrator) generates a unique URL for your certain users who you don't want to provide a password to login into your site. This Pro add-on gives you a list of all the users who you have given auto generated login links. You can disable someones access and delete certain users.",
+        "url": "/settings/auto-login"
+    },
+    {
+        "itemKey": "login-redirects",
+        "text": "Login Redirects",
+        "description": "Redirect users based on their roles and specific usernames. This is helpful, If you have an editor and want to redirect him to his editor stats page. Restrict your subscribers, guests or even customers to certain pages instead of wp-admin. This add-on has a cool UX/UI to manage all the login redirects you have created on your site.",
+        "url": "/settings/login-redirects"
+    },
+    {
+        "itemKey": "limit-login-attempts",
+        "text": "Limit Login Attempts",
+        "description": "Everybody needs a control of their Login page. This will help you to track your login attempts by each user. You can limit the login attempts for each user. Brute force attacks are the most common way to gain access to your website. This add-on acts as a sheild to these hacking attacks and gives you control to set the time between each login attempts.",
+        "url": "/settings/limit-login-attempts"
+    },
+    {
+        "itemKey": "hide-login",
+        "text": "Hide Login",
+        "description": "This LoginPress add-on lets you change the login page URL to anything you want. It will give a hard time to spammers who keep hitting to your login page. This is helpful for Brute force attacks. One caution to use this add-on is you need to remember the custom login url after you change it. We have an option to email your custom login url so you remember it.",
+        "url": "/settings/hide-login"
+    },
+    {
+        "itemKey": "social-login",
+        "text": "Social Login",
+        "description": "Social login from LoginPress is an add-on which provides facility your users to login and Register via Facebook, Google and Twitter. This add-on will eliminate the Spam and Bot registrations. This add-on will help your users to hassle free registrations/logins on your site.",
+        "url": "/settings/social-login"
+    },
+    {
+        "itemKey": "misc",
+        "text": "MISC",
+        "description": "This section includes various miscellaneous settings that don't fit into the other categories but are essential for customizing and optimizing your plugin experience.",
+        "url": "/settings/misc"
+    },
+
+    {
+        "itemKey": "import-export",
+        "text": "Import & Export",
+        "description": "Easily import or export plugin settings for backup, migration, or reuse.",
+        "url": "/settings/import-export"
+    },
+    {
+        "itemKey": "more",
+        "text": "More",
+        "description": "Enable additional features, extensions, and advanced options.",
+        "url": "/settings/more"
+    },
+    {
+        "itemKey": "tools",
+        "text": "Tools",
+        "description": "Access helpful utilities for maintenance, debugging, and optimization.",
+        "url": "/settings/tools"
+    },
+    {
+        "itemKey": "logs",
+        "text": "Logs",
+        "description": "Review and manage plugin activity logs.",
+        "url": "/settings/logs",
+        "items": [
+            {
+                "itemKey": "table",
+                "text": "Table",
+                "description": "Browse detailed logs in a searchable table view.",
+                "url": "/settings/logs/table"
+            },
+            {
+                "itemKey": "analytics",
+                "text": "Analytics",
+                "description": "Analyze log data with charts and usage insights.",
+                "url": "/settings/logs/analytics"
+            }
+        ]
+    },
+    {
+        "itemKey": "feedback",
+        "text": "Feedback",
+        "description": "Share feedback, report issues, or suggest improvements.",
+        "url": "/feedback"
+    }
+]

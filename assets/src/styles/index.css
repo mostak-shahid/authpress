@@ -1,0 +1,8 @@
+.authpress-settings-template #wpcontent {
+  padding-left: 0;
+}
+.authpress-settings-template input[type=color], .authpress-settings-template input[type=date], .authpress-settings-template input[type=datetime-local], .authpress-settings-template input[type=datetime], .authpress-settings-template input[type=email], .authpress-settings-template input[type=month], .authpress-settings-template input[type=number], .authpress-settings-template input[type=password], .authpress-settings-template input[type=search], .authpress-settings-template input[type=tel], .authpress-settings-template input[type=text], .authpress-settings-template input[type=time], .authpress-settings-template input[type=url], .authpress-settings-template input[type=week], .authpress-settings-template select, .authpress-settings-template textarea {
+  border-radius: unset;
+  border: unset;
+  background-color: unset;
+}/*# sourceMappingURL=index.css.map */
