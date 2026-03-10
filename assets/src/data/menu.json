@@ -15,7 +15,21 @@
                 "itemKey": "personalize",
                 "text": "Personalize",
                 "description": "Analyze log data with charts and usage insights.",
-                "url": "/settings/customizer/personalize"
+                "url": "/settings/customizer/personalize",
+                "items": [
+                    {
+                        "itemKey": "logo",
+                        "text": "Logo",
+                        "description": "Browse detailed logs in a searchable table view.",
+                        "url": "/settings/customizer/personalize/logo"                
+                    },
+                    {
+                        "itemKey": "background",
+                        "text": "Background",
+                        "description": "Browse detailed logs in a searchable table view.",
+                        "url": "/settings/customizer/personalize/background"                
+                    }
+                ]
             }
         ]
     },

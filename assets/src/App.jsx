@@ -253,13 +253,15 @@ export default function App() {
                 </Header>
                 <Routes>
                     <Route path="/" element={<Dashboard />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
                     
                     <Route path="/settings" element={<Settings />}>
                         <Route index element={<Navigate to="customizer/presets" replace />} />
-                        <Route path="basic-inputs" element={<BasicInputs />} />
                         <Route path="customizer/presets" element={<CustomizerPresets />} />
+
+                        <Route path="customizer/personalize/" element={<Navigate to="/logo" replace />} />
+                        <Route path="customizer/personalize/logo" element={<CustomizerPresets />} />
+                        <Route path="customizer/personalize/background" element={<CustomizerPresets />} />
+
                         <Route path="hide-login" element={<CustomizerPresets />} />
 
                         <Route path="array-inputs" element={<ArrayInputs />} />
