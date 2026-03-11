@@ -82,7 +82,7 @@ export default function App() {
             if (response.success) {
                 document.body.setAttribute('theme-mode', switchMode?'dark':'light');
             }
-            console.log(response);
+            // console.log(response);
         } catch (error) {
             console.error("Error fetching settings data:", error);
         }
@@ -256,6 +256,7 @@ export default function App() {
                     
                     <Route path="/settings" element={<Settings />}>
                         <Route index element={<Navigate to="customizer/presets" replace />} />
+                        {/* <Route path="customizer/presets" element={<BasicInputs />} /> */}
                         <Route path="customizer/presets" element={<CustomizerPresets />} />
 
                         <Route path="customizer/personalize/" element={<Navigate to="/logo" replace />} />

@@ -719,6 +719,7 @@ class Rest_API
 
 		$response = [
 			'success' => true,
+            'value' => $request->get_param('authpress_options'),
 			'msg'	=> esc_html__('Data successfully added.', 'authpress')
 		];
 

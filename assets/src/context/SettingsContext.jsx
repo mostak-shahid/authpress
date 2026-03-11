@@ -23,7 +23,7 @@ export const SettingsProvider = ({ children }) => {
     }));
 
     // Save to backend/localStorage
-    console.log('Settings saved:', { section, values });
+    // console.log('Settings saved:', { section, values });
     
     // In a real app, you'd do:
     // await fetch('/api/settings', { 

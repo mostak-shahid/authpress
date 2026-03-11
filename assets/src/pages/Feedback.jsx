@@ -28,7 +28,7 @@ const Feedback = () => {
     };
 
     const handleForm = async (values) => {
-        console.log(values);
+        // console.log(values);
         if (values.subject && values.message) {
             setProcessing(true);
             try {
@@ -45,7 +45,7 @@ const Feedback = () => {
                         'X-WP-Nonce': mos_product_specifications_tab_ajax_obj.api_nonce
                     }
                 });
-                console.log(result);
+                // console.log(result);
                 if (result.success) {
                     if (formApi) {
                         formApi.reset();

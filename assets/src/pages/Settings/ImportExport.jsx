@@ -72,7 +72,7 @@ const ImportExport = () => {
     // Submit imported JSON
     const handleImport = async () => {
         setProcessingImport(true);
-        console.log(importData);
+        // console.log(importData);
         try {
             const parsed = JSON.parse(importData);
             const response = await apiFetch({

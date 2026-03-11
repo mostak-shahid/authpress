@@ -4,29 +4,25 @@ import { useOutletContext } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
 import { SkeletonPlaceholder } from "../../components";
-import { ImageSelector } from "../../components/ImageSelector/ImageSelector";
 
 const { Title, Paragraph } = Typography;
 const CustomizerPresets = () => {
-    const { settings, settingsLoading, handleSubmit, handleReset, setSettingsReload } = useOutletContext();
+    const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const settingsOld = useRef(null);
 
-    const presets = authpress_ajax_obj?.default_presets || [];
-
-    // const onSubmit = (values) => {
-    //     handleSubmit('basic', values);
-    // };
-
-    // const handleValuesChange = (values) => {
-    //     if (settingsOld.current && settings.basic) {
-    //         const isChanged = JSON.stringify(values) !== JSON.stringify(settingsOld.current.basic);
-    //         setHasChanges(isChanged);
-    //     }
-    // };
-
     const onSubmit = (values) => {
-        handleSubmit('customizer', values);
+        const updatedSettings = {
+            ...settings,
+            customizer: {
+                ...settings.customizer,
+                redesign: {
+                    ...settings.customizer.redesign,
+                    templates: values
+                }
+            }
+        };
+        handleSubmit('customizer', updatedSettings.customizer);
     };
 
     const handleValuesChange = (values) => {
@@ -43,34 +39,9 @@ const CustomizerPresets = () => {
         }
     }, [settings]);
 
-    const onClick = (preset) => {
-        if (!preset.preset) return;
-
-        const updatedSettings = {
-            ...settings,
-            ...preset.preset
-        };
-
-        handleSubmit('customizer', updatedSettings.customizer);
-    }
-
-    const handlePresetSelect = (templateId) => {
-        const preset = presets.find(p => p.template === templateId);
-        if (preset) {
-            onClick(preset);
-        }
-    }
-
-    const presetImages = presets.map(preset => ({
-        id: preset.template,
-        title: preset.name,
-        cat: "Preset",
-        src: preset.img
-    }));
-
     return (
         <>
-            {console.log(settings?.customizer?.redesign?.templates)}
+            {/* {console.log(settings.customizer)} */}
             {!settingsLoading && settings?.customizer?.redesign?.templates && (
                 <Form
                     initValues={settings?.customizer?.redesign?.templates || {}}
@@ -79,33 +50,27 @@ const CustomizerPresets = () => {
                     labelPosition="left"
                     labelWidth="150px"
                 >
-
                     <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
-                            <Col xs={24}>
+                            <Col xs={24} lg={12} xl={14}>
                                 <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                    <Title heading={4}>{__("Text Input", "authpress")}</Title>
+                                    <Title heading={4}>{__("Radio Group", "authpress")}</Title>
                                     <Paragraph>{__("Lorem", "authpress")}</Paragraph>
                                 </Skeleton>
                             </Col>
                             {
-                                !settingsLoading && presetImages.length > 0 &&
-                                <Col xs={24} className="mt-4">
-                                    <ImageSelector
-                                        images={presetImages}
-                                        selectedId={settings?.customizer?.redesign?.templates?.layout || null}
-                                        onSelect={handlePresetSelect}
-                                        idField="id"
-                                    />
+                                !settingsLoading &&
+                                <Col xs={24} lg={12} xl={10}>
+                                    <Form.RadioGroup field="layout" noLabel type="button">
+                                        <Form.Radio value="default-login">{__('default-login', 'authpress')}</Form.Radio>
+                                        <Form.Radio value="default-login-left">{__('default-login-left', 'authpress')}</Form.Radio>
+                                        <Form.Radio value="default-login-right">{__('default-login-right', 'authpress')}</Form.Radio>
+                                    </Form.RadioGroup>
                                 </Col>
                             }
                         </Row>
                     </div>
-                    <ActionButtons 
-                        hasChanges={hasChanges} 
-                        // section='customizer.redesign.templates' 
-                        // handleReset={handleReset} 
-                    />
+                    <ActionButtons hasChanges={hasChanges} section='customizer.redesign.templates' handleReset={handleReset} />
                 </Form>
             )}
         </>

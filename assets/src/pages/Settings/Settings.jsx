@@ -81,7 +81,7 @@ const Settings = () => {
                 method: 'POST',
                 data: { name: section }
             });
-            console.log(result);
+            // console.log(result);
             if (result.success) {
                 setSettingsReload(Math.random());
                 Notification.success({
@@ -250,7 +250,7 @@ const Settings = () => {
                     // title="Title"
                     headerLine={true}
                 >
-                    {console.log(settings)}
+                    {/* {console.log(settings)} */}
                     <Outlet context={{ settings, settingsLoading, handleSubmit, handleReset, setSettingsReload }} />
                 </Card>
             </Content>

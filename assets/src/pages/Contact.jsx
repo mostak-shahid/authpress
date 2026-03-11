@@ -7,7 +7,7 @@ const Contact = () => {
 
     const handleSubmit = (values) => {
         // In a real app, you'd save to backend
-        console.log('Form submitted:', values);
+        // console.log('Form submitted:', values);
         Toast.success('Contact form submitted successfully!');
     };
 
