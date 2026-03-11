@@ -4,6 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
 import { SkeletonPlaceholder } from "../../components";
+import { ImageSelector } from "../../components/ImageSelector/ImageSelector";
 
 const { Title, Paragraph } = Typography;
 const CustomizerPresets = () => {
@@ -44,14 +45,28 @@ const CustomizerPresets = () => {
 
     const onClick = (preset) => {
         if (!preset.preset) return;
-        
+
         const updatedSettings = {
             ...settings,
             ...preset.preset
         };
-        
+
         handleSubmit('customizer', updatedSettings.customizer);
     }
+
+    const handlePresetSelect = (templateId) => {
+        const preset = presets.find(p => p.template === templateId);
+        if (preset) {
+            onClick(preset);
+        }
+    }
+
+    const presetImages = presets.map(preset => ({
+        id: preset.template,
+        title: preset.name,
+        cat: "Preset",
+        src: preset.img
+    }));
 
     return (
         <>
@@ -72,33 +87,17 @@ const CustomizerPresets = () => {
                                     <Title heading={4}>{__("Text Input", "authpress")}</Title>
                                     <Paragraph>{__("Lorem", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                            </Col>
                             {
-                                !settingsLoading && presets.length > 0 &&                               
-                                <div className="col-lg-12 mt-4">
-                                    <Row type="flex" gutter={[24, 24]}>
-                                        {presets.map((preset) => (
-                                            <Col
-                                                key={preset.template}
-                                                xs={24} lg={8}                                       
-                                            >
-                                                <div onClick={() => onClick(preset)}>
-                                                    <img 
-                                                        style={{ 
-                                                            cursor: "pointer",
-                                                            border: settings?.customizer?.redesign?.templates?.layout === preset.template 
-                                                                ? '5px solid #22c55e' 
-                                                                : '5px solid transparent'
-                                                        }} 
-                                                        className="img-fluid"
-                                                        src={preset.img} alt={preset.name}
-                                                    />
-                                                    <div className="text-center mt-2">{preset.name}</div>
-                                                </div>
-                                            </Col>
-                                        ))}
-                                    </Row>                 
-                                </div>
+                                !settingsLoading && presetImages.length > 0 &&
+                                <Col xs={24} className="mt-4">
+                                    <ImageSelector
+                                        images={presetImages}
+                                        selectedId={settings?.customizer?.redesign?.templates?.layout || null}
+                                        onSelect={handlePresetSelect}
+                                        idField="id"
+                                    />
+                                </Col>
                             }
                         </Row>
                     </div>
