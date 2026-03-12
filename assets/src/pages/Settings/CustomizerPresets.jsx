@@ -4,12 +4,22 @@ import { useOutletContext } from 'react-router-dom';
 import { useRef, useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
 import { SkeletonPlaceholder } from "../../components";
+import ImageSelectorStandalone from "../../components/ImageSelector/ImageSelector";
 
 const { Title, Paragraph } = Typography;
+const CheckIcon = () => { 
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
 const CustomizerPresets = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const settingsOld = useRef(null);
+    const defaultPresets = authpress_ajax_obj?.default_presets || [];
 
     const onSubmit = (values) => {
         const updatedSettings = {
@@ -52,19 +62,26 @@ const CustomizerPresets = () => {
                 >
                     <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
-                            <Col xs={24} lg={12} xl={14}>
-                                <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                    <Title heading={4}>{__("Radio Group", "authpress")}</Title>
-                                    <Paragraph>{__("Lorem", "authpress")}</Paragraph>
-                                </Skeleton>
-                            </Col>
                             {
                                 !settingsLoading &&
-                                <Col xs={24} lg={12} xl={10}>
-                                    <Form.RadioGroup field="layout" noLabel type="button">
-                                        <Form.Radio value="default-login">{__('default-login', 'authpress')}</Form.Radio>
-                                        <Form.Radio value="default-login-left">{__('default-login-left', 'authpress')}</Form.Radio>
-                                        <Form.Radio value="default-login-right">{__('default-login-right', 'authpress')}</Form.Radio>
+                                <Col xs={24}>
+                                    <Form.RadioGroup field="layout" noLabel type="button" className="authpress-image-selector">
+                                        {
+                                            defaultPresets.map(preset => (
+                                                <Form.Radio key={preset.template} value={preset.template}>
+                                                    <div className="image-container">
+                                                        <img src={preset.img} alt={preset.label}/>
+                                                        <span>{preset.name}</span>
+                                                        <div className="authpress-image-selected">
+                                                            <CheckIcon />
+                                                        </div>
+                                                    </div>
+                                                    {console.log(settings?.customizer?.redesign?.templates.layout, preset.template)}
+                                                </Form.Radio>
+                                            ))
+
+                                        }
+                                        
                                     </Form.RadioGroup>
                                 </Col>
                             }
