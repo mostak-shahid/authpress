@@ -15,7 +15,7 @@ const CheckIcon = () => {
     </svg>
   );
 }
-const CustomizerPresets = () => {
+const CustomizerPersonalizeLogo = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const settingsOld = useRef(null);
@@ -32,7 +32,6 @@ const CustomizerPresets = () => {
                 }
             }
         };
-        console.log(values);
         handleSubmit('customizer', updatedSettings.customizer);
     };
 
@@ -77,7 +76,7 @@ const CustomizerPresets = () => {
                                                             <CheckIcon />
                                                         </div>
                                                     </div>
-                                                    {/* {console.log(settings?.customizer?.redesign?.templates.layout, preset.template)} */}
+                                                    {console.log(settings?.customizer?.redesign?.templates.layout, preset.template)}
                                                 </Form.Radio>
                                             ))
 
@@ -95,4 +94,4 @@ const CustomizerPresets = () => {
     );
 };
 
-export default CustomizerPresets;
+export default CustomizerPersonalizeLogo;
