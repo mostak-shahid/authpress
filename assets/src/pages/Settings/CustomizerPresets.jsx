@@ -64,17 +64,13 @@ const CustomizerPresets = () => {
     };
 
     const handlePresetChange = (template) => {
-        const selectedPreset = defaultPresets.find(p => p.template === template);
+        const selectedPreset = defaultPresets.find(p => p.template === template.target.value);
+        // console.log('template', template.target.value);
+        // console.log('selectedPreset', selectedPreset);
         if (selectedPreset && selectedPreset.preset) {
             const updatedSettings = {
                 ...settings,
-                customizer: {
-                    ...settings.customizer,
-                    redesign: {
-                        ...settings.customizer.redesign,
-                        ...selectedPreset.preset.customizer.redesign
-                    }
-                }
+                customizer: deepMerge(settings.customizer, selectedPreset.preset.customizer)
             };
             handleSubmit('customizer', updatedSettings.customizer);
         }
