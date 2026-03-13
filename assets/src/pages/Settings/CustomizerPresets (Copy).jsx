@@ -16,6 +16,43 @@ const CheckIcon = () => {
     </svg>
   );
 }
+const layouts = ["default-login", "default-login-left", "default-login-right"];
+
+// -------------------------
+// CORRECT PRESETS (FORM MOVED INSIDE redesign)
+// -------------------------
+const preset1 = {
+    customizer: {
+        redesign: {
+            templates: "default-login",
+            form: {
+                wrapper: { position: "center" },
+            },
+        },
+    },
+};
+
+const preset2 = {
+    customizer: {
+        redesign: {
+            templates: "default-login-left",
+            form: {
+                wrapper: { position: "left" },
+            },
+        },
+    },
+};
+
+const preset3 = {
+    customizer: {
+        redesign: {
+            templates: "default-login-right",
+            form: {
+                wrapper: { position: "right" },
+            },
+        },
+    },
+};
 
 // -------------------------
 // SAFE DEEP MERGE
@@ -37,9 +74,24 @@ const CustomizerPresets = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const settingsOld = useRef(null);
-    const [tempSettings, setTempSettings] = useState(settings);
     const defaultPresets = authpress_ajax_obj?.default_presets || [];
 
+
+
+
+    const onClick = (template) => {
+        let preset = null;
+
+        if (template === "default-login") preset = preset1;
+        if (template === "default-login-left") preset = preset2;
+        if (template === "default-login-right") preset = preset3;
+
+        if (preset) {
+            const updated = deepMerge(settings, preset);
+            // setSettingData(updated);
+            handleSubmit("customizer.redesign.templates", template);
+        }
+    };
 
     const onSubmit = (values) => {
         const updatedSettings = {
@@ -52,7 +104,7 @@ const CustomizerPresets = () => {
                 }
             }
         };
-        console.log('updatedSettings', updatedSettings);
+        console.log(values);
         handleSubmit('customizer', updatedSettings.customizer);
     };
 
@@ -80,6 +132,12 @@ const CustomizerPresets = () => {
         }
     };
 
+    const applyPreset = (preset) => {
+        const updated = merge({}, settings, preset);
+        // setSettings(updated);
+        console.log(updated);
+    };
+
     useEffect(() => {
         if (settings && settings?.customizer?.redesign?.templates) {
             settingsOld.current = { ...settings };
@@ -89,7 +147,7 @@ const CustomizerPresets = () => {
 
     return (
         <>
-            {/* {console.log(settings.customizer)} */}
+            {console.log(settings.customizer)}
             {!settingsLoading && settings?.customizer?.redesign?.templates && (
                 <Form
                     initValues={settings?.customizer?.redesign?.templates || {}}
@@ -104,7 +162,6 @@ const CustomizerPresets = () => {
                                 !settingsLoading &&
                                 <Col xs={24}>
                                     <Form.RadioGroup field="layout" noLabel type="button" className="authpress-image-selector" onChange={handlePresetChange}>
-                                        {console.log(defaultPresets)}
                                         {
                                             defaultPresets.map(preset => (
                                                 <Form.Radio key={preset.template} value={preset.template}>
@@ -125,6 +182,51 @@ const CustomizerPresets = () => {
                                 </Col>
                             }
                         </Row>
+                    </div>
+                    <div>
+                        {
+                            defaultPresets.map(preset => (
+                                <button 
+                                    onClick={() => applyPreset(preset.preset)}
+                                    key={preset.template}
+                                >
+                                    <span>{preset.name}</span>
+                                </button>
+                            ))
+
+                        }
+
+                        {/* <pre>{JSON.stringify(settings, null, 2)}</pre> */}
+                    </div>
+
+
+                    <div className="setting-unit pt-4">              
+                        <Row type="flex" gutter={[24, 24]}>
+                            {layouts.map((template) => {
+                                const active =
+                                    settings?.customizer?.redesign?.templates === template;
+
+                                return (
+                                    <Col xs={24} lg={12} xl={8} key={template}>
+                                        <img
+                                            src={`${authpress_ajax_obj.image_url}${template}.png`}
+                                            alt={template}
+                                            onClick={() => onClick(template)}
+                                            style={{
+                                                cursor: "pointer",
+                                                width: "100%",
+                                                border: "5px solid",
+                                                borderColor: active
+                                                    ? "var(--semi-color-success)"
+                                                    : "var(--semi-color-info)",
+                                            }}
+                                        />
+                                    </Col>
+                                );
+                            })}
+                        </Row>
+                        
+                    
                     </div>
 
                     <ActionButtons hasChanges={hasChanges} section='customizer.redesign.templates' handleReset={handleReset} />
