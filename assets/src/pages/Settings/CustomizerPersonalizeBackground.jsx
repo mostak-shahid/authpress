@@ -8,7 +8,9 @@ import {BackgroundControl, ColorPickerControl, SkeletonPlaceholder} from '../../
 const { Title, Paragraph } = Typography;
 const CustomizerPersonalizeBackground = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
+    const formApiRef = useRef(null);
     const [hasChanges, setHasChanges] = useState(false);
+    const [formValues, setFormValues] = useState(settings?.customizer?.redesign?.background || {});
     const settingsOld = useRef(null);
 
     const onSubmit = (values) => {
@@ -26,9 +28,16 @@ const CustomizerPersonalizeBackground = () => {
     };
 
     const handleValuesChange = (values) => {
+        setFormValues(values);
         if (settingsOld.current && settings?.customizer?.redesign?.background) {
             const isChanged = JSON.stringify(values) !== JSON.stringify(settingsOld.current.customizer?.redesign?.background);
             setHasChanges(isChanged);
+        }
+    };
+
+    const handleChange = (field, value) => {
+        if (formApiRef.current) {
+            formApiRef.current.setValue(field, value);
         }
     };
 
@@ -49,6 +58,7 @@ const CustomizerPersonalizeBackground = () => {
                     onValueChange={handleValuesChange}
                     labelPosition="left"
                     labelWidth="150px"
+                    getFormApi={(formApi) => formApiRef.current = formApi}
                 >
                     <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
@@ -79,7 +89,7 @@ const CustomizerPersonalizeBackground = () => {
                         </Row>
                     </div>
                     {
-                    settings?.customizer?.redesign?.background?.type === 'image' &&
+                    formValues?.type === 'image' &&
                         <div className="setting-unit py-4">
                             <Row type="flex" gutter={[24, 24]}>
                                 <Col xs={24} lg={12} xl={14}>
@@ -91,28 +101,34 @@ const CustomizerPersonalizeBackground = () => {
                                 {
                                     !settingsLoading &&                               
                                     <Col xs={24} lg={12} xl={10}>
-                                        <BackgroundControl
-                                            options={[
-                                                "image",
-                                                "color",
-                                                "position",
-                                                "size",
-                                                "repeat",
-                                                "origin",
-                                                "clip",
-                                                "attachment",
-                                            ]}
-                                            // defaultValues={settingData?.customizer?.redesign?.background?.background}
-                                            // name="customizer.redesign.background.background"
-                                            // handleChange={handleChange}
-                                        /> 
+                                         <Form.Input
+                                             field="background"
+                                             noLabel
+                                             style={{ display: 'none' }}
+                                         >
+                                         </Form.Input>
+                                         <BackgroundControl
+                                             defaultValues={settings?.customizer?.redesign?.background?.background || {}}
+                                             name="background"
+                                             handleChange={handleChange}
+                                             options={[
+                                                 "image",
+                                                 "color",
+                                                 "position",
+                                                 "size",
+                                                 "repeat",
+                                                 "origin",
+                                                 "clip",
+                                                 "attachment",
+                                             ]}
+                                         />
                                     </Col>
                                 }
                             </Row>
                         </div>
                     }
                     {
-                    settings?.customizer?.redesign?.background?.type === 'gradient' &&
+                    formValues?.type === 'gradient' &&
                         <div className="setting-unit py-4">
                             <Row type="flex" gutter={[24, 24]}>
                                 <Col xs={24} lg={12} xl={14}>
@@ -124,18 +140,24 @@ const CustomizerPersonalizeBackground = () => {
                                 {
                                     !settingsLoading &&                               
                                     <Col xs={24} lg={12} xl={10}>
-                                        <ColorPickerControl
-                                        // defaultValue={settingData?.customizer?.redesign?.background?.background?.color}
-                                        // handleChange={(value) => handleChange('customizer.redesign.background.background.color', value)}
-                                        mode='gradient'
-                                    />   
+                                         <Form.Input
+                                             field="background.color"
+                                             noLabel
+                                             style={{ display: 'none' }}
+                                         >
+                                         </Form.Input>
+                                         <ColorPickerControl
+                                             defaultValue={settings?.customizer?.redesign?.background?.background?.color || ''}
+                                             handleChange={(value) => handleChange('background.color', value)}
+                                             mode='gradient'
+                                     />
                                     </Col>
                                 }
                             </Row>
                         </div>
                     }
                     {
-                    settings?.customizer?.redesign?.background?.type === 'video' &&
+                    formValues?.type === 'video' &&
                         <div className="setting-unit py-4">
                             <Row type="flex" gutter={[24, 24]}>
                                 <Col xs={24} lg={12} xl={14}>
@@ -147,16 +169,13 @@ const CustomizerPersonalizeBackground = () => {
                                 {
                                     !settingsLoading &&                               
                                     <Col xs={24} lg={12} xl={10}>
-                                        <Form.Input 
-                                            placeholder={__("Youtube or Vimeo video URL", "authpress")}
-                                            noLabel
-                                            field="video"
-                                            type="url"
-                                            showClear 
-                                            defaultValue='click to clear'
-                                            // value={settingData?.customizer?.redesign?.background?.video}
-                                            // onChange={(value) => handleChange('customizer.redesign.background.video', value)}
-                                        />   
+                                         <Form.Input
+                                             placeholder={__("Youtube or Vimeo video URL", "authpress")}
+                                             noLabel
+                                             field="video"
+                                             type="url"
+                                             showClear
+                                         />
                                     </Col>
                                 }
                             </Row>
@@ -173,11 +192,11 @@ const CustomizerPersonalizeBackground = () => {
                             {
                                 !settingsLoading &&                               
                                 <Col xs={24} lg={12} xl={10}>
-                                    <ColorPickerControl
-                                        // defaultValue={settingData?.customizer?.redesign?.background?.overlay}
-                                        // handleChange={(value) => handleChange('customizer.redesign.background.overlay', value)}
-                                        mode='color'
-                                    />  
+                                     <ColorPickerControl
+                                         defaultValue={settings?.customizer?.redesign?.background?.overlay || ''}
+                                         handleChange={(value) => handleChange('overlay', value)}
+                                         mode='color'
+                                     />
                                 </Col>
                             }
                         </Row>
