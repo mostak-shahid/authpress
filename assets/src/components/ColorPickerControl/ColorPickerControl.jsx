@@ -66,7 +66,7 @@ export default function ColorPickerControl({
                 </label>
             )}
 
-            <Space className='semi-button-secondary semi-button-light h-[32px] px-[12px]'>
+            <Space className='semi-button-secondary semi-button-light p-[10px]'>
                 <ColorIndicator className='cursor-pointer' colorValue={value}  onClick={() => setIsOpen(!isOpen)}/>
                 <Typography.Text
                     // copyable

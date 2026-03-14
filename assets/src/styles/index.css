@@ -7,6 +7,12 @@
   background-color: unset;
 }
 
+.color-picker-control .component-color-indicator {
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+}
+
 .authpress-image-selector {
   background: transparent;
   display: grid;

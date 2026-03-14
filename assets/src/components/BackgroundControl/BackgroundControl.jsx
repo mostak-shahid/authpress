@@ -57,7 +57,8 @@ const BackgroundControl = ({defaultValues = {}, name, handleChange, className=''
                                         defaultValue={values[option]}
                                         handleChange={(value) => updateValue(option, value)}
                                         mode='both'
-                                        label={__("Background Color", "authpress")}
+                                        // label={__("Background Color", "authpress")}
+                                        label=''
                                     />
                                     <Button
                                         theme='outline'
