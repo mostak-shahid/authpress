@@ -37,7 +37,6 @@ const CustomizerPresets = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const settingsOld = useRef(null);
-    const [tempSettings, setTempSettings] = useState(settings);
     const defaultPresets = authpress_ajax_obj?.default_presets || [];
 
 
@@ -100,7 +99,7 @@ const CustomizerPresets = () => {
                                 !settingsLoading &&
                                 <Col xs={24}>
                                     <Form.RadioGroup field="layout" noLabel type="button" className="authpress-image-selector" onChange={handlePresetChange}>
-                                        {console.log(defaultPresets)}
+                                        {/* {console.log(defaultPresets)} */}
                                         {
                                             defaultPresets.map(preset => (
                                                 <Form.Radio key={preset.template} value={preset.template}>
@@ -123,7 +122,7 @@ const CustomizerPresets = () => {
                         </Row>
                     </div>
 
-                    <ActionButtons hasChanges={hasChanges} section='customizer.redesign.templates' handleReset={handleReset} />
+                    {/* <ActionButtons hasChanges={hasChanges} section='customizer.redesign.templates' handleReset={handleReset} /> */}
                 </Form>
             )}
         </>
