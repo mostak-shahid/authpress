@@ -1,65 +1,61 @@
 import { __ } from "@wordpress/i18n";
-import { Form, Row, Col, Skeleton, Typography} from '@douyinfe/semi-ui';
+import { Row, Col, Skeleton, Typography, Select, Input} from '@douyinfe/semi-ui';
 import { useOutletContext } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
 import {BackgroundControl, ColorPickerControl, SkeletonPlaceholder} from '../../components';
 
 const { Title, Paragraph } = Typography;
 const CustomizerPersonalizeBackground = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
-    const formApiRef = useRef(null);
     const [hasChanges, setHasChanges] = useState(false);
-    const [formValues, setFormValues] = useState(settings?.customizer?.redesign?.background || {});
-    const settingsOld = useRef(null);
+    const [localValues, setLocalValues] = useState({});
+    const [originalValues, setOriginalValues] = useState({});
 
-    const onSubmit = (values) => {
+    useEffect(() => {
+        if (settings && settings?.customizer?.redesign?.background) {
+            const bgSettings = settings.customizer.redesign.background;
+            setLocalValues({ ...bgSettings });
+            setOriginalValues({ ...bgSettings });
+            setHasChanges(false);
+        }
+    }, [settings]);
+
+    const handleChange = (field, value) => {
+        setLocalValues(prev => {
+            const updated = { ...prev };
+            const keys = field.split('.');
+            if (keys.length === 1) {
+                updated[keys[0]] = value;
+            } else {
+                if (!updated[keys[0]]) updated[keys[0]] = {};
+                updated[keys[0]][keys[1]] = value;
+            }
+            const isChanged = JSON.stringify(updated) !== JSON.stringify(originalValues);
+            setHasChanges(isChanged);
+            return updated;
+        });
+    };
+
+    const onSave = () => {
         const updatedSettings = {
             ...settings,
             customizer: {
                 ...settings.customizer,
                 redesign: {
                     ...settings.customizer.redesign,
-                    background: values
+                    background: localValues
                 }
             }
         };
         handleSubmit('customizer', updatedSettings.customizer);
     };
 
-    const handleValuesChange = (values) => {
-        setFormValues(values);
-        if (settingsOld.current && settings?.customizer?.redesign?.background) {
-            const isChanged = JSON.stringify(values) !== JSON.stringify(settingsOld.current.customizer?.redesign?.background);
-            setHasChanges(isChanged);
-        }
-    };
-
-    const handleChange = (field, value) => {
-        if (formApiRef.current) {
-            formApiRef.current.setValue(field, value);
-        }
-    };
-
-    useEffect(() => {
-        if (settings && settings?.customizer?.redesign?.background) {
-            settingsOld.current = { ...settings };
-            setHasChanges(false);
-        }
-    }, [settings]);
-
     return (
         <>
-            {/* {console.log(settings.basic)} */}
             {!settingsLoading && settings?.customizer?.redesign?.background && (
-                <Form
-                    initValues={settings.customizer.redesign.background}
-                    onSubmit={onSubmit}
-                    onValueChange={handleValuesChange}
-                    labelPosition="left"
-                    labelWidth="150px"
-                    getFormApi={(formApi) => formApiRef.current = formApi}
-                >
+                <>
+                    {console.log(localValues?.type)}
                     <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
@@ -67,29 +63,27 @@ const CustomizerPersonalizeBackground = () => {
                                     <Title heading={4}>{__("Background type", "authpress")}</Title>
                                     <Paragraph>{__("Lorem", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                            </Col>
                             {
-                                !settingsLoading &&                               
+                                !settingsLoading &&
                                 <Col xs={24} lg={12} xl={10}>
-                                    <Form.Select 
+                                    <Select
                                         noLabel
-                                        field="type"
                                         className="w-full"
-                                        placeholder={__("Background type", "authpress")} 
+                                        placeholder={__("Background type", "authpress")}
+                                        value={localValues?.type}
                                         optionList={[
-                                            { label: 'Image', value: 'image' },
-                                            { label: 'Gradient', value: 'gradient' },
+                                            { label: 'Default', value: 'image' },
                                             { label: 'Video', value: 'video' },
                                         ]}
-                                        // onChange={ ( changedValue ) => handleChange('customizer.redesign.background.type', changedValue ) }
-                                        // value={ settingData?.customizer?.redesign?.background?.type }
+                                        onChange={(value) => handleChange('type', value)}
                                     />
                                 </Col>
                             }
                         </Row>
                     </div>
                     {
-                    formValues?.type === 'image' &&
+                    localValues?.type === 'image' &&
                         <div className="setting-unit py-4">
                             <Row type="flex" gutter={[24, 24]}>
                                 <Col xs={24} lg={12} xl={14}>
@@ -97,85 +91,50 @@ const CustomizerPersonalizeBackground = () => {
                                         <Title heading={4}>{__("Background Image", "authpress")}</Title>
                                         <Paragraph>{__("Lorem", "authpress")}</Paragraph>
                                     </Skeleton>
-                                </Col>    
+                                </Col>
                                 {
-                                    !settingsLoading &&                               
+                                    !settingsLoading &&
                                     <Col xs={24} lg={12} xl={10}>
-                                         <Form.Input
-                                             field="background"
-                                             noLabel
-                                             style={{ display: 'none' }}
-                                         >
-                                         </Form.Input>
-                                         <BackgroundControl
-                                             defaultValues={settings?.customizer?.redesign?.background?.background || {}}
-                                             name="background"
-                                             handleChange={handleChange}
-                                             options={[
-                                                 "image",
-                                                 "color",
-                                                 "position",
-                                                 "size",
-                                                 "repeat",
-                                                 "origin",
-                                                 "clip",
-                                                 "attachment",
-                                             ]}
-                                         />
+                                        <BackgroundControl
+                                            defaultValues={localValues?.background || {}}
+                                            name="background"
+                                            handleChange={handleChange}
+                                            options={[
+                                                "image",
+                                                "color",
+                                                "position",
+                                                "size",
+                                                "repeat",
+                                                "origin",
+                                                "clip",
+                                                "attachment",
+                                            ]}
+                                        />
                                     </Col>
                                 }
                             </Row>
                         </div>
                     }
                     {
-                    formValues?.type === 'gradient' &&
+                    localValues?.type === 'video' &&
                         <div className="setting-unit py-4">
                             <Row type="flex" gutter={[24, 24]}>
                                 <Col xs={24} lg={12} xl={14}>
                                     <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                        <Title heading={4}>{__("Background Gradient", "authpress")}</Title>
+                                        <Title heading={4}>{__("Background Video", "authpress")}</Title>
                                         <Paragraph>{__("Lorem", "authpress")}</Paragraph>
                                     </Skeleton>
-                                </Col>    
+                                </Col>
                                 {
-                                    !settingsLoading &&                               
+                                    !settingsLoading &&
                                     <Col xs={24} lg={12} xl={10}>
-                                         <Form.Input
-                                             field="background.color"
-                                             noLabel
-                                             style={{ display: 'none' }}
-                                         >
-                                         </Form.Input>
-                                         <ColorPickerControl
-                                             defaultValue={settings?.customizer?.redesign?.background?.background?.color || ''}
-                                             handleChange={(value) => handleChange('background.color', value)}
-                                             mode='gradient'
-                                     />
-                                    </Col>
-                                }
-                            </Row>
-                        </div>
-                    }
-                    {
-                    formValues?.type === 'video' &&
-                        <div className="setting-unit py-4">
-                            <Row type="flex" gutter={[24, 24]}>
-                                <Col xs={24} lg={12} xl={14}>
-                                    <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                        <Title heading={4}>{__("Background Gradient", "authpress")}</Title>
-                                        <Paragraph>{__("Lorem", "authpress")}</Paragraph>
-                                    </Skeleton>
-                                </Col>    
-                                {
-                                    !settingsLoading &&                               
-                                    <Col xs={24} lg={12} xl={10}>
-                                         <Form.Input
-                                             placeholder={__("Youtube or Vimeo video URL", "authpress")}
-                                             noLabel
-                                             field="video"
-                                             type="url"
-                                             showClear
-                                         />
+                                        <Input
+                                            placeholder={__("Youtube or Vimeo video URL", "authpress")}
+                                            type="url"
+                                            showClear
+                                            value={localValues?.video || ''}
+                                            onChange={(value) => handleChange('video', value)}
+                                        />
                                     </Col>
                                 }
                             </Row>
@@ -188,21 +147,21 @@ const CustomizerPersonalizeBackground = () => {
                                     <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
                                     <Paragraph>{__("Lorem", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                                </Col>
                             {
-                                !settingsLoading &&                               
+                                !settingsLoading &&
                                 <Col xs={24} lg={12} xl={10}>
-                                     <ColorPickerControl
-                                         defaultValue={settings?.customizer?.redesign?.background?.overlay || ''}
-                                         handleChange={(value) => handleChange('overlay', value)}
-                                         mode='color'
-                                     />
+                                    <ColorPickerControl
+                                        defaultValue={localValues?.overlay || ''}
+                                        handleChange={(value) => handleChange('overlay', value)}
+                                        mode='color'
+                                    />
                                 </Col>
                             }
                         </Row>
                     </div>
-                    <ActionButtons hasChanges={hasChanges} section='customizer.redesign.background' handleReset={handleReset} />
-                </Form>
+                    <ActionButtons hasChanges={hasChanges} section='customizer.redesign.background' handleReset={handleReset} onSave={onSave} />
+                </>
             )}
         </>
     );

@@ -81,7 +81,6 @@ const Settings = () => {
                 method: 'POST',
                 data: { name: section }
             });
-            // console.log(result);
             if (result.success) {
                 setSettingsReload(Math.random());
                 Notification.success({
@@ -107,7 +106,7 @@ const Settings = () => {
                 position: 'topRight',
             });
         } finally {
-            // setSettingsReload(prev => prev + 1);
+            setSettingsReload(prev => prev + 1);
         }
     };
 
@@ -251,7 +250,7 @@ const Settings = () => {
                     headerLine={true}
                 >
                     {/* {console.log(settings)} */}
-                    <Outlet context={{ settings, settingsLoading, handleSubmit, handleReset, setSettingsReload }} />
+                    <Outlet context={{ settings, settingsLoading, handleSubmit, handleReset }} />
                 </Card>
             </Content>
         </FullWidthLayout>

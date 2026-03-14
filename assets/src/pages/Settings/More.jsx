@@ -1,12 +1,11 @@
 import { __ } from "@wordpress/i18n";
-import { Form, Button, Card, Typography, Row, Col, Skeleton } from '@douyinfe/semi-ui';
+import { Button, Card, Typography, Row, Col, Skeleton, Switch } from '@douyinfe/semi-ui';
 import { useOutletContext } from 'react-router-dom';
-import { useRef, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
 import { SkeletonPlaceholder } from "../../components";
 
 import AceEditor from "react-ace";
-// Load modes and theme
 import "ace-builds/src-noconflict/mode-css";
 import "ace-builds/src-noconflict/mode-html";
 import "ace-builds/src-noconflict/mode-javascript";
@@ -17,45 +16,35 @@ const { Title, Paragraph } = Typography;
 const More = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
-    const settingsOld = useRef(null);
-    const formApi = useRef(null);
-
-    const onSubmit = (values) => {
-        handleSubmit('more', values);
-    };
-
-    const handleValuesChange = (values) => {
-        if (settingsOld.current && settings.more) {
-            const isChanged = JSON.stringify(values) !== JSON.stringify(settingsOld.current.more);
-            setHasChanges(isChanged);
-        }
-    };
-
-    const handleAceEditorChange = (field, value) => {
-        // Update the form field value using the form API
-        if (formApi.current) {
-            formApi.current.setValue(field, value);
-        }
-    };
+    const [localValues, setLocalValues] = useState({});
+    const [originalValues, setOriginalValues] = useState({});
 
     useEffect(() => {
         if (settings && settings.more) {
-            settingsOld.current = { ...settings };
+            const moreSettings = settings.more;
+            setLocalValues({ ...moreSettings });
+            setOriginalValues({ ...moreSettings });
             setHasChanges(false);
         }
     }, [settings]);
 
+    const handleChange = (field, value) => {
+        setLocalValues(prev => {
+            const updated = { ...prev, [field]: value };
+            const isChanged = JSON.stringify(updated) !== JSON.stringify(originalValues);
+            setHasChanges(isChanged);
+            return updated;
+        });
+    };
+
+    const onSave = () => {
+        handleSubmit('more', localValues);
+    };
+
     return (
         <>
             {!settingsLoading && (
-                <Form
-                    getFormApi={(api) => formApi.current = api}
-                    initValues={settings.more}
-                    onSubmit={onSubmit}
-                    onValueChange={handleValuesChange}
-                    labelPosition="left"
-                    labelWidth="150px"
-                >
+                <div>
                     <div className="setting-unit py-4">
                         <Row type="flex" gutter={[24, 24]}>
                             <Col xs={24} lg={12} xl={14}>
@@ -63,14 +52,14 @@ const More = () => {
                                     <Title heading={4}>{__("Enable Scripts", "authpress")}</Title>
                                     <Paragraph>{__("Enable/Disable \"Scripts\" functionalities", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                            </Col>
                             {
-                                !settingsLoading &&                               
+                                !settingsLoading &&
                                 <Col xs={24} lg={12} xl={10}>
-                                    <Form.Switch 
-                                        field='enable_scripts'
-                                        noLabel
-                                    />   
+                                    <Switch
+                                        checked={localValues?.enable_scripts || false}
+                                        onChange={(value) => handleChange('enable_scripts', value)}
+                                    />
                                 </Col>
                             }
                         </Row>
@@ -83,22 +72,20 @@ const More = () => {
                                     <Title heading={4}>{__("CSS Editor", "authpress")}</Title>
                                     <Paragraph>{__("Add any custom CSS code if necessary", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                            </Col>
                             {
-                                !settingsLoading &&                               
+                                !settingsLoading &&
                                 <Col xs={24}>
-                                    <Form.Slot noLabel>
-                                        <AceEditor
-                                            mode="css"
-                                            theme="monokai"
-                                            value={formApi.current?.getValue('css') || settings?.more?.css || ''}
-                                            onChange={(value) => handleAceEditorChange('css', value)}
-                                            name="css-editor"
-                                            width="100%"
-                                            height="200px"
-                                            editorProps={{ $blockScrolling: true }}
-                                        />
-                                    </Form.Slot>
+                                    <AceEditor
+                                        mode="css"
+                                        theme="monokai"
+                                        value={localValues?.css || ''}
+                                        onChange={(value) => handleChange('css', value)}
+                                        name="css-editor"
+                                        width="100%"
+                                        height="200px"
+                                        editorProps={{ $blockScrolling: true }}
+                                    />
                                 </Col>
                             }
                         </Row>
@@ -111,22 +98,20 @@ const More = () => {
                                     <Title heading={4}>{__("JavaScript Editor", "authpress")}</Title>
                                     <Paragraph>{__("Add any custom JS code if necessary", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                            </Col>
                             {
-                                !settingsLoading &&                               
+                                !settingsLoading &&
                                 <Col xs={24}>
-                                    <Form.Slot noLabel>
-                                        <AceEditor
-                                            mode="javascript"
-                                            theme="monokai"
-                                            value={formApi.current?.getValue('js') || settings?.more?.js || ''}
-                                            onChange={(value) => handleAceEditorChange('js', value)}
-                                            name="js-editor"
-                                            width="100%"
-                                            height="200px"
-                                            editorProps={{ $blockScrolling: true }}
-                                        />
-                                    </Form.Slot>
+                                    <AceEditor
+                                        mode="javascript"
+                                        theme="monokai"
+                                        value={localValues?.js || ''}
+                                        onChange={(value) => handleChange('js', value)}
+                                        name="js-editor"
+                                        width="100%"
+                                        height="200px"
+                                        editorProps={{ $blockScrolling: true }}
+                                    />
                                 </Col>
                             }
                         </Row>
@@ -139,22 +124,20 @@ const More = () => {
                                     <Title heading={4}>{__("Header Code", "authpress")}</Title>
                                     <Paragraph>{__("This code will be placed inside &lt;head&gt; tag", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                            </Col>
                             {
-                                !settingsLoading &&                               
+                                !settingsLoading &&
                                 <Col xs={24}>
-                                    <Form.Slot noLabel>
-                                        <AceEditor
-                                            mode="html"
-                                            theme="monokai"
-                                            value={formApi.current?.getValue('header_content') || settings?.more?.header_content || ''}
-                                            onChange={(value) => handleAceEditorChange('header_content', value)}
-                                            name="html-editor-1"
-                                            width="100%"
-                                            height="200px"
-                                            editorProps={{ $blockScrolling: true }}
-                                        />
-                                    </Form.Slot>
+                                    <AceEditor
+                                        mode="html"
+                                        theme="monokai"
+                                        value={localValues?.header_content || ''}
+                                        onChange={(value) => handleChange('header_content', value)}
+                                        name="html-editor-1"
+                                        width="100%"
+                                        height="200px"
+                                        editorProps={{ $blockScrolling: true }}
+                                    />
                                 </Col>
                             }
                         </Row>
@@ -167,29 +150,27 @@ const More = () => {
                                     <Title heading={4}>{__("Footer Code", "authpress")}</Title>
                                     <Paragraph>{__("This code will be placed inside &lt;body&gt; tag", "authpress")}</Paragraph>
                                 </Skeleton>
-                            </Col>    
+                            </Col>
                             {
-                                !settingsLoading &&                               
+                                !settingsLoading &&
                                 <Col xs={24}>
-                                    <Form.Slot noLabel>
-                                        <AceEditor
-                                            mode="html"
-                                            theme="monokai"
-                                            value={formApi.current?.getValue('footer_content') || settings?.more?.footer_content || ''}
-                                            onChange={(value) => handleAceEditorChange('footer_content', value)}
-                                            name="html-editor-2"
-                                            width="100%"
-                                            height="200px"
-                                            editorProps={{ $blockScrolling: true }}
-                                        />
-                                    </Form.Slot>
+                                    <AceEditor
+                                        mode="html"
+                                        theme="monokai"
+                                        value={localValues?.footer_content || ''}
+                                        onChange={(value) => handleChange('footer_content', value)}
+                                        name="html-editor-2"
+                                        width="100%"
+                                        height="200px"
+                                        editorProps={{ $blockScrolling: true }}
+                                    />
                                 </Col>
                             }
                         </Row>
                     </div>
 
-                    <ActionButtons hasChanges={hasChanges} section='array' handleReset={handleReset} />
-                </Form>
+                    <ActionButtons hasChanges={hasChanges} section='more' handleReset={handleReset} onSave={onSave} />
+                </div>
             )}
         </>
     );
