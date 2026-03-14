@@ -51,7 +51,7 @@ const CustomizerPresets = () => {
                 }
             }
         };
-        console.log('updatedSettings', updatedSettings);
+        // console.log('updatedSettings', updatedSettings);
         handleSubmit('customizer', updatedSettings.customizer);
     };
 

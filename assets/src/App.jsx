@@ -28,6 +28,8 @@ import Page from './pages/Page';
 import {HorizontalMenuControl} from "./components";
 import { Logo } from './lib/Illustrations';
 import Details from './data/details.json';
+import CustomizerPersonalizeLogo from './pages/Settings/CustomizerPersonalizeLogo';
+import CustomizerPersonalizeBackground from './pages/Settings/CustomizerPersonalizeBackground';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -259,8 +261,8 @@ export default function App() {
                         <Route path="customizer/presets" element={<CustomizerPresets />} />
 
                         <Route path="customizer/personalize/" element={<Navigate to="/logo" replace />} />
-                        <Route path="customizer/personalize/logo" element={<CustomizerPresets />} />
-                        <Route path="customizer/personalize/background" element={<CustomizerPresets />} />
+                        <Route path="customizer/personalize/background" element={<CustomizerPersonalizeBackground />} />
+                        <Route path="customizer/personalize/logo" element={<CustomizerPersonalizeLogo />} />
 
                         <Route path="hide-login" element={<CustomizerPresets />} />
 
