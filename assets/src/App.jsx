@@ -30,6 +30,9 @@ import { Logo } from './lib/Illustrations';
 import Details from './data/details.json';
 import CustomizerPersonalizeLogo from './pages/Settings/CustomizerPersonalizeLogo';
 import CustomizerPersonalizeBackground from './pages/Settings/CustomizerPersonalizeBackground';
+import CustomizerPersonalizeOther from './pages/Settings/CustomizerPersonalizeOther';
+import CustomizerPersonalizeButton from './pages/Settings/CustomizerPersonalizeButton';
+import CustomizerPersonalizeFields from './pages/Settings/CustomizerPersonalizeFields';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -263,6 +266,9 @@ export default function App() {
                         <Route path="customizer/personalize/" element={<Navigate to="/logo" replace />} />
                         <Route path="customizer/personalize/background" element={<CustomizerPersonalizeBackground />} />
                         <Route path="customizer/personalize/logo" element={<CustomizerPersonalizeLogo />} />
+                        <Route path="customizer/personalize/fields" element={<CustomizerPersonalizeFields />} />
+                        <Route path="customizer/personalize/button" element={<CustomizerPersonalizeButton />} />
+                        <Route path="customizer/personalize/other" element={<CustomizerPersonalizeOther />} />
 
                         <Route path="hide-login" element={<CustomizerPresets />} />
 

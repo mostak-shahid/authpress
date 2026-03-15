@@ -3,21 +3,21 @@ import { Row, Col, Skeleton, Typography, Switch, Input} from '@douyinfe/semi-ui'
 import { useOutletContext } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
-import { MediaUploaderControl, SkeletonPlaceholder, UnitControl } from "../../components";
+import { FontControl, MediaUploaderControl, MultiColorControl, SkeletonPlaceholder, UnitControl } from "../../components";
 import ImageSelectorStandalone from "../../components/ImageSelector/ImageSelector";
 
 const { Title, Paragraph } = Typography;
-const CustomizerPersonalizeLogo = () => {
+const CustomizerPersonalizeButton = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const [localValues, setLocalValues] = useState({});
     const [originalValues, setOriginalValues] = useState({});
 
     useEffect(() => {
-        if (settings && settings?.customizer?.redesign?.logo) {
-            const logoSettings = settings.customizer.redesign.logo;
-            setLocalValues({ ...logoSettings });
-            setOriginalValues({ ...logoSettings });
+        if (settings && settings?.customizer?.redesign?.button) {
+            const buttonSettings = settings.customizer.redesign.button;
+            setLocalValues({ ...buttonSettings });
+            setOriginalValues({ ...buttonSettings });
             setHasChanges(false);
         }
     }, [settings]);
@@ -38,7 +38,7 @@ const CustomizerPersonalizeLogo = () => {
                 ...settings.customizer,
                 redesign: {
                     ...settings.customizer.redesign,
-                    logo: localValues
+                    button: localValues
                 }
             }
         };
@@ -51,17 +51,61 @@ const CustomizerPersonalizeLogo = () => {
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Hide logo", "authpress")}</Title>
+                            <Title heading={4}>{__("Font", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
-                            <Switch
-                                onChange={(value) => handleChange('disabled', value)}
-                                checked={ Boolean(localValues?.disabled) }
-                            />
+                            <FontControl
+                                defaultValues={settingData?.customizer?.redesign?.button?.font}
+                                name='customizer.redesign.button.font' 
+                                handleChange={handleChange}
+                                options = {["font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
+                            /> 
+                        </Col>
+                    }
+                </Row>
+            </div>
+            <div className="setting-unit pt-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Background", "authpress")}</Title>
+                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>
+                            <MultiColorControl
+                                name='customizer.redesign.button.background'
+                                options={['normal', 'hover', 'active']}
+                                defaultValues={settingData?.customizer?.redesign?.button?.background}
+                                handleChange={handleChange}
+                            /> 
+                        </Col>
+                    }
+                </Row>
+            </div>
+            <div className="setting-unit pt-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Text", "authpress")}</Title>
+                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>
+                            <MultiColorControl
+                                name='customizer.redesign.button.color'
+                                options={['normal', 'hover', 'active']}
+                                defaultValues={settingData?.customizer?.redesign?.button?.color}
+                                handleChange={handleChange}
+                            /> 
                         </Col>
                     }
                 </Row>
@@ -170,9 +214,9 @@ const CustomizerPersonalizeLogo = () => {
                     }
                 </Row>
             </div>
-            <ActionButtons hasChanges={hasChanges} section='customizer.redesign.logo' handleReset={handleReset} onSave={onSave} />
+            <ActionButtons hasChanges={hasChanges} section='customizer.redesign.button' handleReset={handleReset} onSave={onSave} />
         </>
     );
 };
 
-export default CustomizerPersonalizeLogo;
+export default CustomizerPersonalizeButton;

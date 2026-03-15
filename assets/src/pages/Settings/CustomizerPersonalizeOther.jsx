@@ -7,17 +7,17 @@ import { MediaUploaderControl, SkeletonPlaceholder, UnitControl } from "../../co
 import ImageSelectorStandalone from "../../components/ImageSelector/ImageSelector";
 
 const { Title, Paragraph } = Typography;
-const CustomizerPersonalizeLogo = () => {
+const CustomizerPersonalizeOther = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const [localValues, setLocalValues] = useState({});
     const [originalValues, setOriginalValues] = useState({});
 
     useEffect(() => {
-        if (settings && settings?.customizer?.redesign?.logo) {
-            const logoSettings = settings.customizer.redesign.logo;
-            setLocalValues({ ...logoSettings });
-            setOriginalValues({ ...logoSettings });
+        if (settings && settings?.customizer?.redesign?.other) {
+            const otherSettings = settings.customizer.redesign.other;
+            setLocalValues({ ...otherSettings });
+            setOriginalValues({ ...otherSettings });
             setHasChanges(false);
         }
     }, [settings]);
@@ -38,7 +38,7 @@ const CustomizerPersonalizeLogo = () => {
                 ...settings.customizer,
                 redesign: {
                     ...settings.customizer.redesign,
-                    logo: localValues
+                    other: localValues
                 }
             }
         };
@@ -47,11 +47,11 @@ const CustomizerPersonalizeLogo = () => {
 
     return (
         <>
-            <div className="setting-unit pt-4">
+            <div className="setting-unit py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Hide logo", "authpress")}</Title>
+                            <Title heading={4}>{__("Disable Remember Me", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
@@ -59,8 +59,8 @@ const CustomizerPersonalizeLogo = () => {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
                             <Switch
-                                onChange={(value) => handleChange('disabled', value)}
-                                checked={ Boolean(localValues?.disabled) }
+                                onChange={(value) => handleChange('disable_remember_me', value)}
+                                checked={ Boolean(localValues?.disable_remember_me) }
                             />
                         </Col>
                     }
@@ -70,28 +70,16 @@ const CustomizerPersonalizeLogo = () => {
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Upload Logo", "authpress")}</Title>
+                            <Title heading={4}>{__("Disable Register Link", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
-                            <MediaUploaderControl
-                                data={localValues?.image}
-                                name='image'
-                                handleChange={handleChange}
-                                options = {{
-                                    frame:{
-                                        title: __("Select or Upload Image", "authpress"),
-                                    },
-                                    library: {type: 'image'},
-                                    buttons: {
-                                        upload: __("Upload Image", "authpress"),
-                                        remove: __("Remove", "authpress"),
-                                        select: __("Use this image", "authpress")
-                                    }
-                                }}
+                            <Switch
+                                onChange={(value) => handleChange('disable_register_link', value)}
+                                checked={ Boolean(localValues?.disable_register_link) }
                             />
                         </Col>
                     }
@@ -101,31 +89,17 @@ const CustomizerPersonalizeLogo = () => {
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Logo Size", "authpress")}</Title>
+                            <Title heading={4}>{__("Disable Lost Password Link", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
-                            <Row type="flex" gutter={[16, 16]}>
-                                <Col xs={12}>
-                                    <UnitControl
-                                        label={__('Width', 'authpress')}
-                                        onChange={(value) => handleChange('width', value)}
-                                        value={localValues?.width}
-                                        units={UNITS}
-                                    />
-                                </Col>
-                                <Col xs={12}>
-                                    <UnitControl
-                                        label={__('Height', 'authpress')}
-                                        onChange={(value) => handleChange('height', value)}
-                                        value={localValues?.height}
-                                        units={UNITS}
-                                    />
-                                </Col>
-                            </Row>
+                            <Switch
+                                onChange={(value) => handleChange('disable_lost_password', value)}
+                                checked={ Boolean(localValues?.disable_lost_password) }
+                            />
                         </Col>
                     }
                 </Row>
@@ -134,45 +108,90 @@ const CustomizerPersonalizeLogo = () => {
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Space below", "authpress")}</Title>
+                            <Title heading={4}>{__("Disable Privacy Policy Link", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
-                            <UnitControl
-                                onChange={(value) => handleChange('space', value)}
-                                value={localValues?.space}
-                                units={UNITS}
+                            <Switch
+                                onChange={(value) => handleChange('disable_privacy_policy', value)}
+                                checked={ Boolean(localValues?.disable_privacy_policy) }
                             />
                         </Col>
                     }
                 </Row>
             </div>
-            <div className="setting-unit pt-4">
+            <div className="setting-unit py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Logo URL", "authpress")}</Title>
+                            <Title heading={4}>{__("Disable Back to Website Link", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
-                            <Input
-                                type="url"
-                                value={localValues?.url}
-                                onChange={(value) => handleChange('url', value)}
+                            <Switch
+                                onChange={(value) => handleChange('disable_back_to_website', value)}
+                                checked={ Boolean(localValues?.disable_back_to_website) }
                             />
                         </Col>
                     }
                 </Row>
             </div>
-            <ActionButtons hasChanges={hasChanges} section='customizer.redesign.logo' handleReset={handleReset} onSave={onSave} />
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Login by", "authpress")}</Title>
+                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>
+                            <Select
+                                noLabel
+                                className="w-full"
+                                placeholder={__("Background type", "authpress")}
+                                value={localValues?.type}
+                                optionList={[
+                                    { label: 'Default', value: 'both' },
+                                    { label: 'Username', value: 'username' },
+                                    { label: 'Email', value: 'email' },
+                                    { label: 'Phone', value: 'phone' },
+                                ]}
+                                onChange={(value) => handleChange('login_by', value)}
+                            />
+                        </Col>
+                    }
+                </Row>
+            </div>
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Registered with Password", "authpress")}</Title>
+                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>
+                            <Switch
+                                onChange={(value) => handleChange('registered_with_password', value)}
+                                checked={ Boolean(localValues?.registered_with_password) }
+                            />
+                        </Col>
+                    }
+                </Row>
+            </div>
+            <ActionButtons hasChanges={hasChanges} section='customizer.redesign.other' handleReset={handleReset} onSave={onSave} />
         </>
     );
 };
 
-export default CustomizerPersonalizeLogo;
+export default CustomizerPersonalizeOther;

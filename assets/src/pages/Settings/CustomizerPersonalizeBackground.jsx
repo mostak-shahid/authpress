@@ -53,116 +53,112 @@ const CustomizerPersonalizeBackground = () => {
 
     return (
         <>
-            {!settingsLoading && settings?.customizer?.redesign?.background && (
-                <>
-                    {console.log(localValues?.type)}
-                    <div className="setting-unit py-4">
-                        <Row type="flex" gutter={[24, 24]}>
-                            <Col xs={24} lg={12} xl={14}>
-                                <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                    <Title heading={4}>{__("Background type", "authpress")}</Title>
-                                    <Paragraph>{__("Lorem", "authpress")}</Paragraph>
-                                </Skeleton>
+            {console.log(localValues?.type)}
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Background type", "authpress")}</Title>
+                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>
+                            <Select
+                                noLabel
+                                className="w-full"
+                                placeholder={__("Background type", "authpress")}
+                                value={localValues?.type}
+                                optionList={[
+                                    { label: 'Default', value: 'image' },
+                                    { label: 'Video', value: 'video' },
+                                ]}
+                                onChange={(value) => handleChange('type', value)}
+                            />
+                        </Col>
+                    }
+                </Row>
+            </div>
+            {
+            localValues?.type === 'image' &&
+                <div className="setting-unit py-4">
+                    <Row type="flex" gutter={[24, 24]}>
+                        <Col xs={24} lg={12} xl={14}>
+                            <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                                <Title heading={4}>{__("Background Image", "authpress")}</Title>
+                                <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            </Skeleton>
+                        </Col>
+                        {
+                            !settingsLoading &&
+                            <Col xs={24} lg={12} xl={10}>
+                                <BackgroundControl
+                                    defaultValues={localValues?.background || {}}
+                                    name="background"
+                                    handleChange={handleChange}
+                                    options={[
+                                        "image",
+                                        "color",
+                                        "position",
+                                        "size",
+                                        "repeat",
+                                        "origin",
+                                        "clip",
+                                        "attachment",
+                                    ]}
+                                />
                             </Col>
-                            {
-                                !settingsLoading &&
-                                <Col xs={24} lg={12} xl={10}>
-                                    <Select
-                                        noLabel
-                                        className="w-full"
-                                        placeholder={__("Background type", "authpress")}
-                                        value={localValues?.type}
-                                        optionList={[
-                                            { label: 'Default', value: 'image' },
-                                            { label: 'Video', value: 'video' },
-                                        ]}
-                                        onChange={(value) => handleChange('type', value)}
-                                    />
-                                </Col>
-                            }
-                        </Row>
-                    </div>
+                        }
+                    </Row>
+                </div>
+            }
+            {
+            localValues?.type === 'video' &&
+                <div className="setting-unit py-4">
+                    <Row type="flex" gutter={[24, 24]}>
+                        <Col xs={24} lg={12} xl={14}>
+                            <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                                <Title heading={4}>{__("Background Video", "authpress")}</Title>
+                                <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            </Skeleton>
+                        </Col>
+                        {
+                            !settingsLoading &&
+                            <Col xs={24} lg={12} xl={10}>
+                                <Input
+                                    placeholder={__("Youtube or Vimeo video URL", "authpress")}
+                                    type="url"
+                                    showClear
+                                    value={localValues?.video || ''}
+                                    onChange={(value) => handleChange('video', value)}
+                                />
+                            </Col>
+                        }
+                    </Row>
+                </div>
+            }
+            <div className="setting-unit pt-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
+                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                        </Skeleton>
+                        </Col>
                     {
-                    localValues?.type === 'image' &&
-                        <div className="setting-unit py-4">
-                            <Row type="flex" gutter={[24, 24]}>
-                                <Col xs={24} lg={12} xl={14}>
-                                    <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                        <Title heading={4}>{__("Background Image", "authpress")}</Title>
-                                        <Paragraph>{__("Lorem", "authpress")}</Paragraph>
-                                    </Skeleton>
-                                </Col>
-                                {
-                                    !settingsLoading &&
-                                    <Col xs={24} lg={12} xl={10}>
-                                        <BackgroundControl
-                                            defaultValues={localValues?.background || {}}
-                                            name="background"
-                                            handleChange={handleChange}
-                                            options={[
-                                                "image",
-                                                "color",
-                                                "position",
-                                                "size",
-                                                "repeat",
-                                                "origin",
-                                                "clip",
-                                                "attachment",
-                                            ]}
-                                        />
-                                    </Col>
-                                }
-                            </Row>
-                        </div>
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>
+                            <ColorPickerControl
+                                defaultValue={localValues?.overlay || ''}
+                                handleChange={(value) => handleChange('overlay', value)}
+                                mode='color'
+                            />
+                        </Col>
                     }
-                    {
-                    localValues?.type === 'video' &&
-                        <div className="setting-unit py-4">
-                            <Row type="flex" gutter={[24, 24]}>
-                                <Col xs={24} lg={12} xl={14}>
-                                    <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                        <Title heading={4}>{__("Background Video", "authpress")}</Title>
-                                        <Paragraph>{__("Lorem", "authpress")}</Paragraph>
-                                    </Skeleton>
-                                </Col>
-                                {
-                                    !settingsLoading &&
-                                    <Col xs={24} lg={12} xl={10}>
-                                        <Input
-                                            placeholder={__("Youtube or Vimeo video URL", "authpress")}
-                                            type="url"
-                                            showClear
-                                            value={localValues?.video || ''}
-                                            onChange={(value) => handleChange('video', value)}
-                                        />
-                                    </Col>
-                                }
-                            </Row>
-                        </div>
-                    }
-                    <div className="setting-unit pt-4">
-                        <Row type="flex" gutter={[24, 24]}>
-                            <Col xs={24} lg={12} xl={14}>
-                                <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                                    <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
-                                    <Paragraph>{__("Lorem", "authpress")}</Paragraph>
-                                </Skeleton>
-                                </Col>
-                            {
-                                !settingsLoading &&
-                                <Col xs={24} lg={12} xl={10}>
-                                    <ColorPickerControl
-                                        defaultValue={localValues?.overlay || ''}
-                                        handleChange={(value) => handleChange('overlay', value)}
-                                        mode='color'
-                                    />
-                                </Col>
-                            }
-                        </Row>
-                    </div>
-                    <ActionButtons hasChanges={hasChanges} section='customizer.redesign.background' handleReset={handleReset} onSave={onSave} />
-                </>
-            )}
+                </Row>
+            </div>
+            <ActionButtons hasChanges={hasChanges} section='customizer.redesign.background' handleReset={handleReset} onSave={onSave} />
         </>
     );
 };

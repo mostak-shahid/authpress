@@ -136,144 +136,140 @@ const Tools = () => {
 
     return (
         <>
-            {!settingsLoading && settings?.tools && (
-                <div>
-                    <div className="setting-unit py-4">
-                        <Row gutter={[24, 24]}>
-                            <Col xs={24} lg={12} xl={14}>
-                                <Skeleton
-                                    placeholder={<SkeletonPlaceholder />}
-                                    loading={settingsLoading}
-                                    active
-                                >
-                                    <Title heading={4}>
-                                        {__(
-                                            "Hide Plugin",
-                                            "authpress"
-                                        )}
-                                    </Title>
-                                    <Paragraph>
-                                        {__(
-                                            "Hide this plugin from plugin list.",
-                                            "authpress"
-                                        )}
-                                    </Paragraph>
-                                </Skeleton>
-                            </Col>
+            <div className="setting-unit py-4">
+                <Row gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton
+                            placeholder={<SkeletonPlaceholder />}
+                            loading={settingsLoading}
+                            active
+                        >
+                            <Title heading={4}>
+                                {__(
+                                    "Hide Plugin",
+                                    "authpress"
+                                )}
+                            </Title>
+                            <Paragraph>
+                                {__(
+                                    "Hide this plugin from plugin list.",
+                                    "authpress"
+                                )}
+                            </Paragraph>
+                        </Skeleton>
+                    </Col>
 
-                            <Col xs={24} lg={12} xl={10}>
-                                <Switch
-                                    checked={localValues?.hide_plugin || false}
-                                    onChange={(value) => handleChange('hide_plugin', value)}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
-                    
-                    <div className="setting-unit py-4">
-                        <Row gutter={[24, 24]}>
-                            <Col xs={24} lg={12} xl={14}>
-                                <Skeleton
-                                    placeholder={<SkeletonPlaceholder />}
-                                    loading={settingsLoading}
-                                    active
-                                >
-                                    <Title heading={4}>
-                                        {__(
-                                            "Self Defense",
-                                            "authpress"
-                                        )}
-                                    </Title>
-                                    <Paragraph>
-                                        {__(
-                                            "Password requirement for Deactivation.",
-                                            "authpress"
-                                        )}
-                                    </Paragraph>
-                                </Skeleton>
-                            </Col>
+                    <Col xs={24} lg={12} xl={10}>
+                        <Switch
+                            checked={localValues?.hide_plugin || false}
+                            onChange={(value) => handleChange('hide_plugin', value)}
+                        />
+                    </Col>
+                </Row>
+            </div>
+            
+            <div className="setting-unit py-4">
+                <Row gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton
+                            placeholder={<SkeletonPlaceholder />}
+                            loading={settingsLoading}
+                            active
+                        >
+                            <Title heading={4}>
+                                {__(
+                                    "Self Defense",
+                                    "authpress"
+                                )}
+                            </Title>
+                            <Paragraph>
+                                {__(
+                                    "Password requirement for Deactivation.",
+                                    "authpress"
+                                )}
+                            </Paragraph>
+                        </Skeleton>
+                    </Col>
 
-                            <Col xs={24} lg={12} xl={10}>
-                                <Switch
-                                    checked={localValues?.self_defense || false}
-                                    onChange={(value) => handleChange('self_defense', value)}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
+                    <Col xs={24} lg={12} xl={10}>
+                        <Switch
+                            checked={localValues?.self_defense || false}
+                            onChange={(value) => handleChange('self_defense', value)}
+                        />
+                    </Col>
+                </Row>
+            </div>
 
-                    <div className="setting-unit py-4">
-                        <Row gutter={[24, 24]}>
-                            <Col xs={24} lg={12} xl={14}>
-                                <Skeleton
-                                    placeholder={<SkeletonPlaceholder />}
-                                    loading={settingsLoading}
-                                    active
-                                >
-                                    <Title heading={4}>
-                                        {__(
-                                            "Delete all plugin data upon",
-                                            "authpress"
-                                        )}
-                                    </Title>
-                                    <Paragraph>
-                                        {__(
-                                            "Plugin data management.",
-                                            "authpress"
-                                        )}
-                                    </Paragraph>
-                                </Skeleton>
-                            </Col>
+            <div className="setting-unit py-4">
+                <Row gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton
+                            placeholder={<SkeletonPlaceholder />}
+                            loading={settingsLoading}
+                            active
+                        >
+                            <Title heading={4}>
+                                {__(
+                                    "Delete all plugin data upon",
+                                    "authpress"
+                                )}
+                            </Title>
+                            <Paragraph>
+                                {__(
+                                    "Plugin data management.",
+                                    "authpress"
+                                )}
+                            </Paragraph>
+                        </Skeleton>
+                    </Col>
 
-                            <Col xs={24} lg={12} xl={10}>
-                                <Select
-                                    noLabel
-                                    value={localValues?.delete_data_on || 'none'}
-                                    optionList={[
-                                        { label: __("None", "authpress"), value: "none" },
-                                        { label: __("Delete", "authpress"), value: "delete" },
-                                        { label: __("Deactivate", "authpress"), value: "deactivate" },
-                                    ]}
-                                    onChange={(value) => handleChange('delete_data_on', value)}
-                                />
-                            </Col>
-                        </Row>
-                    </div>
+                    <Col xs={24} lg={12} xl={10}>
+                        <Select
+                            noLabel
+                            value={localValues?.delete_data_on || 'none'}
+                            optionList={[
+                                { label: __("None", "authpress"), value: "none" },
+                                { label: __("Delete", "authpress"), value: "delete" },
+                                { label: __("Deactivate", "authpress"), value: "deactivate" },
+                            ]}
+                            onChange={(value) => handleChange('delete_data_on', value)}
+                        />
+                    </Col>
+                </Row>
+            </div>
 
-                    <div className="setting-unit pt-4">
-                        <Row gutter={[24, 24]} align="middle">
-                            <Col xs={24} lg={12} xl={14}>
-                                <Title heading={4}>
-                                    {__("Reset Plugin", "authpress")}
-                                </Title>
-                                <Paragraph>
-                                    {__("Reset Plugin to it's default settings", "authpress")}
-                                </Paragraph>
-                            </Col>
+            <div className="setting-unit pt-4">
+                <Row gutter={[24, 24]} align="middle">
+                    <Col xs={24} lg={12} xl={14}>
+                        <Title heading={4}>
+                            {__("Reset Plugin", "authpress")}
+                        </Title>
+                        <Paragraph>
+                            {__("Reset Plugin to it's default settings", "authpress")}
+                        </Paragraph>
+                    </Col>
 
-                            <Col xs={24} lg={12} xl={10}>
-                                <Button
-                                    type="danger"
-                                    icon={<IconRefresh />}
-                                    loading={processing}
-                                    onClick={handleClick}
-                                >
-                                    {processing
-                                        ? __("Resetting...", "authpress")
-                                        : __("Reset All", "authpress")}
-                                </Button>
-                            </Col>
-                        </Row>
-                    </div>
+                    <Col xs={24} lg={12} xl={10}>
+                        <Button
+                            type="danger"
+                            icon={<IconRefresh />}
+                            loading={processing}
+                            onClick={handleClick}
+                        >
+                            {processing
+                                ? __("Resetting...", "authpress")
+                                : __("Reset All", "authpress")}
+                        </Button>
+                    </Col>
+                </Row>
+            </div>
 
-                    <ActionButtons
-                        hasChanges={hasChanges}
-                        section="tools"
-                        handleReset={handleReset}
-                        onSave={onSave}
-                    />
-                </div>
-            )}
+            <ActionButtons
+                hasChanges={hasChanges}
+                section="tools"
+                handleReset={handleReset}
+                onSave={onSave}
+            />
         </>
     );
 };

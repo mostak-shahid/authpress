@@ -1,14 +1,15 @@
 import React from 'react'
 import { __ } from "@wordpress/i18n";
 import { Button } from '@douyinfe/semi-ui';
-export default function ActionButtons({hasChanges, section, handleReset, handleSubmit, onSave}) {
+export default function ActionButtons({hasChanges, section, handleReset, handleSubmit, onSave, setSettingsReload}) {
 
     const onReset = () => {
         handleReset(section);
     };
 
     const onDiscard = () => {
-        window.location.reload();
+        // window.location.reload();
+        setSettingsReload(Math.random());
     };
 
     const onSaveClick = () => {

@@ -18,16 +18,34 @@
                 "url": "/settings/customizer/personalize",
                 "items": [
                     {
+                        "itemKey": "background",
+                        "text": "Background",
+                        "description": "Browse detailed logs in a searchable table view.",
+                        "url": "/settings/customizer/personalize/background"                
+                    },
+                    {
                         "itemKey": "logo",
                         "text": "Logo",
                         "description": "Browse detailed logs in a searchable table view.",
                         "url": "/settings/customizer/personalize/logo"                
                     },
                     {
-                        "itemKey": "background",
-                        "text": "Background",
-                        "description": "Browse detailed logs in a searchable table view.",
-                        "url": "/settings/customizer/personalize/background"                
+                        "itemKey": "fields",
+                        "text": "Fields",
+                        "description": null,
+                        "url": "/settings/customizer/personalize/fields"
+                    },
+                    {
+                        "itemKey": "button",
+                        "text": "Button",
+                        "description": null,
+                        "url": "/settings/customizer/personalize/button"
+                    },
+                    {
+                        "itemKey": "other",
+                        "text": "Other",
+                        "description": null,
+                        "url": "/settings/customizer/personalize/other"
                     }
                 ]
             }

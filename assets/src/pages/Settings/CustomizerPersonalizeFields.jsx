@@ -7,7 +7,7 @@ import { MediaUploaderControl, SkeletonPlaceholder, UnitControl } from "../../co
 import ImageSelectorStandalone from "../../components/ImageSelector/ImageSelector";
 
 const { Title, Paragraph } = Typography;
-const CustomizerPersonalizeLogo = () => {
+const CustomizerPersonalizeFields = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
     const [hasChanges, setHasChanges] = useState(false);
     const [localValues, setLocalValues] = useState({});
@@ -175,4 +175,4 @@ const CustomizerPersonalizeLogo = () => {
     );
 };
 
-export default CustomizerPersonalizeLogo;
+export default CustomizerPersonalizeFields;
