@@ -13,6 +13,7 @@ use MosPress\Authpress\Core\ImportExport;
 use MosPress\Authpress\Core\More;
 use MosPress\Authpress\Core\Tools;
 use MosPress\Authpress\Services\Customizer;
+use MosPress\Authpress\Services\Math_Captcha;
 
 use MosPress\Authpress\UserMeta;
 
@@ -66,6 +67,7 @@ class Plugin {
 		new More();
 		new Tools();
 		new Customizer();
+		new Math_Captcha();
 		new UserMeta();
 	}
 

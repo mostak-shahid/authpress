@@ -3,9 +3,9 @@ import { Row, Col, Skeleton, Typography, Switch, Input} from '@douyinfe/semi-ui'
 import { useOutletContext } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
-import { MediaUploaderControl, SkeletonPlaceholder, UnitControl } from "../../components";
-import ImageSelectorStandalone from "../../components/ImageSelector/ImageSelector";
+import { FontControl, MediaUploaderControl, SkeletonPlaceholder, UnitControl } from "../../components";
 
+import { UNITS, COLORS, DEFAULT_BORDER, FONT_SIZES } from '../../lib/Constants';
 const { Title, Paragraph } = Typography;
 const CustomizerPersonalizeFields = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();
@@ -14,10 +14,10 @@ const CustomizerPersonalizeFields = () => {
     const [originalValues, setOriginalValues] = useState({});
 
     useEffect(() => {
-        if (settings && settings?.customizer?.redesign?.logo) {
-            const logoSettings = settings.customizer.redesign.logo;
-            setLocalValues({ ...logoSettings });
-            setOriginalValues({ ...logoSettings });
+        if (settings && settings?.customizer?.redesign?.fields) {
+            const fieldsSettings = settings.customizer.redesign.fields;
+            setLocalValues({ ...fieldsSettings });
+            setOriginalValues({ ...fieldsSettings });
             setHasChanges(false);
         }
     }, [settings]);
@@ -38,7 +38,7 @@ const CustomizerPersonalizeFields = () => {
                 ...settings.customizer,
                 redesign: {
                     ...settings.customizer.redesign,
-                    logo: localValues
+                    fields: localValues
                 }
             }
         };
@@ -51,57 +51,7 @@ const CustomizerPersonalizeFields = () => {
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Hide logo", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                        </Skeleton>
-                    </Col>
-                    {
-                        !settingsLoading &&
-                        <Col xs={24} lg={12} xl={10}>
-                            <Switch
-                                onChange={(value) => handleChange('disabled', value)}
-                                checked={ Boolean(localValues?.disabled) }
-                            />
-                        </Col>
-                    }
-                </Row>
-            </div>
-            <div className="setting-unit py-4">
-                <Row type="flex" gutter={[24, 24]}>
-                    <Col xs={24} lg={12} xl={14}>
-                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Upload Logo", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                        </Skeleton>
-                    </Col>
-                    {
-                        !settingsLoading &&
-                        <Col xs={24} lg={12} xl={10}>
-                            <MediaUploaderControl
-                                data={localValues?.image}
-                                name='image'
-                                handleChange={handleChange}
-                                options = {{
-                                    frame:{
-                                        title: __("Select or Upload Image", "authpress"),
-                                    },
-                                    library: {type: 'image'},
-                                    buttons: {
-                                        upload: __("Upload Image", "authpress"),
-                                        remove: __("Remove", "authpress"),
-                                        select: __("Use this image", "authpress")
-                                    }
-                                }}
-                            />
-                        </Col>
-                    }
-                </Row>
-            </div>
-            <div className="setting-unit py-4">
-                <Row type="flex" gutter={[24, 24]}>
-                    <Col xs={24} lg={12} xl={14}>
-                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Logo Size", "authpress")}</Title>
+                            <Title heading={4}>{__("Size", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
@@ -130,47 +80,28 @@ const CustomizerPersonalizeFields = () => {
                     }
                 </Row>
             </div>
-            <div className="setting-unit py-4">
-                <Row type="flex" gutter={[24, 24]}>
-                    <Col xs={24} lg={12} xl={14}>
-                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Space below", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
-                        </Skeleton>
-                    </Col>
-                    {
-                        !settingsLoading &&
-                        <Col xs={24} lg={12} xl={10}>
-                            <UnitControl
-                                onChange={(value) => handleChange('space', value)}
-                                value={localValues?.space}
-                                units={UNITS}
-                            />
-                        </Col>
-                    }
-                </Row>
-            </div>
             <div className="setting-unit pt-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Logo URL", "authpress")}</Title>
+                            <Title heading={4}>{__("Font", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
-                            <Input
-                                type="url"
-                                value={localValues?.url}
-                                onChange={(value) => handleChange('url', value)}
-                            />
+                            <FontControl
+                                defaultValues={localValues.font}
+                                name='customizer.redesign.button.font' 
+                                handleChange={handleChange}
+                                options = {["font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
+                            /> 
                         </Col>
                     }
                 </Row>
             </div>
-            <ActionButtons hasChanges={hasChanges} section='customizer.redesign.logo' handleReset={handleReset} onSave={onSave} />
+            <ActionButtons hasChanges={hasChanges} section='customizer.redesign.fields' handleReset={handleReset} onSave={onSave} />
         </>
     );
 };

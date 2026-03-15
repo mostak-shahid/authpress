@@ -4,8 +4,7 @@ import { useOutletContext } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
 import { MediaUploaderControl, SkeletonPlaceholder, UnitControl } from "../../components";
-import ImageSelectorStandalone from "../../components/ImageSelector/ImageSelector";
-
+import { UNITS } from "../../lib/Constants";
 const { Title, Paragraph } = Typography;
 const CustomizerPersonalizeLogo = () => {
     const { settings, settingsLoading, handleSubmit, handleReset } = useOutletContext();

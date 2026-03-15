@@ -291,6 +291,7 @@ class Filter_Hook {
             'captcha' => [
                 'settings' => [
                     'enabled' => true,
+                    'selected_captcha' => 'math_captcha', // recaptcha_v2, recaptcha_v3, hcaptcha
                 ],
             ],
             'auto_login' => [

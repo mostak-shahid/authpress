@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import { Row, Col, Skeleton, Typography, Switch, Input} from '@douyinfe/semi-ui';
+import { Row, Col, Skeleton, Typography, Switch, Input, Select} from '@douyinfe/semi-ui';
 import { useOutletContext } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
@@ -156,7 +156,7 @@ const CustomizerPersonalizeOther = () => {
                             <Select
                                 noLabel
                                 className="w-full"
-                                placeholder={__("Background type", "authpress")}
+                                placeholder={__("Login by", "authpress")}
                                 value={localValues?.type}
                                 optionList={[
                                     { label: 'Default', value: 'both' },

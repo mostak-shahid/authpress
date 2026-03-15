@@ -33,6 +33,7 @@ import CustomizerPersonalizeBackground from './pages/Settings/CustomizerPersonal
 import CustomizerPersonalizeOther from './pages/Settings/CustomizerPersonalizeOther';
 import CustomizerPersonalizeButton from './pages/Settings/CustomizerPersonalizeButton';
 import CustomizerPersonalizeFields from './pages/Settings/CustomizerPersonalizeFields';
+import CaptchasSettings from './pages/Settings/CaptchasSettings';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -267,8 +268,11 @@ export default function App() {
                         <Route path="customizer/personalize/background" element={<CustomizerPersonalizeBackground />} />
                         <Route path="customizer/personalize/logo" element={<CustomizerPersonalizeLogo />} />
                         <Route path="customizer/personalize/fields" element={<CustomizerPersonalizeFields />} />
-                        <Route path="customizer/personalize/button" element={<CustomizerPersonalizeButton />} />
+                        <Route path="customizer/personalize/button" element={<CustomizerPersonalizeButton />} />                        
                         <Route path="customizer/personalize/other" element={<CustomizerPersonalizeOther />} />
+                        
+                        <Route path="captchas/" element={<Navigate to="/settings" replace />} />
+                        <Route path="captchas/settings" element={<CaptchasSettings />} />
 
                         <Route path="hide-login" element={<CustomizerPresets />} />
 
