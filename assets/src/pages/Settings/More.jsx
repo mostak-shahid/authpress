@@ -115,58 +115,6 @@ const More = () => {
                 </Row>
             </div>
 
-            <div className="setting-unit py-4">
-                <Row type="flex" gutter={[24, 24]}>
-                    <Col xs={24} lg={12} xl={14}>
-                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Header Code", "authpress")}</Title>
-                            <Paragraph>{__("This code will be placed inside &lt;head&gt; tag", "authpress")}</Paragraph>
-                        </Skeleton>
-                    </Col>
-                    {
-                        !settingsLoading &&
-                        <Col xs={24}>
-                            <AceEditor
-                                mode="html"
-                                theme="monokai"
-                                value={localValues?.header_content || ''}
-                                onChange={(value) => handleChange('header_content', value)}
-                                name="html-editor-1"
-                                width="100%"
-                                height="200px"
-                                editorProps={{ $blockScrolling: true }}
-                            />
-                        </Col>
-                    }
-                </Row>
-            </div>
-
-            <div className="setting-unit pt-4">
-                <Row type="flex" gutter={[24, 24]}>
-                    <Col xs={24} lg={12} xl={14}>
-                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Footer Code", "authpress")}</Title>
-                            <Paragraph>{__("This code will be placed inside &lt;body&gt; tag", "authpress")}</Paragraph>
-                        </Skeleton>
-                    </Col>
-                    {
-                        !settingsLoading &&
-                        <Col xs={24}>
-                            <AceEditor
-                                mode="html"
-                                theme="monokai"
-                                value={localValues?.footer_content || ''}
-                                onChange={(value) => handleChange('footer_content', value)}
-                                name="html-editor-2"
-                                width="100%"
-                                height="200px"
-                                editorProps={{ $blockScrolling: true }}
-                            />
-                        </Col>
-                    }
-                </Row>
-            </div>
-
             <ActionButtons hasChanges={hasChanges} section='more' handleReset={handleReset} onSave={onSave} />
         </>
     );

@@ -103,8 +103,8 @@ class PublicClass
 
 		// wp_enqueue_script($this->plugin_name, plugin_dir_url(__DIR__) . 'assets/js/script.js', array('jquery'), $this->version, false);
 		wp_enqueue_script($this->plugin_name, AUTHPRESS_URL . 'assets/js/script.js', array('jquery'), $this->version, false);
-		wp_enqueue_script($this->plugin_name . '-public-ajax', plugin_dir_url(__FILE__) . 'js/public-ajax.js', array('jquery'), $this->version, false);
-		wp_enqueue_script($this->plugin_name . '-public-script', plugin_dir_url(__FILE__) . 'js/public-script.js', array('jquery'), $this->version, false);
+		wp_enqueue_script($this->plugin_name . '-public-ajax', AUTHPRESS_URL . 'public/js/public-ajax.js', array('jquery'), $this->version, false);
+		wp_enqueue_script($this->plugin_name . '-public-script', AUTHPRESS_URL . 'public/js/public-script.js', array('jquery'), $this->version, false);
 		$ajax_params = array(
 			'admin_url' => admin_url(),
 			'ajax_url' => admin_url('admin-ajax.php'),
