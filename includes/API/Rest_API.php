@@ -893,11 +893,13 @@ class Rest_API
     
     public static function rest_feedback($request)
     {
-        $subject = sanitize_text_field(wp_unslash($request->get_param('subject')));
-        $message = sanitize_textarea_field(wp_unslash($request->get_param('message')));
-        $user_email = sanitize_email(wp_unslash($request->get_param('email')));
-        $phone = sanitize_text_field(wp_unslash($request->get_param('phone')));
-        $admin_email = 'mostak.shahid@gmail.com';
+        $json_body = $request->get_body();
+        $data = json_decode($json_body, true);
+
+        $subject = isset($data['subject']) ? sanitize_text_field(wp_unslash($data['subject'])) : '';
+        $message = isset($data['message']) ? sanitize_textarea_field(wp_unslash($data['message'])) : '';
+        $user_email = isset($data['email']) ? sanitize_email(wp_unslash($data['email'])) : '';
+        $phone = isset($data['phone']) ? sanitize_text_field(wp_unslash($data['phone'])) : '';
 
         if (empty($message)) {
             return new WP_Error('empty_message', __('Message cannot be empty.', 'authpress'), array('status' => 400));
@@ -910,13 +912,14 @@ class Rest_API
         $site_name = get_bloginfo('name');
         $site_url = get_home_url();
         $admin_wp_email = get_option('admin_email');
+        $admin_email = apply_filters('authpress_feedback_admin_email', 'mostak.shahid@gmail.com');
         $timestamp = current_time('mysql');
 
         $email_success = true;
 
         $headers = array(
-            'From: ' . $site_name . ' <' . $admin_wp_email . '>',
-            'Content-Type: text/html; charset=UTF-8'
+            'Content-Type: text/html; charset=UTF-8',
+            'From: ' . $site_name . ' <' . $admin_wp_email . '>'
         );
 
         $user_email_to_send = !empty($user_email) ? $user_email : $admin_wp_email;
@@ -946,6 +949,14 @@ class Rest_API
 
         if (!$thank_you_sent || !$admin_notification_sent) {
             $email_success = false;
+            $error_message = 'Email sending failed. ';
+            if (!$thank_you_sent) {
+                $error_message .= 'Thank you email not sent to: ' . $user_email_to_send . '. ';
+            }
+            if (!$admin_notification_sent) {
+                $error_message .= 'Admin notification not sent to: ' . $admin_email . '. ';
+            }
+            error_log('AuthPress - ' . $error_message);
         }
 
         // self::send_to_third_party(array(
@@ -957,6 +968,17 @@ class Rest_API
         //     'phone' => $phone,
         //     'timestamp' => $timestamp
         // ));
+
+        $response = array(
+            'success' => true,
+            'msg' => $email_success ? esc_html__('Feedback submitted successfully.', 'authpress') : esc_html__('Feedback submitted, but there was an issue sending emails.', 'authpress'),
+            'subject' => $subject,
+            'message' => $message,
+            'email_sent' => $email_success,
+            'thank_you_sent' => $thank_you_sent,
+            'admin_sent' => $admin_notification_sent
+        );
+        return new WP_REST_Response($response, 200);
 
         $response = array(
             'success' => true,
@@ -993,10 +1015,10 @@ class Rest_API
                                 <tr>
                                     <td style="padding: 40px 30px;">
                                         <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
-                                            <?php esc_html__('Dear User,', 'authpress'); ?>                                            
+                                            <?php echo esc_html__('Dear User,', 'authpress'); ?>
                                         </p>
-                                        <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">                                            
-                                            <?php esc_html__('Thank you for taking the time to provide your feedback. We truly appreciate your input and are committed to improving our services based on your suggestions.', 'authpress'); ?>
+                                        <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0 0 20px 0;">
+                                            <?php echo esc_html__('Thank you for taking the time to provide your feedback. We truly appreciate your input and are committed to improving our services based on your suggestions.', 'authpress'); ?>
                                         </p>
                                         <div style="background-color: #f8f9fa; border-left: 4px solid #667eea; padding: 20px; margin: 20px 0;">
                                             <h3 style="color: #667eea; margin: 0 0 15px 0; font-size: 18px;">Your Feedback</h3>
@@ -1020,11 +1042,11 @@ class Rest_API
                                             </table>
                                         </div>
                                         <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 20px 0;">
-                                            <?php esc_html__('We will review your feedback and get back to you if necessary.', 'authpress'); ?>                                              
-                                            
+                                            <?php echo esc_html__('We will review your feedback and get back to you if necessary.', 'authpress'); ?>
+
                                         </p>
                                         <p style="color: #333333; font-size: 16px; line-height: 1.6; margin: 0;">
-                                            <?php esc_html__('Best regards,', 'authpress'); ?>   
+                                            <?php echo esc_html__('Best regards,', 'authpress'); ?>
                                             <br>
                                             <?php echo esc_html($data['site_name']); ?> Team
                                         </p>
@@ -1037,7 +1059,7 @@ class Rest_API
                                              <a href="<?php echo esc_url($data['site_url']); ?>" style="color: #667eea; text-decoration: none;"><?php echo esc_html($data['site_name']); ?></a>
                                         </p>
                                         <p style="color: #999999; font-size: 12px; margin: 5px 0 0 0;">
-                                            <?php esc_html__('Submitted on:', 'authpress'); ?> 
+                                            <?php echo esc_html__('Submitted on:', 'authpress'); ?>
                                              <?php echo esc_html($data['timestamp']); ?>
                                         </p>
                                     </td>

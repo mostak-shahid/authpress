@@ -41,9 +41,9 @@ const Feedback = () => {
                         phone: values.phone,
                         message: values.message
                     },
-                    headers: {
-                        'X-WP-Nonce': mos_product_specifications_tab_ajax_obj.api_nonce
-                    }
+                    // headers: {
+                    //     'X-WP-Nonce': mos_product_specifications_tab_ajax_obj.api_nonce
+                    // }
                 });
                 // console.log(result);
                 if (result.success) {
@@ -52,17 +52,21 @@ const Feedback = () => {
                     }
                     Notification.success({
                         title: __("Success", "authpress"),
-                        content: __("Feedback send successfully!", "authpress"),
-                        duration: 3,
+                        content: result.msg || __("Feedback submitted successfully!", "authpress"),
+                        duration: 5,
+                        position: 'topRight',
                     });
+                } else {
+                    throw new Error(result.msg || "Submission failed");
                 }
 
             } catch (error) {
-                console.error("Mail Sending Error:", error);
+                console.error("Feedback Error:", error);
                 Notification.error({
                     title: __("Error", "authpress"),
-                    content: __("Please try again!", "authpress"),
-                    duration: 3,
+                    content: error.message || __("Please try again!", "authpress"),
+                    duration: 5,
+                    position: 'topRight',
                 });
             } finally {
                 setProcessing(false);
@@ -79,22 +83,7 @@ const Feedback = () => {
 
     const {
         Input,
-        InputNumber,
-        Select,
-        Cascader,
-        DatePicker,
-        TimePicker,
         TextArea,
-        CheckboxGroup,
-        Checkbox,
-        RadioGroup,
-        Radio,
-        Slider,
-        Rating,
-        Switch,
-        TagInput,
-        Section,
-        TreeSelect,
     } = Form;
 
     // const handleSubmit = (values) => {
@@ -129,7 +118,7 @@ const Feedback = () => {
                             onSubmit={handleForm}
                             getFormApi={setFormApi}
                         >
-                            <div className="mb-3">
+                            <div>
                                 <Input                                
                                     field="subject"
                                     label={__("Subject", "authpress")}
@@ -141,8 +130,6 @@ const Feedback = () => {
                                         // { validator: (rule, value) => value === 'semi', message: 'not semi' }
                                     ]}
                                 />
-                            </div>
-                            <div className="mb-3">
                                 <Input                                
                                     field="email"
                                     label={__("Email", "authpress")}
@@ -154,8 +141,6 @@ const Feedback = () => {
                                     //     { validator: (rule, value) => value === 'semi', message: 'not semi' }
                                     // ]}
                                 />
-                            </div>
-                            <div className="mb-3">
                                 <Input                                
                                     field="phone"
                                     label={__("Phone", "authpress")}
@@ -167,8 +152,6 @@ const Feedback = () => {
                                     //     { validator: (rule, value) => value === 'semi', message: 'not semi' }
                                     // ]}
                                 />
-                            </div>
-                            <div className="mb-3">
                                 <TextArea
                                     field="message"
                                     label={__("Message", "authpress")}
