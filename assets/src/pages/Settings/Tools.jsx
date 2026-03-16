@@ -6,7 +6,7 @@ import {
     Skeleton,
     Button,
     Typography,
-    Toast,
+    Notification,
     Switch,
     Select
 } from "@douyinfe/semi-ui";
@@ -20,14 +20,24 @@ const { Title, Paragraph } = Typography;
 
 const copyToClipboard = (value) => {
     if (!value) {
-        Toast.error("No text to copy");
+        Notification.error({
+            title: __("Error", "authpress"),
+            content: __("No text to copy", "authpress"),
+            duration: 3,
+            position: 'topRight',
+        });
         return;
     }
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(value)
             .then(() => {
-                Toast.success("Copied to clipboard");
+                Notification.success({
+                    title: __("Success", "authpress"),
+                    content: __("Copied to clipboard", "authpress"),
+                    duration: 3,
+                    position: 'topRight',
+                });
             })
             .catch((err) => {
                 console.error("Clipboard API failed:", err);
@@ -48,17 +58,32 @@ const fallbackCopyToClipboard = (value) => {
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
+
     try {
         const successful = document.execCommand('copy');
         if (successful) {
-            Toast.success("Copied to clipboard");
+            Notification.success({
+                title: __("Success", "authpress"),
+                content: __("Copied to clipboard", "authpress"),
+                duration: 3,
+                position: 'topRight',
+            });
         } else {
-            Toast.error("Failed to copy");
+            Notification.error({
+                title: __("Error", "authpress"),
+                content: __("Failed to copy", "authpress"),
+                duration: 3,
+                position: 'topRight',
+            });
         }
     } catch (err) {
         console.error("Fallback copy failed:", err);
-        Toast.error("Copy not supported in this browser");
+        Notification.error({
+            title: __("Error", "authpress"),
+            content: __("Copy not supported in this browser", "authpress"),
+            duration: 3,
+            position: 'topRight',
+        });
     } finally {
         document.body.removeChild(textArea);
     }
@@ -116,17 +141,22 @@ const Tools = () => {
             });
 
             if (result.success) {
-                Toast.success({
+                setSettingsReload(Math.random());
+                Notification.success({
+                    title: __("Success", "authpress"),
                     content: __("Settings reset successfully!", "authpress"),
-                    theme: "light",
+                    duration: 3,
+                    position: 'topRight',
                 });
             } else {
                 throw new Error("Reset failed");
             }
         } catch (error) {
-            Toast.error({
+            Notification.error({
+                title: __("Error", "authpress"),
                 content: __("Error resetting settings.", "authpress"),
-                theme: "light",
+                duration: 3,
+                position: 'topRight',
             });
         } finally {
             setProcessing(false);

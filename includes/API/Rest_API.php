@@ -170,12 +170,7 @@ class Rest_API
         
 		register_rest_route( self::NAMESPACE,'/options/import-settings', [
                 'methods' => 'POST',
-                'callback' => function ($request) {
-                    $data = $request->get_json_params();
-                    update_option('authpress_options', $data);
-                    return rest_ensure_response(['success' => true]);
-                },
-                // 'permission_callback' => '__return_true',
+                'callback' => [$this, 'import_settings'],
                 'permission_callback' => function () {
                     return current_user_can('manage_options');
                 },
@@ -812,15 +807,12 @@ class Rest_API
         $authpress_default_options = authpress_get_default_options();
 
         update_option('authpress_options', $authpress_default_options);
-        // $this->log_settings_reset($name, $authpress_options_old[$name] ?? null, $authpress_options[$name] ?? null);
-        wp_send_json_success(['message' => __('Settings reset successfully.', 'authpress')]);
 
 		$response = [
 			'success' => true,
-			'msg'	=> esc_html__('Data successfully added.', 'authpress')
+			'message'	=> esc_html__('Settings reset successfully.', 'authpress')
 		];
 
-		// return $response;
 		return new WP_REST_Response($response, 200);
 	}
 
@@ -856,7 +848,49 @@ class Rest_API
 		// return $response;
 		return new WP_REST_Response($response, 200);
 	}
-	
+
+    public function import_settings(WP_REST_Request $request)
+	{
+        if (!current_user_can('manage_options')) {
+            return new WP_Error(
+                'rest_update_error',
+                'Sorry, you are not allowed to import settings.',
+                array('status' => 403)
+            );
+        }
+
+        $json_body = $request->get_body();
+
+        $data = json_decode($json_body, true);
+
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            return new WP_Error(
+                'invalid_json',
+                'Invalid JSON data provided: ' . json_last_error_msg(),
+                array('status' => 400)
+            );
+        }
+
+        if (!is_array($data)) {
+            return new WP_Error(
+                'invalid_data',
+                'Data must be an array/object.',
+                array('status' => 400)
+            );
+        }
+
+        $authpress_options_old = authpress_get_option();
+
+        update_option('authpress_options', $data);
+
+        LogsController::log_settings_change($authpress_options_old, $data);
+
+        return rest_ensure_response(array(
+            'success' => true,
+            'message' => esc_html__('Settings imported successfully.', 'authpress')
+        ));
+    }
+    
     public static function rest_feedback($request)
     {
         $subject = sanitize_text_field(wp_unslash($request->get_param('subject')));

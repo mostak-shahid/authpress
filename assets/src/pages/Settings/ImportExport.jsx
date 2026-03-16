@@ -44,19 +44,23 @@ const ImportExport = () => {
     // Handle file upload with Semi Design Upload
     const handleFileChange = ({ fileList, currentFile }) => {
         setFileList(fileList);
-        
+
         if (currentFile && currentFile.fileInstance) {
             const reader = new FileReader();
             reader.onload = (event) => {
                 try {
                     const content = event.target.result;
-                    JSON.parse(content); // Validate JSON
+                    JSON.parse(content);
                     setImportData(content);
-                    // toast.success(__('File loaded successfully', 'authpress'));
                 } catch (err) {
-                    // toast.error(__('Invalid JSON file', 'authpress'));
                     setFileList([]);
                     setImportData('');
+                    Notification.error({
+                        title: __("Error", "authpress"),
+                        content: __("Invalid JSON file format", "authpress"),
+                        duration: 3,
+                        position: 'topRight',
+                    });
                 }
             };
             reader.readAsText(currentFile.fileInstance);
@@ -72,7 +76,6 @@ const ImportExport = () => {
     // Submit imported JSON
     const handleImport = async () => {
         setProcessingImport(true);
-        // console.log(importData);
         try {
             const parsed = JSON.parse(importData);
             const response = await apiFetch({
@@ -95,15 +98,22 @@ const ImportExport = () => {
                     window.location.reload();
                 }, 2000);
             } else {
-                // toast.error(__('Import failed', 'authpress'));
                 setProcessingImport(false);
+                Notification.error({
+                    title: __("Error", "authpress"),
+                    content: response.message || __("Import failed", "authpress"),
+                    duration: 5,
+                    position: 'topRight',
+                });
             }
         } catch (e) {
-            // toast.error(__('Invalid JSON content', 'authpress'));
-            console.log(e);
             setProcessingImport(false);
-        } finally {
-            setProcessingImport(false);
+            Notification.error({
+                title: __("Error", "authpress"),
+                content: e.message || __("Invalid JSON content or import failed", "authpress"),
+                duration: 5,
+                position: 'topRight',
+            });
         }
     };
     return (
