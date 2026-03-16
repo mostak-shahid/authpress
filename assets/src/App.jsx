@@ -36,6 +36,7 @@ import CustomizerPersonalizeFields from './pages/Settings/CustomizerPersonalizeF
 import CaptchasSettings from './pages/Settings/CaptchasSettings';
 import HideLogin from './pages/Settings/HideLogin';
 import AutoLoginSettings from './pages/Settings/AutoLoginSettings';
+import TwoFAAuthenticationSettings from './pages/Settings/TwoFAAuthenticationSettings';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -280,6 +281,9 @@ export default function App() {
 
                         <Route path="auto-login" element={<Navigate to="/settings" replace />} />
                         <Route path="auto-login/settings" element={<AutoLoginSettings />} />
+
+                        <Route path="two-fa-authentication" element={<Navigate to="/settings" replace />} />
+                        <Route path="two-fa-authentication/settings" element={<TwoFAAuthenticationSettings />} />
 
                         <Route path="array-inputs" element={<ArrayInputs />} />
                         <Route path="page/page-1" element={<Page />} />
