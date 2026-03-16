@@ -52,7 +52,7 @@ const CustomizerPersonalizeFields = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Size", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Adjust the size of your login fields", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -85,7 +85,7 @@ const CustomizerPersonalizeFields = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Font", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Adjust the font for your login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {

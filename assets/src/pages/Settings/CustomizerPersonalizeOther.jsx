@@ -52,7 +52,7 @@ const CustomizerPersonalizeOther = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Disable Remember Me", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Hide the 'Remember Me' checkbox on the login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -71,7 +71,7 @@ const CustomizerPersonalizeOther = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Disable Register Link", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Hide the 'Register' link on the login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -90,7 +90,7 @@ const CustomizerPersonalizeOther = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Disable Lost Password Link", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Hide the 'Lost Password' link on the login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -109,7 +109,7 @@ const CustomizerPersonalizeOther = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Disable Privacy Policy Link", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Hide the 'Privacy Policy' link on the login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -128,7 +128,7 @@ const CustomizerPersonalizeOther = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Disable Back to Website Link", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Hide the 'Back to Website' link on the login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -147,7 +147,7 @@ const CustomizerPersonalizeOther = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Login by", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Select the method for users to log in", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -157,7 +157,7 @@ const CustomizerPersonalizeOther = () => {
                                 noLabel
                                 className="w-full"
                                 placeholder={__("Login by", "authpress")}
-                                value={localValues?.type}
+                                value={localValues?.login_by}
                                 optionList={[
                                     { label: 'Default', value: 'both' },
                                     { label: 'Username', value: 'username' },
@@ -175,7 +175,7 @@ const CustomizerPersonalizeOther = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Registered with Password", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Allow users to log in with their password after registration", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {

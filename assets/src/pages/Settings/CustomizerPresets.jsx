@@ -81,53 +81,49 @@ const CustomizerPresets = () => {
    };
 
    return (
-       <>
-           {!settingsLoading && settings?.customizer?.redesign?.templates && (
-               <div>
-                   <div className="setting-unit py-4">
-                       <Row type="flex" gutter={[24, 24]}>
-                           {
-                               !settingsLoading &&
-                               <Col xs={24}>
-                                   <div className="authpress-image-selector">
-                                       {
-                                           defaultPresets.map(preset => (
-                                               <div
-                                                   key={preset.template}
-                                                   className={`image-container ${localValues.layout === preset.template ? 'selected' : ''}`}
-                                                   onClick={() => {
-                                                       handleChange('layout', preset.template);
-                                                       handlePresetChange(preset.template);
-                                                   }}
-                                                   style={{
-                                                       display: 'inline-block',
-                                                       cursor: 'pointer',
-                                                       marginRight: '16px',
-                                                       padding: '8px',
-                                                       border: localValues.layout === preset.template ? '2px solid #1890ff' : '2px solid transparent',
-                                                       borderRadius: '4px'
-                                                   }}
-                                               >
-                                                   <div className="image-container-inner">
-                                                       <img src={preset.img} alt={preset.label}/>
-                                                       <span>{preset.name}</span>
-                                                       {localValues.layout === preset.template && (
-                                                           <div className="authpress-image-selected">
-                                                               <CheckIcon />
-                                                           </div>
-                                                       )}
-                                                   </div>
-                                               </div>
-                                           ))
-                                       }
-                                   </div>
-                               </Col>
-                           }
-                       </Row>
-                   </div>
-               </div>
-           )}
-       </>
+        <>
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24}>
+                            <div className="authpress-image-selector">
+                                {
+                                    defaultPresets.map(preset => (
+                                        <div
+                                            key={preset.template}
+                                            className={`image-container ${localValues.layout === preset.template ? 'selected' : ''}`}
+                                            onClick={() => {
+                                                handleChange('layout', preset.template);
+                                                handlePresetChange(preset.template);
+                                            }}
+                                            style={{
+                                                display: 'inline-block',
+                                                cursor: 'pointer',
+                                                marginRight: '16px',
+                                                padding: '8px',
+                                                border: localValues.layout === preset.template ? '2px solid #1890ff' : '2px solid transparent',
+                                                borderRadius: '4px'
+                                            }}
+                                        >
+                                            <div className="image-container-inner">
+                                                <img src={preset.img} alt={preset.label}/>
+                                                <span>{preset.name}</span>
+                                                {localValues.layout === preset.template && (
+                                                    <div className="authpress-image-selected">
+                                                        <CheckIcon />
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </Col>
+                    }
+                </Row>
+            </div>
+        </>
    );
 };
 

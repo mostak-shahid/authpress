@@ -43,12 +43,12 @@ const CaptchasSettings = () => {
 
     return (
         <>
-            <div className="setting-unit pt-4">
+            <div className="setting-unit py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Enable captcha", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Enable or disable the captcha feature", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -67,7 +67,7 @@ const CaptchasSettings = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Select Captcha", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Choose the type of captcha to display", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {

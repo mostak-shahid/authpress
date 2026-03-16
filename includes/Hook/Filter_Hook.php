@@ -277,17 +277,6 @@ class Filter_Hook {
                     ],
                 ],
             ],	
-            'hide_login' => [
-                'login_url' => '',
-            ],
-            'two_fa_authentication' => [
-                'email' => [
-                    'enabled' => true,
-                ],
-                'settings' => [
-                    'enabled' => true,
-                ],
-            ],
             'captcha' => [
                 'settings' => [
                     'enabled' => true,
@@ -307,6 +296,29 @@ class Filter_Hook {
                 'barcode_login' => [
                     'enabled' => true,
                 ]
+            ],            
+            'login_redirects' => [
+                'enabled' => false,
+                'rules' => [],
+            ],            
+            'limit_login_attempts' => [
+                'enabled' => false,
+                'attempts_allowed' => 5,
+                'minutes_lockout' => 5,    
+                'ip_whitelist' => '',
+                'ip_blacklist' => '',
+                'lockout_message' => 'Too many failed login attempts. Please try again in {minutes} minutes.',
+                'disable_xml_rpc_requests' => false,
+            ],
+            'hide_login' => [
+                'login_url' => '',
+            ],
+            'two_fa_authentication' => [
+                'settings' => [
+                    'enabled' => true,
+                    'enable_backup_codes' => true,
+                    'selected_method' => 'email', // totp, email, hotp,
+                ],
             ],
 
             'page' => [

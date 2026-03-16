@@ -37,6 +37,9 @@ import CaptchasSettings from './pages/Settings/CaptchasSettings';
 import HideLogin from './pages/Settings/HideLogin';
 import AutoLoginSettings from './pages/Settings/AutoLoginSettings';
 import TwoFAAuthenticationSettings from './pages/Settings/TwoFAAuthenticationSettings';
+import LoginRedirects from './pages/Settings/LoginRedirects';
+import LimitLoginAttempts from './pages/Settings/LimitLoginAttempts';
+import TwoFAAuthenticationLogs from './pages/Settings/TwoFAAuthenticationLogs';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -265,39 +268,49 @@ export default function App() {
                     
                     <Route path="/settings" element={<Settings />}>
                         <Route index element={<Navigate to="customizer/presets" replace />} />
+                        
+                        {/* Customizer Group */}
                         <Route path="customizer/presets" element={<CustomizerPresets />} />
-
-                        <Route path="customizer/personalize/" element={<Navigate to="/logo" replace />} />
+                        <Route path="customizer/personalize" element={<Navigate to="logo" replace />} />
                         <Route path="customizer/personalize/background" element={<CustomizerPersonalizeBackground />} />
                         <Route path="customizer/personalize/logo" element={<CustomizerPersonalizeLogo />} />
                         <Route path="customizer/personalize/fields" element={<CustomizerPersonalizeFields />} />
-                        <Route path="customizer/personalize/button" element={<CustomizerPersonalizeButton />} />                        
+                        <Route path="customizer/personalize/button" element={<CustomizerPersonalizeButton />} />
                         <Route path="customizer/personalize/other" element={<CustomizerPersonalizeOther />} />
                         
-                        <Route path="captchas/" element={<Navigate to="/settings" replace />} />
-                        <Route path="captchas/settings" element={<CaptchasSettings />} />
+                        {/* Captchas Group */}
+                        {/* <Route path="captchas" element={<Navigate to="settings" replace />} /> */}
+                        <Route path="captchas" element={<CaptchasSettings />} />
+
+                        {/* Security Group */}
+                        {/* <Route path="auto-login" element={<Navigate to="settings" replace />} /> */}
+                        <Route path="auto-login" element={<AutoLoginSettings />} />
+                        <Route path="login-redirects" element={<LoginRedirects />} />
+                        <Route path="limit-login-attempts" element={<LimitLoginAttempts />} />
 
                         <Route path="hide-login" element={<HideLogin />} />
-
-                        <Route path="auto-login" element={<Navigate to="/settings" replace />} />
-                        <Route path="auto-login/settings" element={<AutoLoginSettings />} />
-
-                        <Route path="two-fa-authentication" element={<Navigate to="/settings" replace />} />
+                        <Route path="two-fa-authentication" element={<Navigate to="settings" replace />} />
                         <Route path="two-fa-authentication/settings" element={<TwoFAAuthenticationSettings />} />
-
-                        <Route path="array-inputs" element={<ArrayInputs />} />
-                        <Route path="page/page-1" element={<Page />} />
-                        <Route path="page/page-2" element={<Page />} />
+                        <Route path="two-fa-authentication/audit-logs" element={<TwoFAAuthenticationLogs />} />
                         
-                        {/* Other menu items */}
+                        {/* Data Management Group */}
                         <Route path="import-export" element={<ImportExport />} />
-                        <Route path="more" element={<More />} />
-                        {/* <Route path="logs" element={<Logs />} /> */}
+                        <Route path="tools" element={<Tools />} />
+                        
+                        {/* Logs Group */}
                         <Route path="logs" element={<Navigate to="table" replace />} />
                         <Route path="logs/table" element={<LogsTable />} />
                         <Route path="logs/analytics" element={<LogsCharts />} />
-                        <Route path="tools" element={<Tools />} />
+                        
+                        {/* Other Group */}
+                        <Route path="more" element={<More />} />
+                        
+                        {/* Development Routes */}
+                        <Route path="array-inputs" element={<ArrayInputs />} />
+                        <Route path="page/page-1" element={<Page />} />
+                        <Route path="page/page-2" element={<Page />} />
                     </Route>
+                    
                     <Route path="feedback" element={<Feedback />} />
                     <Route path="free-vs-pro" element={<FreeVsPro />} />
                     <Route path="*" element={<NotFound />} />

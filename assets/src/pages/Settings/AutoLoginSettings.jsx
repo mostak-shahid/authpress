@@ -43,12 +43,12 @@ const AutoLoginSettings = () => {
 
     return (
         <>
-            <div className="setting-unit pt-4">
+            <div className="setting-unit py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Enable auto login", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Enable or disable the auto login feature", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -67,7 +67,7 @@ const AutoLoginSettings = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Select Methods", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Choose the methods for auto login", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -79,7 +79,7 @@ const AutoLoginSettings = () => {
                                 // max={2}
                                 // maxTagCount={2}
                                 className="w-full"
-                                placeholder={__("Background type", "authpress")}
+                                placeholder={__("Select Methods", "authpress")}
                                 value={localValues?.selected_auto_login}
                                 optionList={[
                                     { label: 'Link Login', value: 'link_login' },

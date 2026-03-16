@@ -43,11 +43,11 @@ const TwoFAAuthenticationSettings = () => {
 
     return (
         <>
-            <div className="setting-unit pt-4">
+            <div className="setting-unit py-4">
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Enable two_fa_authentication", "authpress")}</Title>
+                            <Title heading={4}>{__("Enable Two-Factor Authentication", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
@@ -66,7 +66,7 @@ const TwoFAAuthenticationSettings = () => {
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Select Captcha", "authpress")}</Title>
+                            <Title heading={4}>{__("Select Methods", "authpress")}</Title>
                             <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
@@ -75,8 +75,9 @@ const TwoFAAuthenticationSettings = () => {
                         <Col xs={24} lg={12} xl={10}>
                             <Select
                                 noLabel
+                                multiple
                                 className="w-full"
-                                placeholder={__("Background type", "authpress")}
+                                placeholder={__("Select Methods", "authpress")}
                                 value={localValues?.selected_two_fa_authentication}
                                 optionList={[
                                     { label: 'Email OTP', value: 'email_otp' },

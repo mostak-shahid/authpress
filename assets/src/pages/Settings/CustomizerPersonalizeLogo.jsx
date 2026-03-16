@@ -51,7 +51,7 @@ const CustomizerPersonalizeLogo = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Hide logo", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Toggle to hide the logo on your login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -70,7 +70,7 @@ const CustomizerPersonalizeLogo = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Upload Logo", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Upload a logo for your login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -101,7 +101,7 @@ const CustomizerPersonalizeLogo = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Logo Size", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Adjust the size of your logo on the login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -134,7 +134,7 @@ const CustomizerPersonalizeLogo = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Space below", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Adjust the space below your logo on the login page", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -154,7 +154,7 @@ const CustomizerPersonalizeLogo = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Logo URL", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Enter the URL for your logo", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {

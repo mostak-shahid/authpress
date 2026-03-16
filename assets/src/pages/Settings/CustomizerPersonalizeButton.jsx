@@ -53,7 +53,7 @@ const CustomizerPersonalizeButton = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Font", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Adjust the font for your login button", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -74,7 +74,7 @@ const CustomizerPersonalizeButton = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Background", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Adjust the background for your login button", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -95,7 +95,7 @@ const CustomizerPersonalizeButton = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Text", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Adjust the text for your login button", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {

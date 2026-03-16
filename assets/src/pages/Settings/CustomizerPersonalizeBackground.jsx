@@ -59,7 +59,7 @@ const CustomizerPersonalizeBackground = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Background type", "authpress")}</Title>
-                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            <Paragraph>{__("Select the type of background you want to use", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -87,7 +87,7 @@ const CustomizerPersonalizeBackground = () => {
                         <Col xs={24} lg={12} xl={14}>
                             <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                                 <Title heading={4}>{__("Background Image", "authpress")}</Title>
-                                <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                                <Paragraph>{__("Select the background image for your login page", "authpress")}</Paragraph>
                             </Skeleton>
                         </Col>
                         {
@@ -120,7 +120,7 @@ const CustomizerPersonalizeBackground = () => {
                         <Col xs={24} lg={12} xl={14}>
                             <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                                 <Title heading={4}>{__("Background Video", "authpress")}</Title>
-                                <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                                <Paragraph>{__("Select the background video for your login page", "authpress")}</Paragraph>
                             </Skeleton>
                         </Col>
                         {
@@ -143,7 +143,7 @@ const CustomizerPersonalizeBackground = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Background Overlay", "authpress")}</Title>
-                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            <Paragraph>{__("Select the background overlay for your login page", "authpress")}</Paragraph>
                         </Skeleton>
                         </Col>
                     {
