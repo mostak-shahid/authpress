@@ -306,9 +306,6 @@ class Filter_Hook {
                 ],
                 'barcode_login' => [
                     'enabled' => true,
-                ],
-                'google_login' => [
-                    'enabled' => true,
                 ]
             ],
 

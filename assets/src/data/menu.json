@@ -90,6 +90,26 @@
         ]
     },
     {
+        "itemKey": "two_fa_authentication",
+        "text": "Two-Factor Authentication",
+        "description": "Two-Factor Authentication Settings",
+        "url": "/settings/two-fa-authentication",        
+        "items": [
+            {
+                "itemKey": "email-otp",
+                "text": "Email OTP",
+                "description": "Email OTP (One-Time Password) is a secure authentication method that sends a unique, time-sensitive code to the user's registered email address. This adds an extra layer of security to the login process, ensuring that only the rightful owner of the email account can access the system.",
+                "url": "/settings/two-fa-authentication/email-otp"
+            },
+            {
+                "itemKey": "settings",
+                "text": "Settings",
+                "description": "Settings for Two-Factor Authentication",
+                "url": "/settings/two-fa-authentication/settings"
+            }
+        ]
+    },
+    {
         "itemKey": "auto-login",
         "text": "Auto Login",
         "description": "This LoginPress add-on lets you (Adminstrator) generates a unique URL for your certain users who you don't want to provide a password to login into your site. This Pro add-on gives you a list of all the users who you have given auto generated login links. You can disable someones access and delete certain users.",
@@ -112,12 +132,6 @@
         "text": "Hide Login",
         "description": "This LoginPress add-on lets you change the login page URL to anything you want. It will give a hard time to spammers who keep hitting to your login page. This is helpful for Brute force attacks. One caution to use this add-on is you need to remember the custom login url after you change it. We have an option to email your custom login url so you remember it.",
         "url": "/settings/hide-login"
-    },
-    {
-        "itemKey": "social-login",
-        "text": "Social Login",
-        "description": "Social login from LoginPress is an add-on which provides facility your users to login and Register via Facebook, Google and Twitter. This add-on will eliminate the Spam and Bot registrations. This add-on will help your users to hassle free registrations/logins on your site.",
-        "url": "/settings/social-login"
     },
     {
         "itemKey": "misc",

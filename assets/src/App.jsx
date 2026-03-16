@@ -34,6 +34,8 @@ import CustomizerPersonalizeOther from './pages/Settings/CustomizerPersonalizeOt
 import CustomizerPersonalizeButton from './pages/Settings/CustomizerPersonalizeButton';
 import CustomizerPersonalizeFields from './pages/Settings/CustomizerPersonalizeFields';
 import CaptchasSettings from './pages/Settings/CaptchasSettings';
+import HideLogin from './pages/Settings/HideLogin';
+import AutoLoginSettings from './pages/Settings/AutoLoginSettings';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -274,7 +276,10 @@ export default function App() {
                         <Route path="captchas/" element={<Navigate to="/settings" replace />} />
                         <Route path="captchas/settings" element={<CaptchasSettings />} />
 
-                        <Route path="hide-login" element={<CustomizerPresets />} />
+                        <Route path="hide-login" element={<HideLogin />} />
+
+                        <Route path="auto-login" element={<Navigate to="/settings" replace />} />
+                        <Route path="auto-login/settings" element={<AutoLoginSettings />} />
 
                         <Route path="array-inputs" element={<ArrayInputs />} />
                         <Route path="page/page-1" element={<Page />} />
