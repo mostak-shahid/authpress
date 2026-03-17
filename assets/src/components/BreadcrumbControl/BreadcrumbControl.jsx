@@ -41,8 +41,8 @@ const generateBreadcrumbs = (pathname, menuData) => {
                 }
 
                 // If has submenu, search in submenu
-                if (item.sub && item.sub.length > 0) {
-                    const subResult = findInMenu(item.sub, path, currentCrumbs);
+                if (item.items && item.items.length > 0) {
+                    const subResult = findInMenu(item.items, path, currentCrumbs);
                     if (subResult) {
                         return subResult;
                     }
@@ -54,8 +54,8 @@ const generateBreadcrumbs = (pathname, menuData) => {
             }
 
             // Search in submenu even if parent doesn't match
-            if (item.sub && item.sub.length > 0) {
-                const subResult = findInMenu(item.sub, path, [...parentCrumbs, {
+            if (item.items && item.items.length > 0) {
+                const subResult = findInMenu(item.items, path, [...parentCrumbs, {
                     name: item.text,
                     path: item.url,
                     href: item.url
