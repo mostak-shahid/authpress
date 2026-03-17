@@ -12,9 +12,9 @@ import en_US from "@douyinfe/semi-ui/lib/es/locale/source/en_US";
 import { Dashboard, Settings, CustomizerPresets, ImportExport, More, Tools, Logs, LogsCharts, LogsTable, Feedback, FreeVsPro, NotFound} from './pages';
 
 import {
-    About, 
+    About,
     Contact,
-    BasicInputs, 
+    BasicInputs,
     ArrayInputs,
     BoxedLeftSidebar,
     BoxedNoSidebar,
@@ -41,6 +41,7 @@ import LoginRedirects from './pages/Settings/LoginRedirects';
 import LimitLoginAttempts from './pages/Settings/LimitLoginAttempts';
 import TwoFAAuthenticationLogs from './pages/Settings/TwoFAAuthenticationLogs';
 import Misc from './pages/Settings/Misc';
+import PasswordPolicies from './pages/Settings/PasswordPolicies';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -283,7 +284,7 @@ export default function App() {
                         <Route path="security" element={<Navigate to="captchas" replace />} />
                         <Route path="captchas" element={<CaptchasSettings />} />
                         <Route path="limit-login-attempts" element={<LimitLoginAttempts />} />
-                        <Route path="password-policy" element={<Navigate to="misc" replace />} />
+                        <Route path="password-policy" element={<PasswordPolicies />} />
                         <Route path="hide-login" element={<HideLogin />} />
                         <Route path="two-fa-authentication" element={<Navigate to="settings" replace />} />
                         <Route path="two-fa-authentication/settings" element={<TwoFAAuthenticationSettings />} />
