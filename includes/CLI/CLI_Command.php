@@ -400,4 +400,272 @@ class CLI_Command {
             WP_CLI\Utils\format_items( 'table', $results, array( 'ID', 'title', 'created_at' ) );
         }
     }
+
+    /**
+     * Seed the login redirects table with sample data.
+     *
+     * ## OPTIONS
+     *
+     * [--count=<number>]
+     * : Number of login redirect entries to create. Default: 10
+     *
+     * ## EXAMPLES
+     *
+     *     # Create 10 login redirect entries (default)
+     *     wp authpress seed-login-redirects
+     *
+     *     # Create 50 login redirect entries
+     *     wp authpress seed-login-redirects --count=50
+     *
+     * @param array $args       Positional arguments.
+     * @param array $assoc_args Associative arguments.
+     */
+    public function seed_login_redirects( $args, $assoc_args ) {
+        global $wpdb;
+
+        $count = isset( $assoc_args['count'] ) ? absint( $assoc_args['count'] ) : 10;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) !== $table_name ) {
+            WP_CLI::error( "Table {$table_name} does not exist. Please activate the plugin first." );
+            return;
+        }
+
+        WP_CLI::log( "Starting to seed {$count} login redirect entries..." );
+
+        $progress = \WP_CLI\Utils\make_progress_bar( 'Seeding login redirects', $count );
+
+        $inserted = 0;
+        $failed = 0;
+
+        for ( $i = 1; $i <= $count; $i++ ) {
+            $user_id    = rand( 1, 10 );
+            $type       = $this->generate_random_redirect_type();
+            $value      = $this->generate_random_redirect_value();
+            $redirect_to = $this->generate_random_redirect_url();
+            $status     = rand( 0, 1 ) ? 'active' : 'inactive';
+            $created_at = $this->generate_random_date_last_10_days();
+
+            $result = $wpdb->insert(
+                $table_name,
+                array(
+                    'user_id'    => $user_id,
+                    'type'       => $type,
+                    'value'      => $value,
+                    'redirect_to' => $redirect_to,
+                    'status'     => $status,
+                    'created_at' => $created_at,
+                ),
+                array(
+                    '%d',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                )
+            );
+
+            if ( $result ) {
+                $inserted++;
+            } else {
+                $failed++;
+                WP_CLI::debug( "Failed to insert login redirect entry #{$i}: " . $wpdb->last_error );
+            }
+
+            $progress->tick();
+        }
+
+        $progress->finish();
+
+        WP_CLI::success( sprintf(
+            'Successfully inserted %d login redirect entries. Failed: %d',
+            $inserted,
+            $failed
+        ) );
+
+        $this->show_sample_login_redirects( 5 );
+    }
+
+    /**
+     * Clear all login redirects from the table.
+     *
+     * ## OPTIONS
+     *
+     * [--yes]
+     * : Skip confirmation prompt.
+     *
+     * ## EXAMPLES
+     *
+     *     # Clear login redirects with confirmation
+     *     wp authpress clear-login-redirects
+     *
+     *     # Clear login redirects without confirmation
+     *     wp authpress clear-login-redirects --yes
+     *
+     * @param array $args       Positional arguments.
+     * @param array $assoc_args Associative arguments.
+     */
+    public function clear_login_redirects( $args, $assoc_args ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) !== $table_name ) {
+            WP_CLI::error( "Table {$table_name} does not exist." );
+            return;
+        }
+
+        $count = $wpdb->get_var( "SELECT COUNT(*) FROM {$table_name}" );
+
+        if ( $count == 0 ) {
+            WP_CLI::warning( 'No login redirects found in the table.' );
+            return;
+        }
+
+        if ( ! isset( $assoc_args['yes'] ) ) {
+            WP_CLI::confirm(
+                sprintf( 'Are you sure you want to delete %d login redirect entries?', $count ),
+                $assoc_args
+            );
+        }
+
+        $result = $wpdb->query( "TRUNCATE TABLE {$table_name}" );
+
+        if ( false === $result ) {
+            WP_CLI::error( 'Failed to clear login redirects: ' . $wpdb->last_error );
+        } else {
+            WP_CLI::success( sprintf( 'Successfully deleted %d login redirect entries.', $count ) );
+        }
+    }
+
+    /**
+     * Show recent login redirects from the table.
+     *
+     * ## OPTIONS
+     *
+     * [--limit=<number>]
+     * : Number of login redirects to display. Default: 10
+     *
+     * [--format=<format>]
+     * : Output format (table, csv, json, yaml). Default: table
+     *
+     * ## EXAMPLES
+     *
+     *     # Show 10 recent login redirects
+     *     wp authpress show-login-redirects
+     *
+     *     # Show 20 recent login redirects in JSON format
+     *     wp authpress show-login-redirects --limit=20 --format=json
+     *
+     * @param array $args       Positional arguments.
+     * @param array $assoc_args Associative arguments.
+     */
+    public function show_login_redirects( $args, $assoc_args ) {
+        global $wpdb;
+
+        $limit = isset( $assoc_args['limit'] ) ? absint( $assoc_args['limit'] ) : 10;
+        $format = isset( $assoc_args['format'] ) ? $assoc_args['format'] : 'table';
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) !== $table_name ) {
+            WP_CLI::error( "Table {$table_name} does not exist." );
+            return;
+        }
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$table_name} ORDER BY ID DESC LIMIT %d",
+                $limit
+            ),
+            ARRAY_A
+        );
+
+        if ( empty( $results ) ) {
+            WP_CLI::warning( 'No login redirects found.' );
+            return;
+        }
+
+        WP_CLI\Utils\format_items( $format, $results, array( 'ID', 'user_id', 'type', 'value', 'redirect_to', 'status', 'created_at' ) );
+    }
+
+    /**
+     * Generate a random redirect type.
+     *
+     * @return string
+     */
+    private function generate_random_redirect_type() {
+        $types = array(
+            'user',
+            'role',
+        );
+
+        return $types[ array_rand( $types ) ];
+    }
+
+    /**
+     * Generate a random redirect value based on type.
+     *
+     * @return string
+     */
+    private function generate_random_redirect_value() {
+        $user_ids = array( '1', '2', '3', '4', '5', '6', '7', '8', '9', '10' );
+        $role_slugs = array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
+
+        $random_type = rand( 0, 1 ) ? 'user' : 'role';
+
+        if ( $random_type === 'user' ) {
+            return $user_ids[ array_rand( $user_ids ) ];
+        } else {
+            return $role_slugs[ array_rand( $role_slugs ) ];
+        }
+    }
+
+    /**
+     * Generate a random redirect URL.
+     *
+     * @return string
+     */
+    private function generate_random_redirect_url() {
+        $urls = array(
+            'https://example.com/dashboard',
+            'https://example.com/profile',
+            'https://example.com/admin',
+            'https://example.com/settings',
+            'https://example.com/home',
+            'https://example.com/welcome',
+            'https://example.com/my-account',
+            'https://example.com/user-panel',
+            'https://example.com/user-dashboard',
+            'https://example.com/members-area',
+        );
+
+        return $urls[ array_rand( $urls ) ];
+    }
+
+    /**
+     * Display sample of recently inserted login redirects.
+     *
+     * @param int $limit Number of login redirects to show.
+     */
+    private function show_sample_login_redirects( $limit = 5 ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT ID, type, value, redirect_to, status, created_at FROM {$table_name} ORDER BY ID DESC LIMIT %d",
+                $limit
+            ),
+            ARRAY_A
+        );
+
+        if ( ! empty( $results ) ) {
+            WP_CLI::log( "\nSample of inserted login redirects:" );
+            WP_CLI\Utils\format_items( 'table', $results, array( 'ID', 'type', 'value', 'redirect_to', 'status', 'created_at' ) );
+        }
+    }
 }

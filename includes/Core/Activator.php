@@ -112,6 +112,7 @@ class Activator
 			user_id bigint(20) NOT NULL,
 			type varchar(45) NOT NULL,
 			value varchar(45) NOT NULL,
+			redirect_to varchar(255) NOT NULL,
 			status varchar(45) NOT NULL,
 			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,

@@ -473,6 +473,121 @@ class Rest_API
             )
         );
 
+        // Login Redirects REST routes
+        // Get login redirects
+        register_rest_route( self::NAMESPACE, '/login-redirects',
+            array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'get_login_redirects' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'page'     => array( 'sanitize_callback' => 'absint', 'default' => 1 ),
+                    'per_page' => array( 'sanitize_callback' => 'absint', 'default' => 10 ),
+                ),
+            )
+        );
+
+        // Create login redirect
+        register_rest_route( self::NAMESPACE, '/login-redirects',
+            array(
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => array( $this, 'create_login_redirect' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'type'       => array( 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
+                    'value'      => array( 'required' => true, 'sanitize_callback' => 'sanitize_text_field' ),
+                    'redirect_to' => array( 'required' => true, 'sanitize_callback' => 'esc_url_raw' ),
+                    'status'     => array( 'sanitize_callback' => 'sanitize_text_field', 'default' => 'active' ),
+                ),
+            )
+        );
+
+        // Update login redirect
+        register_rest_route( self::NAMESPACE, '/login-redirects/(?P<id>\d+)',
+            array(
+                'methods'             => WP_REST_Server::EDITABLE,
+                'callback'            => array( $this, 'update_login_redirect' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'id'      => array( 'required' => true, 'sanitize_callback' => 'absint' ),
+                    'user_id' => array( 'sanitize_callback' => 'absint' ),
+                    'type'    => array( 'sanitize_callback' => 'sanitize_text_field' ),
+                    'value'   => array( 'sanitize_callback' => 'sanitize_text_field' ),
+                    'status'  => array( 'sanitize_callback' => 'sanitize_text_field' ),
+                ),
+            )
+        );
+
+        // Delete login redirect
+        register_rest_route( self::NAMESPACE, '/login-redirects/(?P<id>\d+)',
+            array(
+                'methods'             => WP_REST_Server::DELETABLE,
+                'callback'            => array( $this, 'delete_login_redirect' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'id' => array( 'required' => true, 'sanitize_callback' => 'absint' ),
+                ),
+            )
+        );
+
+        // Bulk change status for login redirects
+        register_rest_route( self::NAMESPACE, '/login-redirects/bulk-status',
+            array(
+                'methods'             => WP_REST_Server::CREATABLE,
+                'callback'            => array( $this, 'bulk_change_login_redirects_status' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'ids'    => array(
+                        'required' => true,
+                        'type'     => 'array',
+                        'items'    => array( 'type' => 'integer' ),
+                    ),
+                    'status' => array(
+                        'required' => true,
+                        'sanitize_callback' => 'sanitize_text_field',
+                    ),
+                ),
+            )
+        );
+
+        // Bulk delete login redirects
+        register_rest_route( self::NAMESPACE, '/login-redirects/bulk-delete',
+            array(
+                'methods'             => WP_REST_Server::DELETABLE,
+                'callback'            => array( $this, 'bulk_delete_login_redirects' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'ids' => array(
+                        'required' => true,
+                        'type'     => 'array',
+                        'items'    => array( 'type' => 'integer' ),
+                    ),
+                ),
+            )
+        );
+
+        // Get users for login redirects
+        register_rest_route( self::NAMESPACE, '/users',
+            array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'get_users_for_redirects' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'search'  => array( 'sanitize_callback' => 'sanitize_text_field' ),
+                    'per_page' => array( 'sanitize_callback' => 'absint', 'default' => 100 ),
+                ),
+            )
+        );
+
+        // Get roles for login redirects
+        register_rest_route( self::NAMESPACE, '/roles',
+            array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'get_roles_for_redirects' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+            )
+        );
+
         // Get specifications for a product
         register_rest_route( self::NAMESPACE,'/product/(?P<product_id>\d+)/specifications',
             array(
@@ -506,6 +621,296 @@ class Rest_API
                 ),
             )
         );
+    }
+
+    public function get_login_redirects( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $page     = max( 1, intval( $request->get_param( 'page' ) ?: 1 ) );
+        $per_page = max( 1, intval( $request->get_param( 'per_page' ) ?: 10 ) );
+        $offset   = ( $page - 1 ) * $per_page;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+
+        $total = $wpdb->get_var( "SELECT COUNT(*) FROM {$table_name}" );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT * FROM {$table_name} ORDER BY ID DESC LIMIT %d OFFSET %d",
+                $per_page,
+                $offset
+            ),
+            ARRAY_A
+        );
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'data'    => $results,
+            'total'   => (int) $total,
+            'page'    => (int) $page,
+        ) );
+    }
+
+    public function create_login_redirect( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+
+        $type       = $request->get_param( 'type' );
+        $value      = $request->get_param( 'value' );
+        $redirect_to = $request->get_param( 'redirect_to' );
+        $status     = $request->get_param( 'status' ) ?: 'active';
+        $user_id    = get_current_user_id();
+
+        $result = $wpdb->insert(
+            $table_name,
+            array(
+                'user_id'    => $user_id,
+                'type'       => $type,
+                'value'      => $value,
+                'redirect_to' => $redirect_to,
+                'status'     => $status,
+            ),
+            array( '%d', '%s', '%s', '%s', '%s' )
+        );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'insert_failed',
+                __( 'Failed to create login redirect.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'id'      => $wpdb->insert_id,
+            'message' => __( 'Login redirect created successfully.', 'authpress' ),
+        ) );
+    }
+
+    public function update_login_redirect( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+        $id         = intval( $request->get_param( 'id' ) );
+
+        $existing = $wpdb->get_row(
+            $wpdb->prepare( "SELECT * FROM {$table_name} WHERE ID = %d", $id ),
+            ARRAY_A
+        );
+
+        if ( ! $existing ) {
+            return new WP_Error(
+                'not_found',
+                __( 'Login redirect not found.', 'authpress' ),
+                array( 'status' => 404 )
+            );
+        }
+
+        $data = array();
+        $format = array();
+
+        if ( $request->has_param( 'user_id' ) ) {
+            $data['user_id'] = $request->get_param( 'user_id' );
+            $format[]        = '%d';
+        }
+
+        if ( $request->has_param( 'type' ) ) {
+            $data['type'] = $request->get_param( 'type' );
+            $format[]      = '%s';
+        }
+
+        if ( $request->has_param( 'value' ) ) {
+            $data['value'] = $request->get_param( 'value' );
+            $format[]       = '%s';
+        }
+
+        if ( $request->has_param( 'status' ) ) {
+            $data['status'] = $request->get_param( 'status' );
+            $format[]       = '%s';
+        }
+
+        if ( empty( $data ) ) {
+            return new WP_Error(
+                'no_data',
+                __( 'No data provided for update.', 'authpress' ),
+                array( 'status' => 400 )
+            );
+        }
+
+        $result = $wpdb->update(
+            $table_name,
+            $data,
+            array( 'ID' => $id ),
+            $format,
+            array( '%d' )
+        );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'update_failed',
+                __( 'Failed to update login redirect.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'message' => __( 'Login redirect updated successfully.', 'authpress' ),
+        ) );
+    }
+
+    public function delete_login_redirect( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+        $id         = intval( $request->get_param( 'id' ) );
+
+        $result = $wpdb->delete(
+            $table_name,
+            array( 'ID' => $id ),
+            array( '%d' )
+        );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'delete_failed',
+                __( 'Failed to delete login redirect.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'message' => __( 'Login redirect deleted successfully.', 'authpress' ),
+        ) );
+    }
+
+    public function bulk_change_login_redirects_status( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+        $ids        = $request->get_param( 'ids' );
+        $status     = $request->get_param( 'status' );
+
+        if ( empty( $ids ) || ! is_array( $ids ) ) {
+            return new WP_Error(
+                'invalid_ids',
+                __( 'Invalid IDs provided.', 'authpress' ),
+                array( 'status' => 400 )
+            );
+        }
+
+        $ids = array_map( 'intval', $ids );
+
+        $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+        $query         = $wpdb->prepare(
+            "UPDATE {$table_name} SET status = %s WHERE ID IN ({$placeholders})",
+            array_merge( array( $status ), $ids )
+        );
+
+        $result = $wpdb->query( $query );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'update_failed',
+                __( 'Failed to update login redirects.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'message' => __( 'Login redirects status updated successfully.', 'authpress' ),
+            'updated' => $result,
+        ) );
+    }
+
+    public function bulk_delete_login_redirects( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_login_redirects';
+        $ids        = $request->get_param( 'ids' );
+
+        if ( empty( $ids ) || ! is_array( $ids ) ) {
+            return new WP_Error(
+                'invalid_ids',
+                __( 'Invalid IDs provided.', 'authpress' ),
+                array( 'status' => 400 )
+            );
+        }
+
+        $ids = array_map( 'intval', $ids );
+
+        $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+        $query         = $wpdb->prepare( "DELETE FROM {$table_name} WHERE ID IN ({$placeholders})", $ids );
+
+        $result = $wpdb->query( $query );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'delete_failed',
+                __( 'Failed to delete login redirects.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'message' => __( 'Login redirects deleted successfully.', 'authpress' ),
+            'deleted' => $result,
+        ) );
+    }
+
+    public function get_users_for_redirects( WP_REST_Request $request ) {
+        $search  = $request->get_param( 'search' );
+        $per_page = $request->get_param( 'per_page' ) ?: 100;
+
+        $args = array(
+            'number'  => $per_page,
+            'orderby' => 'display_name',
+            'order'   => 'ASC',
+        );
+
+        if ( ! empty( $search ) ) {
+            $args['search']         = '*' . $search . '*';
+            $args['search_columns'] = array( 'user_login', 'user_email', 'display_name' );
+        }
+
+        $users = get_users( $args );
+
+        $data = array_map( function( $user ) {
+            return array(
+                'id'   => $user->ID,
+                'name' => $user->display_name,
+                'email' => $user->user_email,
+            );
+        }, $users );
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'data'    => $data,
+        ) );
+    }
+
+    public function get_roles_for_redirects( WP_REST_Request $request ) {
+        global $wp_roles;
+
+        $roles = $wp_roles->get_names();
+
+        $data = array();
+        foreach ( $roles as $slug => $name ) {
+            $data[] = array(
+                'slug' => $slug,
+                'name' => $name,
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'data'    => $data,
+        ) );
     }
 
     public function get_product_specifications( WP_REST_Request $request ) {
