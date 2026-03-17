@@ -40,6 +40,7 @@ class Activator
 
 		self::create_logs_table();
 		self::create_login_redirects_table();
+		self::create_2fa_logs_table();
 
 		// Check if OpenSSL is available
         if ( ! CryptoHelper::is_encryption_available() ) {
@@ -117,6 +118,36 @@ class Activator
 			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY  (ID)
+		) $charset_collate;";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}
+	private static function create_2fa_logs_table()
+	{
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'authpress_2fa_logs';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE $table_name (
+			ID            BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+			user_id       BIGINT(20) UNSIGNED NOT NULL,
+			method        ENUM('email', 'sms', 'whatsapp', 'totp', 'hotp', 'backup_code') NOT NULL,
+			status        ENUM('sent', 'verified', 'failed', 'expired') NOT NULL,
+			code_hash     VARCHAR(255) DEFAULT NULL,
+			expires_at    DATETIME DEFAULT NULL,
+			verified_at   DATETIME DEFAULT NULL,
+			ip_address    VARCHAR(45) DEFAULT NULL,
+			user_agent    TEXT DEFAULT NULL,
+			attempts      TINYINT(3) UNSIGNED NOT NULL DEFAULT 0,
+			created_at    DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at	  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+					
+			PRIMARY KEY (ID),
+			KEY user_id (user_id),
+			KEY status (status),
+			KEY method (method),
+			KEY expires_at (expires_at)
 		) $charset_collate;";
 
 		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');

@@ -566,6 +566,83 @@ class Rest_API
             )
         );
 
+        // 2FA Logs REST routes
+        // Get 2FA logs with filters
+        register_rest_route( self::NAMESPACE, '/2fa-logs',
+            array(
+                'methods'             => WP_REST_Server::READABLE,
+                'callback'            => array( $this, 'get_2fa_logs' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args' => array(
+                    'page' => array(
+                        'sanitize_callback' => 'absint',
+                        'default' => 1
+                    ),
+                    'per_page' => array(
+                        'sanitize_callback' => 'absint',
+                        'default' => 10
+                    ),
+                    'search' => array(
+                        'sanitize_callback' => 'sanitize_text_field'
+                    ),
+                    'status' => array(
+                        'sanitize_callback' => 'sanitize_text_field'
+                    ),
+                    'method' => array(
+                        'sanitize_callback' => 'sanitize_text_field'
+                    ),
+                    'sort_field' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                        'default' => 'created_at'
+                    ),
+                    'sort_order' => array(
+                        'sanitize_callback' => 'sanitize_text_field',
+                        'default' => 'DESC'
+                    ),
+                ),
+            )
+        );
+
+        // Delete single 2FA log
+        register_rest_route( self::NAMESPACE, '/2fa-logs/(?P<id>\d+)',
+            array(
+                'methods'             => WP_REST_Server::DELETABLE,
+                'callback'            => array( $this, 'delete_2fa_log' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'id' => array(
+                        'required'          => true,
+                        'sanitize_callback' => 'absint',
+                    ),
+                ),
+            )
+        );
+
+        // Bulk delete 2FA logs
+        register_rest_route( self::NAMESPACE, '/2fa-logs/bulk-delete',
+            array(
+                'methods'             => WP_REST_Server::DELETABLE,
+                'callback'            => array( $this, 'bulk_delete_2fa_logs' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+                'args'                => array(
+                    'ids' => array(
+                        'required' => true,
+                        'type'     => 'array',
+                        'items'    => array( 'type' => 'integer' ),
+                    ),
+                ),
+            )
+        );
+
+        // Delete all 2FA logs
+        register_rest_route( self::NAMESPACE, '/2fa-logs/delete-all',
+            array(
+                'methods'             => WP_REST_Server::DELETABLE,
+                'callback'            => array( $this, 'delete_all_2fa_logs' ),
+                'permission_callback' => array( $this, 'check_permission' ),
+            )
+        );
+
         // Get users for login redirects
         register_rest_route( self::NAMESPACE, '/users',
             array(
@@ -1702,6 +1779,156 @@ class Rest_API
     //         200
     //     );
     // }
+
+    public function get_2fa_logs( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $page      = max( 1, intval( $request->get_param( 'page' ) ?: 1 ) );
+        $per_page  = max( 1, intval( $request->get_param( 'per_page' ) ?: 10 ) );
+        $offset    = ( $page - 1 ) * $per_page;
+        $search    = sanitize_text_field( $request->get_param( 'search' ) ?: '' );
+        $status    = sanitize_text_field( $request->get_param( 'status' ) ?: '' );
+        $method    = sanitize_text_field( $request->get_param( 'method' ) ?: '' );
+        $sort_field = sanitize_text_field( $request->get_param( 'sort_field' ) ?: 'created_at' );
+        $sort_order = sanitize_text_field( $request->get_param( 'sort_order' ) ?: 'DESC' );
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+
+        $where = array( '1=1' );
+        $where_params = array();
+
+        if ( ! empty( $search ) ) {
+            $where[] = "(u.display_name LIKE %s OR l.ip_address LIKE %s OR l.user_agent LIKE %s)";
+            $where_params[] = '%' . $wpdb->esc_like( $search ) . '%';
+            $where_params[] = '%' . $wpdb->esc_like( $search ) . '%';
+            $where_params[] = '%' . $wpdb->esc_like( $search ) . '%';
+        }
+
+        if ( ! empty( $status ) ) {
+            $where[] = "l.status = %s";
+            $where_params[] = $status;
+        }
+
+        if ( ! empty( $method ) ) {
+            $where[] = "l.method = %s";
+            $where_params[] = $method;
+        }
+
+        $allowed_sort_fields = array( 'created_at', 'updated_at', 'verified_at', 'expires_at', 'user_id', 'status', 'method' );
+        if ( ! in_array( $sort_field, $allowed_sort_fields, true ) ) {
+            $sort_field = 'created_at';
+        }
+
+        $sort_order = strtoupper( $sort_order ) === 'ASC' ? 'ASC' : 'DESC';
+
+        $where_clause = implode( ' AND ', $where );
+
+        $total = $wpdb->get_var(
+            $wpdb->prepare(
+                "SELECT COUNT(*) FROM {$table_name} l LEFT JOIN {$wpdb->users} u ON l.user_id = u.ID WHERE {$where_clause}",
+                $where_params
+            )
+        );
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT l.*, u.display_name FROM {$table_name} l LEFT JOIN {$wpdb->users} u ON l.user_id = u.ID WHERE {$where_clause} ORDER BY l.{$sort_field} {$sort_order} LIMIT %d OFFSET %d",
+                array_merge( $where_params, array( $per_page, $offset ) )
+            ),
+            ARRAY_A
+        );
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'data'    => $results,
+            'total'   => (int) $total,
+            'page'    => (int) $page,
+            'per_page' => (int) $per_page,
+        ) );
+    }
+
+    public function delete_2fa_log( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+        $id         = intval( $request->get_param( 'id' ) );
+
+        $result = $wpdb->delete(
+            $table_name,
+            array( 'ID' => $id ),
+            array( '%d' )
+        );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'delete_failed',
+                __( 'Failed to delete 2FA log.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'message' => __( '2FA log deleted successfully.', 'authpress' ),
+        ) );
+    }
+
+    public function bulk_delete_2fa_logs( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+        $ids        = $request->get_param( 'ids' );
+
+        if ( empty( $ids ) || ! is_array( $ids ) ) {
+            return new WP_Error(
+                'invalid_ids',
+                __( 'Invalid IDs provided.', 'authpress' ),
+                array( 'status' => 400 )
+            );
+        }
+
+        $ids = array_map( 'intval', $ids );
+
+        $placeholders = implode( ',', array_fill( 0, count( $ids ), '%d' ) );
+        $query         = $wpdb->prepare( "DELETE FROM {$table_name} WHERE ID IN ({$placeholders})", $ids );
+
+        $result = $wpdb->query( $query );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'delete_failed',
+                __( 'Failed to delete 2FA logs.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'message' => __( '2FA logs deleted successfully.', 'authpress' ),
+            'deleted' => $result,
+        ) );
+    }
+
+    public function delete_all_2fa_logs( WP_REST_Request $request ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+
+        $result = $wpdb->query( "TRUNCATE TABLE {$table_name}" );
+
+        if ( false === $result ) {
+            return new WP_Error(
+                'delete_failed',
+                __( 'Failed to delete all 2FA logs.', 'authpress' ),
+                array( 'status' => 500 )
+            );
+        }
+
+        return rest_ensure_response( array(
+            'success' => true,
+            'message' => __( 'All 2FA logs deleted successfully.', 'authpress' ),
+        ) );
+    }
 
 }
 // new Rest_Api();

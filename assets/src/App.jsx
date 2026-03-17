@@ -279,33 +279,32 @@ export default function App() {
                         <Route path="customizer/personalize/button" element={<CustomizerPersonalizeButton />} />
                         <Route path="customizer/personalize/other" element={<CustomizerPersonalizeOther />} />
                         
-                        {/* Captchas Group */}
-                        {/* <Route path="captchas" element={<Navigate to="settings" replace />} /> */}
-                        <Route path="captchas" element={<CaptchasSettings />} />
-
                         {/* Security Group */}
-                        {/* <Route path="auto-login" element={<Navigate to="settings" replace />} /> */}
-                        <Route path="auto-login" element={<AutoLoginSettings />} />
-                        <Route path="login-redirects" element={<LoginRedirects />} />
+                        <Route path="security" element={<Navigate to="captchas" replace />} />
+                        <Route path="captchas" element={<CaptchasSettings />} />
                         <Route path="limit-login-attempts" element={<LimitLoginAttempts />} />
-
+                        <Route path="password-policy" element={<Navigate to="misc" replace />} />
                         <Route path="hide-login" element={<HideLogin />} />
                         <Route path="two-fa-authentication" element={<Navigate to="settings" replace />} />
                         <Route path="two-fa-authentication/settings" element={<TwoFAAuthenticationSettings />} />
                         <Route path="two-fa-authentication/audit-logs" element={<TwoFAAuthenticationLogs />} />
 
-                        <Route path="misc" element={<Misc />} />
-                        
-                        {/* Data Management Group */}
+                        {/* User Access Group */}
+                        <Route path="user-access" element={<Navigate to="auto-login" replace />} />
+                        <Route path="auto-login" element={<AutoLoginSettings />} />
+                        <Route path="login-redirects" element={<LoginRedirects />} />
+
+                        {/* Data & Logs Group */}
+                        <Route path="data-logs" element={<Navigate to="import-export" replace />} />
                         <Route path="import-export" element={<ImportExport />} />
-                        <Route path="tools" element={<Tools />} />
-                        
-                        {/* Logs Group */}
                         <Route path="logs" element={<Navigate to="table" replace />} />
                         <Route path="logs/table" element={<LogsTable />} />
                         <Route path="logs/analytics" element={<LogsCharts />} />
-                        
-                        {/* Other Group */}
+
+                        {/* Utilities Group */}
+                        <Route path="utilities" element={<Navigate to="tools" replace />} />
+                        <Route path="tools" element={<Tools />} />
+                        <Route path="misc" element={<Misc />} />
                         <Route path="more" element={<More />} />
                         
                         {/* Development Routes */}

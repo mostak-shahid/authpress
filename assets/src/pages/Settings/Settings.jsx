@@ -137,14 +137,19 @@ const Settings = () => {
 
     // Icon mapping
     const iconMap = {
+        'customizer': <IconTemplate />,
+        'security': <IconUser />,
+        'user-access': <IconUserAdd />,
+        'data-logs': <IconListView />,
+        'utilities': <IconSetting />,
+        'feedback': <IconLikeThumb />,
         'page': <IconUser />,
         'layouts': <IconTemplate />,
         'basic-inputs': <IconSetting />,
         'array-inputs': <IconListView />,
         'import-export': <IconCloud />,
         'more': <IconPlusCircle />,
-        'tools': <IconSetting />,
-        'feedback': <IconLikeThumb />
+        'tools': <IconSetting />
     };
 
     // Get menu data from menu.js
