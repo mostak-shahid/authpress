@@ -8,7 +8,8 @@ import {
     Typography,
     Notification,
     Switch,
-    Select
+    Select,
+    Popconfirm
 } from "@douyinfe/semi-ui";
 import { IconRefresh, IconCopy } from "@douyinfe/semi-icons";
 import { useOutletContext } from "react-router-dom";
@@ -126,12 +127,6 @@ const Tools = () => {
     };
 
     const handleClick = async () => {
-        const confirmation = window.confirm(
-            __("Are you sure you want to proceed?", "authpress")
-        );
-
-        if (!confirmation) return;
-
         setProcessing(true);
 
         try {
@@ -280,16 +275,20 @@ const Tools = () => {
                     </Col>
 
                     <Col xs={24} lg={12} xl={10}>
-                        <Button
-                            type="danger"
-                            icon={<IconRefresh />}
-                            loading={processing}
-                            onClick={handleClick}
+                        <Popconfirm
+                            title={__("Are you sure you want to proceed?", "authpress")}
+                            onConfirm={handleClick}
                         >
-                            {processing
-                                ? __("Resetting...", "authpress")
-                                : __("Reset All", "authpress")}
-                        </Button>
+                            <Button
+                                type="danger"
+                                icon={<IconRefresh />}
+                                loading={processing}
+                            >
+                                {processing
+                                    ? __("Resetting...", "authpress")
+                                    : __("Reset All", "authpress")}
+                            </Button>
+                        </Popconfirm>
                     </Col>
                 </Row>
             </div>

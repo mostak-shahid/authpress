@@ -39,6 +39,7 @@ class Activator
 		add_option('authpress_do_activation_redirect', true);
 
 		self::create_logs_table();
+		self::create_login_redirects_table();
 
 		// Check if OpenSSL is available
         if ( ! CryptoHelper::is_encryption_available() ) {
@@ -92,6 +93,26 @@ class Activator
 			title varchar(255) NOT NULL,
 			category varchar(45) NOT NULL,
 			description longtext NOT NULL,
+			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+			updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+			PRIMARY KEY  (ID)
+		) $charset_collate;";
+
+		require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
+		dbDelta($sql);
+	}
+	private static function create_login_redirects_table()
+	{
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'authpress_login_redirects';
+		$charset_collate = $wpdb->get_charset_collate();
+
+		$sql = "CREATE TABLE $table_name (
+			ID bigint(20) NOT NULL AUTO_INCREMENT,
+			user_id bigint(20) NOT NULL,
+			type varchar(45) NOT NULL,
+			value varchar(45) NOT NULL,
+			status varchar(45) NOT NULL,
 			created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
 			updated_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 			PRIMARY KEY  (ID)
