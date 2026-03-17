@@ -7,6 +7,7 @@ This guide provides detailed instructions for using AuthPress WP-CLI commands to
 - [Prerequisites](#prerequisites)
 - [Logs Commands](#logs-commands)
 - [Login Redirects Commands](#login-redirects-commands)
+- [2FA Logs Commands](#2fa-logs-commands)
 - [Common Workflows](#common-workflows)
 - [Tips and Best Practices](#tips-and-best-practices)
 
@@ -343,6 +344,239 @@ The `authpress_login_redirects` table has the following structure:
 - `value`: Role slug (e.g., 'administrator', 'editor', 'author', 'subscriber', 'contributor')
 - Example: When user with 'editor' role logs in, redirect them to admin area
 
+## 2FA Logs Commands
+
+### seed_2fa_logs
+
+Seed 2FA logs table with sample data for testing two-factor authentication functionality.
+
+#### Usage
+
+```bash
+wp authpress seed_2fa_logs [--count=<number>] [--days=<number>]
+```
+
+#### Parameters
+
+- `--count=<number>` - Number of 2FA log entries to create (default: 10)
+- `--days=<number>` - Number of days back to create logs for (default: 7)
+
+#### Examples
+
+**Create 10 2FA log entries for the last 7 days (default)**
+```bash
+wp authpress seed_2fa_logs
+```
+
+**Create 50 2FA log entries**
+```bash
+wp authpress seed_2fa_logs --count=50
+```
+
+**Create 100 2FA log entries for the last 30 days**
+```bash
+wp authpress seed_2fa_logs --count=100 --days=30
+```
+
+**Create 200 2FA log entries for the last 90 days**
+```bash
+wp authpress seed_2fa_logs --count=200 --days=90
+```
+
+#### Output
+
+The command displays:
+- Progress bar during insertion
+- Count of successfully inserted 2FA logs
+- Count of failed entries (if any)
+- Sample of inserted 2FA logs with ID, user_id, method, status, ip_address, and created_at
+
+#### Data Structure
+
+Each 2FA log entry contains:
+- `user_id` - ID of the user who attempted 2FA
+- `method` - 2FA method used: 'email', 'sms', 'whatsapp', 'totp', 'hotp', or 'backup_code'
+- `status` - Status of the 2FA attempt: 'sent', 'verified', 'failed', or 'expired'
+- `code_hash` - Hashed version of the verification code (32-character string)
+- `expires_at` - Timestamp when the code expires (for sent/failed/expired status)
+- `verified_at` - Timestamp when the code was successfully verified (null for non-verified status)
+- `ip_address` - IP address from which the 2FA attempt was made
+- `user_agent` - User agent string of the browser/device used
+- `attempts` - Number of verification attempts made (higher for failed status)
+- `created_at` - Timestamp when the 2FA log entry was created
+
+#### Status Scenarios
+
+The seeding generates realistic scenarios:
+- **Sent**: Code sent but not yet verified
+- **Verified**: Code successfully entered and verified
+- **Failed**: Incorrect code entered (may have multiple attempts)
+- **Expired**: Code not verified within expiration time
+
+### clear_2fa_logs
+
+Clear all 2FA logs from database table.
+
+#### Usage
+
+```bash
+wp authpress clear_2fa_logs [--yes]
+```
+
+#### Parameters
+
+- `--yes` - Skip confirmation prompt
+
+#### Examples
+
+**Clear 2FA logs with confirmation**
+```bash
+wp authpress clear_2fa_logs
+```
+This will prompt:
+```
+Are you sure you want to delete 150 2FA log entries? [y/n]
+```
+
+**Clear 2FA logs without confirmation**
+```bash
+wp authpress clear_2fa_logs --yes
+```
+
+#### Notes
+
+- This operation is **irreversible**
+- All 2FA authentication history will be deleted permanently
+- Consider backing up your database before running
+
+### show_2fa_logs
+
+Display recent 2FA logs from database with optional filtering.
+
+#### Usage
+
+```bash
+wp authpress show_2fa_logs [--limit=<number>] [--format=<format>] [--status=<status>]
+```
+
+#### Parameters
+
+- `--limit=<number>` - Number of 2FA logs to display (default: 10)
+- `--format=<format>` - Output format: table, csv, json, yaml (default: table)
+- `--status=<status>` - Filter by status: 'sent', 'verified', 'failed', or 'expired'
+
+#### Examples
+
+**Show 10 recent 2FA logs**
+```bash
+wp authpress show_2fa_logs
+```
+
+**Show 20 recent 2FA logs**
+```bash
+wp authpress show_2fa_logs --limit=20
+```
+
+**Show 50 recent 2FA logs**
+```bash
+wp authpress show_2fa_logs --limit=50
+```
+
+**Show only verified logs**
+```bash
+wp authpress show_2fa_logs --status=verified
+```
+
+**Show only failed logs**
+```bash
+wp authpress show_2fa_logs --status=failed
+```
+
+**Show only expired logs**
+```bash
+wp authpress show_2fa_logs --status=expired
+```
+
+**Output in JSON format**
+```bash
+wp authpress show_2fa_logs --format=json
+```
+
+**Output in CSV format**
+```bash
+wp authpress show_2fa_logs --format=csv
+```
+
+**Output in YAML format**
+```bash
+wp authpress show_2fa_logs --format=yaml
+```
+
+**Combine limit and status filter**
+```bash
+wp authpress show_2fa_logs --limit=25 --status=verified
+```
+
+**Combine all parameters**
+```bash
+wp authpress show_2fa_logs --limit=50 --status=failed --format=json
+```
+
+#### Exporting Data
+
+**Export 2FA logs to JSON file**
+```bash
+wp authpress show_2fa_logs --limit=100 --format=json > 2fa-logs.json
+```
+
+**Export 2FA logs to CSV file**
+```bash
+wp authpress show_2fa_logs --limit=500 --format=csv > 2fa-logs.csv
+```
+
+**Export failed authentication attempts**
+```bash
+wp authpress show_2fa_logs --status=failed --format=json > failed-2fa-attempts.json
+```
+
+#### Table Schema
+
+The `authpress_2fa_logs` table has the following structure:
+
+| Column      | Type      | Description                                                  |
+|------------|-----------|-------------------------------------------------------------|
+| ID         | bigint    | Auto-increment primary key                                     |
+| user_id    | bigint    | ID of the user who attempted 2FA                               |
+| method     | enum      | 2FA method: 'email', 'sms', 'whatsapp', 'totp', 'hotp', 'backup_code' |
+| status     | enum      | Status: 'sent', 'verified', 'failed', 'expired'                |
+| code_hash  | varchar   | Hashed verification code (32 characters)                        |
+| expires_at | datetime  | Timestamp when code expires                                    |
+| verified_at | datetime  | Timestamp when code was verified (null for non-verified)          |
+| ip_address | varchar   | IP address of the attempt                                    |
+| user_agent | text      | User agent string of the browser/device                         |
+| attempts   | tinyint   | Number of verification attempts                                |
+| created_at | datetime  | Timestamp when the log entry was created                       |
+| updated_at | datetime  | Timestamp when the log entry was last updated                   |
+
+#### Method Types
+
+- **Email**: OTP sent via email
+- **SMS**: OTP sent via SMS message
+- **WhatsApp**: OTP sent via WhatsApp
+- **TOTP**: Time-based One-Time Password (Google Authenticator, etc.)
+- **HOTP**: HMAC-based One-Time Password
+- **Backup Code**: Recovery/backup code used
+
+#### Status Flow
+
+```
+sent → verified (successful)
+  ↓
+  → expired (not verified in time)
+  ↓
+  → failed (incorrect code entered)
+```
+
 ## Common Workflows
 
 ### Workflow 1: Fresh Test Environment
@@ -419,6 +653,62 @@ wp authpress show_logs --format=json | jq 'length'
 wp authpress show_login_redirects --format=json | jq 'length'
 ```
 
+### Workflow 5: 2FA Authentication Testing
+
+Test two-factor authentication with realistic scenarios:
+
+```bash
+# Clear existing 2FA logs
+wp authpress clear_2fa_logs --yes
+
+# Seed 200 2FA logs for the last 30 days
+wp authpress seed_2fa_logs --count=200 --days=30
+
+# View recent 2FA activity
+wp authpress show_2fa_logs --limit=20
+
+# Check only failed attempts for security analysis
+wp authpress show_2fa_logs --status=failed --limit=50
+
+# Export all 2FA logs for the last 7 days
+wp authpress show_2fa_logs --limit=100 --format=json > 2fa-logs-30days.json
+
+# Analyze verification rate
+# Count verified vs total
+verified_count=$(wp authpress show_2fa_logs --status=verified --format=json | jq 'length')
+total_count=$(wp authpress show_2fa_logs --format=json | jq 'length')
+echo "Verification rate: $verified_count / $total_count"
+```
+
+### Workflow 6: Complete Reset
+
+Reset all tables including 2FA logs:
+
+```bash
+# Clear all logs
+wp authpress clear_logs --yes
+
+# Clear all login redirects
+wp authpress clear_login_redirects --yes
+
+# Clear all 2FA logs
+wp authpress clear_2fa_logs --yes
+
+# Reseed logs
+wp authpress seed_logs --count=100
+
+# Reseed login redirects
+wp authpress seed_login_redirects --count=50
+
+# Reseed 2FA logs for last 30 days
+wp authpress seed_2fa_logs --count=200 --days=30
+
+# Verify all data
+wp authpress show_logs --limit=10
+wp authpress show_login_redirects --limit=10
+wp authpress show_2fa_logs --limit=10
+```
+
 ## Tips and Best Practices
 
 ### Performance Tips
@@ -439,9 +729,10 @@ wp authpress show_login_redirects --format=json | jq 'length'
    ```
 
 3. **Use --yes flag** - For automation scripts, use `--yes` to skip prompts:
-   ```bash
-   wp authpress clear_logs --yes
-   ```
+    ```bash
+    wp authpress clear_logs --yes
+    wp authpress clear_2fa_logs --yes
+    ```
 
 ### Data Management
 
@@ -458,10 +749,13 @@ wp authpress show_login_redirects --format=json | jq 'length'
    ```
 
 3. **Regular cleanup** - Schedule regular cleanup in cron:
-   ```bash
-   # Add to crontab
-   0 3 * * * wp authpress clear_logs --yes
-   ```
+    ```bash
+    # Add to crontab - clean logs daily
+    0 3 * * * wp authpress clear_logs --yes
+
+    # Clean 2FA logs weekly (keep 30 days of data)
+    0 2 * * 0 wp authpress clear_2fa_logs --yes && wp authpress seed_2fa_logs --days=30
+    ```
 
 ### Testing Best Practices
 
@@ -476,10 +770,43 @@ wp authpress show_login_redirects --format=json | jq 'length'
    ```
 
 3. **Use different formats** - Test with various output formats:
-   ```bash
-   wp authpress show_logs --format=json
-   wp authpress show_logs --format=csv
-   ```
+    ```bash
+    wp authpress show_logs --format=json
+    wp authpress show_logs --format=csv
+    ```
+
+### 2FA Testing Best Practices
+
+1. **Test different scenarios** - Simulate various 2FA scenarios:
+    ```bash
+    # Test with different time periods
+    wp authpress seed_2fa_logs --count=100 --days=7
+    wp authpress seed_2fa_logs --count=100 --days=30
+    wp authpress seed_2fa_logs --count=100 --days=90
+
+    # Verify different status types
+    wp authpress show_2fa_logs --status=verified
+    wp authpress show_2fa_logs --status=failed
+    wp authpress show_2fa_logs --status=expired
+    ```
+
+2. **Monitor authentication patterns** - Track 2FA usage:
+    ```bash
+    # Export and analyze 2FA methods used
+    wp authpress show_2fa_logs --format=json > 2fa-stats.json
+
+    # Count by method using jq
+    wp authpress show_2fa_logs --format=json | jq 'group_by(.method) | map({method: .[0].method, count: length})'
+    ```
+
+3. **Security audit** - Regularly check failed attempts:
+    ```bash
+    # Get recent failed 2FA attempts
+    wp authpress show_2fa_logs --status=failed --limit=100
+
+    # Export for security analysis
+    wp authpress show_2fa_logs --status=failed --format=json > security-audit.json
+    ```
 
 ### Security Considerations
 
@@ -524,6 +851,31 @@ wp db check
 
 # Verify database exists
 wp db info
+```
+
+**2FA logs table not created:**
+```bash
+# Verify 2FA table exists
+wp db query "SHOW TABLES LIKE 'wp_authpress_2fa_logs'"
+
+# If not exists, reactivate plugin
+wp plugin deactivate authpress
+wp plugin activate authpress
+
+# Or manually run the activation function
+wp eval 'MosPress\Authpress\Core\Activator::activate();'
+```
+
+**Empty 2FA logs after seeding:**
+```bash
+# Check if data was inserted
+wp db query "SELECT COUNT(*) FROM wp_authpress_2fa_logs"
+
+# Check for errors in seeding
+wp authpress seed_2fa_logs --count=1 --debug
+
+# Verify user IDs exist (1-10 by default)
+wp user list --fields=ID,user_login
 ```
 
 ## Getting Help

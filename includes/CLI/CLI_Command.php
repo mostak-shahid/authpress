@@ -668,4 +668,303 @@ class CLI_Command {
             WP_CLI\Utils\format_items( 'table', $results, array( 'ID', 'type', 'value', 'redirect_to', 'status', 'created_at' ) );
         }
     }
+
+    /**
+     * Seed 2FA logs table with sample data.
+     *
+     * ## OPTIONS
+     *
+     * [--count=<number>]
+     * : Number of 2FA log entries to create. Default: 10
+     *
+     * [--days=<number>]
+     * : Number of days back to create logs for. Default: 7
+     *
+     * ## EXAMPLES
+     *
+     *     # Create 10 2FA log entries (default)
+     *     wp authpress seed-2fa-logs
+     *
+     *     # Create 50 2FA log entries
+     *     wp authpress seed-2fa-logs --count=50
+     *
+     *     # Create 100 2FA log entries for the last 30 days
+     *     wp authpress seed-2fa-logs --count=100 --days=30
+     *
+     * @param array $args       Positional arguments.
+     * @param array $assoc_args Associative arguments.
+     */
+    public function seed_2fa_logs( $args, $assoc_args ) {
+        global $wpdb;
+
+        $count = isset( $assoc_args['count'] ) ? absint( $assoc_args['count'] ) : 10;
+        $days = isset( $assoc_args['days'] ) ? absint( $assoc_args['days'] ) : 7;
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) !== $table_name ) {
+            WP_CLI::error( "Table {$table_name} does not exist. Please activate plugin first." );
+            return;
+        }
+
+        WP_CLI::log( "Starting to seed {$count} 2FA log entries for the last {$days} days..." );
+
+        $progress = \WP_CLI\Utils\make_progress_bar( 'Seeding 2FA logs', $count );
+
+        $inserted = 0;
+        $failed = 0;
+
+        for ( $i = 1; $i <= $count; $i++ ) {
+            $user_id      = rand( 1, 10 );
+            $method       = $this->generate_random_2fa_method();
+            $status       = $this->generate_random_2fa_status();
+            $ip_address   = $this->generate_random_ip();
+            $user_agent   = $this->generate_random_user_agent();
+            $attempts     = $status === 'failed' ? rand( 1, 5 ) : 1;
+            $created_at   = $this->generate_random_date_last_n_days( $days );
+            $verified_at  = null;
+            $expires_at   = null;
+
+            if ( $status === 'verified' ) {
+                $verified_at = date( 'Y-m-d H:i:s', strtotime( $created_at ) + rand( 10, 300 ) );
+            } elseif ( $status === 'expired' || $status === 'failed' ) {
+                $expires_at = date( 'Y-m-d H:i:s', strtotime( $created_at ) + rand( 300, 900 ) );
+            } else {
+                $expires_at = date( 'Y-m-d H:i:s', strtotime( $created_at ) + rand( 300, 600 ) );
+            }
+
+            $code_hash = wp_generate_password( 32, false );
+
+            $result = $wpdb->insert(
+                $table_name,
+                array(
+                    'user_id'     => $user_id,
+                    'method'      => $method,
+                    'status'      => $status,
+                    'code_hash'   => $code_hash,
+                    'expires_at'  => $expires_at,
+                    'verified_at' => $verified_at,
+                    'ip_address'  => $ip_address,
+                    'user_agent'  => $user_agent,
+                    'attempts'    => $attempts,
+                    'created_at'  => $created_at,
+                ),
+                array(
+                    '%d',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%s',
+                    '%d',
+                    '%s',
+                )
+            );
+
+            if ( $result ) {
+                $inserted++;
+            } else {
+                $failed++;
+                WP_CLI::debug( "Failed to insert 2FA log entry #{$i}: " . $wpdb->last_error );
+            }
+
+            $progress->tick();
+        }
+
+        $progress->finish();
+
+        WP_CLI::success( sprintf(
+            'Successfully inserted %d 2FA log entries. Failed: %d',
+            $inserted,
+            $failed
+        ) );
+
+        $this->show_sample_2fa_logs( 5 );
+    }
+
+    /**
+     * Clear all 2FA logs from table.
+     *
+     * ## OPTIONS
+     *
+     * [--yes]
+     * : Skip confirmation prompt.
+     *
+     * ## EXAMPLES
+     *
+     *     # Clear 2FA logs with confirmation
+     *     wp authpress clear-2fa-logs
+     *
+     *     # Clear 2FA logs without confirmation
+     *     wp authpress clear-2fa-logs --yes
+     *
+     * @param array $args       Positional arguments.
+     * @param array $assoc_args Associative arguments.
+     */
+    public function clear_2fa_logs( $args, $assoc_args ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) !== $table_name ) {
+            WP_CLI::error( "Table {$table_name} does not exist." );
+            return;
+        }
+
+        $count = $wpdb->get_var( "SELECT COUNT(*) FROM {$table_name}" );
+
+        if ( $count == 0 ) {
+            WP_CLI::warning( 'No 2FA logs found in table.' );
+            return;
+        }
+
+        if ( ! isset( $assoc_args['yes'] ) ) {
+            WP_CLI::confirm(
+                sprintf( 'Are you sure you want to delete %d 2FA log entries?', $count ),
+                $assoc_args
+            );
+        }
+
+        $result = $wpdb->query( "TRUNCATE TABLE {$table_name}" );
+
+        if ( false === $result ) {
+            WP_CLI::error( 'Failed to clear 2FA logs: ' . $wpdb->last_error );
+        } else {
+            WP_CLI::success( sprintf( 'Successfully deleted %d 2FA log entries.', $count ) );
+        }
+    }
+
+    /**
+     * Show recent 2FA logs from table.
+     *
+     * ## OPTIONS
+     *
+     * [--limit=<number>]
+     * : Number of 2FA logs to display. Default: 10
+     *
+     * [--format=<format>]
+     * : Output format (table, csv, json, yaml). Default: table
+     *
+     * [--status=<status>]
+     * : Filter by status (sent, verified, failed, expired)
+     *
+     * ## EXAMPLES
+     *
+     *     # Show 10 recent 2FA logs
+     *     wp authpress show-2fa-logs
+     *
+     *     # Show 20 recent 2FA logs
+     *     wp authpress show-2fa-logs --limit=20
+     *
+     *     # Show only verified logs
+     *     wp authpress show-2fa-logs --status=verified
+     *
+     *     # Show 2FA logs in JSON format
+     *     wp authpress show-2fa-logs --format=json
+     *
+     * @param array $args       Positional arguments.
+     * @param array $assoc_args Associative arguments.
+     */
+    public function show_2fa_logs( $args, $assoc_args ) {
+        global $wpdb;
+
+        $limit = isset( $assoc_args['limit'] ) ? absint( $assoc_args['limit'] ) : 10;
+        $format = isset( $assoc_args['format'] ) ? $assoc_args['format'] : 'table';
+        $status = isset( $assoc_args['status'] ) ? sanitize_text_field( $assoc_args['status'] ) : '';
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+
+        if ( $wpdb->get_var( "SHOW TABLES LIKE '{$table_name}'" ) !== $table_name ) {
+            WP_CLI::error( "Table {$table_name} does not exist." );
+            return;
+        }
+
+        $where = '1=1';
+        $where_params = array();
+
+        if ( ! empty( $status ) ) {
+            $where .= ' AND status = %s';
+            $where_params[] = $status;
+        }
+
+        $query = $wpdb->prepare(
+            "SELECT * FROM {$table_name} WHERE {$where} ORDER BY ID DESC LIMIT %d",
+            array_merge( $where_params, array( $limit ) )
+        );
+
+        $results = $wpdb->get_results( $query, ARRAY_A );
+
+        if ( empty( $results ) ) {
+            WP_CLI::warning( 'No 2FA logs found.' );
+            return;
+        }
+
+        WP_CLI\Utils\format_items(
+            $format,
+            $results,
+            array( 'ID', 'user_id', 'method', 'status', 'ip_address', 'attempts', 'created_at', 'verified_at' )
+        );
+    }
+
+    /**
+     * Generate a random 2FA method.
+     *
+     * @return string
+     */
+    private function generate_random_2fa_method() {
+        $methods = array( 'email', 'sms', 'whatsapp', 'totp', 'hotp', 'backup_code' );
+
+        return $methods[ array_rand( $methods ) ];
+    }
+
+    /**
+     * Generate a random 2FA status.
+     *
+     * @return string
+     */
+    private function generate_random_2fa_status() {
+        $statuses = array( 'sent', 'verified', 'failed', 'expired' );
+
+        return $statuses[ array_rand( $statuses ) ];
+    }
+
+    /**
+     * Generate a random date within last N days.
+     *
+     * @param int $days Number of days to look back.
+     * @return string Date in MySQL format (Y-m-d H:i:s)
+     */
+    private function generate_random_date_last_n_days( $days = 7 ) {
+        $now = current_time( 'timestamp' );
+        $n_days_ago = $now - ( $days * 24 * 60 * 60 );
+        $random_timestamp = rand( $n_days_ago, $now );
+
+        return date( 'Y-m-d H:i:s', $random_timestamp );
+    }
+
+    /**
+     * Display sample of recently inserted 2FA logs.
+     *
+     * @param int $limit Number of 2FA logs to show.
+     */
+    private function show_sample_2fa_logs( $limit = 5 ) {
+        global $wpdb;
+
+        $table_name = $wpdb->prefix . 'authpress_2fa_logs';
+
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT ID, user_id, method, status, ip_address, created_at FROM {$table_name} ORDER BY ID DESC LIMIT %d",
+                $limit
+            ),
+            ARRAY_A
+        );
+
+        if ( ! empty( $results ) ) {
+            WP_CLI::log( "\nSample of inserted 2FA logs:" );
+            WP_CLI\Utils\format_items( 'table', $results, array( 'ID', 'user_id', 'method', 'status', 'ip_address', 'created_at' ) );
+        }
+    }
 }
