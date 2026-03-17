@@ -102,6 +102,12 @@
         ]
     },
     {
+        "itemKey": "password-policy",
+        "text": "Password Policy",
+        "description": "This LoginPress add-on lets you set a strong password policy for your users. You can set the minimum password length, require special characters, numbers, and uppercase letters. This will help you to ensure that your users are using strong passwords to protect their accounts and your website.",
+        "url": "/settings/password-policy"
+    },
+    {
         "itemKey": "misc",
         "text": "MISC",
         "description": "This section includes various miscellaneous settings that don't fit into the other categories but are essential for customizing and optimizing your plugin experience.",

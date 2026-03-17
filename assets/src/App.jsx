@@ -40,6 +40,7 @@ import TwoFAAuthenticationSettings from './pages/Settings/TwoFAAuthenticationSet
 import LoginRedirects from './pages/Settings/LoginRedirects';
 import LimitLoginAttempts from './pages/Settings/LimitLoginAttempts';
 import TwoFAAuthenticationLogs from './pages/Settings/TwoFAAuthenticationLogs';
+import Misc from './pages/Settings/Misc';
 
 const year = new Date().getFullYear();
 const { Header, Footer } = Layout;
@@ -292,6 +293,8 @@ export default function App() {
                         <Route path="two-fa-authentication" element={<Navigate to="settings" replace />} />
                         <Route path="two-fa-authentication/settings" element={<TwoFAAuthenticationSettings />} />
                         <Route path="two-fa-authentication/audit-logs" element={<TwoFAAuthenticationLogs />} />
+
+                        <Route path="misc" element={<Misc />} />
                         
                         {/* Data Management Group */}
                         <Route path="import-export" element={<ImportExport />} />

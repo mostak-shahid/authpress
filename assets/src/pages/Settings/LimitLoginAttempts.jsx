@@ -74,17 +74,19 @@ const LimitLoginAttempts = () => {
        });
    };
 
-   const handleIpChange = (value) => {
-       const result = ipBlacklistValidator(value);
-       setIpError(result === true ? '' : result);
-       handleChange('ip_blacklist', value);
-   };
+    const handleIpChange = (value) => {
+        const validIps = value.filter(ip => validateIP(ip));
+        const hasInvalid = validIps.length !== value.length;
+        setIpError(hasInvalid ? __('Invalid IP format. Use IPv4, IPv6, or CIDR notation.', 'authpress') : '');
+        handleChange('ip_blacklist', validIps);
+    };
 
-   const handleEmailChange = (value) => {
-       const result = emailBlacklistValidator(value);
-       setEmailError(result === true ? '' : result);
-       handleChange('email_blacklist', value);
-   };
+    const handleEmailChange = (value) => {
+        const validEmails = value.filter(email => validateEmail(email));
+        const hasInvalid = validEmails.length !== value.length;
+        setEmailError(hasInvalid ? __('Invalid email format detected.', 'authpress') : '');
+        handleChange('email_blacklist', validEmails);
+    };
 
    const onSave = () => {
        handleSubmit('limit_login_attempts', localValues);

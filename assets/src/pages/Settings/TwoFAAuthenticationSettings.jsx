@@ -48,7 +48,7 @@ const TwoFAAuthenticationSettings = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Enable Two-Factor Authentication", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Enable or disable two-factor authentication.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -67,7 +67,7 @@ const TwoFAAuthenticationSettings = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Select Methods", "authpress")}</Title>
-                            <Paragraph>{__("Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus, odio.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Select the two-factor authentication methods to enable.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {

@@ -43,7 +43,7 @@ const HideLogin = () => {
                            <Col xs={24} lg={12} xl={14}>
                                <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                                    <Title heading={4}>{__("Login URL", "authpress")}</Title>
-                                   <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                                   <Paragraph>{__("The URL for the login page.", "authpress")}</Paragraph>
                                </Skeleton>
                            </Col>
                            {
