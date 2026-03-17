@@ -1,5 +1,5 @@
 import { __ } from "@wordpress/i18n";
-import { Row, Col, Skeleton, Typography, Switch, InputNumber, TextArea } from '@douyinfe/semi-ui';
+import { Row, Col, Skeleton, Typography, Switch, InputNumber, TextArea, TagInput } from '@douyinfe/semi-ui';
 import { useOutletContext } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import ActionButtons from "./ActionButtons";
@@ -40,8 +40,8 @@ const LimitLoginAttempts = () => {
                 <Row type="flex" gutter={[24, 24]}>
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
-                            <Title heading={4}>{__("Text Input", "authpress")}</Title>
-                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            <Title heading={4}>{__("Enable Limit Login Attempts", "authpress")}</Title>
+                            <Paragraph>{__("Enable or disable the limit on login attempts.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -60,7 +60,7 @@ const LimitLoginAttempts = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Attempts Allowed", "authpress")}</Title>
-                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            <Paragraph>{__("The number of login attempts allowed before lockout.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -82,7 +82,7 @@ const LimitLoginAttempts = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Minutes Lockout", "authpress")}</Title>
-                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            <Paragraph>{__("The number of minutes a user is locked out after exceeding the allowed login attempts.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -104,7 +104,7 @@ const LimitLoginAttempts = () => {
                     <Col xs={24} lg={12} xl={14}>
                         <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
                             <Title heading={4}>{__("Lockout Message", "authpress")}</Title>
-                            <Paragraph>{__("Lorem", "authpress")}</Paragraph>
+                            <Paragraph>{__("The message displayed to users when they are locked out.", "authpress")}</Paragraph>
                         </Skeleton>
                     </Col>
                     {
@@ -121,7 +121,48 @@ const LimitLoginAttempts = () => {
                     }
                 </Row>
             </div>
-            Table for IP whitelist and blacklist will be here
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("IP Blacklist", "authpress")}</Title>
+                            <Paragraph>{__("List of IP addresses that are blacklisted from login attempts.", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>  
+                            <TagInput
+                                addOnBlur={true}
+                                placeholder={__("Please enter IPs...", "authpress")}                                
+                                value={localValues?.ip_blacklist || ''}
+                                onChange={(value) => handleChange('ip_blacklist', value)}
+                            />
+                        </Col>
+                    }
+                </Row>
+            </div>
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Email Blacklist", "authpress")}</Title>
+                            <Paragraph>{__("List of email addresses that are blacklisted from login attempts.", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>  
+                            <TagInput
+                                addOnBlur={true}
+                                placeholder={__("Please enter emails...", "authpress")}
+                                value={localValues?.email_blacklist || ''}
+                                onChange={(value) => handleChange('email_blacklist', value)}
+                            />
+                        </Col>
+                    }
+                </Row>
+            </div>
             <ActionButtons hasChanges={hasChanges} section='limit_login_attempts' handleReset={handleReset} onSave={onSave} />
         </>
    );
