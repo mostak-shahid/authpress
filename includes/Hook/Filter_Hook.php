@@ -295,9 +295,9 @@ class Filter_Hook {
             'limit_login_attempts' => [
                 'enabled' => false,
                 'attempts_allowed' => 5,
-                'minutes_lockout' => 5,    
-                'ip_blacklist' => '',
-                'email_blacklist' => '',
+                'minutes_lockout' => 5,
+                'ip_blacklist' => [],
+                'email_blacklist' => [],
                 'lockout_message' => 'Too many failed login attempts. Please try again in {minutes} minutes.',
                 'disable_xml_rpc_requests' => false,
             ],
