@@ -16,8 +16,8 @@ class Hide_Login
 				isset($options['hide_login']['login_url']) &&
 				!empty($options['hide_login']['login_url'])
 			) ? sanitize_text_field(wp_unslash($options['hide_login']['login_url'])) : '';
-		
-		if ($this->login_slug) {
+		error_log('Custom login slug: ' . $this->login_slug);
+ 		if ($this->login_slug) {
 			// Setup rewrite and blocking
 			// add_action( 'init', [ $this, 'add_rewrite_rule' ] );
 			// add_filter( 'query_vars', [ $this, 'register_query_var' ] );
@@ -26,7 +26,7 @@ class Hide_Login
 			add_action( 'init', [ $this, 'add_rewrite_rule' ] );
 			add_filter( 'query_vars', [ $this, 'register_query_var' ] );
 			add_action( 'template_redirect', [ $this, 'load_default_login_template' ] );
-			add_action( 'init', [ $this, 'block_wp_login' ], 1 );
+			add_action( 'wp_loaded', [ $this, 'block_wp_login' ], 1 );
 		}
 
         // Flush rewrite rules on activation
