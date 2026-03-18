@@ -15,6 +15,7 @@ use MosPress\Authpress\Core\Tools;
 use MosPress\Authpress\Services\Customizer;
 use MosPress\Authpress\Services\Math_Captcha;
 use MosPress\Authpress\Services\Two_FA;
+use MosPress\Authpress\Services\Limit_Login;
 
 use MosPress\Authpress\UserMeta;
 
@@ -70,6 +71,7 @@ class Plugin {
 		new Customizer();
 		new Math_Captcha();
 		new Two_FA();
+		new Limit_Login();
 		new UserMeta();
 	}
 

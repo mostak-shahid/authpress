@@ -66,6 +66,9 @@ class Two_FA
 		// send email
 		$this->send_code_email( $user, $code );
 
+		// log 2fa code sent
+		$this->log_2fa_event( $user_id, 'email', 'sent', $hashed, time() + $this->code_ttl );
+
 		// set cookie to indicate pending 2FA; cookie value is user id XORed with site salt to be slightly obfuscated
 		$cookie_val = $this->cookie_value_for_user( $user_id );
 		setcookie( $this->cookie_name, $cookie_val, time() + $this->code_ttl, COOKIEPATH ?: '/', COOKIE_DOMAIN, is_ssl(), true );
@@ -204,7 +207,7 @@ class Two_FA
 	 */
 	public function handle_verify() {
 		if (isset( $_POST['_wpnonce'] ) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'verify_email_2fa' ) ) {
-			
+
 			$email_2fa_code = isset( $_POST['email_2fa_code'] ) ? sanitize_text_field( wp_unslash( $_POST['email_2fa_code'] ) ) : '';
 
 			if ( ! isset( $email_2fa_code ) || ! isset( $_COOKIE[ $this->cookie_name ] ) ) {
@@ -228,6 +231,7 @@ class Two_FA
 			$stored_hash   = get_transient( $transient_key );
 
 			if ( ! $stored_hash ) {
+				$this->log_2fa_event( $user_id, 'email', 'expired', null, time(), null, 1 );
 				$this->render_message_page( 'Your code has expired. Please request a new code.' );
 				exit;
 			}
@@ -237,6 +241,7 @@ class Two_FA
 			if ( $attempts >= $this->max_attempts ) {
 				// remove transient to force resend
 				delete_transient( $transient_key );
+				$this->log_2fa_event( $user_id, 'email', 'failed', $stored_hash, time(), null, $attempts + 1 );
 				$this->render_message_page( 'Too many failed attempts. A new code is required. Please click "Resend".' );
 				exit;
 			}
@@ -245,6 +250,9 @@ class Two_FA
 			$ok = wp_check_password( $input_code, $stored_hash );
 
 			if ( $ok ) {
+				// log successful verification
+				$this->log_2fa_event( $user_id, 'email', 'verified', $stored_hash, time(), current_time( 'mysql' ), $attempts );
+
 				// success: delete transient and attempts, clear cookie, log in user programmatically
 				delete_transient( $transient_key );
 				delete_user_meta( $user_id, $this->attempt_meta_key );
@@ -262,6 +270,7 @@ class Two_FA
 			} else {
 				$attempts++;
 				update_user_meta( $user_id, $this->attempt_meta_key, $attempts );
+				$this->log_2fa_event( $user_id, 'email', 'failed', $stored_hash, time(), null, $attempts );
 				if ( $attempts >= $this->max_attempts ) {
 					delete_transient( $transient_key );
 					$this->render_message_page( 'Too many failed attempts. A new code is required. Please click "Resend".' );
@@ -285,7 +294,7 @@ class Two_FA
 	public function handle_resend() {
 		// nonce check
 		if (isset( $_POST['_wpnonce'] ) && wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_wpnonce'])), 'resend_email_2fa' ) ) {
-			
+
 			$cookie_name = isset($_COOKIE[ $this->cookie_name ])?sanitize_text_field(wp_unslash($_COOKIE[ $this->cookie_name ])):'';
 
 			if ( empty( $cookie_name ) ) {
@@ -315,6 +324,9 @@ class Two_FA
 
 			// send email
 			$this->send_code_email( $user, $code );
+
+			// log 2fa code resent
+			$this->log_2fa_event( $user_id, 'email', 'sent', $hashed, time() + $this->code_ttl );
 
 			$this->render_message_page( 'A new code was sent to your email address.' );
 		} else {
@@ -413,5 +425,77 @@ class Two_FA
 			// clear cookie on client
 			setcookie( $this->cookie_name, '', time() - 3600, COOKIEPATH ?: '/', COOKIE_DOMAIN, is_ssl(), true );
 		}
+	}
+
+	/**
+	 * Log 2FA event to the database.
+	 *
+	 * @param int    $user_id    User ID
+	 * @param string $method     2FA method (email, sms, whatsapp, totp, hotp, backup_code)
+	 * @param string $status     Status (sent, verified, failed, expired)
+	 * @param string $code_hash  Hashed code
+	 * @param int    $expires_at Expiration timestamp
+	 * @param string $verified_at Verification datetime
+	 * @param int    $attempts   Number of attempts
+	 * @return int|false The ID of the inserted log, or false on failure
+	 */
+	private function log_2fa_event( $user_id, $method, $status, $code_hash = null, $expires_at = null, $verified_at = null, $attempts = 0 ) {
+		global $wpdb;
+		$table_name = $wpdb->prefix . 'authpress_2fa_logs';
+
+		$ip_address = $this->get_client_ip();
+		$user_agent = isset( $_SERVER['HTTP_USER_AGENT'] ) ? sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) ) : '';
+
+		$expires_at_dt = $expires_at ? gmdate( 'Y-m-d H:i:s', $expires_at ) : null;
+
+		$data = array(
+			'user_id'     => $user_id,
+			'method'      => in_array( $method, array( 'email', 'sms', 'whatsapp', 'totp', 'hotp', 'backup_code' ) ) ? $method : 'email',
+			'status'      => in_array( $status, array( 'sent', 'verified', 'failed', 'expired' ) ) ? $status : 'sent',
+			'code_hash'   => $code_hash,
+			'expires_at'  => $expires_at_dt,
+			'verified_at' => $verified_at,
+			'ip_address'  => $ip_address,
+			'user_agent'  => $user_agent,
+			'attempts'    => absint( $attempts ),
+		);
+
+		$format = array(
+			'%d',
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%s',
+			'%d',
+		);
+
+		$result = $wpdb->insert( $table_name, $data, $format );
+
+		return $result ? $wpdb->insert_id : false;
+	}
+
+	/**
+	 * Get client IP address.
+	 *
+	 * @return string
+	 */
+	private function get_client_ip() {
+		$ip_keys = array( 'HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR' );
+
+		foreach ( $ip_keys as $key ) {
+			if ( array_key_exists( $key, $_SERVER ) === true ) {
+				foreach ( explode( ',', sanitize_text_field( wp_unslash( $_SERVER[ $key ] ) ) ) as $ip ) {
+					$ip = trim( $ip );
+					if ( filter_var( $ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE ) !== false ) {
+						return $ip;
+					}
+				}
+			}
+		}
+
+		return isset( $_SERVER['REMOTE_ADDR'] ) ? sanitize_text_field( wp_unslash( $_SERVER['REMOTE_ADDR'] ) ) : '0.0.0.0';
 	}
 }
