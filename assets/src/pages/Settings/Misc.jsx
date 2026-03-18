@@ -14,8 +14,8 @@ const Misc = () => {
     const [originalValues, setOriginalValues] = useState({});
 
     useEffect(() => {
-        if (settings && settings?.customizer?.redesign?.other) {
-            const otherSettings = settings.customizer.redesign.other;
+        if (settings && settings?.misc) {
+            const otherSettings = settings.misc;
             setLocalValues({ ...otherSettings });
             setOriginalValues({ ...otherSettings });
             setHasChanges(false);
@@ -31,18 +31,10 @@ const Misc = () => {
         });
     };
 
+
+
     const onSave = () => {
-        const updatedSettings = {
-            ...settings,
-            customizer: {
-                ...settings.customizer,
-                redesign: {
-                    ...settings.customizer.redesign,
-                    other: localValues
-                }
-            }
-        };
-        handleSubmit('customizer', updatedSettings.customizer);
+        handleSubmit('misc', localValues);
     };
 
     return (
@@ -165,6 +157,28 @@ const Misc = () => {
                                     { label: 'Phone', value: 'phone' },
                                 ]}
                                 onChange={(value) => handleChange('login_by', value)}
+                            />
+                        </Col>
+                    }
+                </Row>
+            </div>
+            <div className="setting-unit py-4">
+                <Row type="flex" gutter={[24, 24]}>
+                    <Col xs={24} lg={12} xl={14}>
+                        <Skeleton placeholder={<SkeletonPlaceholder />} loading={settingsLoading} active>
+                            <Title heading={4}>{__("Restrict Domains", "authpress")}</Title>
+                            <Paragraph>{__("Enter each domain in the format @domain.com and press Enter (e.g., @gmail.com, @yahoo.com).", "authpress")}</Paragraph>
+                        </Skeleton>
+                    </Col>
+                    {
+                        !settingsLoading &&
+                        <Col xs={24} lg={12} xl={10}>
+                            <Input
+                                noLabel
+                                className="w-full"
+                                placeholder={__("@domain.com", "authpress")}
+                                value={localValues?.restrict_domains}
+                                onChange={(value) => handleChange('restrict_domains', value)}
                             />
                         </Col>
                     }

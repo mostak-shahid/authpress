@@ -40,12 +40,6 @@
                         "text": "Button",
                         "description": "Customize the button displayed on your login page.",
                         "url": "/settings/customizer/personalize/button"
-                    },
-                    {
-                        "itemKey": "other",
-                        "text": "Other",
-                        "description": "Customize other aspects of your login page.",
-                        "url": "/settings/customizer/personalize/other"
                     }
                 ]
             }

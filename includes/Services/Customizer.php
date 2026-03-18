@@ -266,6 +266,7 @@ class Customizer
 			$css .= "background-color: {$fields_background_color};";
 		}
 		$css .= "}";
+		
 		$css .= '.login form input[type="text"], .login form input[type="password"], .login form input[type="color"], .login form input[type="date"], .login form input[type="datetime"], .login form input[type="datetime-local"], .login form input[type="email"], .login form input[type="month"], .login form input[type="number"], .login form input[type="search"], .login form input[type="tel"], .login form input[type="time"], .login form input[type="url"], .login form input[type="week"], .login form select {';
 		if ($fields_height) {
 			$css .= "height: {$fields_height};";

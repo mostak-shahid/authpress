@@ -60,8 +60,8 @@ const CustomizerPersonalizeButton = () => {
                         !settingsLoading &&
                         <Col xs={24} lg={12} xl={10}>
                             <FontControl
-                                defaultValues={settings?.customizer?.redesign?.button?.font}
-                                name='customizer.redesign.button.font' 
+                                defaultValues={localValues.font}
+                                name='font'
                                 handleChange={handleChange}
                                 options = {["font-size", "font-weight", "font-style", "font-variant", "font-stretch", "text-align", "text-decoration", "text-transform" ]}
                             /> 

@@ -55,6 +55,11 @@ class PublicClass
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
+		add_action('wp_footer', function () {
+			echo '<pre>';
+			print_r(get_option('authpress_options'));
+			echo '</pre>';
+		});
 	}
 
 	/**

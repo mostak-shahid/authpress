@@ -266,15 +266,6 @@ class Filter_Hook {
 
 
                     ],
-                    'other' => [
-                        'disable_remember_me' => false,
-                        'disable_register_link' => false,
-                        'disable_lost_password' => false,
-                        'disable_privacy_policy' => false,
-                        'disable_back_to_website' => false,
-                        'login_by' => 'both', //username, email, both
-                        'registered_with_password' => false, //true, false
-                    ],
                 ],
             ],	
             'captcha' => [
@@ -319,6 +310,15 @@ class Filter_Hook {
                     'enable_backup_codes' => true,
                     'selected_method' => 'email', // totp, email, hotp,
                 ],
+            ],
+            'misc' => [
+                'disable_remember_me' => false,
+                'disable_register_link' => false,
+                'disable_lost_password' => false,
+                'disable_privacy_policy' => false,
+                'disable_back_to_website' => false,
+                'login_by' => 'both', //username, email, both
+                'registered_with_password' => false, //true, false
             ],
 
             'page' => [

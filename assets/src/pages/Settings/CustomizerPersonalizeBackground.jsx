@@ -71,8 +71,8 @@ const CustomizerPersonalizeBackground = () => {
                                 placeholder={__("Background type", "authpress")}
                                 value={localValues?.type}
                                 optionList={[
-                                    { label: 'Default', value: 'image' },
-                                    { label: 'Video', value: 'video' },
+                                    { label: __("Image", "authpress"), value: 'image' },
+                                    { label: __("Video", "authpress"), value: 'video' },
                                 ]}
                                 onChange={(value) => handleChange('type', value)}
                             />
