@@ -308,7 +308,7 @@ class Filter_Hook {
                 'settings' => [
                     'enabled' => true,
                     'enable_backup_codes' => true,
-                    'selected_method' => 'email', // totp, email, hotp,
+                    'selected_method' => ['email'], // totp, email, hotp,
                 ],
             ],
             'misc' => [

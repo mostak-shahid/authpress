@@ -303,20 +303,20 @@ class Customizer
 		if ($button_size && $button_size != 'auto') {
 			$css .= "width: 100%;";
 		}
-		isset($button_background['normal'])? $css .= 'background-color'. $button_background['normal']. ';':'';
-		isset($button_color['normal'])? $css .= 'color'. $button_color['normal']. ';':'';
+		isset($button_background['normal'])? $css .= 'background-color: '.sanitize_text_field(wp_unslash($button_background['normal'])).';':'';
+		isset($button_color['normal'])? $css .= 'color: '.sanitize_text_field(wp_unslash($button_color['normal'])).';':'';
 		$css .= "}";
 
 		// Button hover states
 		$css .= '.login form .submit .button-primary.hover, .login form .submit .button-primary:hover, .login form .submit .button-primary.focus, .login form .submit .button-primary:focus {';
-		isset($button_background['hover'])? $css .= 'background-color'. $button_background['hover']. ';':'';
-		isset($button_color['hover'])? $css .= 'color'. $button_color['hover']. ';':'';
+		isset($button_background['hover'])? $css .= 'background-color: '.sanitize_text_field(wp_unslash($button_background['hover'])).';':'';
+		isset($button_color['hover'])? $css .= 'color: '.sanitize_text_field(wp_unslash($button_color['hover'])).';':'';
 		$css .= "}";
 
 		// Button active states
 		$css .= '.login form .submit .button-primary.active, .login form .submit .button-primary.active:hover, .login form .submit .button-primary.active:focus, .login form .submit .button-primary:active {';		
-			isset($button_background['active'])? $css .= 'background-color'. $button_background['active']. ';':'';
-			isset($button_color['active'])? $css .= 'color'. $button_color['active']. ';':'';
+			isset($button_background['active'])? $css .= 'background-color: '.sanitize_text_field(wp_unslash($button_background['active'])).';':'';
+			isset($button_color['active'])? $css .= 'color: '.sanitize_text_field(wp_unslash($button_color['active'])).';':'';
 		$css .= "}";
 
 
@@ -391,20 +391,20 @@ class Customizer
 	}
 	public function authpress_generate_boxshadow_css($option){
 		$css = '';
-		if ($option && is_array($option) && $option['enabled']) {
+		if ($option && is_array($option) && isset($option['enabled']) && $option['enabled']) {
 			$x = isset($option['x']) ? sanitize_text_field(wp_unslash($option['x'])) : '0px';
 			$y = isset($option['y']) ? sanitize_text_field(wp_unslash($option['y'])) : '0px';
 			$blur = isset($option['blur']) ? sanitize_text_field(wp_unslash($option['blur'])) : '0px';
 			$spread = isset($option['spread']) ? sanitize_text_field(wp_unslash($option['spread'])) : '0px';
 			$color = isset($option['color']) ? sanitize_text_field(wp_unslash($option['color'])) : '#000000';
-			$inset = isset($fields_boxshadow['inset']) ? 'inset' : '';
+			$inset = isset($option['inset']) && $option['inset'] ? 'inset' : '';
 			$css .= "box-shadow: {$x} {$y} {$blur} {$spread} {$color} $inset;";
 		}
 		return $css;
 	}
 	public function authpress_generate_textshadow_css($option){
 		$css = '';
-		if ($option && is_array($option) && $option['enabled']) {
+		if ($option && is_array($option) && isset($option['enabled']) && $option['enabled']) {
 			$x = isset($option['x']) ? sanitize_text_field(wp_unslash($option['x'])) : '0px';
 			$y = isset($option['y']) ? sanitize_text_field(wp_unslash($option['y'])) : '0px';
 			$blur = isset($option['blur']) ? sanitize_text_field(wp_unslash($option['blur'])) : '0px';

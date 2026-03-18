@@ -78,14 +78,14 @@ const TwoFAAuthenticationSettings = () => {
                                 multiple
                                 className="w-full"
                                 placeholder={__("Select Methods", "authpress")}
-                                value={localValues?.selected_two_fa_authentication}
+                                value={localValues?.selected_method || []}
                                 optionList={[
                                     { label: 'Email OTP', value: 'email_otp' },
-                                    { label: 'TOTP OTP', value: 'totp_otp', disabled: true },
+                                    { label: 'TOTP OTP', value: 'totp_otp' },
                                     { label: 'HOTP OTP', value: 'hotp_otp', disabled: true },
 
                                 ]}
-                                onChange={(value) => handleChange('selected_two_fa_authentication', value)}
+                                onChange={(value) => handleChange('selected_method', value)}
                             />
                         </Col>
                     }
