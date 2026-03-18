@@ -62,11 +62,8 @@ class Auto_Login
         </div>
 
         <style>
-            #authpress-auto-login-wrapper + #loginform {
-                display: none !important;
-            }
             body.authpress-auto-login-mode #loginform {
-                display: block !important;
+                display: none !important;
             }
         </style>
 
