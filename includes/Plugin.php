@@ -17,6 +17,7 @@ use MosPress\Authpress\Services\Math_Captcha;
 use MosPress\Authpress\Services\Two_FA;
 use MosPress\Authpress\Services\Limit_Login;
 use MosPress\Authpress\Services\Hide_Login;
+use MosPress\Authpress\Services\Auto_Login;
 
 use MosPress\Authpress\UserMeta;
 
@@ -74,6 +75,7 @@ class Plugin {
 		new Two_FA();
 		new Limit_Login();
 		new Hide_Login();
+		new Auto_Login();
 		new UserMeta();
 	}
 

@@ -277,6 +277,7 @@ class Filter_Hook {
             'auto_login' => [
                 'settings' => [
                     'enabled' => true,
+                    'selected_auto_login' => ['link_login'], // link_login, social_login, barcode_login
                 ],
                 'link_login' => [
                     'enabled' => true,

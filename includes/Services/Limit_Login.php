@@ -19,12 +19,20 @@ class Limit_Login
             add_action('wp_login_failed', [$this, 'track_failed_login'], 10, 2);
             add_filter('login_errors', [$this, 'show_lockout_message']);
 
-            $disable_xml_rpc = isset($this->options['limit_login_attempts']['disable_xml_rpc_requests']) ? 
+            $disable_xml_rpc = isset($this->options['limit_login_attempts']['disable_xml_rpc_requests']) ?
                 sanitize_text_field(wp_unslash($this->options['limit_login_attempts']['disable_xml_rpc_requests'])) : false;
 
             if ($disable_xml_rpc) {
                 add_filter('xmlrpc_enabled', '__return_false');
             }
+        }
+
+        $custom_login_url = isset($this->options['hide_login']['login_url']) ?
+            sanitize_text_field(wp_unslash($this->options['hide_login']['login_url'])) : '';
+
+        if (!empty($custom_login_url)) {
+            add_action('init', [$this, 'redirect_to_custom_login']);
+            add_action('template_redirect', [$this, 'show_404_template']);
         }
     }
 
@@ -289,5 +297,66 @@ class Limit_Login
                 $wpdb->esc_like('_transient_timeout_' . $this->transient_prefix) . '%'
             )
         );
+    }
+
+    /**
+     * Redirect guest users from wp-login.php and wp-admin to custom login URL
+     */
+    public function redirect_to_custom_login() {
+        global $pagenow;
+
+        $custom_login_url = isset($this->options['hide_login']['login_url']) ?
+            sanitize_text_field(wp_unslash($this->options['hide_login']['login_url'])) : '';
+
+        if (empty($custom_login_url)) {
+            return;
+        }
+
+        // Allow access for logged-in users
+        if (is_user_logged_in()) {
+            return;
+        }
+
+        // Allow access to custom login page itself
+        $current_url = home_url($_SERVER['REQUEST_URI']);
+        $custom_login_url_full = home_url($custom_login_url);
+
+        if (strpos($current_url, $custom_login_url) !== false) {
+            return;
+        }
+
+        // Allow access to login actions that don't need redirection
+        if (isset($_GET['action'])) {
+            $allowed_actions = ['logout', 'rp', 'resetpass'];
+            if (in_array($_GET['action'], $allowed_actions)) {
+                return;
+            }
+        }
+
+        // Redirect from wp-login.php
+        if ($pagenow === 'wp-login.php') {
+            wp_safe_redirect(home_url('?authpress_404=1'));
+            exit;
+        }
+
+        // Redirect from wp-admin for non-admin users
+        if ($pagenow === 'wp-admin' && !isset($_GET['authpress_bypass'])) {
+            wp_safe_redirect(home_url('?authpress_404=1'));
+            exit;
+        }
+    }
+
+    /**
+     * Show 404 template for custom login redirection
+     */
+    public function show_404_template() {
+        if (isset($_GET['authpress_404']) && $_GET['authpress_404'] === '1') {
+            global $wp_query;
+            $wp_query->set_404();
+            status_header(404);
+            nocache_headers();
+            include(get_query_template('404'));
+            exit;
+        }
     }
 }
