@@ -488,7 +488,7 @@ class Customizer
 	public function authpress_block_register_page() {
 		global $pagenow;
 		if ( $pagenow === 'wp-login.php' && isset($_GET['action']) && $_GET['action'] === 'register' ) {
-			wp_redirect( home_url('/wp-login.php') ); // Redirect elsewhere
+			wp_safe_redirect(home_url('/wp-login.php')); // Redirect elsewhere
 			exit;
 		}
 	}
@@ -507,7 +507,7 @@ class Customizer
 	public function authpress_block_lostpassword_page() {
 		global $pagenow;
 		if ( $pagenow === 'wp-login.php' && isset($_GET['action']) && $_GET['action'] === 'lostpassword' ) {
-			wp_redirect( home_url() );
+			wp_safe_redirect(home_url());
 			exit;
 		}
 	}

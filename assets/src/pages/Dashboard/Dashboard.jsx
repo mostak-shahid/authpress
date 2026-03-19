@@ -40,10 +40,10 @@ export default function Dashboard() {
                 >
                     <Title heading={2}>{__(`Welcome to ${Details?.name}`, "authpress")}</Title>
                     <Paragraph>
-                        {__("Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste mollitia voluptates molestiae nihil! Atque repellendus, nulla, aut magni in, sunt optio labore commodi at ipsa voluptatibus provident eveniet perferendis consequuntur.", "authpress")}
+                        {__("Transform your WordPress login experience with AuthPress - the ultimate login page customizer and security suite. Say goodbye to the default WordPress login screen and hello to a branded, professional authentication experience that matches your site's identity.", "authpress")}
                     </Paragraph>
                     <Paragraph>
-                        {__("AuthPress is an all-in-one toolkit to enhance your WooCommerce store. This is a highly effective plugin developed for assisting online businesses in improving sales and profits.", "authpress")}
+                        {__("AuthPress gives you complete control over your login, registration, and password reset pages with powerful visual customization tools while protecting your site with enterprise-grade security features like two-factor authentication, login attempt limiting, and custom login URLs.", "authpress")}
                     </Paragraph>
                 </Card>
                 <Row type="flex" gutter={[24,24]}>
@@ -66,9 +66,9 @@ export default function Dashboard() {
                                     )}
                                 </div>
                             ))} */}
-                            <Paragraph>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto blanditiis repudiandae quod, aliquam laborum dolores aliquid dolorem alias ratione facere ab enim unde et, tempore repellendus molestias quaerat neque, reiciendis voluptate quas necessitatibus. Tenetur quos laudantium, magnam totam excepturi id incidunt aspernatur corporis ducimus pariatur omnis dolorum minus explicabo iusto veniam inventore cupiditate provident eum laborum. Quibusdam rem neque maiores fugiat, unde similique saepe expedita natus dolor est pariatur tempore excepturi soluta maxime voluptate facere cupiditate fugit modi enim accusantium? Dignissimos magni, ut, sit deserunt eaque in ea modi autem cum, ex beatae similique aperiam obcaecati eius eligendi perferendis quasi.</Paragraph>
-                            <Paragraph>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nisi modi libero repellat optio dolor sunt in ipsam dicta numquam quas magnam nam quidem praesentium vitae quod earum, qui iusto consectetur repellendus exercitationem eligendi tempore tenetur commodi labore! Tempora aspernatur ducimus odit nihil rem veniam dignissimos a officia id, voluptate perspiciatis!</Paragraph>
-                            <Paragraph>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Earum, rerum labore? Doloribus eaque exercitationem eligendi odio! Maiores voluptatum soluta voluptatem distinctio quos blanditiis consectetur ea?</Paragraph>
+                            <Paragraph>{__("Customize every aspect of your login page with an intuitive visual editor. Choose from beautiful backgrounds including solid colors, gradients, images, or even video overlays. Style your logo with precise sizing and spacing, and personalize form fields with custom fonts, colors, and borders. The glass morphism effects add a modern, professional touch to make your login screen truly stand out.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Protect your site with comprehensive security features. Enable two-factor authentication (2FA) to add an extra verification layer via email codes. Limit login attempts to block brute force attacks with configurable thresholds and lockout durations. Hide your default login URL behind a custom path to keep bots and hackers away. Add math-based captcha challenges to prevent automated submissions.", "authpress")}</Paragraph>
+                            <Paragraph>{__("Enhance user experience with smart login redirects based on user roles, automatic login functionality for password reset flows, and the option to force login by username, email, or both. The registration with password feature lets users set their password during signup instead of waiting for an email. Everything is backed by a clean, PSR-4 codebase with full REST API support for developers.", "authpress")}</Paragraph>
                         </Card>
                         <Card 
                             title={__("Extend Your Website", "authpress")}
@@ -128,24 +128,24 @@ export default function Dashboard() {
                         </Card>
                     </Col>
                     <Col lg={8}>
-                        <Card 
+                        <Card
                             className="mb-6"
-                            title={__("VIP Priority Support", "authpress")}
+                            title={__("Get Support", "authpress")}
                         >
                             <Paragraph>
-                                {__("Faster and exclusive support service designed for VIP assistance and benefits.", "authpress")}                                    
+                                {__("Need help with setup or have questions? Our comprehensive documentation and community forums are here to assist you. For advanced issues, check out our detailed guides and troubleshooting tips.", "authpress")}
                             </Paragraph>
-                            <Text link={{ href: 'https://wordpress.org/support/plugin/authpress/', target:"_blank" }}>{__("Support", "authpress")}</Text>
+                            <Text link={{ href: 'https://wordpress.org/support/plugin/authpress/', target:"_blank" }}>{__("Support Forum", "authpress")}</Text>
                         </Card>
 
-                        <Card 
+                        <Card
                             className="mb-6"
-                            title={__("Help Center", "authpress")}
+                            title={__("Documentation", "authpress")}
                         >
                             <Paragraph>
-                                {__("Faster and exclusive support service designed for VIP assistance and benefits.", "authpress")}                                    
+                                {__("Explore our complete documentation to unlock the full potential of AuthPress. Learn about all customization options, security configurations, API endpoints, and advanced features. Step-by-step guides make it easy to get started and master every aspect of the plugin.", "authpress")}
                             </Paragraph>
-                            <Text link={{ href: 'https://mostak-shahid.github.io/plugins/authpress.html', target:"_blank" }}>{__("Help", "authpress")}</Text>
+                            <Text link={{ href: 'https://mostak-shahid.github.io/plugins/authpress.html', target:"_blank" }}>{__("View Docs", "authpress")}</Text>
                         </Card>
                         
                         <Card 

@@ -318,7 +318,8 @@ class Limit_Login
         }
 
         // Allow access to custom login page itself
-        $current_url = home_url($_SERVER['REQUEST_URI']);
+        $request_uri = isset($_SERVER['REQUEST_URI']) ? sanitize_text_field(wp_unslash($_SERVER['REQUEST_URI'])) : '';
+        $current_url = home_url($request_uri);
         $custom_login_url_full = home_url($custom_login_url);
 
         if (strpos($current_url, $custom_login_url) !== false) {
