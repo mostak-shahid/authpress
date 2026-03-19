@@ -1,6 +1,6 @@
 <?php
 namespace MosPress\Authpress\Services;
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 class Hide_Login
 {
 /**

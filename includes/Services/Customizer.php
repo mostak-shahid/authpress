@@ -1,5 +1,6 @@
 <?php
 namespace MosPress\Authpress\Services;
+if ( ! defined( 'ABSPATH' ) ) exit;
 use WP_Error;
 class Customizer
 {

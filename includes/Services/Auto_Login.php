@@ -1,6 +1,6 @@
 <?php
 namespace MosPress\Authpress\Services;
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 class Auto_Login
 {
     private $options;
@@ -122,9 +122,9 @@ class Auto_Login
                     var formData = new FormData();
                     formData.append('action', 'authpress_send_login_link');
                     formData.append('authpress_email', email);
-                    formData.append('authpress_auto_login_nonce', '<?php echo wp_create_nonce('authpress_auto_login_nonce'); ?>');
+                    formData.append('authpress_auto_login_nonce', '<?php echo esc_attr(wp_create_nonce('authpress_auto_login_nonce')); ?>');
 
-                    fetch('<?php echo admin_url('admin-post.php'); ?>', {
+                    fetch('<?php echo esc_url(admin_url('admin-post.php')); ?>', {
                         method: 'POST',
                         body: formData
                     })

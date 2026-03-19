@@ -1,6 +1,6 @@
 <?php
 namespace MosPress\Authpress\Services;
-
+if ( ! defined( 'ABSPATH' ) ) exit;
 class Two_FA
 {
     private $options;
